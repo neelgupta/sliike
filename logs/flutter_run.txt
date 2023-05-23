@@ -1,0 +1,9 @@
+[11:24:23 AM]: Spawning D:\flutter\bin\flutter.bat with args ["run","--machine","--start-paused","--no-sound-null-safety","-d","GM9S5HEEBAAUAES8","--devtools-server-address","http://127.0.0.1:9101/","--target","lib\\main.dart"]
+[11:24:23 AM]: ..  in D:\New folder\sliike_Beautician_app
+[11:24:23 AM]: ..  with {"toolEnv":{"FLUTTER_HOST":"VSCode","PUB_ENVIRONMENT":"vscode.dart-code"}}
+[11:24:23 AM]: PID: 10516
+[11:24:43 AM]: <== [{"event":"daemon.connected","params":{"version":"0.6.1","pid":11728}}]
+[11:24:44 AM]: <== [{"event":"app.start","params":{"appId":"e2f5c135-c374-463c-98b5-0c4b1111aafa","deviceId":"GM9S5HEEBAAUAES8","directory":"D:\\New folder\\sliike_Beautician_app","supportsRestart":true,"launchMode":"run"}}]
+[11:24:44 AM]: <== Launching lib\main.dart on RMX2189 in debug mode...
+[11:24:51 AM]: <== [{"event":"app.progress","params":{"appId":"e2f5c135-c374-463c-98b5-0c4b1111aafa","id":"0","progressId":null,"message":"Running Gradle task 'assembleDebug'...","finished":false}}]
+[11:25:16 AM]: Process D:\flutter\bin\flutter.bat terminated! 1, null

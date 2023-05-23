@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "685949352358",
+    "project_id": "sliike-be83c",
+    "storage_bucket": "sliike-be83c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685949352358:android:0392075a338cd22adf7767",
+        "android_client_info": {
+          "package_name": "com.app.sliike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685949352358-tc86lj8d7f0q286dj980evnjm1r5rr1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm6IW0Y4bqML5UhfhSSyq9ijljoi_RuF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685949352358-tc86lj8d7f0q286dj980evnjm1r5rr1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
