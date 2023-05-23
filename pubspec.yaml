@@ -77,7 +77,7 @@ dependencies:
   dio: ^4.0.0
   flutter_google_places: ^0.3.0
   cached_network_image: ^3.2.1
-  webview_flutter: ^4.0.7
+  webview_flutter: ^4.2.1
 #  flutter_datetime_picker: ^1.5.1
 #  f_datetimerangepicker: ^0.2.0
 #  scroll_date_picker: ^3.6.1

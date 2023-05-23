@@ -154,7 +154,7 @@ class _addServiceState extends State<addServicetype> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: height * 0.18, //11
+        toolbarHeight: height * 0.18, //
         flexibleSpace: Container(
           color: const Color(0xff01635D),
           child: Column(
@@ -279,146 +279,151 @@ class _addServiceState extends State<addServicetype> {
                       const SizedBox(
                         height: 10,
                       ),
-                      // Row(
-                      //   children: [
-                      //     Container(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: const Text(
-                      //           "Add image of this service",
-                      //           style: TextStyle(
-                      //               fontSize: 15,
-                      //               color: Color(0xff292929),
-                      //               fontFamily: "spartan",
-                      //               fontWeight: FontWeight.bold)),
-                      //     ),
-                      //     Container(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: const Text("(optional)",
-                      //           style: TextStyle(
-                      //               fontSize: 12,
-                      //               color: Color(0xff707070),
-                      //               fontFamily: "spartan",
-                      //               fontWeight: FontWeight.bold)),
-                      //     ),
-                      //   ],
-                      // ),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                                "Add image of this service",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Color(0xff292929),
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: const Text("(optional)",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xff707070),
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: width,
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  alignment: Alignment.bottomCenter,
+                                  insetPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 30),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                                  title: Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      CommonButton(context, "TAKE A PHOTO", 12,
+                                          FontWeight.w600, Colors.white, () async {
+                                            Navigator.pop(context);
 
-
-                      // Container(
-                      //   width: width,
-                      //   alignment: Alignment.center,
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       showDialog(
-                      //         context: context,
-                      //         builder: (context) {
-                      //           return AlertDialog(
-                      //             alignment: Alignment.bottomCenter,
-                      //             insetPadding: EdgeInsets.symmetric(
-                      //                 horizontal: 20, vertical: 30),
-                      //             shape: RoundedRectangleBorder(
-                      //                 borderRadius:
-                      //                 BorderRadius.all(Radius.circular(10))),
-                      //             title: Column(
-                      //               children: <Widget>[
-                      //                 SizedBox(
-                      //                   height: height * 0.02,
-                      //                 ),
-                      //                 CommonButton(context, "TAKE A PHOTO", 12,
-                      //                     FontWeight.w600, Colors.white, () async {
-                      //                       Navigator.pop(context);
-                      //
-                      //                       final XFile? photo = await _picker.pickImage(
-                      //                           source: ImageSource.camera);
-                      //                       if (photo != null) {
-                      //                         imagepath = photo.path;
-                      //                         imagestatus = true;
-                      //                         setState(() {});
-                      //                       }
-                      //                     }),
-                      //                 SizedBox(
-                      //                   height: height * 0.02,
-                      //                 ),
-                      //                 CommonButton(context, "CHOOSE FROM GALLERY", 12,
-                      //                     FontWeight.w600, Colors.white, () async {
-                      //                       Navigator.pop(context);
-                      //                       final XFile? image = await _picker.pickImage(
-                      //                           source: ImageSource.gallery);
-                      //                       if (image != null) {
-                      //                         imagepath = image.path;
-                      //                         imagestatus = true;
-                      //                         setState(() {});
-                      //                       }
-                      //                     }),
-                      //                 SizedBox(
-                      //                   height: height * 0.02,
-                      //                 ),
-                      //                 CommonButtonborder(context, "CANCEL", 12,
-                      //                     FontWeight.w600, Color(0xff01635D), () {
-                      //                       setState(() {
-                      //                         Navigator.pop(context);
-                      //                         imagepath == null;
-                      //                         imagestatus = false;
-                      //                       });
-                      //                     }),
-                      //                 SizedBox(
-                      //                   height: height * 0.03,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           );
-                      //         },
-                      //       );
-                      //     },
-                      //     child: imagestatus
-                      //         ? Container(
-                      //       height: 150,
-                      //       width: width,
-                      //       decoration: BoxDecoration(
-                      //           //shape: BoxShape.circle,
-                      //           image: DecorationImage(
-                      //               image: FileImage(File(imagepath)),
-                      //               fit: BoxFit.fill)),
-                      //     )
-                      //         : Container(
-                      //       width: width,
-                      //       margin: EdgeInsets.symmetric(horizontal: 20),
-                      //       alignment: Alignment.center,
-                      //       child: Container(
-                      //         // height: 100,
-                      //         // width: 100,
-                      //         // decoration: BoxDecoration(
-                      //         //  // shape: BoxShape.circle,
-                      //         //   color: Color(0xffD7E0DD),
-                      //         width: width,
-                      //               height:150,
-                      //               decoration: BoxDecoration(
-                      //                   image: DecorationImage(
-                      //                       image: AssetImage("assets/images/camera_line.png"),fit: BoxFit.fill
-                      //                   )
-                      //         ),
-                      //         child: Center(
-                      //           child: Column(
-                      //             crossAxisAlignment: CrossAxisAlignment.center,
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Container(
-                      //                 child: Image.asset(
-                      //                     "assets/images/camera_grey.png",
-                      //                     height: 40),
-                      //               ),
-                      //               textComoon("Take a photo or Upload from gallery", 10, Color(0xff707070),
-                      //                   FontWeight.w600),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
+                                            final XFile? photo = await _picker.pickImage(
+                                                source: ImageSource.camera);
+                                            if (photo != null) {
+                                              imagepath = photo.path;
+                                              imagestatus = true;
+                                              setState(() {});
+                                            }
+                                          }),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                                          FontWeight.w600, Colors.white, () async {
+                                            Navigator.pop(context);
+                                            final XFile? image = await _picker.pickImage(
+                                                source: ImageSource.gallery);
+                                            if (image != null) {
+                                              imagepath = image.path;
+                                              imagestatus = true;
+                                              setState(() {});
+                                            }
+                                          }),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      commonButtonborder(context, "CANCEL", 12,
+                                          FontWeight.w600, Color(0xff01635D), () {
+                                            setState(() {
+                                              Navigator.pop(context);
+                                              imagepath == null;
+                                              imagestatus = false;
+                                            });
+                                          }),
+                                      SizedBox(
+                                        height: height * 0.03,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: imagestatus
+                              ? Container(
+                            height: 150,
+                            width: width,
+                            decoration: BoxDecoration(
+                              //shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: FileImage(File(imagepath)),
+                                    fit: BoxFit.fill)),
+                          )
+                              : Container(
+                            width: width,
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            alignment: Alignment.center,
+                            child: Container(
+                              // height: 100,
+                              // width: 100,
+                              // decoration: BoxDecoration(
+                              //  // shape: BoxShape.circle,
+                              //   color: Color(0xffD7E0DD),
+                              width: width,
+                              height:150,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/images/camera_line.png"),fit: BoxFit.fill
+                                  )
+                              ),
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Image.asset(
+                                          "assets/images/camera_grey.png",
+                                          height: 40),
+                                    ),
+                                    textComoon("Take a photo or Upload from gallery", 10, Color(0xff707070),
+                                        FontWeight.w600),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(
+                        color: Color(0xffCFCFCF),
+                        thickness: 1,
+                      ),
                       SizedBox(
                         height: height * 0.01,
                       ),
@@ -496,8 +501,8 @@ class _addServiceState extends State<addServicetype> {
                                                             fontWeight:
                                                             FontWeight.normal),
                                                       ),
-                                                      Radio<String?>(
-                                                        value: singleItem.id,
+                                                      Radio<String>(
+                                                        value: singleItem.id!,
                                                         activeColor:
                                                         const Color(
                                                             0xff01635D),
@@ -1045,59 +1050,60 @@ class _addServiceState extends State<addServicetype> {
                           : Container(
                         height: 30,
                       ),
-                      // Row(
-                      //   children: [
-                      //     Text("Service Description ",
-                      //         style: TextStyle(
-                      //             fontSize: 14,
-                      //             color: Color(0xff292929),
-                      //             fontFamily: "spartan",
-                      //             fontWeight: FontWeight.bold)),
-                      //     Text("(optional)",
-                      //         style: TextStyle(
-                      //             fontSize: 14,
-                      //             color: Color(0xff707070),
-                      //             fontFamily: "spartan",
-                      //             fontWeight: FontWeight.bold)),
-                      //   ],
-                      // ),
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
-                      // Container(
-                      //   child: TextField(
-                      //     controller: description,
-                      //     maxLines: 2,
-                      //     style: TextStyle(
-                      //         fontSize: 15,
-                      //         color: Color(
-                      //           0xff414141,
-                      //         )),
-                      //     onChanged: (value) {
-                      //       descriptionstatus = false;
-                      //     },
-                      //     decoration: InputDecoration(
-                      //       contentPadding: EdgeInsets.only(
-                      //           left: 20, top: 12, bottom: 12),
-                      //       hintText: "Description",
-                      //       labelText: "Description",
-                      //       labelStyle: TextStyle(
-                      //           fontFamily: 'spartan',
-                      //           color: Colors.black54),
-                      //       focusedBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //         borderSide: BorderSide(color: Colors.black38),
-                      //       ),
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //         borderSide: BorderSide(color: Colors.black38),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
+                      Row(
+                        children: [
+                          Text("Service Description ",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff292929),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold)),
+                          Text("(optional)",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff707070),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: TextField(
+                          minLines: 2,
+                          controller: description,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color(
+                                0xff414141,
+                              )),
+                          onChanged: (value) {
+                            descriptionstatus = false;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                                left: 20, top: 12, bottom: 12),
+                            hintText: "Description",
+                            labelText: "Description",
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan',
+                                color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -1139,7 +1145,7 @@ class _addServiceState extends State<addServicetype> {
                             print("addcategory==$addtype");
                             selectedServiceNameValue = "";
                             selectedServiceCategoryNameValue = "";
-
+                            description.text.isEmpty;
                           }
                         });
                       },
@@ -1454,7 +1460,7 @@ class _addServiceState extends State<addServicetype> {
           'serviceType': add_data[i],
           "duration": add_time[i],
           "price": add_price[i],
-          "description": ""
+          "description": description
         };
         print("bodyData$bodyData");
         body.add(bodyData);

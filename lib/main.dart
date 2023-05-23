@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
+      // home: const WebViews(),
       home: const splash_Scrren(),
     );
   }

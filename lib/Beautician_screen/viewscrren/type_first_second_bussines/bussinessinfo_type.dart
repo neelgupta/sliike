@@ -289,7 +289,7 @@ addBusinessTypeModel? businesstype;
         else
           // if(_radioValue1==1)
             {
-          prefs.setBool(UserPrefs.keyisserviceprovide,true);
+          // prefs.setBool(UserPrefs.keyisserviceprovide,true);
           // ignore: use_build_context_synchronously
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {

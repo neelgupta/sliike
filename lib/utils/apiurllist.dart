@@ -42,6 +42,8 @@ class ApiUrlList {
   ///Appointments
   static String getUpcomingAppointmentList =
       "${baseUrl}client/getAppointmentList?status=upcoming";
+  static String getpastAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
+  static String getSingleAppointmentData = "${baseUrl}client/getSingleAppointmentData/";
 
   ///Beautician Apps
   static String addBusinessDetail = "${baseUrl}beautician/addBusinessDetail";
