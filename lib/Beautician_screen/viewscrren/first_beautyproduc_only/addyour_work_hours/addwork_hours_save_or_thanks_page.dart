@@ -336,11 +336,6 @@ class _addWork_Save_or_NoThanks_PageState
               InkWell(
                 onTap: () {
                   addWorkHours(context,widget.dayDetailsList);
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                    builder: (context) {
-                      return const conGraTuLation();
-                    },
-                  ),(route) => false,);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -442,12 +437,6 @@ class _addWork_Save_or_NoThanks_PageState
             return const conGraTuLation();
           },
         ));
-        setState(() {
-          Helper.prefs!.setInt(
-              UserPrefs.screenStatus,7);
-          Userdetail.screenStatus =
-              Helper.prefs!.getInt(UserPrefs.screenStatus) ?? 7;
-        });
       }
       else {
         Fluttertoast.showToast(

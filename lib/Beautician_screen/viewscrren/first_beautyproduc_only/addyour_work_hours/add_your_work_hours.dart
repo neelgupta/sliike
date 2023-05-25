@@ -1099,7 +1099,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                       print("onofffalse=$Onoff");
-                    } else if (!emptystartendtime()) {
+                    }
+                    else if (!emptystartendtime()) {
                       Fluttertoast.showToast(
                           msg: "Enter Your Start End Time",
                           toastLength: Toast.LENGTH_SHORT,
@@ -1109,7 +1110,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                       print("startendtime=====");
-                    } else {
+                    }
+                    else {
                       if (isbottomSheet == true) {
                         showModalBottomSheet<void>(
                           isScrollControlled: true,

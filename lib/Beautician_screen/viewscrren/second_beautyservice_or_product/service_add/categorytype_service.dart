@@ -512,10 +512,6 @@ class _addServiceState extends State<addServicetype> {
                                                                 singleItem.id!;
                                                                 selectedServiceCategoryNameValue =
                                                                 singleItem.serviceCategoryName!;
-                                                                print(
-                                                                    selectedServiceCategoryIdValue);
-                                                                print(
-                                                                    selectedServiceCategoryNameValue);
                                                                 fetchServicesType(
                                                                     selectedServiceCategoryIdValue);
                                                                 Navigator.pop(
@@ -776,6 +772,9 @@ class _addServiceState extends State<addServicetype> {
                                         child: InkWell(
                                           onTap: (){
                                             setState(() {
+                                              selectedService = null;
+                                              selectedServiceIdValue = "";
+                                              selectedServiceNameValue = "";
                                               arrow=false;
                                               dropdown = true;
                                             });
@@ -1114,7 +1113,7 @@ class _addServiceState extends State<addServicetype> {
                             datachanghe = true;
                             servicePriceStatus = true;
 
-                          }  if(selectedService==""){
+                          } else if(selectedServiceIdValue==""){
                             status = "Please Select  Service Type";
                             datachanghe = true;
                             servicePriceStatus = true;
@@ -1131,15 +1130,14 @@ class _addServiceState extends State<addServicetype> {
                             add_data.add(selectedServiceIdValue);
                             add_price.add(servicePrice.text);
                             add_time.add(selectedvalueminnewformat);
-
                             print("addcategory==$addcategory");
                             print("addcategory==$add_data");
                             print("addcategory==$add_price");
                             print("addcategory==$add_time");
                             print("addcategory==$addtype");
+                            dropdown = true;
                             selectedServiceNameValue = "";
                             selectedServiceCategoryNameValue = "";
-
                           }
                         });
                       },
@@ -1312,14 +1310,15 @@ class _addServiceState extends State<addServicetype> {
               onTap: () {
                 setState(() {
                   datachanghe = true;
-                  dropdown == true;
+                  dropdown = true;
                   selectedServiceCategoryIdValue = "";
                   selectedServiceCategoryNameValue = "";
-                  servicePrice.clear();
+                  servicePrice.text = "";
                   arrow = false;
                   selectedService = null;
                   selectedServiceIdValue = "";
                   selectedServiceNameValue = "";
+                  typesDataList.clear();
                 });
               },
               child: Container(
@@ -1347,18 +1346,7 @@ class _addServiceState extends State<addServicetype> {
             InkWell(
               onTap: () {
                 setState(() {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                    builder: (context) {
-                      return add_Your_Work_Hours(secondflow: true);
-                    },
-                  ),(route) => false,);
                   addServiceDetails();
-                  // Helper.prefs!.setInt(
-                  //     UserPrefs.screenStatus,6);
-                  // Userdetail.screenStatus =
-                  //     Helper.prefs!.getInt(UserPrefs.screenStatus) ?? 6;
-                  log("serdetail.screenStatus  ${Userdetail.screenStatus}");
-                  log("serdetail.screenStatus  ${Userdetail.screenStatus}");
                 });
               },
               child: Container(
@@ -1419,12 +1407,7 @@ class _addServiceState extends State<addServicetype> {
           c = Category.fromJson(jsonDecode(response.body));
           if (c!.data!.isNotEmpty) {
             categoryDataList = c!.data;
-            // selectedServiceCategoryIdValue = c!.data!.first.id!;
-            // selectedServiceCategoryNameValue =
-            //     c!.data!.first.serviceCategoryName!;
           }
-          log("c!.data!.first.serviceCategoryName ${c!.data!.first.serviceCategoryName}");
-          log("selectdradioValue $selectedServiceCategoryNameValue");
         }
       }
     } catch (e) {
@@ -1477,11 +1460,11 @@ class _addServiceState extends State<addServicetype> {
       print("res  body :: ${response.body}");
 
       if (response.statusCode == 201) {
-        // Navigator.push(context, MaterialPageRoute(
-        //   builder: (context) {
-        //     return add_Your_Work_Hours(secondflow: true);
-        //   },
-        // ));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return add_Your_Work_Hours(secondflow: true);
+          },
+        ),(route) => false,);
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -1507,7 +1490,6 @@ class _addServiceState extends State<addServicetype> {
         selectedService = null;
         selectedServiceIdValue = "";
         selectedServiceNameValue = "";
-
       });
       var response = await http.get(
         geturi,

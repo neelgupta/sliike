@@ -188,31 +188,9 @@ addBusinessTypeModel? businesstype;
             const Spacer(),
             InkWell(
               onTap: () async {
-                // var prefs=await SharedPreferences.getInstance();
-                //
-                //
-                // if(_radioValue1==0)
-                //   {
-                //     prefs.setBool(UserPrefs.keyisserviceprovide,false);
-                //
-                //     Navigator.push(context, MaterialPageRoute(
-                //       builder: (context) {
-                //         return add_Your_Work_Hours(secondflow:false);
-                //       },
-                //     ));
-                //   }
-                // else
-                // // if(_radioValue1==1)
-                //   {
-                //   prefs.setBool(UserPrefs.keyisserviceprovide,true);
-                //     Navigator.push(context, MaterialPageRoute(
-                //       builder: (context) {
-                //         return addServicetype(secondflow:true);
-                //       },
-                //     ));
-                //   }
-                addBusinessType(_radioValue1);
-
+                if (_radioValue1!=0) {
+                  addBusinessType(_radioValue1);
+                }
               },
               child: Container(
                 alignment: Alignment.center,
@@ -251,9 +229,6 @@ addBusinessTypeModel? businesstype;
       var bodydata={
         "isProvideService":_radioValue1,
       };
-    //   var headers = {
-    // 'Content-Type': "application/json; charset=utf-8",
-    // };
     print("loginApi url : ${ApiUrlList.addBusinessType}");
     print("passing bodyDat : $bodydata");
       var response = await http.post(
@@ -270,12 +245,6 @@ addBusinessTypeModel? businesstype;
         //print(signinmodel);
         print('account sucessfully');
 
-        Helper.prefs!.setInt(
-            UserPrefs.screenStatus,5);
-        Userdetail.screenStatus =
-            Helper.prefs!.getInt(UserPrefs.screenStatus) ?? 5;
-        log("serdetail.screenStatus  ${Userdetail.screenStatus}");
-
         if(_radioValue1==0)
         {
           // prefs.setBool(UserPrefs.keyisserviceprovide,false);
@@ -289,7 +258,7 @@ addBusinessTypeModel? businesstype;
         else
           // if(_radioValue1==1)
             {
-          prefs.setBool(UserPrefs.keyisserviceprovide,true);
+          Helper.prefs!.setBool(UserPrefs.keyisserviceprovide,true);
           // ignore: use_build_context_synchronously
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {

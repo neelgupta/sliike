@@ -11,6 +11,7 @@ class ApiUrlList {
   static String forgotPassword = "${baseUrl}auth/forgotPassword";
   static String verifyResetCode = "${baseUrl}auth/verifyResetCode";
   static String resetPassword = "${baseUrl}auth/resetPassword";
+  static String saveStripeCode = "${baseUrl}beautician/saveStripeAccId";
   static String fetchServiceCategories =
       "${baseUrl}option/fetchServiceCategories";
   static String fetchServiceTypes = "${baseUrl}option/fetchServiceTypes";
@@ -42,6 +43,8 @@ class ApiUrlList {
   ///Appointments
   static String getUpcomingAppointmentList =
       "${baseUrl}client/getAppointmentList?status=upcoming";
+  static String getpastAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
+  static String getSingleAppointmentData = "${baseUrl}client/getSingleAppointmentData/";
 
   ///Beautician Apps
   static String addBusinessDetail = "${baseUrl}beautician/addBusinessDetail";

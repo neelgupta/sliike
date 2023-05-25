@@ -15,8 +15,11 @@ import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/help.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/business_setup_all_scrren/setup_profile.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverification/emailverification.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/forget_reset_password/resetpassword.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/second_beautyservice_or_product/service_add/categorytype_service.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/type_first_second_bussines/bussinessinfo_type.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/main.dart';
@@ -45,7 +48,7 @@ class _signInScreenState extends State<signInScreen> {
   bool isCheckedl = false;
   TextEditingController tpassword = TextEditingController();
   final LoginService l = LoginService();
-
+  SendOtpModel? sendotpmodel;
   bool emailstatus = false;
   bool rememberMe = false;
   bool? check1 = false;
@@ -310,6 +313,7 @@ class _signInScreenState extends State<signInScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
+
                       width: width,
                       height: height * 0.06,
                       decoration: BoxDecoration(
@@ -548,48 +552,89 @@ class _signInScreenState extends State<signInScreen> {
       print("login response :: ${response.body}");
       if (response.statusCode == 200) {
         signinmodel = SigninModel.fromJson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        Helper.prefs = await SharedPreferences.getInstance();
-
-        Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
-
-
         Helper.prefs!
             .setString(UserPrefs.keyusertype, signinmodel!.success!.type!);
         Helper.prefs!
-            .setString(UserPrefs.keyutoken, signinmodel!.success!.token!);
-        if (signinmodel!.success!.type == "user") {
-          // ignore: use_build_context_synchronously
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
+            .setString(UserPrefs.keyutoken, signinmodel!.success!.token ?? "");
+        if(signinmodel!.success!.type == "user") {
+          if((signinmodel!.success!.screenStatus ?? 0) == 2) {
+            SendOtp(email);
+          }
+          else {
+            Loader.hide();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const homescreen();
+                  },
+                ),
+                (route) => false,
+              );
+              Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
+          }
+        }
+        else {
+          if((signinmodel!.success!.screenStatus ?? 0) == 2) {
+            SendOtp(email);
+          }
+          else if((signinmodel!.success!.screenStatus ?? 0) == 3) {
+            Loader.hide();
+            Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                return const homescreen();
+                return setup_profile();
               },
-            ),
-            (route) => false,
-          );
+            ),);
+          }
+          else if((signinmodel!.success!.screenStatus ?? 0) == 4) {
+            Loader.hide();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return const bussinessInfoCATEGORY();
+              },
+            ));
+          }
+          else if ((signinmodel!.success!.screenStatus ?? 0) == 5) {
+            Loader.hide();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return addServicetype(secondflow: true);
+              },
+            ));
+          }
+          else if ((signinmodel!.success!.screenStatus ?? 0) == 6) {
+            Loader.hide();
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+              builder: (context) {
+                return add_Your_Work_Hours(secondflow: true);
+              },
+            ),(route) => false,);
+          }
+          else if((signinmodel!.success!.screenStatus ?? 0) == 7) {
+            Loader.hide();
+            Fluttertoast.showToast(
+                msg: "${map['message']}",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            Helper.prefs!.setBool(UserPrefs.keyisserviceprovide,true);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const BottomNavigation();
+                    },
+                  ),
+                  (route) => false,
+                );
+            Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
+          }
+        }
         } else {
-            // ignore: use_build_context_synchronously
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return const BottomNavigation();
-                },
-              ),
-              (route) => false,
-            );
-           }
-
-        } else {
+        Loader.hide();
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -602,35 +647,53 @@ class _signInScreenState extends State<signInScreen> {
     } catch (e) {
       print(e.toString());
       rethrow;
+    }
+  }
+
+  SendOtp(String vemail) async {
+    try {
+      var bodydatamy = {
+        'email': vemail,
+
+      };
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+      };
+
+      var responce = await http.post(Uri.parse(ApiUrlList.sendOtp),
+          body: jsonEncode(bodydatamy), headers: headers);
+      print('sendOtp status : ${responce.statusCode}');
+      print('sendOtp body :${responce.body}');
+      var map = jsonDecode(responce.body);
+      if (responce.statusCode == 200) {
+        sendotpmodel = SendOtpModel.fromJson(map);
+        String userid = (sendotpmodel!.id ?? "");
+        // ignore: use_build_context_synchronously
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return emailVeriFication(vemail, userid);
+          },
+        ),);
+      } else {
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
     } finally {
       Loader.hide();
     }
   }
 }
 
-// class getScreenStatusmodel {
-//   int? status;
-//   Data? data;
-//   String? message;
-//
-//   getScreenStatusmodel(this.status, this.data, this.message);
-//
-//   factory getScreenStatusmodel.fromjson(Map<dynamic, dynamic> map) {
-//     Map map1 = map['data'] ?? {};
-//     Data data = Data.fromjson(map1);
-//     return getScreenStatusmodel(map['status'], data, map['message']);
-//   }
-// }
-//
-// class Data {
-//   int? screenStatus;
-//
-//   Data(this.screenStatus);
-//
-//   factory Data.fromjson(Map<dynamic, dynamic> map1) {
-//     return Data(map1['screenStatus']);
-//   }
-// }
+
 
 // class SigninModel{
 //   int? statusCode;

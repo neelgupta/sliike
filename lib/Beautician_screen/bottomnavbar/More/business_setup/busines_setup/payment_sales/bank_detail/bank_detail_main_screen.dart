@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/payment_sales/bank_detail/payment_set_up/payment_set_up.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/payment_sales/bank_detail/sales_tax_setting/sales_tax_setting.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/payment_detail/stripe_setup_web_view.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class bank_detail extends StatefulWidget {
-  const bank_detail({Key? key}) : super(key: key);
+  final String email;
+  const bank_detail({Key? key,required this.email}) : super(key: key);
 
   @override
   State<bank_detail> createState() => _bank_detailState();
@@ -106,7 +108,7 @@ class _bank_detailState extends State<bank_detail> {
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return payment_set_up();
+                  return StripeWebViews(email: widget.email);
                 },));
               },
               child: Container(
@@ -152,60 +154,60 @@ class _bank_detailState extends State<bank_detail> {
             SizedBox(
               height: height * 0.03,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return sales_Tax_Setting();
-                },));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xffFBF104),
-                  border: Border.all(width: 1, color: Color(0xffCFCFCF)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 22, bottom: 22, left: 12, right: 12),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Sales Tax Settings",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xff292929),
-                              fontFamily: "spartan",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              //   return();
-                              // },));
-                            },
-                            child: Container(
-                              height: 15,
-                              width: 30,
-                              child: Image.asset(
-                                "assets/images/righticon.png",
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //       return sales_Tax_Setting();
+            //     },));
+            //   },
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Color(0xffFBF104),
+            //       border: Border.all(width: 1, color: Color(0xffCFCFCF)),
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(
+            //           top: 22, bottom: 22, left: 12, right: 12),
+            //       child: Column(
+            //         children: [
+            //           Row(
+            //             children: [
+            //               SizedBox(
+            //                 width: 10,
+            //               ),
+            //               Text(
+            //                 "Sales Tax Settings",
+            //                 overflow: TextOverflow.ellipsis,
+            //                 style: TextStyle(
+            //                   fontSize: 12,
+            //                   color: Color(0xff292929),
+            //                   fontFamily: "spartan",
+            //                   fontWeight: FontWeight.w600,
+            //                 ),
+            //               ),
+            //               Spacer(),
+            //               InkWell(
+            //                 onTap: () {
+            //                   // Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //                   //   return();
+            //                   // },));
+            //                 },
+            //                 child: Container(
+            //                   height: 15,
+            //                   width: 30,
+            //                   child: Image.asset(
+            //                     "assets/images/righticon.png",
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

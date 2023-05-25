@@ -11,7 +11,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 
 
 class business_SetUp extends StatefulWidget {
-  const business_SetUp({Key? key}) : super(key: key);
+  final String email;
+  const business_SetUp( {Key? key,required this.email}) : super(key: key);
 
   @override
   State<business_SetUp> createState() => _business_SetUpState();
@@ -89,88 +90,124 @@ class _business_SetUpState extends State<business_SetUp> {
           padding: const EdgeInsets.only(left: 20,right: 20),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
-                  ),
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return business_Detail();
-                      },));
-                    },
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Beautician Details",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("Additional info on business name, photo,\nlocation, adding new team members etc.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
-                  ),
-                  child: InkWell(
-                    onTap: (){
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return service_Setup_Main();
-                      },));
-                    },
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Service Set-Up",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("This section allows you to add more services and for your clients to see, book and pay.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return calendar_Mang_Main();
-                    },));
-
-                  },
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: Container(
+              //     padding: EdgeInsets.symmetric(vertical: 17,),
+              //     decoration: BoxDecoration(
+              //         border: Border(bottom: BorderSide(color: Colors.black12))
+              //     ),
+              //     child: InkWell(
+              //       onTap: (){
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //           return business_Detail();
+              //         },));
+              //       },
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Beautician Details",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("Additional info on business name, photo,\nlocation, adding new team members etc.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: Container(
+              //     padding: EdgeInsets.symmetric(vertical: 17,),
+              //     decoration: BoxDecoration(
+              //         border: Border(bottom: BorderSide(color: Colors.black12))
+              //     ),
+              //     child: InkWell(
+              //       onTap: (){
+              //
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //           return service_Setup_Main();
+              //         },));
+              //       },
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Service Set-Up",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("This section allows you to add more services and for your clients to see, book and pay.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: InkWell(
+              //     onTap: (){
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //         return calendar_Mang_Main();
+              //       },));
+              //
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.symmetric(vertical: 17,),
+              //       decoration: BoxDecoration(
+              //           border: Border(bottom: BorderSide(color: Colors.black12))
+              //       ),
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Calendar Management",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("Here is where you can update your availability for clients to see and book your services.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return bank_detail(email: widget.email,);
+                  },));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20,right: 20),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 17,),
                     decoration: BoxDecoration(
@@ -180,42 +217,6 @@ class _business_SetUpState extends State<business_SetUp> {
                       children: [
 
                         Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Calendar Management",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("Here is where you can update your availability for clients to see and book your services.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
-                  ),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      Expanded(
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return bank_detail();
-                            },));
-                          },
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               textComoon("Payments & Sales Tax Profile",14,Color(0xff292929), FontWeight.w700),
@@ -224,44 +225,6 @@ class _business_SetUpState extends State<business_SetUp> {
                             ],
                           ),
                         ),
-                      ),
-
-                      Container(alignment: Alignment.topRight,
-                        height: 15,
-                        width: 30,
-                        child: Image.asset("assets/images/righticon.png"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return no_show_Protection();
-                  },));
-
-
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 17,),
-                    decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))
-                    ),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("No-Show Protection",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("This section is used to set payment reimbursement rules when a client doesn’t show up for a service that was reserved and confirmed.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
 
                         Container(alignment: Alignment.topRight,
                           height: 15,
@@ -273,117 +236,155 @@ class _business_SetUpState extends State<business_SetUp> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return cancellation_Policy();
-                    },));
-
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 17,),
-                    decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))
-                    ),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Cancellation Policy",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("This policy allows you to set guidelines around appointment cancellations.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return booking_Setting();
-                    },));
-
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 17,),
-                    decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))
-                    ),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Booking Settings",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("Set up when present and future bookings can be made, and the time limit when confirmed appointments can be rescheduled.",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return plans_Bulling_Main();
-                    },));
-
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 17,),
-                    decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))
-                    ),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textComoon("Plans & Billing",14,Color(0xff292929), FontWeight.w700),
-                              SizedBox(height: height*0.01,),
-                              textComoonfade("The section allows you to select your preferred Sliike plan and enjoy the platform benefits and fee that come with each plan. ",10,Color(0xff707070), FontWeight.w500),
-                            ],
-                          ),
-                        ),
-
-                        Container(alignment: Alignment.topRight,
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: InkWell(
+              //     onTap: (){
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //       return no_show_Protection();
+              //     },));
+              //
+              //
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.symmetric(vertical: 17,),
+              //       decoration: BoxDecoration(
+              //           border: Border(bottom: BorderSide(color: Colors.black12))
+              //       ),
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("No-Show Protection",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("This section is used to set payment reimbursement rules when a client doesn’t show up for a service that was reserved and confirmed.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: InkWell(
+              //     onTap: (){
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //         return cancellation_Policy();
+              //       },));
+              //
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.symmetric(vertical: 17,),
+              //       decoration: BoxDecoration(
+              //           border: Border(bottom: BorderSide(color: Colors.black12))
+              //       ),
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Cancellation Policy",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("This policy allows you to set guidelines around appointment cancellations.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: InkWell(
+              //     onTap: (){
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //         return booking_Setting();
+              //       },));
+              //
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.symmetric(vertical: 17,),
+              //       decoration: BoxDecoration(
+              //           border: Border(bottom: BorderSide(color: Colors.black12))
+              //       ),
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Booking Settings",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("Set up when present and future bookings can be made, and the time limit when confirmed appointments can be rescheduled.",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20,right: 20),
+              //   child: GestureDetector(
+              //     onTap: (){
+              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //         return plans_Bulling_Main();
+              //       },));
+              //
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.symmetric(vertical: 17,),
+              //       decoration: BoxDecoration(
+              //           border: Border(bottom: BorderSide(color: Colors.black12))
+              //       ),
+              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //
+              //           Expanded(
+              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 textComoon("Plans & Billing",14,Color(0xff292929), FontWeight.w700),
+              //                 SizedBox(height: height*0.01,),
+              //                 textComoonfade("The section allows you to select your preferred Sliike plan and enjoy the platform benefits and fee that come with each plan. ",10,Color(0xff707070), FontWeight.w500),
+              //               ],
+              //             ),
+              //           ),
+              //
+              //           Container(alignment: Alignment.topRight,
+              //             height: 15,
+              //             width: 30,
+              //             child: Image.asset("assets/images/righticon.png"),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

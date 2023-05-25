@@ -40,8 +40,6 @@ class _splash_ScrrenState extends State<splash_Scrren> {
     if (login) {
       String userType = Helper.prefs!.getString(UserPrefs.keyusertype) ?? "";
       String usertoken = Helper.prefs!.getString(UserPrefs.keyutoken) ?? "";
-      log("userType :: $userType");
-       log("usertoken :: $usertoken");
       Userdetail.userToken = usertoken;
       if (userType == "user") {
         Navigator.pushReplacement(
@@ -52,7 +50,8 @@ class _splash_ScrrenState extends State<splash_Scrren> {
             },
           ),
         );
-      } else {
+      }
+      else {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

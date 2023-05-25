@@ -39,6 +39,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
     // TODO: implement initState
     super.initState();
     getLocation();
+    phoneNumbercontriller.text = Helper.prefs!.getString(UserPrefs.keybusinessNumber)!;
   }
 
   final Set<Marker> markers = Set();

@@ -12,8 +12,6 @@ class UserPrefs {
   static const String keyemail="email";
   static const String keyusertype="type";
   static const String keyutoken="token";
-  static const String  screenStatus="screenStatus";
-
   static String selectedadd = "";
   static int select = 0;
 

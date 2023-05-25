@@ -17,9 +17,9 @@ class _payment_successState extends State<payment_success> {
     // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const booking_summary_paymentconfirm();
-      },));
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      //   return  booking_summary_paymentconfirm();
+      // },));
     });
   }
 
