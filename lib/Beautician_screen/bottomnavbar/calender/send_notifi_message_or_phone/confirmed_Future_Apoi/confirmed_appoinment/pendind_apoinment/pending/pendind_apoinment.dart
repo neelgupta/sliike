@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/confirmed_Future_Apoi/confirmed_appoinment/future_appointment/edit_apoinment/edit_add_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
-import '../../../../../../../calender/send_notifi_message_or_phone/calender_screen/calender.dart';
-import '../../../../../../../calender/send_notifi_message_or_phone/confirmed_Future_Apoi/confirmed_appoinment/future_appointment/edit_apoinment/edit_add_service.dart';
 
 class pendind_apoinment extends StatefulWidget {
   const pendind_apoinment({Key? key}) : super(key: key);

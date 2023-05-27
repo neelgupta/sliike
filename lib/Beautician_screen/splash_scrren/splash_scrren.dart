@@ -46,7 +46,7 @@ class _splash_ScrrenState extends State<splash_Scrren> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const homescreen();
+              return homescreen(selectedIndex: 0,);
             },
           ),
         );

@@ -1,10 +1,13 @@
 // ignore_for_file: camel_case_types, must_be_immutable, must_be_immutable, duplicate_ignore, non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +30,7 @@ class _servicesState extends State<services> {
   SingalBeautician? sb;
   BeauticianDetail? bd;
   int itemCount = 0;
+  bool? like;
   List<BeauticianServiceId> serviceNameList = [];
   List<SingalBeauticianData> Beauticiandata = [];
   List<Beautician> BeauticianDetails = [];
@@ -64,11 +68,20 @@ class _servicesState extends State<services> {
   bool isLoading = false;
   MyFavorites? mf;
   String serviceTypeList = "";
+  late CameraPosition _initialLocation;
+
+  List<Marker> markers = <Marker>[];
+  Position? p;
+  String lat = "";
+  String long = "";
+  double? lati, longi;
+  GoogleMapController? mapController;
 
   @override
   void initState() {
     super.initState();
     getBeauticianDetails();
+    getBusinessDeatils();
   }
 
   getTimeFormatedValue(String minute) {
@@ -117,6 +130,18 @@ class _servicesState extends State<services> {
     return formatedTime;
   }
 
+  locationLatLng() {
+    markers.add(
+      Marker(
+          markerId: MarkerId(BeauticianDetails[0].id),
+          position: LatLng(
+            BeauticianDetails[0].location.coordinates[1],
+            BeauticianDetails[0].location.coordinates[0],
+          ),
+          infoWindow: InfoWindow(title: BeauticianDetails[0].location.type)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -126,295 +151,300 @@ class _servicesState extends State<services> {
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xffDD6A03),
-              ),
-            )
-          : SingleChildScrollView(
-              // physics: const NeverScrollableScrollPhysics(),
-              child: Beauticiandata.isNotEmpty ?Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(children: [
-                    SizedBox(
-                      height: height * 0.38,
-                      child: Swiper(
-                        autoplay: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          // return Image.asset('assets/images/Rectangle 145.png',
-                          //     fit: BoxFit.fill);
-                          return Container(
-                              height: height * 0.13,
-                              width: width * 0.27,
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.center,
-                              child: Center(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.error),
-                                  SizedBox(height: height*0.02,),
-                                  const Text("No Image")
-                                ],
-                              ))
-                          );
-                        },
-                        itemCount: 4,
-                        pagination: const SwiperPagination(
-                            alignment: Alignment.bottomCenter,
-                            margin: EdgeInsets.only(bottom: 10),
-                            builder: DotSwiperPaginationBuilder(
-                                color: Colors.white,
-                                activeColor: Colors.white,
-                                activeSize: 8,
-                                size: 5)),
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          return true;
+        },
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xffDD6A03),
+                ),
+              )
+            : Beauticiandata.isNotEmpty ? SingleChildScrollView(
+                // physics: const NeverScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(children: [
+                      SizedBox(
+                        height: height * 0.38,
+                        child: Swiper(
+                          autoplay: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            // return Image.asset('assets/images/Rectangle 145.png',
+                            //     fit: BoxFit.fill);
+                            return Container(
+                                height: height * 0.13,
+                                width: width * 0.27,
+                                margin: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                child: Center(child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.error),
+                                    SizedBox(height: height*0.02,),
+                                    const Text("No Image")
+                                  ],
+                                ))
+                            );
+                          },
+                          itemCount: 4,
+                          pagination: const SwiperPagination(
+                              alignment: Alignment.bottomCenter,
+                              margin: EdgeInsets.only(bottom: 10),
+                              builder: DotSwiperPaginationBuilder(
+                                  color: Colors.white,
+                                  activeColor: Colors.white,
+                                  activeSize: 8,
+                                  size: 5)),
+                        ),
                       ),
-                    ),
-                    Positioned(
-                        top: 40,
-                        left: 15,
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(
-                              Icons.arrow_back_sharp,
-                              color: Colors.white,
-                            ))),
-                    Positioned(
-                        top: 40,
-                        right: 55,
-                        child: Image.asset(
-                          "assets/images/share.png",
-                          height: 20,
-                          width: 20,
-                        )),
-                    Positioned(
-                        top: 38,
-                        right: 15,
-                        child: GestureDetector(
-                            onTap: () {
-                              if (isSelected) {
-                                setState(() {
-                                  removeFromMyFavorites();
-                                  isSelected = false;
-                                });
-                              } else {
-                                setState(() {
-                                  addToMyFavorites();
-                                  isSelected = true;
-                                });
-                              }
-                            },
-                            child: Image.asset(
-                              "assets/images/heart.png",
-                              height: 25,
-                              width: 25,
-                              color: isSelected
-                                  ? const Color(0xFFDD6A03)
-                                  : Colors.white,
-                            ))),
-                  ]),
-                  Container(
-                    height: height * 0.18,
-                    width: width,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/bgappbar.png"),
-                            fit: BoxFit.fill)),
-                    child: Row(
-                      children: [
-                        Container(
-                            padding:
-                                const EdgeInsets.only(top: 20, bottom: 20, left: 20),
-                            width: width * 0.70,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("${Beauticiandata[0].businessName}",
-                                    style: const TextStyle(
-                                        fontSize: 25,
+                      Positioned(
+                          top: 40,
+                          left: 15,
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(
+                                Icons.arrow_back_sharp,
+                                color: Colors.white,
+                              ))),
+                      Positioned(
+                          top: 40,
+                          right: 55,
+                          child: Image.asset(
+                            "assets/images/share.png",
+                            height: 20,
+                            width: 20,
+                          )),
+                      Positioned(
+                          top: 38,
+                          right: 15,
+                          child: GestureDetector(
+                              onTap: () {
+                                if (Beauticiandata[0].isFav!) {
+                                  setState(() {
+                                    removeFromMyFavorites(widget.beauticianId);
+                                  });
+                                } else {
+                                  setState(() {
+                                    addToMyFavorites(widget.beauticianId);
+                                  });
+                                }
+                              },
+                            child: Icon( Beauticiandata[0].isFav! ? Icons.favorite : Icons.favorite_border_outlined,color: const Color(0xFFDD5103),size: 30),
+                          )),
+                    ]),
+                    Container(
+                      height: height * 0.18,
+                      width: width,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/bgappbar.png"),
+                              fit: BoxFit.fill)),
+                      child: Row(
+                        children: [
+                          Container(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+                              width: width * 0.70,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${Beauticiandata[0].businessName}",
+                                      style: const TextStyle(
+                                          fontSize: 25,
+                                          fontFamily: "spartan",
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                  Text("${Beauticiandata[0].address!.apartment} ${Beauticiandata[0].address!.city} ${Beauticiandata[0].address!.zipCode}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
                                         fontFamily: "spartan",
                                         color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  height: height * 0.01,
-                                ),
-                                Text("${Beauticiandata[0].address!.apartment} ${Beauticiandata[0].address!.province} ${Beauticiandata[0].address!.city} ${Beauticiandata[0].address!.zipCode}",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "spartan",
-                                      color: Colors.black,
-                                    )),
-                              ],
-                            )),
-                        // Container(
-                        //     padding:
-                        //         const EdgeInsets.only(top: 20, bottom: 20, right: 10),
-                        //     width: width * 0.30,
-                        //     child: Column(
-                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                        //       children: [
-                        //         Row(
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           children: [
-                        //             const Image(
-                        //                 image: AssetImage(
-                        //                     "assets/images/Star 1.png"),
-                        //                 height: 20),
-                        //             SizedBox(
-                        //               width: width * 0.01,
-                        //             ),
-                        //             const Text(
-                        //               "4.0",
-                        //               style: TextStyle(
-                        //                 fontSize: 16,
-                        //                 fontFamily: "spartan",
-                        //                 color: Colors.black,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         SizedBox(
-                        //           height: height * 0.01,
-                        //         ),
-                        //         const Text("320 Reviews",
-                        //             style: TextStyle(
-                        //               fontSize: 12,
-                        //               fontFamily: "spartan",
-                        //               color: Colors.black,
-                        //             )),
-                        //       ],
-                        //     )),
-                      ],
+                                      )),
+                                ],
+                              )),
+                          if((Beauticiandata[0].rating ?? "").isNotEmpty)
+                            Container(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                              width: width * 0.30,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Image(
+                                          image: AssetImage(
+                                              "assets/images/Star 1.png"),
+                                          height: 20),
+                                      SizedBox(
+                                        width: width * 0.03,
+                                      ),
+                                      Text(
+                                        Beauticiandata[0].rating ?? "0",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "spartan",
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                  Text("${Beauticiandata[0].noOfReviews ?? "0"} Reviews",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: "spartan",
+                                        color: Colors.black,
+                                      )),
+                                ],
+                              )),
+                        ],
+                      ),
                     ),
-                  ),
-                  DefaultTabController(
-                      length: 4,
-                      initialIndex: 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TabBar(
-                              labelColor: const Color(0xFFDD6A03),
-                              indicatorColor: const Color(0xFFDD6A03),
-                              tabs: [
-                                Tab(
-                                    child: const Text(
-                                  "services",
-                                  style: TextStyle(
-                                      fontFamily: "spartan", fontSize: 15),
-                                ).tr()),
-                                Tab(
-                                    child: const Text(
-                                  "reviews",
-                                  style: TextStyle(
-                                      fontFamily: "spartan", fontSize: 15),
-                                ).tr()),
-                                Tab(
-                                    child: const Text(
-                                  "portfolio",
-                                  style: TextStyle(
-                                      fontFamily: "spartan", fontSize: 15),
-                                ).tr()),
-                                Tab(
-                                    child: const Text(
-                                  "details",
-                                  style: TextStyle(
-                                      fontFamily: "spartan", fontSize: 15),
-                                ).tr()),
-                              ]),
-                          SizedBox(
-                            height: viewMore ? height * 1.25 : height * 0.75,
-                            child: TabBarView(
-                              children: [
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, right: 15, top: 20),
-                                      child: TextField(
-                                        autofocus: false,
-                                        controller: search,
-                                        onChanged: (value) {},
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.only(left: 20),
-                                          hintText: "search_service".tr(),
-                                          hintStyle: const TextStyle(
-                                              color: Color(0xff707070)),
-                                          suffixIcon: Container(
-                                            width: width * 0.2,
-                                            color: const Color(0xFFDD6A03),
-                                            height: 5,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Image.asset(
-                                                  "assets/images/search-whitenormal.png"),
+                    DefaultTabController(
+                        length: 4,
+                        initialIndex: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TabBar(
+                                labelColor: const Color(0xFFDD6A03),
+                                indicatorColor: const Color(0xFFDD6A03),
+                                tabs: [
+                                  Tab(
+                                      child: const Text(
+                                    "services",
+                                    maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: "spartan", fontSize: 15),
+                                  ).tr()),
+                                  Tab(
+                                      child: const Text(
+                                    "reviews",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: "spartan", fontSize: 15),
+                                  ).tr()),
+                                  Tab(
+                                      child: const Text(
+                                    "portfolio",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: "spartan", fontSize: 15),
+                                  ).tr()),
+                                  Tab(
+                                      child: const Text(
+                                    "details",
+                                        maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: "spartan", fontSize: 15),
+                                  ).tr()),
+                                ]),
+                            SizedBox(
+                              height: viewMore ? height * 1.25 : height * 0.75,
+                              child: TabBarView(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15, top: 20),
+                                        child: TextField(
+                                          autofocus: false,
+                                          controller: search,
+                                          onChanged: (value) {},
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.only(left: 20),
+                                            hintText: "search_service".tr(),
+                                            hintStyle: const TextStyle(
+                                                color: Color(0xff707070)),
+                                            suffixIcon: Container(
+                                              width: width * 0.2,
+                                              color: const Color(0xFFDD6A03),
+                                              height: 5,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10),
+                                                child: Image.asset(
+                                                    "assets/images/search-whitenormal.png"),
+                                              ),
                                             ),
-                                          ),
-                                          labelStyle: const TextStyle(
-                                              fontFamily: 'spartan',
-                                              color: Colors.black54),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            borderSide: const BorderSide(
-                                                color: Colors.black38),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            borderSide: const BorderSide(
-                                                color: Colors.black38),
+                                            labelStyle: const TextStyle(
+                                                fontFamily: 'spartan',
+                                                color: Colors.black54),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.black38),
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.black38),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.02,
-                                    ),
-                                    const Divider(
-                                      color: Colors.black54,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.02,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 20),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: const Text("services",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black))
-                                                .tr(),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      const Divider(
+                                        color: Colors.black54,
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: const Text("services",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontFamily: "spartan",
+                                                          color: Colors.black))
+                                                  .tr(),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text("(${sb!.data!.total})",
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text("(${sb!.data!.total})",
+                                                  style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontFamily: "spartan",
+                                                      color: Colors.black54)),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.45,
-                                      child: ListView.builder(
+                                        ],
+                                      ),
+                                      ListView.builder(
+                                          shrinkWrap: true,
                                           padding: const EdgeInsets.only(top: 20),
                                           physics: const NeverScrollableScrollPhysics(),
                                           itemCount: Beauticiandata[0].beauticianServiceId!.length,
@@ -427,1386 +457,1476 @@ class _servicesState extends State<services> {
                                               return const SizedBox();
                                             }
                                           }),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.02,
-                                    ),
-                                    Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore ? InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          viewMore = false;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(
-                                                left: 20),
-                                            child: Align(
-                                              alignment:
-                                              Alignment.centerLeft,
-                                              child: const Text("view_less",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontFamily:
-                                                      "spartan",
-                                                      color: Color(
-                                                          0xFFDD6A03)))
-                                                  .tr(),
-                                            ),
-                                          ),
-                                          const Padding(
-                                            padding:
-                                            EdgeInsets.only(
-                                                left: 2),
-                                            child: Align(
-                                              alignment:
-                                              Alignment.centerLeft,
-                                              child: Icon(
-                                                Icons.keyboard_arrow_up,
-                                                color: Color(0xFFDD6A03),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      SizedBox(
+                                        height: height * 0.02,
                                       ),
-                                    ) : 
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          viewMore = true;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(
-                                                left: 20),
-                                            child: Align(
-                                              alignment:
-                                              Alignment.centerLeft,
-                                              child: const Text("more_services",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontFamily:
-                                                      "spartan",
-                                                      color: Color(
-                                                          0xFFDD6A03)))
-                                                  .tr(),
-                                            ),
-                                          ),
-                                          const Padding(
-                                            padding:
-                                            EdgeInsets.only(
-                                                left: 2),
-                                            child: Align(
-                                              alignment:
-                                              Alignment.centerLeft,
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Color(0xFFDD6A03),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ) : const SizedBox(),
-                                  ],
-                                ),
-                                const Center(
-                                  child: Text(
-                                    "No Data Found!!!",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontFamily: "spartan",
-                                    ),
-                                  ),
-                                ),
-                                const Center(
-                                  child: Text(
-                                    "No Data Found!!!",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontFamily: "spartan",
-                                    ),
-                                  ),
-                                ),
-                                // SingleChildScrollView(
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.symmetric(
-                                //         horizontal: 15),
-                                //     child: Column(
-                                //       children: [
-                                //         SizedBox(
-                                //           height: height * 0.04,
-                                //         ),
-                                //         Container(
-                                //           height: height * 0.25,
-                                //           decoration: BoxDecoration(
-                                //               borderRadius:
-                                //                   BorderRadius.circular(10),
-                                //               border: Border.all(
-                                //                   color: const Color(0xFFF8E1CD)),
-                                //               color: const Color(0xFFFDF8F2)),
-                                //           child: Padding(
-                                //             padding: const EdgeInsets.symmetric(
-                                //                 horizontal: 15),
-                                //             child: Row(
-                                //               children: [
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.center,
-                                //                   mainAxisAlignment:
-                                //                       MainAxisAlignment.center,
-                                //                   children: [
-                                //                     Row(
-                                //                       children: const [
-                                //                         Text("4.9",
-                                //                             style: TextStyle(
-                                //                                 fontSize: 22,
-                                //                                 color: Colors
-                                //                                     .black,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                                 fontWeight:
-                                //                                     FontWeight
-                                //                                         .bold)),
-                                //                         Text("/5",
-                                //                             style: TextStyle(
-                                //                               fontSize: 18,
-                                //                               color: Colors
-                                //                                   .black54,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                       ],
-                                //                     ),
-                                //                     Row(
-                                //                       children: [
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                       ],
-                                //                     ),
-                                //                     const Text("Based on 201 reviews",
-                                //                         style: TextStyle(
-                                //                           fontSize: 14,
-                                //                           color: Colors.black54,
-                                //                           fontFamily: "spartan",
-                                //                         )),
-                                //                   ],
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.01,
-                                //                 ),
-                                //                 const Padding(
-                                //                   padding:
-                                //                       EdgeInsets.only(
-                                //                           top: 15, bottom: 15),
-                                //                   child: VerticalDivider(
-                                //                     color: Colors.black54,
-                                //                   ),
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.01,
-                                //                 ),
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.center,
-                                //                   mainAxisAlignment:
-                                //                       MainAxisAlignment.center,
-                                //                   children: [
-                                //                     SizedBox(
-                                //                       height: height * 0.04,
-                                //                       child: Row(
-                                //                         children: [
-                                //                           const Text("5",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           SizedBox(
-                                //                             height:
-                                //                                 height * 0.08,
-                                //                             width: width * 0.20,
-                                //                             child: Image.asset(
-                                //                                 "assets/images/Line 104.png"),
-                                //                           ),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           const Text("199",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                         ],
-                                //                       ),
-                                //                     ),
-                                //                     SizedBox(
-                                //                       height: height * 0.04,
-                                //                       child: Row(
-                                //                         children: [
-                                //                           const Text("4",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           SizedBox(
-                                //                             height:
-                                //                                 height * 0.08,
-                                //                             width: width * 0.20,
-                                //                             child: Image.asset(
-                                //                                 "assets/images/Line 105.png"),
-                                //                           ),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           const Text("2",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                         ],
-                                //                       ),
-                                //                     ),
-                                //                     SizedBox(
-                                //                       height: height * 0.04,
-                                //                       child: Row(
-                                //                         children: [
-                                //                           const Text("3",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           SizedBox(
-                                //                             height:
-                                //                                 height * 0.08,
-                                //                             width: width * 0.20,
-                                //                             child: Image.asset(
-                                //                                 "assets/images/Line 105.png"),
-                                //                           ),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           const Text("0",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                         ],
-                                //                       ),
-                                //                     ),
-                                //                     SizedBox(
-                                //                       height: height * 0.04,
-                                //                       child: Row(
-                                //                         children: [
-                                //                           const Text("2",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           SizedBox(
-                                //                             height:
-                                //                                 height * 0.08,
-                                //                             width: width * 0.20,
-                                //                             child: Image.asset(
-                                //                                 "assets/images/Line 105.png"),
-                                //                           ),
-                                //                           SizedBox(
-                                //                             width: width * 0.03,
-                                //                           ),
-                                //                           const Text("0",
-                                //                               style: TextStyle(
-                                //                                 fontSize: 18,
-                                //                                 color: Colors
-                                //                                     .black54,
-                                //                                 fontFamily:
-                                //                                     "spartan",
-                                //                               )),
-                                //                         ],
-                                //                       ),
-                                //                     ),
-                                //                   ],
-                                //                 )
-                                //               ],
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.04,
-                                //         ),
-                                //         Column(
-                                //           children: [
-                                //             Row(
-                                //               children: [
-                                //                 SizedBox(
-                                //                   height: height * 0.10,
-                                //                   width: width * 0.20,
-                                //                   child: const Image(
-                                //                     image: AssetImage(
-                                //                         "assets/images/Group 12555.png"),
-                                //                     fit: BoxFit.fill,
-                                //                   ),
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.04,
-                                //                 ),
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.start,
-                                //                   children: [
-                                //                     Row(
-                                //                       children: [
-                                //                         const Text("Mike Lock",
-                                //                             style: TextStyle(
-                                //                               fontSize: 18,
-                                //                               color:
-                                //                                   Colors.black,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                         SizedBox(
-                                //                           width: width * 0.10,
-                                //                         ),
-                                //                         const Text("Mar 26, 2022",
-                                //                             style: TextStyle(
-                                //                               fontSize: 16,
-                                //                               color: Colors
-                                //                                   .black54,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                       ],
-                                //                     ),
-                                //                     Row(
-                                //                       children: [
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                       ],
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ],
-                                //             ),
-                                //             const Text(
-                                //                 "Great attendant with great skill. Had the best time, definitely coming back.",
-                                //                 style: TextStyle(
-                                //                   fontSize: 16,
-                                //                   color: Colors.black54,
-                                //                   fontFamily: "spartan",
-                                //                 )),
-                                //             SizedBox(
-                                //               height: height * 0.02,
-                                //             ),
-                                //             const Divider(
-                                //               color: Colors.black54,
-                                //             )
-                                //           ],
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.02,
-                                //         ),
-                                //         Column(
-                                //           children: [
-                                //             Row(
-                                //               children: [
-                                //                 SizedBox(
-                                //                   height: height * 0.10,
-                                //                   width: width * 0.20,
-                                //                   child: const Image(
-                                //                     image: AssetImage(
-                                //                         "assets/images/Group 12555.png"),
-                                //                     fit: BoxFit.fill,
-                                //                   ),
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.04,
-                                //                 ),
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.start,
-                                //                   children: [
-                                //                     Row(
-                                //                       children: [
-                                //                         const Text("Mike Lock",
-                                //                             style: TextStyle(
-                                //                               fontSize: 18,
-                                //                               color:
-                                //                                   Colors.black,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                         SizedBox(
-                                //                           width: width * 0.10,
-                                //                         ),
-                                //                         const Text("Mar 26, 2022",
-                                //                             style: TextStyle(
-                                //                               fontSize: 16,
-                                //                               color: Colors
-                                //                                   .black54,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                       ],
-                                //                     ),
-                                //                     Row(
-                                //                       children: [
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                       ],
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ],
-                                //             ),
-                                //             const Text(
-                                //                 "Great attendant with great skill. Had the best time, definitely coming back.",
-                                //                 style: TextStyle(
-                                //                   fontSize: 16,
-                                //                   color: Colors.black54,
-                                //                   fontFamily: "spartan",
-                                //                 )),
-                                //             SizedBox(
-                                //               height: height * 0.02,
-                                //             ),
-                                //             const Divider(
-                                //               color: Colors.black54,
-                                //             )
-                                //           ],
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.02,
-                                //         ),
-                                //         Column(
-                                //           children: [
-                                //             Row(
-                                //               children: [
-                                //                 SizedBox(
-                                //                   height: height * 0.10,
-                                //                   width: width * 0.20,
-                                //                   child: const Image(
-                                //                     image: AssetImage(
-                                //                         "assets/images/Group 12555.png"),
-                                //                     fit: BoxFit.fill,
-                                //                   ),
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.04,
-                                //                 ),
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.start,
-                                //                   children: [
-                                //                     Row(
-                                //                       children: [
-                                //                         const Text("Mike Lock",
-                                //                             style: TextStyle(
-                                //                               fontSize: 18,
-                                //                               color:
-                                //                                   Colors.black,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                         SizedBox(
-                                //                           width: width * 0.10,
-                                //                         ),
-                                //                         const Text("Mar 26, 2022",
-                                //                             style: TextStyle(
-                                //                               fontSize: 16,
-                                //                               color: Colors
-                                //                                   .black54,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                       ],
-                                //                     ),
-                                //                     Row(
-                                //                       children: [
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                       ],
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ],
-                                //             ),
-                                //             const Text(
-                                //                 "Great attendant with great skill. Had the best time, definitely coming back.",
-                                //                 style: TextStyle(
-                                //                   fontSize: 16,
-                                //                   color: Colors.black54,
-                                //                   fontFamily: "spartan",
-                                //                 )),
-                                //             SizedBox(
-                                //               height: height * 0.02,
-                                //             ),
-                                //             const Divider(
-                                //               color: Colors.black54,
-                                //             )
-                                //           ],
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.02,
-                                //         ),
-                                //         Column(
-                                //           children: [
-                                //             Row(
-                                //               children: [
-                                //                 SizedBox(
-                                //                   height: height * 0.10,
-                                //                   width: width * 0.20,
-                                //                   child: const Image(
-                                //                     image: AssetImage(
-                                //                         "assets/images/Group 12555.png"),
-                                //                     fit: BoxFit.fill,
-                                //                   ),
-                                //                 ),
-                                //                 SizedBox(
-                                //                   width: width * 0.04,
-                                //                 ),
-                                //                 Column(
-                                //                   crossAxisAlignment:
-                                //                       CrossAxisAlignment.start,
-                                //                   children: [
-                                //                     Row(
-                                //                       children: [
-                                //                         const Text("Mike Lock",
-                                //                             style: TextStyle(
-                                //                               fontSize: 18,
-                                //                               color:
-                                //                                   Colors.black,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                         SizedBox(
-                                //                           width: width * 0.10,
-                                //                         ),
-                                //                         const Text("Mar 26, 2022",
-                                //                             style: TextStyle(
-                                //                               fontSize: 16,
-                                //                               color: Colors
-                                //                                   .black54,
-                                //                               fontFamily:
-                                //                                   "spartan",
-                                //                             )),
-                                //                       ],
-                                //                     ),
-                                //                     Row(
-                                //                       children: [
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                         SizedBox(
-                                //                           width: width * 0.01,
-                                //                         ),
-                                //                         SizedBox(
-                                //                           height: height * 0.05,
-                                //                           width: width * 0.05,
-                                //                           child: Image.asset(
-                                //                               "assets/images/Star 1.png"),
-                                //                         ),
-                                //                       ],
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ],
-                                //             ),
-                                //             const Text(
-                                //                 "Great attendant with great skill. Had the best time, definitely coming back.",
-                                //                 style: TextStyle(
-                                //                   fontSize: 16,
-                                //                   color: Colors.black54,
-                                //                   fontFamily: "spartan",
-                                //                 )),
-                                //             SizedBox(
-                                //               height: height * 0.02,
-                                //             ),
-                                //             const Divider(
-                                //               color: Colors.black54,
-                                //             )
-                                //           ],
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                                // SingleChildScrollView(
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.symmetric(
-                                //         horizontal: 15),
-                                //     child: Column(
-                                //       children: [
-                                //         SizedBox(
-                                //           height: height * 0.04,
-                                //         ),
-                                //         Row(
-                                //           children: [
-                                //             SizedBox(
-                                //               height: height * 0.23,
-                                //               width: width * 0.44,
-                                //               child: const Image(
-                                //                 image: AssetImage(
-                                //                     "assets/images/Group 12646.png"),
-                                //                 fit: BoxFit.fill,
-                                //               ),
-                                //             ),
-                                //             const Spacer(),
-                                //             SizedBox(
-                                //               height: height * 0.23,
-                                //               width: width * 0.44,
-                                //               child: const Image(
-                                //                 image: AssetImage(
-                                //                     "assets/images/Group 12646.png"),
-                                //                 fit: BoxFit.fill,
-                                //               ),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.02,
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.30,
-                                //           width: width,
-                                //           child: const Image(
-                                //             image: AssetImage(
-                                //                 "assets/images/Rectangle 892.png"),
-                                //             fit: BoxFit.fill,
-                                //           ),
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.02,
-                                //         ),
-                                //         Row(
-                                //           children: [
-                                //             SizedBox(
-                                //               height: height * 0.23,
-                                //               width: width * 0.44,
-                                //               child: const Image(
-                                //                 image: AssetImage(
-                                //                     "assets/images/Group 12646.png"),
-                                //                 fit: BoxFit.fill,
-                                //               ),
-                                //             ),
-                                //             const Spacer(),
-                                //             SizedBox(
-                                //               height: height * 0.23,
-                                //               width: width * 0.44,
-                                //               child: const Image(
-                                //                 image: AssetImage(
-                                //                     "assets/images/Group 12646.png"),
-                                //                 fit: BoxFit.fill,
-                                //               ),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //         SizedBox(
-                                //           height: height * 0.04,
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                                BeauticianDetails.isNotEmpty?SingleChildScrollView(
-                                  child: Column(
-                                    //  crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        children: [
-                                          SizedBox(
-                                            height: height * 0.35,
-                                            width: width,
-                                            child: Image.asset(
-                                              "assets/images/Rectangle.png",
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                          Positioned(
-                                              left: 10,
-                                              bottom: 15,
-                                              child: Container(
-                                                height: height * 0.12,
-                                                width: width - 20,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.white),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 15),
-                                                  child: Row(
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(BeauticianDetails[0].businessName,
-                                                              style: TextStyle(
-                                                                fontSize: 20,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontFamily:
-                                                                    "spartan",
-                                                              )),
-                                                          SizedBox(
-                                                            height:
-                                                                height * 0.01,
-                                                          ),
-                                                          const Text("hello",
-                                                              // "${BeauticianDetails[0].beauticianAddress[0].address} ${BeauticianDetails[0].beauticianAddress[0].province} ${BeauticianDetails[0].beauticianAddress[0].city} ${BeauticianDetails[0].beauticianAddress[0].zipCode}",
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors
-                                                                    .black54,
-                                                                fontFamily:
-                                                                    "spartan",
-                                                              )),
-                                                        ],
-                                                      ),
-                                                      const Spacer(),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SizedBox(
-                                                            height:
-                                                                height * 0.08,
-                                                            child: Image.asset(
-                                                              "assets/images/Group 12665.png",
-                                                              fit: BoxFit.fill,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ))
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore ? InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            viewMore = false;
+                                          });
+                                        },
+                                        child: Row(
                                           children: [
-                                            SizedBox(
-                                              height: height * 0.04,
-                                            ),
-                                            const Text("Staff Members",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.04,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: height * 0.15,
-                                                      child: Image.asset(
-                                                        "assets/images/Ellipse 154.png",
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: height * 0.02),
-                                                    const Text("Tibo Quan",
-                                                        style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color:
-                                                                Colors.black)),
-                                                    SizedBox(
-                                                        height: height * 0.01),
-                                                    const Text("Owner",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color: Colors
-                                                                .black54)),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.04,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: height * 0.15,
-                                                      child: Image.asset(
-                                                        "assets/images/Ellipse 154.png",
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: height * 0.02),
-                                                    const Text("Tibo Quan",
-                                                        style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color:
-                                                                Colors.black)),
-                                                    SizedBox(
-                                                        height: height * 0.01),
-                                                    const Text("",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color: Colors
-                                                                .black54)),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.04,
-                                            ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("About Us",
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text(
-                                                "Barbing, freshness and confidence in one place. With a soft touch of modern styles, Freshman Cutz gives you that lost confidence.",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Contact",
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            InkWell(
-                                              onTap: () {},
-                                              child: Row(
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 30,
-                                                    backgroundColor:
-                                                        const Color(0xffF3F3F3),
-                                                    child: Image.asset(
-                                                      "assets/images/contact_call.png",
-                                                      color: const Color(0xff707070),
-                                                      height: 20,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  textComoon(
-                                                      "514 888 7722",
-                                                      15,
-                                                      const Color(0xff292929),
-                                                      FontWeight.w600),
-                                                  const Spacer(),
-                                                  Container(
-                                                      height: 40,
-                                                      width: 80,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              const Color(0xffFCF0E6),
-                                                          border: Border.all(
-                                                            width: 1,
-                                                            color: const Color(
-                                                                0xffE48835),
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
-                                                      child: Center(
-                                                          child: textComoon(
-                                                              "Call",
-                                                              15,
-                                                              const Color(0xffDD6A03),
-                                                              FontWeight
-                                                                  .w600))),
-                                                ],
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.only(
+                                                  left: 20),
+                                              child: Align(
+                                                alignment:
+                                                Alignment.centerLeft,
+                                                child: const Text("view_less",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontFamily:
+                                                        "spartan",
+                                                        color: Color(
+                                                            0xFFDD6A03)))
+                                                    .tr(),
                                               ),
                                             ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            const Text("Opening Hours",
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Text("Monday - Friday",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black54)),
-                                                Spacer(),
-                                                Text("9:00 - 19:00",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black)),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Text("Sarturday",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black54)),
-                                                Spacer(),
-                                                Text("10:00 - 17:00",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black)),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text("Sarturday",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black54)),
-                                                const Spacer(),
-                                                SizedBox(
-                                                  height: height * 0.02,
+                                            const Padding(
+                                              padding:
+                                              EdgeInsets.only(
+                                                  left: 2),
+                                              child: Align(
+                                                alignment:
+                                                Alignment.centerLeft,
+                                                child: Icon(
+                                                  Icons.keyboard_arrow_up,
+                                                  color: Color(0xFFDD6A03),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Products",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.15,
-                                              width: width,
-                                              child: Image.asset(
-                                                "assets/images/Group 12681.png",
-                                                fit: BoxFit.fill,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Social Media Link",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: height * 0.08,
-                                                      child: Image.asset(
-                                                        "assets/images/Group 12685.png",
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: height * 0.01),
-                                                    const Text("Instagram",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color: Colors
-                                                                .black54)),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.06,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: height * 0.08,
-                                                      child: Image.asset(
-                                                        "assets/images/Group 12685.png",
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: height * 0.01),
-                                                    const Text("Facebook",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color: Colors
-                                                                .black54)),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Divider(
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Amenities",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Parking space",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text(
-                                                "Accessible to people with disabilities",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Child-friendly",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            const Text("Wi-Fi",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: "spartan",
-                                                    color: Colors.black54)),
-                                            SizedBox(
-                                              height: height * 0.02,
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ) :
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            viewMore = true;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.only(
+                                                  left: 20),
+                                              child: Align(
+                                                alignment:
+                                                Alignment.centerLeft,
+                                                child: const Text("more_services",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontFamily:
+                                                        "spartan",
+                                                        color: Color(
+                                                            0xFFDD6A03)))
+                                                    .tr(),
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding:
+                                              EdgeInsets.only(
+                                                  left: 2),
+                                              child: Align(
+                                                alignment:
+                                                Alignment.centerLeft,
+                                                child: Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  color: Color(0xFFDD6A03),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ) : const SizedBox(),
                                     ],
                                   ),
-                                ):
-                                Container(
-                                  child: Center(child: Text("No Data Found!!!")),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                ],
-              ): const SizedBox(
-                  child: Text('No data Found!!'),
-              ),
-            )
+                                  const Center(
+                                    child: Text(
+                                      "No Data Found!!!",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontFamily: "spartan",
+                                      ),
+                                    ),
+                                  ),
+                                  const Center(
+                                    child: Text(
+                                      "No Data Found!!!",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontFamily: "spartan",
+                                      ),
+                                    ),
+                                  ),
+                                  // SingleChildScrollView(
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //         horizontal: 15),
+                                  //     child: Column(
+                                  //       children: [
+                                  //         SizedBox(
+                                  //           height: height * 0.04,
+                                  //         ),
+                                  //         Container(
+                                  //           height: height * 0.25,
+                                  //           decoration: BoxDecoration(
+                                  //               borderRadius:
+                                  //                   BorderRadius.circular(10),
+                                  //               border: Border.all(
+                                  //                   color: const Color(0xFFF8E1CD)),
+                                  //               color: const Color(0xFFFDF8F2)),
+                                  //           child: Padding(
+                                  //             padding: const EdgeInsets.symmetric(
+                                  //                 horizontal: 15),
+                                  //             child: Row(
+                                  //               children: [
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.center,
+                                  //                   mainAxisAlignment:
+                                  //                       MainAxisAlignment.center,
+                                  //                   children: [
+                                  //                     Row(
+                                  //                       children: const [
+                                  //                         Text("4.9",
+                                  //                             style: TextStyle(
+                                  //                                 fontSize: 22,
+                                  //                                 color: Colors
+                                  //                                     .black,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                                 fontWeight:
+                                  //                                     FontWeight
+                                  //                                         .bold)),
+                                  //                         Text("/5",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 18,
+                                  //                               color: Colors
+                                  //                                   .black54,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                       ],
+                                  //                     ),
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                     const Text("Based on 201 reviews",
+                                  //                         style: TextStyle(
+                                  //                           fontSize: 14,
+                                  //                           color: Colors.black54,
+                                  //                           fontFamily: "spartan",
+                                  //                         )),
+                                  //                   ],
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.01,
+                                  //                 ),
+                                  //                 const Padding(
+                                  //                   padding:
+                                  //                       EdgeInsets.only(
+                                  //                           top: 15, bottom: 15),
+                                  //                   child: VerticalDivider(
+                                  //                     color: Colors.black54,
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.01,
+                                  //                 ),
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.center,
+                                  //                   mainAxisAlignment:
+                                  //                       MainAxisAlignment.center,
+                                  //                   children: [
+                                  //                     SizedBox(
+                                  //                       height: height * 0.04,
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           const Text("5",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             height:
+                                  //                                 height * 0.08,
+                                  //                             width: width * 0.20,
+                                  //                             child: Image.asset(
+                                  //                                 "assets/images/Line 104.png"),
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           const Text("199",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ),
+                                  //                     SizedBox(
+                                  //                       height: height * 0.04,
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           const Text("4",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             height:
+                                  //                                 height * 0.08,
+                                  //                             width: width * 0.20,
+                                  //                             child: Image.asset(
+                                  //                                 "assets/images/Line 105.png"),
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           const Text("2",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ),
+                                  //                     SizedBox(
+                                  //                       height: height * 0.04,
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           const Text("3",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             height:
+                                  //                                 height * 0.08,
+                                  //                             width: width * 0.20,
+                                  //                             child: Image.asset(
+                                  //                                 "assets/images/Line 105.png"),
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           const Text("0",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ),
+                                  //                     SizedBox(
+                                  //                       height: height * 0.04,
+                                  //                       child: Row(
+                                  //                         children: [
+                                  //                           const Text("2",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             height:
+                                  //                                 height * 0.08,
+                                  //                             width: width * 0.20,
+                                  //                             child: Image.asset(
+                                  //                                 "assets/images/Line 105.png"),
+                                  //                           ),
+                                  //                           SizedBox(
+                                  //                             width: width * 0.03,
+                                  //                           ),
+                                  //                           const Text("0",
+                                  //                               style: TextStyle(
+                                  //                                 fontSize: 18,
+                                  //                                 color: Colors
+                                  //                                     .black54,
+                                  //                                 fontFamily:
+                                  //                                     "spartan",
+                                  //                               )),
+                                  //                         ],
+                                  //                       ),
+                                  //                     ),
+                                  //                   ],
+                                  //                 )
+                                  //               ],
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.04,
+                                  //         ),
+                                  //         Column(
+                                  //           children: [
+                                  //             Row(
+                                  //               children: [
+                                  //                 SizedBox(
+                                  //                   height: height * 0.10,
+                                  //                   width: width * 0.20,
+                                  //                   child: const Image(
+                                  //                     image: AssetImage(
+                                  //                         "assets/images/Group 12555.png"),
+                                  //                     fit: BoxFit.fill,
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.04,
+                                  //                 ),
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.start,
+                                  //                   children: [
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         const Text("Mike Lock",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 18,
+                                  //                               color:
+                                  //                                   Colors.black,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.10,
+                                  //                         ),
+                                  //                         const Text("Mar 26, 2022",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 16,
+                                  //                               color: Colors
+                                  //                                   .black54,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                       ],
+                                  //                     ),
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //             const Text(
+                                  //                 "Great attendant with great skill. Had the best time, definitely coming back.",
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 16,
+                                  //                   color: Colors.black54,
+                                  //                   fontFamily: "spartan",
+                                  //                 )),
+                                  //             SizedBox(
+                                  //               height: height * 0.02,
+                                  //             ),
+                                  //             const Divider(
+                                  //               color: Colors.black54,
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.02,
+                                  //         ),
+                                  //         Column(
+                                  //           children: [
+                                  //             Row(
+                                  //               children: [
+                                  //                 SizedBox(
+                                  //                   height: height * 0.10,
+                                  //                   width: width * 0.20,
+                                  //                   child: const Image(
+                                  //                     image: AssetImage(
+                                  //                         "assets/images/Group 12555.png"),
+                                  //                     fit: BoxFit.fill,
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.04,
+                                  //                 ),
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.start,
+                                  //                   children: [
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         const Text("Mike Lock",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 18,
+                                  //                               color:
+                                  //                                   Colors.black,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.10,
+                                  //                         ),
+                                  //                         const Text("Mar 26, 2022",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 16,
+                                  //                               color: Colors
+                                  //                                   .black54,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                       ],
+                                  //                     ),
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //             const Text(
+                                  //                 "Great attendant with great skill. Had the best time, definitely coming back.",
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 16,
+                                  //                   color: Colors.black54,
+                                  //                   fontFamily: "spartan",
+                                  //                 )),
+                                  //             SizedBox(
+                                  //               height: height * 0.02,
+                                  //             ),
+                                  //             const Divider(
+                                  //               color: Colors.black54,
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.02,
+                                  //         ),
+                                  //         Column(
+                                  //           children: [
+                                  //             Row(
+                                  //               children: [
+                                  //                 SizedBox(
+                                  //                   height: height * 0.10,
+                                  //                   width: width * 0.20,
+                                  //                   child: const Image(
+                                  //                     image: AssetImage(
+                                  //                         "assets/images/Group 12555.png"),
+                                  //                     fit: BoxFit.fill,
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.04,
+                                  //                 ),
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.start,
+                                  //                   children: [
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         const Text("Mike Lock",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 18,
+                                  //                               color:
+                                  //                                   Colors.black,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.10,
+                                  //                         ),
+                                  //                         const Text("Mar 26, 2022",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 16,
+                                  //                               color: Colors
+                                  //                                   .black54,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                       ],
+                                  //                     ),
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //             const Text(
+                                  //                 "Great attendant with great skill. Had the best time, definitely coming back.",
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 16,
+                                  //                   color: Colors.black54,
+                                  //                   fontFamily: "spartan",
+                                  //                 )),
+                                  //             SizedBox(
+                                  //               height: height * 0.02,
+                                  //             ),
+                                  //             const Divider(
+                                  //               color: Colors.black54,
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.02,
+                                  //         ),
+                                  //         Column(
+                                  //           children: [
+                                  //             Row(
+                                  //               children: [
+                                  //                 SizedBox(
+                                  //                   height: height * 0.10,
+                                  //                   width: width * 0.20,
+                                  //                   child: const Image(
+                                  //                     image: AssetImage(
+                                  //                         "assets/images/Group 12555.png"),
+                                  //                     fit: BoxFit.fill,
+                                  //                   ),
+                                  //                 ),
+                                  //                 SizedBox(
+                                  //                   width: width * 0.04,
+                                  //                 ),
+                                  //                 Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment.start,
+                                  //                   children: [
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         const Text("Mike Lock",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 18,
+                                  //                               color:
+                                  //                                   Colors.black,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.10,
+                                  //                         ),
+                                  //                         const Text("Mar 26, 2022",
+                                  //                             style: TextStyle(
+                                  //                               fontSize: 16,
+                                  //                               color: Colors
+                                  //                                   .black54,
+                                  //                               fontFamily:
+                                  //                                   "spartan",
+                                  //                             )),
+                                  //                       ],
+                                  //                     ),
+                                  //                     Row(
+                                  //                       children: [
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           width: width * 0.01,
+                                  //                         ),
+                                  //                         SizedBox(
+                                  //                           height: height * 0.05,
+                                  //                           width: width * 0.05,
+                                  //                           child: Image.asset(
+                                  //                               "assets/images/Star 1.png"),
+                                  //                         ),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //             const Text(
+                                  //                 "Great attendant with great skill. Had the best time, definitely coming back.",
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 16,
+                                  //                   color: Colors.black54,
+                                  //                   fontFamily: "spartan",
+                                  //                 )),
+                                  //             SizedBox(
+                                  //               height: height * 0.02,
+                                  //             ),
+                                  //             const Divider(
+                                  //               color: Colors.black54,
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // SingleChildScrollView(
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //         horizontal: 15),
+                                  //     child: Column(
+                                  //       children: [
+                                  //         SizedBox(
+                                  //           height: height * 0.04,
+                                  //         ),
+                                  //         Row(
+                                  //           children: [
+                                  //             SizedBox(
+                                  //               height: height * 0.23,
+                                  //               width: width * 0.44,
+                                  //               child: const Image(
+                                  //                 image: AssetImage(
+                                  //                     "assets/images/Group 12646.png"),
+                                  //                 fit: BoxFit.fill,
+                                  //               ),
+                                  //             ),
+                                  //             const Spacer(),
+                                  //             SizedBox(
+                                  //               height: height * 0.23,
+                                  //               width: width * 0.44,
+                                  //               child: const Image(
+                                  //                 image: AssetImage(
+                                  //                     "assets/images/Group 12646.png"),
+                                  //                 fit: BoxFit.fill,
+                                  //               ),
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.02,
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.30,
+                                  //           width: width,
+                                  //           child: const Image(
+                                  //             image: AssetImage(
+                                  //                 "assets/images/Rectangle 892.png"),
+                                  //             fit: BoxFit.fill,
+                                  //           ),
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.02,
+                                  //         ),
+                                  //         Row(
+                                  //           children: [
+                                  //             SizedBox(
+                                  //               height: height * 0.23,
+                                  //               width: width * 0.44,
+                                  //               child: const Image(
+                                  //                 image: AssetImage(
+                                  //                     "assets/images/Group 12646.png"),
+                                  //                 fit: BoxFit.fill,
+                                  //               ),
+                                  //             ),
+                                  //             const Spacer(),
+                                  //             SizedBox(
+                                  //               height: height * 0.23,
+                                  //               width: width * 0.44,
+                                  //               child: const Image(
+                                  //                 image: AssetImage(
+                                  //                     "assets/images/Group 12646.png"),
+                                  //                 fit: BoxFit.fill,
+                                  //               ),
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: height * 0.04,
+                                  //         )
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  BeauticianDetails.isNotEmpty
+                                      ? SingleChildScrollView(
+                                    child: Column(
+                                      //  crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: height * 0.35,
+                                              width: width,
+                                              child: GoogleMap(
+                                                onTap: (latLng) {
+                                                  lat = latLng.latitude
+                                                      .toString();
+                                                  long = latLng.longitude
+                                                      .toString();
+                                                },
+                                                mapToolbarEnabled: false,
+                                                initialCameraPosition:
+                                                _initialLocation,
+                                                myLocationButtonEnabled:
+                                                false,
+                                                myLocationEnabled: true,
+                                                mapType: MapType.normal,
+                                                zoomControlsEnabled:
+                                                false,
+                                                zoomGesturesEnabled: true,
+                                                markers: Set<Marker>.of(
+                                                    markers),
+                                              ),
+                                            ),
+                                            Positioned(
+                                                left: 10,
+                                                bottom: 15,
+                                                child: Container(
+                                                  height: height * 0.12,
+                                                  width: width - 20,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          10),
+                                                      color:
+                                                      Colors.white),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal:
+                                                        15),
+                                                    child: Row(
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                                BeauticianDetails[
+                                                                0]
+                                                                    .businessName,
+                                                                style:
+                                                                const TextStyle(
+                                                                  fontSize:
+                                                                  20,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontFamily:
+                                                                  "spartan",
+                                                                )),
+                                                            SizedBox(
+                                                              height:
+                                                              height *
+                                                                  0.01,
+                                                            ),
+                                                            Text(
+                                                                "${BeauticianDetails[0].beauticianAddress[0].address}\n${BeauticianDetails[0].beauticianAddress[0].city} ${BeauticianDetails[0].beauticianAddress[0].zipCode}",
+                                                                style:
+                                                                const TextStyle(
+                                                                  fontSize:
+                                                                  14,
+                                                                  color: Colors
+                                                                      .black54,
+                                                                  fontFamily:
+                                                                  "spartan",
+                                                                )),
+                                                          ],
+                                                        ),
+                                                        const Spacer(),
+                                                        const Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                              vertical:
+                                                              10),
+                                                          child: VerticalDivider(
+                                                              color: Colors
+                                                                  .black),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              height:
+                                                              height *
+                                                                  0.08,
+                                                              child: Image
+                                                                  .asset(
+                                                                "assets/images/Group 12665.png",
+                                                                fit: BoxFit
+                                                                    .fill,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ))
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              // SizedBox(
+                                              //   height: height * 0.04,
+                                              // ),
+                                              // const Text("Staff Members",
+                                              //     style: TextStyle(
+                                              //         fontSize: 20,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black)),
+                                              // SizedBox(
+                                              //   height: height * 0.04,
+                                              // ),
+                                              // Row(
+                                              //   children: [
+                                              //     Column(
+                                              //       children: [
+                                              //         SizedBox(
+                                              //           height: height * 0.15,
+                                              //           child: Image.asset(
+                                              //             "assets/images/Ellipse 154.png",
+                                              //             fit: BoxFit.fill,
+                                              //           ),
+                                              //         ),
+                                              //         SizedBox(
+                                              //             height: height * 0.02),
+                                              //         const Text("Tibo Quan",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 20,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color:
+                                              //                     Colors.black)),
+                                              //         SizedBox(
+                                              //             height: height * 0.01),
+                                              //         const Text("Owner",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 16,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color: Colors
+                                              //                     .black54)),
+                                              //       ],
+                                              //     ),
+                                              //     SizedBox(
+                                              //       width: width * 0.04,
+                                              //     ),
+                                              //     Column(
+                                              //       children: [
+                                              //         SizedBox(
+                                              //           height: height * 0.15,
+                                              //           child: Image.asset(
+                                              //             "assets/images/Ellipse 154.png",
+                                              //             fit: BoxFit.fill,
+                                              //           ),
+                                              //         ),
+                                              //         SizedBox(
+                                              //             height: height * 0.02),
+                                              //         const Text("Tibo Quan",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 20,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color:
+                                              //                     Colors.black)),
+                                              //         SizedBox(
+                                              //             height: height * 0.01),
+                                              //         const Text("",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 16,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color: Colors
+                                              //                     .black54)),
+                                              //       ],
+                                              //     ),
+                                              //   ],
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.04,
+                                              // ),
+                                              // const Divider(
+                                              //   color: Colors.black54,
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("About Us",
+                                              //     style: TextStyle(
+                                              //         fontSize: 22,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text(
+                                              //     "Barbing, freshness and confidence in one place. With a soft touch of modern styles, Freshman Cutz gives you that lost confidence.",
+                                              //     style: TextStyle(
+                                              //         fontSize: 16,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black54)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Divider(
+                                              //   color: Colors.black54,
+                                              // ),
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                              const Text("Contact",
+                                                  style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontFamily:
+                                                      "spartan",
+                                                      color:
+                                                      Colors.black)),
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 30,
+                                                      backgroundColor:
+                                                      const Color(
+                                                          0xffF3F3F3),
+                                                      child: Image.asset(
+                                                        "assets/images/contact_call.png",
+                                                        color: const Color(
+                                                            0xff707070),
+                                                        height: 20,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    textComoon(
+                                                        "${BeauticianDetails[0].businessNumber}",
+                                                        15,
+                                                        const Color(
+                                                            0xff292929),
+                                                        FontWeight.w600),
+                                                    const Spacer(),
+                                                    Container(
+                                                        height: 40,
+                                                        width: 80,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                            color: const Color(
+                                                                0xffFCF0E6),
+                                                            border:
+                                                            Border
+                                                                .all(
+                                                              width:
+                                                              1,
+                                                              color: const Color(
+                                                                  0xffE48835),
+                                                            ),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                        child: Center(
+                                                            child: textComoon(
+                                                                "Call",
+                                                                15,
+                                                                const Color(
+                                                                    0xffDD6A03),
+                                                                FontWeight
+                                                                    .w600))),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Divider(
+                                                color: Colors.black54,
+                                              ),
+                                              const Text("Opening Hours",
+                                                  style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontFamily:
+                                                      "spartan",
+                                                      color:
+                                                      Colors.black)),
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                              // Row(
+                                              //   children:  [
+                                              //     const Text("Monday - Friday",
+                                              //         style: TextStyle(
+                                              //             fontSize: 16,
+                                              //             fontFamily: "spartan",
+                                              //             color: Colors.black54)),
+                                              //     const Spacer(),
+                                              //     Text("${BeauticianDetails[0].workHours[0].dayDetails[0].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[0].endTime}",
+                                              //         style: const TextStyle(
+                                              //             fontSize: 20,
+                                              //             fontFamily: "spartan",
+                                              //             color: Colors.black)),
+                                              //   ],
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              BeauticianDetails[0]
+                                                  .workHours
+                                                  .isEmpty
+                                                  ? const Center(
+                                                child: Text(
+                                                  "No Data Found!!!",
+                                                  style: TextStyle(
+                                                    color: Colors
+                                                        .black,
+                                                    fontSize: 14,
+                                                    fontFamily:
+                                                    "spartan",
+                                                  ),
+                                                ),
+                                              ) : ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount:
+                                                  BeauticianDetails[0].workHours[0].dayDetails.length,
+                                                  itemBuilder:
+                                                      (context,
+                                                      index) {
+                                                    return Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                                "${BeauticianDetails[0].workHours[0].dayDetails[index].day}",
+                                                                style: const TextStyle(
+                                                                    fontSize: 16,
+                                                                    fontFamily: "spartan",
+                                                                    color: Colors.black54)),
+                                                            const Spacer(),
+                                                            Text(
+                                                                "${BeauticianDetails[0].workHours[0].dayDetails[index].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[index].endTime}",
+                                                                style: const TextStyle(
+                                                                    fontSize: 20,
+                                                                    fontFamily: "spartan",
+                                                                    color: Colors.black)),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 10,)
+                                                      ],
+                                                    );
+                                                  }),
+                                              // Row(
+                                              //   children: [
+                                              //     const Text("Sarturday",
+                                              //         style: TextStyle(
+                                              //             fontSize: 16,
+                                              //             fontFamily: "spartan",
+                                              //             color: Colors.black54)),
+                                              //     const Spacer(),
+                                              //     Text("${BeauticianDetails[0].workHours[0].dayDetails[5].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[5].endTime}",
+                                              //         style: const TextStyle(
+                                              //             fontSize: 20,
+                                              //             fontFamily: "spartan",
+                                              //             color: Colors.black)),
+                                              //   ],
+                                              // ),
+                                              // s
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                              const Divider(
+                                                color: Colors.black54,
+                                              ),
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                              // const Text("Products",
+                                              //     style: TextStyle(
+                                              //         fontSize: 20,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.15,
+                                              //   width: width,
+                                              //   child: Image.asset(
+                                              //     "assets/images/Group 12681.png",
+                                              //     fit: BoxFit.fill,
+                                              //   ),
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Divider(
+                                              //   color: Colors.black54,
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("Social Media Link",
+                                              //     style: TextStyle(
+                                              //         fontSize: 20,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // Row(
+                                              //   children: [
+                                              //     Column(
+                                              //       children: [
+                                              //         SizedBox(
+                                              //           height: height * 0.08,
+                                              //           child: Image.asset(
+                                              //             "assets/images/Group 12685.png",
+                                              //             fit: BoxFit.fill,
+                                              //           ),
+                                              //         ),
+                                              //         SizedBox(
+                                              //             height: height * 0.01),
+                                              //         const Text("Instagram",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 16,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color: Colors
+                                              //                     .black54)),
+                                              //       ],
+                                              //     ),
+                                              //     SizedBox(
+                                              //       width: width * 0.06,
+                                              //     ),
+                                              //     Column(
+                                              //       children: [
+                                              //         SizedBox(
+                                              //           height: height * 0.08,
+                                              //           child: Image.asset(
+                                              //             "assets/images/Group 12685.png",
+                                              //             fit: BoxFit.fill,
+                                              //           ),
+                                              //         ),
+                                              //         SizedBox(
+                                              //             height: height * 0.01),
+                                              //         const Text("Facebook",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 16,
+                                              //                 fontFamily:
+                                              //                     "spartan",
+                                              //                 color: Colors
+                                              //                     .black54)),
+                                              //       ],
+                                              //     ),
+                                              //   ],
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Divider(
+                                              //   color: Colors.black54,
+                                              // ),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("Amenities",
+                                              //     style: TextStyle(
+                                              //         fontSize: 20,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("Parking space",
+                                              //     style: TextStyle(
+                                              //         fontSize: 18,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black54)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text(
+                                              //     "Accessible to people with disabilities",
+                                              //     style: TextStyle(
+                                              //         fontSize: 18,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black54)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("Child-friendly",
+                                              //     style: TextStyle(
+                                              //         fontSize: 18,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black54)),
+                                              // SizedBox(
+                                              //   height: height * 0.02,
+                                              // ),
+                                              // const Text("Wi-Fi",
+                                              //     style: TextStyle(
+                                              //         fontSize: 18,
+                                              //         fontFamily: "spartan",
+                                              //         color: Colors.black54)),
+                                              SizedBox(
+                                                height: height * 0.02,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                      : const Center(
+                                    child: Text(
+                                      "No Data Found!!!",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontFamily: "spartan",
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )),
+                  ],
+                )
+              ): const Center(child: Text('No data Found!!')),
+      ),
     );
   }
 
@@ -2030,7 +2150,7 @@ class _servicesState extends State<services> {
     );
   }
 
-  addToMyFavorites() async {
+  addToMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.addToMyFavorites);
     try {
       setState(() {
@@ -2043,7 +2163,7 @@ class _servicesState extends State<services> {
       };
 
       var bodydata = {
-        "beauticianId": widget.beauticianId,
+        "beauticianId": beauticianId,
       };
       print("addToMyFavorites url is ====> $posturi ");
       print("addToMyFavorites bodydata ====> $bodydata ");
@@ -2066,6 +2186,7 @@ class _servicesState extends State<services> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
+          getBeauticianDetails();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -2086,7 +2207,7 @@ class _servicesState extends State<services> {
     }
   }
 
-  removeFromMyFavorites() async {
+  removeFromMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.removeFromMyFavorites);
     try {
       setState(() {
@@ -2099,7 +2220,7 @@ class _servicesState extends State<services> {
       };
 
       var bodydata = {
-        "beauticianId": widget.beauticianId,
+        "beauticianId": beauticianId,
       };
       print("removeFromMyFavorites url is ====> $posturi ");
       print("removeFromMyFavorites bodydata ====> $bodydata ");
@@ -2122,6 +2243,7 @@ class _servicesState extends State<services> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
+          getBeauticianDetails();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -2151,7 +2273,7 @@ class _servicesState extends State<services> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {"id": widget.beauticianId, "limit": 10, "offset": 0};
@@ -2169,7 +2291,8 @@ class _servicesState extends State<services> {
         if (map['status'] == 200) {
           sb = SingalBeautician.fromjson(map);
           Beauticiandata = sb!.data!.data!;
-          Helper.serviceId.clear();
+          Beauticiandata[0].isFav!;
+          Beauticiandata[0].isFav!;
         }
         setState(() {
           isLoading = false;
@@ -2189,23 +2312,38 @@ class _servicesState extends State<services> {
         isLoading = true;
       });
       var headers = {
-        'Content-Type': "application/json; charset=utf-8",
+        // 'Content-Type': "application/json; charset=utf-8",
         "authorization":
         "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
-      print("getBeauticianDetails url is ====> $geturi ");
-      var response = await http.get(
+      var bodydata = {
+        "id": widget.beauticianId,
+      };
+
+      print("getBusinessDeatils url is ====> $geturi ");
+      log("bodydata is ====> $bodydata ");
+      var response = await http.post(
         geturi,
+        body: bodydata,
         headers: headers,
       );
-      print("getBeauticianDetails status code ====> ${response.statusCode}");
-      print(" getBeauticianDetails res body is ====>  ${response.body}");
+      print("getBusinessDeatils status code ====> ${response.statusCode}");
+      log(" getBusinessDeatils res body is ====>  ${response.body}");
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           bd = BeauticianDetail.fromMap(jsonDecode(response.body));
           BeauticianDetails = bd!.beautician;
+
+          if (BeauticianDetails != null) {
+            _initialLocation = CameraPosition(
+              target: LatLng(BeauticianDetails[0].location.coordinates[1],
+                  BeauticianDetails[0].location.coordinates[0]),
+              zoom: 15,
+            );
+            locationLatLng();
+          }
         }
         setState(() {
           isLoading = false;
@@ -2252,18 +2390,24 @@ class Data {
 class SingalBeauticianData {
   String? id;
   String? businessName ;
+  String? rating ;
+  String? noOfReviews ;
   Location? location;
   String? gender;
   List<BeauticianServiceId>? beauticianServiceId;
   Address? address;
+  bool? isFav;
 
   SingalBeauticianData({
     this.id,
     this.businessName,
+    this.rating,
+    this.noOfReviews,
     this.location,
     this.gender,
     this.beauticianServiceId,
     this.address,
+    this.isFav
   });
 
   factory SingalBeauticianData.fromjson(Map<dynamic, dynamic> map1) {
@@ -2273,10 +2417,13 @@ class SingalBeauticianData {
     return SingalBeauticianData(
       id: map1['_id'] ?? "",
       businessName: map1['businessName'] ?? "",
+      rating: map1['rating'] ?? "",
+      noOfReviews: map1['noOfReviews'] ?? "",
       location: Location.fromjson(map1['location'] ?? {}),
       gender: map1['gender'] ?? "",
       beauticianServiceId: beauticianServiceId,
       address: address,
+      isFav: map1['isFav'] ?? false,
     );
   }
 }

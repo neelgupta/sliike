@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/client/appoinment_clientlist.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/service/add_another_service/add_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 
-import '../../../../calender/send_notifi_message_or_phone/new_appoinment/client/appoinment_clientlist.dart';
 
 
 class newAppointment extends StatefulWidget {

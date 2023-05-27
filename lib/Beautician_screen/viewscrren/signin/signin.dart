@@ -566,7 +566,7 @@ class _signInScreenState extends State<signInScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const homescreen();
+                    return homescreen(selectedIndex: 0,);
                   },
                 ),
                 (route) => false,

@@ -28,6 +28,7 @@ class _filterpageState extends State<filterpage> {
   String beuauticianPlace = "";
   String latitude = "";
   String longitude = "";
+  String address = "";
   String myPlace = "";
   String dontMind = "";
   bool price = false;
@@ -214,12 +215,13 @@ class _filterpageState extends State<filterpage> {
                                       if (value!=null) {
                                         latitude = value[0];
                                         longitude = value[1];
+                                        address = value[2];
                                         setState(() {});
                                       }
                                     });
                                   },
                                   child: Container(
-                                      padding: const EdgeInsets.all(10),
+                                      padding: const EdgeInsets.symmetric(vertical: 10),
                                       decoration: BoxDecoration(
                                           borderRadius: const BorderRadius.all(Radius.circular(10)),
                                           border: Border.all(color: Colors.grey)),
@@ -230,17 +232,29 @@ class _filterpageState extends State<filterpage> {
                                         children: [
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(left: 5),
+                                                const EdgeInsets.only(left: 10),
                                             child: Image(
                                                 image: const AssetImage("assets/images/Group 71.png",),
                                                 color: const Color(0xFFDD5103),
                                                 height: height * 0.03),
                                           ),
                                           const SizedBox(width: 5,),
-                                          const Text(
-                                            "Near You",
-                                            style: TextStyle(fontSize: 12),
-                                          )
+                                          Expanded(
+                                            child: Text(
+                                              address.isEmpty?"Near You":address,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                          address.isEmpty?Container():InkWell(onTap: () {
+                                            setState(() {
+                                              address = "";
+                                              latitude = "";
+                                              longitude = "";
+                                            });
+                                          },child: const Icon(Icons.close,size: 20,color: Colors.black12,)),
+                                          const SizedBox(width: 5,),
                                         ],
                                       )),
                                 ),
@@ -877,6 +891,8 @@ class _filterpageState extends State<filterpage> {
                                             gender: gender,
                                             sortBy: character,
                                             priceValue: priceValue,
+                                            latitude: latitude,
+                                            longitude: longitude,
                                           );
                                         },));
                                       });

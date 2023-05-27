@@ -3,10 +3,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment_payment.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/select_address.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 
@@ -15,7 +18,8 @@ import '../../utils/apiurllist.dart';
 import '../../utils/preferences.dart';
 
 class booking_summary extends StatefulWidget {
-  const booking_summary({Key? key}) : super(key: key);
+  String? beauticianId;
+  booking_summary({Key? key,this.beauticianId}) : super(key: key);
 
   @override
   State<booking_summary> createState() => _booking_summaryState();
@@ -25,8 +29,9 @@ class _booking_summaryState extends State<booking_summary> {
   bool isLoading = false;
   BookedPendingAppointment? ba;
   List<Data> appointmentData = [];
-  String beauticianId = "";
   String place = "";
+  String latitude = "";
+  String longitude = "";
   getTimeFormatedValue(String minute) {
     String formatedTime = "";
     switch (minute) {
@@ -75,7 +80,7 @@ class _booking_summaryState extends State<booking_summary> {
   @override
   void initState() {
     super.initState();
-    getBookedPendingAppointment();
+    getLocation();
   }
   @override
   Widget build(BuildContext context) {
@@ -84,7 +89,7 @@ class _booking_summaryState extends State<booking_summary> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return homescreen();
+          return homescreen(selectedIndex: 0,);
         },), (route) => false);
         return true;
       },
@@ -109,7 +114,7 @@ class _booking_summaryState extends State<booking_summary> {
                       GestureDetector(
                         onTap: () {
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                            return homescreen();
+                            return homescreen(selectedIndex: 0,);
                           },), (route) => false);
                         },
                         child: Container(
@@ -146,21 +151,50 @@ class _booking_summaryState extends State<booking_summary> {
           child: CircularProgressIndicator(
             color: Color(0xffDD6A03),
           ),
-        ) :SingleChildScrollView(
-          child: appointmentData.isNotEmpty ?
-          Column(
+        ) : appointmentData.isNotEmpty ? SingleChildScrollView(
+          child: Column(
             children: [
               SizedBox(height: height * 0.04,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    SizedBox(
+                    CachedNetworkImage(
+                      imageUrl: appointmentData[0].beauticianId!.logoPath ?? '',
+                      imageBuilder: (context, imageProvider) => Container(
+                        padding:
+                        const EdgeInsets.all(10),
                         height: height * 0.15,
                         width: width * 0.30,
-                        child: const Image(
-                          image: AssetImage("assets/images/Rectangle 944.png"),
-                          fit: BoxFit.fill,)),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(8),
+                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                        ),
+                        margin: const EdgeInsets.all(5),
+                      ),
+                      progressIndicatorBuilder: (context, url, process) => Container(
+                          height: height * 0.15,
+                          width: width * 0.30,
+                          margin: const EdgeInsets.all(5),
+                          child: const Center(child: CircularProgressIndicator())
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                          height: height * 0.15,
+                          width: width * 0.30,
+                          margin: const EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          child: Center(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error),
+                              SizedBox(height: height*0.02,),
+                              const Text("No Image")
+                            ],
+                          ))
+                      ),
+                    ),
                     SizedBox(width: width * 0.04,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,32 +212,32 @@ class _booking_summaryState extends State<booking_summary> {
                             //   height: height * 0.04,
                             //   width: width * 0.04,),
                             // SizedBox(width: width * 0.01,),
-                            // const Text("4.0",
-                            //     style: TextStyle(
+                            // Text("",
+                            //     style: const TextStyle(
                             //         fontSize: 14,
                             //         fontFamily: "spartan",
                             //         color: Colors.black)),
                           ],
                         ),
-                        Text("${appointmentData[0].beauticianId!.address!.apartment} ${appointmentData[0].beauticianId!.address!.province} ${appointmentData[0].beauticianId!.address!.city} ${appointmentData[0].beauticianId!.address!.zipCode}",
+                        Text("${appointmentData[0].beauticianId!.address!.apartment} ${appointmentData[0].beauticianId!.address!.city} ${appointmentData[0].beauticianId!.address!.zipCode}",
                             style: const TextStyle(
                                 fontSize: 10,
                                 fontFamily: "spartan",
                                 color: Colors.black54)),
-                        // Row(
-                        //   children: [
-                        //     Image(image: const AssetImage(
-                        //         "assets/images/Map pin.png"),
-                        //       height: height * 0.04,
-                        //       width: width * 0.04,),
-                        //     SizedBox(width: width * 0.02,),
-                        //     const Text("6.05km",
-                        //         style: TextStyle(
-                        //             fontSize: 16,
-                        //             fontFamily: "spartan",
-                        //             color: Colors.black)),
-                        //   ],
-                        // )
+                        Row(
+                          children: [
+                            Image(image: const AssetImage(
+                                "assets/images/Map pin.png"),
+                              height: height * 0.04,
+                              width: width * 0.04,),
+                            SizedBox(width: width * 0.02,),
+                            Text("${appointmentData[0].beauticianId!.distance}km",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
+                                    color: Colors.black)),
+                          ],
+                        )
                       ],
                     )
                   ],
@@ -223,7 +257,7 @@ class _booking_summaryState extends State<booking_summary> {
                       var startData = DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${appointmentData[index].dateTime}'));
                       var endData = DateFormat('h:mm').format(DateTime.parse('${appointmentData[index].endDateTime}'));
                       print("stylist name ====> ${appointmentData[index].stylistID?.firstName}");
-                      if(appointmentData[index].place == 0){
+                      if(appointmentData[index].place!.contains("0")){
                         place = "Beautician’s place";
                       }else{
                         place = "At my place";
@@ -355,7 +389,7 @@ class _booking_summaryState extends State<booking_summary> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return services(beauticianId: beauticianId);
+                      return services(beauticianId: "${widget.beauticianId}");
                     },));
                   },
                   child: Row(
@@ -383,7 +417,7 @@ class _booking_summaryState extends State<booking_summary> {
                   onTap: () {
                     appointmentData.clear();
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const book_appoinment_payment();
+                      return const SelectAddress();
                     },));
                   },
                   child: Container(
@@ -403,8 +437,8 @@ class _booking_summaryState extends State<booking_summary> {
               ),
               SizedBox(height: height * 0.05,)
             ],
-          ) : const SizedBox(child: const Center(child: Text('No Data Found'),),),
-        ),
+          )
+        ): const Center(child: Text('No Data Found'),),
       ),
     );
   }
@@ -420,7 +454,9 @@ class _booking_summaryState extends State<booking_summary> {
         "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
-        "appointmentIds": Helper.serviceId
+        "appointmentIds": Helper.serviceId,
+        "longitude": longitude,
+        "latitude": latitude,
       };
 
       print("booking summary body : ${jsonEncode(bodydata)}");
@@ -446,6 +482,46 @@ class _booking_summaryState extends State<booking_summary> {
         isLoading = false;
       });
     }
+  }
+  Future<Position> getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled == LocationPermission.denied) {
+      await Geolocator.openLocationSettings();
+
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Navigator.pop(context);
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Position? p = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      latitude = p.latitude.toString();
+      longitude = p.longitude.toString();
+      print("///lat${p.latitude}");
+      print("///long${p.longitude}");
+      getBookedPendingAppointment();
+    }
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 }
 
@@ -529,8 +605,10 @@ class BeauticianId {
   String? lastName;
   PenddingAddress? address;
   String? businessName;
+  String? distance;
+  String ? logoPath;
 
-  BeauticianId({this.id,this.firstName,this.lastName,this.address,this.businessName});
+  BeauticianId({this.id,this.firstName,this.lastName,this.address,this.businessName,this.distance,this.logoPath});
   factory BeauticianId.fromjson(Map<dynamic,dynamic>map3){
     return BeauticianId(
       id: (map3['_id'] ?? "").toString(),
@@ -538,6 +616,8 @@ class BeauticianId {
       lastName: (map3['lastName'] ?? "").toString(),
       address: PenddingAddress.fromjson(map3['address'] ?? ""),
       businessName: (map3['businessName'] ?? "").toString(),
+        distance: map3['distance'] ?? "",
+      logoPath: map3['logoPath'] ?? "",
     );
   }
 }

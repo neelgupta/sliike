@@ -1,16 +1,26 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/cancel_appoinment.dart';
 
 class manage_appoinment extends StatefulWidget {
-  const manage_appoinment({Key? key}) : super(key: key);
+  String? time;
+  String? businessName;
+  String? category;
+  String? bookingId;
+  String? price;
+  String? serviceId;
+  String? beauticianId;
+  String? serviceDuration;
+  manage_appoinment({Key? key,this.businessName,this.time,this.category,this.bookingId,this.price,this.serviceId,this.beauticianId,this.serviceDuration}) : super(key: key);
 
   @override
   State<manage_appoinment> createState() => _manage_appoinmentState();
 }
 
 class _manage_appoinmentState extends State<manage_appoinment> {
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -24,9 +34,9 @@ class _manage_appoinmentState extends State<manage_appoinment> {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: const Image(image: AssetImage("assets/images/Vector.png"),height: 20,width: 25,)),
                 SizedBox(width: width*0.15,),
                 const Text("Manage Appointment",
@@ -55,19 +65,19 @@ class _manage_appoinmentState extends State<manage_appoinment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("Tuesday, 20 Sep 2022 | 9:00 - 9:30",
-                          style: TextStyle(
+                    children: [
+                      Text("${widget.time}",
+                          style: const TextStyle(
                               fontSize: 12,
                               fontFamily: "spartan",
                               color: Colors.black54)),
-                      Text("Freshman Cutz",
-                          style: TextStyle(
+                      Text("${widget.businessName}",
+                          style: const TextStyle(
                               fontSize: 16,
                               fontFamily: "spartan",
                               color: Colors.black)),
-                      Text("Hair Dye",
-                          style: TextStyle(
+                      Text("${widget.category}",
+                          style: const TextStyle(
                               fontSize: 15,
                               fontFamily: "spartan",
                               color: Colors.black54)),
@@ -82,9 +92,15 @@ class _manage_appoinmentState extends State<manage_appoinment> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: InkWell(
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return book_appoinment();
-                // },));
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return book_appoinment(
+                      bookingId: widget.bookingId,
+                    serviceDuration: widget.serviceDuration,
+                    serviceId: widget.serviceId,
+                    beauticianId: widget.beauticianId,
+                    price: widget.price,
+                  );
+                },));
               },
               child: Row(
                 children: [
@@ -107,7 +123,12 @@ class _manage_appoinmentState extends State<manage_appoinment> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const cancel_appoinment();
+                  return  cancel_appoinment(
+                    time: widget.time,
+                    businessName: widget.businessName,
+                    category: widget.category,
+                    bookingId: widget.bookingId,
+                  );
                 },));
               },
               child: Row(

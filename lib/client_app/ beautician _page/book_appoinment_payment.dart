@@ -1,17 +1,40 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/payment_success.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/paymentDeatailsModel.dart';
+import 'package:new_sliikeapps_apps/services/payment_service.dart';
 
 class book_appoinment_payment extends StatefulWidget {
-  const book_appoinment_payment({Key? key}) : super(key: key);
+  final String addressId;
+  const book_appoinment_payment({Key? key,required this.addressId}) : super(key: key);
 
   @override
   State<book_appoinment_payment> createState() => _book_appoinment_paymentState();
 }
 
 class _book_appoinment_paymentState extends State<book_appoinment_payment> {
+
+  TextEditingController cardNameController = TextEditingController();
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController expController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+  PaymentService paymentService = PaymentService();
+  PaymentDetail? paymentDetail;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPaymentDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isChecked = false;
@@ -35,7 +58,9 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        Navigator.pop(context);
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                          return homescreen(selectedIndex: 0,);
+                        },),(route) => false,);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
@@ -64,7 +89,8 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading?const Center(child: CircularProgressIndicator()):
+      paymentDetail!=null?SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -77,6 +103,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
+                controller: cardNameController,
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -88,8 +115,13 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
             SizedBox(height: height*0.02,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
+              child: TextFormField(
+                controller: cardNumberController,
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
+                inputFormatters: [
+                  MaskedTextInputFormatter(mask: 'xxxx xxxx xxxx xxxx', separator: " ")
+                ],
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: "card_number".tr(),
@@ -104,8 +136,13 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                 children: [
                   SizedBox(
                     width: width*0.42,
-                    child: TextField(
+                    child: TextFormField(
+                      controller: expController,
                       style: const TextStyle(fontFamily: "spartan",fontSize: 12),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        MaskedTextInputFormatter(mask: 'xx/xx', separator: "/")
+                      ],
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: "expiration".tr(),
@@ -116,8 +153,13 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                   const Spacer(),
                   SizedBox(
                     width: width*0.42,
-                    child: TextField(
+                    child: TextFormField(
+                      controller: cvvController,
                       style: const TextStyle(fontFamily: "spartan",fontSize: 12),
+                      inputFormatters: [
+                        MaskedTextInputFormatter(mask: 'xxx', separator: "")
+                      ],
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: "cvv".tr(),
@@ -129,40 +171,40 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
               ),
             ),
             SizedBox(height: height*0.02,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Checkbox(value: isChecked, onChanged: (value) {},),
-                  SizedBox(width: width*0.02,),
-                  const Text("use_this_card",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Colors.black)).tr(),
-                ],
-              ),
-            ),
-            SizedBox(height: height*0.02,),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10),
+            //   child: Row(
+            //     children: [
+            //       Checkbox(value: isChecked, onChanged: (value) {},),
+            //       SizedBox(width: width*0.02,),
+            //       const Text("use_this_card",
+            //           style: TextStyle(
+            //               fontSize: 16,
+            //               fontFamily: "spartan",
+            //               color: Colors.black)).tr(),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: height*0.02,),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Divider(color: Colors.black54,),
             ),
-            SizedBox(height: height*0.02,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  Image(image: const AssetImage("assets/images/Group 12095.png"),height: height*0.04,width: width*0.06,),
-                  SizedBox(width: width*0.02,),
-                  const Text("add_new_card",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Color(0xffDD6A03))).tr(),
-                ],
-              ),
-            ),
+            // SizedBox(height: height*0.02,),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20),
+            //   child: Row(
+            //     children: [
+            //       Image(image: const AssetImage("assets/images/Group 12095.png"),height: height*0.04,width: width*0.06,),
+            //       SizedBox(width: width*0.02,),
+            //       const Text("add_new_card",
+            //           style: TextStyle(
+            //               fontSize: 16,
+            //               fontFamily: "spartan",
+            //               color: Color(0xffDD6A03))).tr(),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: height*0.05,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -224,8 +266,8 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 fontFamily: "spartan",
                                 color: Colors.black)).tr(),
                         const Spacer(),
-                        const Text("2",
-                            style: TextStyle(
+                        Text("${paymentDetail!.data!.services}",
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: "spartan",
                                 color: Colors.black)),
@@ -245,8 +287,8 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 fontFamily: "spartan",
                                 color: Colors.black)).tr(),
                         const Spacer(),
-                        const Text("\$65.00",
-                            style: TextStyle(
+                        Text("\$${paymentDetail!.data!.subTotal}",
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontFamily: "spartan",
                                 color: Colors.black)),
@@ -266,8 +308,29 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 fontFamily: "spartan",
                                 color: Colors.black)).tr(),
                         const Spacer(),
-                        const Text("\$5.00",
+                        Text("\$${paymentDetail!.data!.gstORhst}",
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "spartan",
+                                color: Colors.black)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: height*0.01,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text("pst/qst",
                             style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "spartan",
+                                color: Colors.black)).tr(),
+                        const Spacer(),
+                        Text("\$${paymentDetail!.data!.pstORqst}",
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontFamily: "spartan",
                                 color: Colors.black)),
@@ -292,8 +355,8 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 fontFamily: "spartan",
                                 color: Colors.black)).tr(),
                         const Spacer(),
-                        const Text("\$70.00",
-                            style: TextStyle(
+                        Text("\$${paymentDetail!.data!.total}",
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontFamily: "spartan",
                                 color: Colors.black)),
@@ -305,9 +368,17 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return const payment_success();
-                        },));
+                        if (cardNameController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Valid Card Holder Name")));
+                        } else if(!CreditNumberSubmitRegexValidator().isValid(cardNumberController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Valid Card Number")));
+                        } else if(!CreditExpirySubmitRegexValidator().isValid(expController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Valid Expire Date")));
+                        } else if(!CreditCvvSubmitRegexValidator().isValid(cvvController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Valid CVV Number")));
+                        } else {
+                          addPaymentForAppointment();
+                        }
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -330,7 +401,53 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
             ),
           ],
         ),
+      ):Container(
+        child: Center(child: Text("No Data Found!!!"),),
       ),
     );
+  }
+
+  getPaymentDetails() async {
+    var bodydata = {
+      "appointmentIds": Helper.serviceId,
+      "addressId" : widget.addressId
+    };
+
+    await paymentService.getPaymentDetail(body: jsonEncode(bodydata)).then((value) {
+      paymentDetail = value;
+    });
+    isLoading = false;
+    print(paymentDetail);
+    setState(() {});
+    // if(paymentDetail==null) {
+    //   Navigator.pop(context);
+    // }
+  }
+
+  addPaymentForAppointment() async {
+    var body = {
+      "appointmentIds": Helper.serviceId,
+    "cardName": cardNameController.text,
+    "cardNumber": cardNumberController.text.replaceAll(" ", ""),
+    "cardMonth": expController.text.split("/").first,
+    "cardYear": expController.text.split("/").last,
+    "cardCVC": cvvController.text,
+    "subTotal": paymentDetail!.data!.subTotal,
+    "discount": paymentDetail!.data!.discount,
+    "gstORhstInPer": paymentDetail!.data!.gstORhstInPer,
+    "pstORqstInPer": paymentDetail!.data!.pstORqstInPer,
+    "total": paymentDetail!.data!.total,
+    "addressId": widget.addressId
+    };
+    print(body);
+
+    await paymentService.addPayment(body: jsonEncode(body)).then((value) {
+      print(value);
+      if(value!=null) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return payment_success(bookingId: value);
+        },));
+      }
+    });
   }
 }

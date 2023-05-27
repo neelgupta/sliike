@@ -36,7 +36,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
     fetchServiceCategories();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -45,71 +45,71 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
       child: Scaffold(
         body: isLoading
             ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xffDD6A03),
-            ),
+          child: CircularProgressIndicator(
+            color: Color(0xffDD6A03),
+          ),
         ) :SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/bgappbar.png"),fit: BoxFit.fill,
-                    )
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 20,left: width*0.03,right: width*0.03,),
-                      padding: const EdgeInsets.only(),
-                      height: height*0.06,
-                      width: width,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)
-                      ),
-                      child: TextField(
-                        controller: search,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "What are you looking for?",
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, top: 12, right: 12, bottom: 10),
-                            child: SizedBox(
-                              height: 5,
-                              child: Image.asset("assets/images/search-normal.png"),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/bgappbar.png"),fit: BoxFit.fill,
+                      )
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 20,left: width*0.03,right: width*0.03,),
+                        padding: const EdgeInsets.only(),
+                        height: height*0.06,
+                        width: width,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: TextField(
+                          controller: search,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "What are you looking for?",
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 12, right: 12, bottom: 10),
+                              child: SizedBox(
+                                height: 5,
+                                child: Image.asset("assets/images/search-normal.png"),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(color: Colors.grey),
-                                color: Colors.white
-                            ),
-                            height: height*0.06,
-                            width: width*0.43,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Image(image: const AssetImage("assets/images/Group 71.png",),color: const Color(0xFFDD5103),height: width*0.05),
-                                ),
-                                SizedBox(width: width*0.02,),
-                                InkWell(onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return const NearYou();
-                                  },)).then((value) {
+                      const SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color: Colors.grey),
+                                  color: Colors.white
+                              ),
+                              height: height*0.06,
+                              width: width*0.43,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Image(image: const AssetImage("assets/images/Group 71.png",),color: const Color(0xFFDD5103),height: width*0.05),
+                                  ),
+                                  SizedBox(width: width*0.02,),
+                                  InkWell(onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return const NearYou();
+                                    },)).then((value) {
                                       if (value!=null) {
                                         latitude = value[0];
                                         longitude = value[1];
@@ -117,211 +117,217 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                                           findServices();
                                         });
                                       }
-                                  });
-                                },
-                                    child: SizedBox(width: width*0.32,child: const Text("Near You",maxLines: 1,style: TextStyle(fontSize: 14,fontFamily: 'spartan'),)))
-                              ],
-                            )
+                                    });
+                                  },
+                                      child: SizedBox(width: width*0.32,child: const Text("Near You",maxLines: 1,style: TextStyle(fontSize: 14,fontFamily: 'spartan'),)))
+                                ],
+                              )
+                          ),
+                          SizedBox(width: width*0.06,),
+                          Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color: Colors.grey),
+                                  color: Colors.white
+                              ),
+                              height: height*0.06,
+                              width: width*0.43,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Image(image: const AssetImage("assets/images/note.png",),color: const Color(0xFFDD5103),height: width*0.05),
+                                  ),
+                                  SizedBox(width: width*0.02,),
+                                  SizedBox(width: width*0.32,child: const Text("When?",style: TextStyle(fontSize: 14,fontFamily: "spartan"),))
+                                ],
+                              )
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  runSpacing: 10,
+                  spacing: 8,
+                  children: [
+                    for (int i = 0; i < serviceName.length; i++)
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            serviceName[i].isSelected = !serviceName[i].isSelected;
+                            for (var item in serviceName) {
+                              if (item.isSelected) {
+                                selectedService.add(item.id!);
+                                findServices();
+                              }
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: height * 0.06,
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: serviceName[i].isSelected
+                                      ? const Color(0xFFDD5103)
+                                      : Colors.black45),
+                              color: serviceName[i].isSelected
+                                  ? const Color(0xFFDD5103)
+                                  : Colors.transparent),
+                          child: Text(
+                            "${serviceName[i].serviceCategoryName}",
+                            style: TextStyle(
+                                fontFamily: "spartan",
+                                fontSize: 16,
+                                color: serviceName[i].isSelected
+                                    ? Colors.white
+                                    : Colors.black54),
+                          ),
                         ),
-                        SizedBox(width: width*0.06,),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(color: Colors.grey),
-                                color: Colors.white
-                            ),
-                            height: height*0.06,
-                            width: width*0.43,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Image(image: const AssetImage("assets/images/note.png",),color: const Color(0xFFDD5103),height: width*0.05),
-                                ),
-                                SizedBox(width: width*0.02,),
-                                SizedBox(width: width*0.32,child: const Text("When?",style: TextStyle(fontSize: 14,fontFamily: "spartan"),))
-                              ],
-                            )
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                      )
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                alignment: WrapAlignment.start,
-                runSpacing: 10,
-                spacing: 8,
-                children: [
-                  for (int i = 0; i < serviceName.length; i++)
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          serviceName[i].isSelected = !serviceName[i].isSelected;
-                          for (var item in serviceName) {
-                            if (item.isSelected) {
-                              selectedService.add(item.id!);
-                              findServices();
-                            }
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: height * 0.06,
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: serviceName[i].isSelected
-                                    ? const Color(0xFFDD5103)
-                                    : Colors.black45),
-                            color: serviceName[i].isSelected
-                                ? const Color(0xFFDD5103)
-                                : Colors.transparent),
-                        child: Text(
-                          "${serviceName[i].serviceCategoryName}",
-                          style: TextStyle(
-                              fontFamily: "spartan",
-                              fontSize: 16,
-                              color: serviceName[i].isSelected
-                                  ? Colors.white
-                                  : Colors.black54),
-                        ),
-                      ),
-                    )
-                ],
-              ),
-              SizedBox(height: height*0.04,),
-              if(datum.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(left: 20,right: 15),
-                  child: Container(alignment: Alignment.centerLeft,child: Text("${datum.length} Result Found",style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: "spartan",fontWeight: FontWeight.w800))),
+                SizedBox(height: height*0.04,),
+                if(datum.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20,right: 15),
+                    child: Container(alignment: Alignment.centerLeft,child: Text("${datum.length} Result Found",style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: "spartan",fontWeight: FontWeight.w800))),
+                  ),
+                const SizedBox(
+                  height: 20,
                 ),
-              const SizedBox(
-                height: 20,
-              ),
-              isLoadingData
-                  ? const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xffDD6A03),
-                ),
-              ) :SizedBox(
-                height: height * 0.90,
-                child: datum.isNotEmpty?ListView.builder(
-                  itemCount: datum.length,
-                  itemBuilder: (context, index) {
-                    beauticianId = datum[index].id;
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) {
-                                return services(beauticianId: datum[index].id,businessName: datum[index].businessName);
-                              }),
-                        );
-                        print("selectedFavoritesId ======> ${datum[index]}");
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15,right: 15),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                height: height*0.25,
-                                decoration: BoxDecoration(
-                                    image: const DecorationImage(image: AssetImage("assets/images/Rectangle 863.png"),fit: BoxFit.fill),
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.circular(8)
+                isLoadingData
+                    ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xffDD6A03),
+                  ),
+                ) :SizedBox(
+                  height: height * 0.90,
+                  child: datum.isNotEmpty?ListView.builder(
+                    itemCount: datum.length,
+                    itemBuilder: (context, index) {
+                      beauticianId = datum[index].id;
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) {
+                                  return services(beauticianId: datum[index].id,businessName: datum[index].businessName);
+                                }),
+                          );
+                          print("selectedFavoritesId ======> ${datum[index]}");
+                        },
+                        child: Container(
+                          width: width,
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15,right: 15),
+                                child: Container(
+                                    height: height * 0.20,
+                                    width: width,
+                                    margin: const EdgeInsets.all(5),
+                                    alignment: Alignment.center,
+                                    child: Center(child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.error),
+                                        SizedBox(height: height*0.02,),
+                                        const Text("No Image")
+                                      ],
+                                    ))
                                 ),
-                                margin: const EdgeInsets.all(5),
                               ),
-                            ),
-                            Padding(padding: const EdgeInsets.only(left: 20,right: 15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(datum[index].businessName,style: const TextStyle(color: Colors.black,fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w600)),
-                                        ),
-                                        SizedBox(width: width*0.01),
-                                        SizedBox(height: height*0.03,
-                                          child:const Image(image: AssetImage("assets/images/Subtract (1).png")),
-                                        ),
-                                        const Spacer(),
-                                        GestureDetector(
-                                          onTap: () {
-                                            if (datum[index].isSelected = false) {
-                                              setState(() {
-                                                removeFromMyFavorites();
-                                                datum[index].isSelected = false;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                addToMyFavorites();
-                                                datum[index].isSelected = true;
-                                              });
-                                            }
-                                          },
+                              Padding(padding: const EdgeInsets.only(left: 20,right: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(datum[index].businessName,style: const TextStyle(color: Colors.black,fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w600)),
+                                          ),
+                                          SizedBox(width: width*0.01),
+                                          SizedBox(height: height*0.03,
+                                            child:const Image(image: AssetImage("assets/images/Subtract (1).png")),
+                                          ),
+                                          const Spacer(),
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (datum[index].isSelected = false) {
+                                                setState(() {
+                                                  removeFromMyFavorites();
+                                                  datum[index].isSelected = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  addToMyFavorites();
+                                                  datum[index].isSelected = true;
+                                                });
+                                              }
+                                            },
                                             child: Icon(Icons.favorite,color: datum[index].isSelected! ? const Color(0xFFDD5103) : Colors.black45,size: 30),
-                                        ),
-                                        SizedBox(width: width*0.02)
+                                          ),
+                                          SizedBox(width: width*0.02)
 
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5,),
-                                    datum[index].address.isEmpty
-                                        ? const SizedBox()
-                                        : Text("${datum[index].address[0].apartment} ${datum[index].address[0].province} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",style: const TextStyle(color: Colors.black,fontSize: 12,fontFamily: "spartan")),
-                                    const SizedBox(height: 5,),
-                                    Row(
-                                      children: [
-                                        SizedBox(height: height*0.02,
-                                          child:const Image(image: AssetImage("assets/images/Star 1.png")),
-                                        ),
-                                        const SizedBox(width: 5,),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          child: const Text("4.0 Ratings",style: TextStyle(color: Colors.black,fontSize: 14,fontFamily: "spartan")),
-                                        ),
-                                        const SizedBox(width: 5,),
-                                        Container(
-                                          alignment: Alignment.topLeft,
-                                          child: const Text("120reviews",style: TextStyle(color: Colors.grey,fontSize: 14,fontFamily: "spartan")),
-                                        ),
-
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10,),
-                                  ],
-                                )
-                            )
-                          ],
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5,),
+                                      datum[index].address.isEmpty
+                                          ? const SizedBox()
+                                          : Text("${datum[index].address[0].apartment} ${datum[index].address[0].province} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",style: const TextStyle(color: Colors.black,fontSize: 12,fontFamily: "spartan")),
+                                      const SizedBox(height: 5,),
+                                      // Row(
+                                      //   children: [
+                                      //     SizedBox(height: height*0.02,
+                                      //       child:const Image(image: AssetImage("assets/images/Star 1.png")),
+                                      //     ),
+                                      //     const SizedBox(width: 5,),
+                                      //     Container(
+                                      //       alignment: Alignment.topLeft,
+                                      //       child: const Text("4.0 Ratings",style: TextStyle(color: Colors.black,fontSize: 14,fontFamily: "spartan")),
+                                      //     ),
+                                      //     const SizedBox(width: 5,),
+                                      //     Container(
+                                      //       alignment: Alignment.topLeft,
+                                      //       child: const Text("120reviews",style: TextStyle(color: Colors.grey,fontSize: 14,fontFamily: "spartan")),
+                                      //     ),
+                                      //
+                                      //   ],
+                                      // ),
+                                      const SizedBox(height: 10,),
+                                    ],
+                                  )
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },):
-                const Center(
-                  child: Text("No Data Found!!!"),
-                ),
-              )
-            ],
-          )
+                      );
+                    },):
+                  const Center(
+                    child: Text("No Data Found!!!"),
+                  ),
+                )
+              ],
+            )
         ),
       ),
     );
@@ -663,7 +669,7 @@ class Datum {
     lastName: json["lastName"] ?? "",
     workSpaceImgs: List<dynamic>.from(json["workSpaceImgs"] ?? [].map((x) => x)),
     country: json["country"] ?? "",
-    countryCode: json["country_code"] ?? "",
+    countryCode: (json["country_code"] ?? "").toString(),
     beauticianServiceId: List<String>.from(json["beauticianServiceId"] ?? [].map((x) => x)),
     isProvideService: json["isProvideService"] ?? 0,
     isProvideProduct: json["isProvideProduct"] ?? 0,

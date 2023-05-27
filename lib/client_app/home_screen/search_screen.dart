@@ -48,14 +48,15 @@ class _searchScreenState extends State<searchScreen> {
   TextEditingController search = TextEditingController();
   String yearlyv = '2022';
   ServicesFilter? sf;
-  bool isLoading = false;
+  bool isLoading = true;
   List<Datum> datum = [];
   MyFavorites? mf;
   String beauticianId = "";
   String businessName = "";
   List businessAddress = [];
-  String latitude = "";
-  String longitude = "";
+  bool? like;
+  // String latitude = "";
+  // String longitude = "";
   List<String> selectedServiceByAdvance = [];
   var yearly = [
     '2022',
@@ -77,13 +78,7 @@ class _searchScreenState extends State<searchScreen> {
   @override
   void initState() {
     super.initState();
-    if((widget.latitude ?? "").isNotEmpty) {
-      latitude = widget.latitude ?? "";
-      longitude = widget.longitude ?? "";
       findServices();
-    } else {
-      getLocation();
-    }
   }
 
   @override
@@ -400,6 +395,7 @@ class _searchScreenState extends State<searchScreen> {
                                     beauticianId = datum[index].id;
                                     businessName = datum[index].businessName;
                                     businessAddress = datum[index].address;
+                                     like = datum[index].isFav!;
                                     return GestureDetector(
                                       onTap: () {
                                         // print("data =====> ${datum[index].id}");
@@ -482,19 +478,18 @@ class _searchScreenState extends State<searchScreen> {
                                                         const Spacer(),
                                                         GestureDetector(
                                                           onTap: () {
-                                                            if (datum[index].isSelected = false) {
+                                                            if (like!) {
                                                               setState(() {
-                                                                removeFromMyFavorites();
-                                                                datum[index].isSelected = false;
+                                                                removeFromMyFavorites(datum[index].id);
                                                               });
                                                             } else {
                                                               setState(() {
-                                                                addToMyFavorites();
-                                                                datum[index].isSelected = true;
+                                                                addToMyFavorites(datum[index].id
+                                                                );
                                                               });
                                                             }
                                                           },
-                                                          child: Icon(Icons.favorite,color: datum[index].isSelected ? const Color(0xFFDD5103) : Colors.black45,size: 30),
+                                                          child: Icon( like! ? Icons.favorite : Icons.favorite_border_outlined,color: const Color(0xFFDD5103),size: 30),
                                                         ),
                                                         SizedBox(
                                                             width: width * 0.02)
@@ -506,7 +501,7 @@ class _searchScreenState extends State<searchScreen> {
                                                     datum[index].address.isEmpty
                                                         ? const SizedBox()
                                                         : Text(
-                                                            "${datum[index].address[0].apartment} ${datum[index].address[0].province} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",
+                                                            "${datum[index].address[0].apartment} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",
                                                             style: const TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -579,9 +574,17 @@ class _searchScreenState extends State<searchScreen> {
                             width: width*0.20,
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return BeuticianLocation(locationData: datum, lat: double.parse(latitude), long: double.parse(longitude),);
-                                },));
+                                if((widget.latitude ?? "").isEmpty) {
+                                  getLocation();
+                                } else {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return BeuticianLocation(
+                                          locationData: datum,
+                                          lat: double.parse(widget.latitude!),
+                                          long: double.parse(widget.longitude!),);
+                                      },));
+                                }
                               },
                                 child: Image.asset("assets/images/Group 12530.png",fit: BoxFit.fill,)
                             ),
@@ -596,7 +599,7 @@ class _searchScreenState extends State<searchScreen> {
     );
   }
 
-  addToMyFavorites() async {
+  addToMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.addToMyFavorites);
     try {
       setState(() {
@@ -624,6 +627,7 @@ class _searchScreenState extends State<searchScreen> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           mf = MyFavorites.fromjson(map);
+          like = true;
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,
@@ -632,6 +636,7 @@ class _searchScreenState extends State<searchScreen> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
+          findServices();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -652,7 +657,7 @@ class _searchScreenState extends State<searchScreen> {
     }
   }
 
-  removeFromMyFavorites() async {
+  removeFromMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.removeFromMyFavorites);
     try {
       setState(() {
@@ -680,6 +685,7 @@ class _searchScreenState extends State<searchScreen> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           mf = MyFavorites.fromjson(map);
+          like = false;
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,
@@ -688,6 +694,7 @@ class _searchScreenState extends State<searchScreen> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
+          findServices();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -726,8 +733,8 @@ class _searchScreenState extends State<searchScreen> {
         "maxPrice": widget.priceValue,
         "gender": widget.gender ?? "",
         "serveAt": widget.myPlace ?? "",
-        "longitude": longitude,
-        "latitude": latitude,
+        "longitude": widget.longitude ?? "",
+        "latitude": widget.latitude ?? "",
         "sortBy": widget.sortBy ?? ""
       };
       print("addPersonalInfo url is ====> $posturi ");
@@ -741,14 +748,14 @@ class _searchScreenState extends State<searchScreen> {
       log(" addPersonalInfo res body is ====>  ${response.body}");
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
-
         if (map['status'] == 200) {
           setState(() {
             sf = ServicesFilter.fromJson(jsonDecode(response.body));
             datum = sf!.data.data;
+            like;
+            print("like =====> $like");
           });
         }
-
         setState(() {
           isLoading = false;
         });
@@ -791,13 +798,13 @@ class _searchScreenState extends State<searchScreen> {
       Position? p = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
-      latitude = p.latitude.toString();
-      longitude = p.longitude.toString();
-      print("///lat${p.latitude}");
-      print("///long${p.longitude}");
-      findServices();
-      setState(() {});
-
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) {
+            return BeuticianLocation(
+              locationData: datum,
+              lat: double.parse(p.latitude.toString()),
+              long: double.parse(p.longitude.toString()),);
+          },));
     }
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -871,7 +878,7 @@ class Datum {
   Location? location;
   List<BeauticianServiceDetail> beauticianServiceDetails;
   List<Address> address;
-  bool isSelected;
+  bool? isFav;
 
   Datum({
     required this.id,
@@ -900,7 +907,7 @@ class Datum {
     this.location,
     required this.beauticianServiceDetails,
     required this.address,
-    this.isSelected = false,
+    this.isFav,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -936,6 +943,7 @@ class Datum {
                 .map((x) => BeauticianServiceDetail.fromJson(x))),
         address:
             List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
+    isFav: json["isFav"] ?? false
       );
 
   Map<String, dynamic> toJson() => {
@@ -967,6 +975,7 @@ class Datum {
         "beauticianServiceDetails":
             List<dynamic>.from(beauticianServiceDetails.map((x) => x.toJson())),
         "address": List<Address>.from(address.map((x) => x)),
+    "isFav": isFav
       };
 }
 

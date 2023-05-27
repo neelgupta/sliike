@@ -12,12 +12,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/type_first_second_bussines/bussinessinfo_type.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../services/address_service.dart';
 
 
 class BussIneSSInfo extends StatefulWidget {
@@ -32,13 +35,18 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
   String lat = "";
   String long = "";
   double? lati, longi;
+  bool isLoading = false;
+  GetProvince? getProvince;
+  AddressService addressService = AddressService();
   GoogleMapController? mapController;
+  String? provinceValue;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getLocation();
+    getProvinceData();
     phoneNumbercontriller.text = Helper.prefs!.getString(UserPrefs.keybusinessNumber)!;
   }
 
@@ -53,6 +61,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
     areaorpin = "${places.thoroughfare},${places.postalCode}";
     locality = "${places.locality}";
     address = "${places.street},${places.locality},${places.subLocality}";
+    enterYourAddresscontriller.text = address;
     countrycontriller.text = "${places.country}";
     streetAddresscontriller.text = "${places.administrativeArea}";
     citycontriller.text = "${places.locality}";
@@ -186,7 +195,11 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                             ),
                           )
                         ]))),
-            body: SingleChildScrollView(
+            body:  isLoading
+                ? const Center(
+              child: CircularProgressIndicator(
+              ),
+            ): SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -239,19 +252,19 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                           businessnamestatus = false;
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 20),
+                          contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "Business Name",
-                          hintStyle: TextStyle(color: Color(0xff292929)),
+                          hintStyle: const TextStyle(color: Color(0xff292929)),
                           labelText: "Business Name",
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                               fontFamily: 'spartan', color: Colors.black54),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide(color: Colors.black38),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide(color: Colors.black38),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
                         ),
                       ),
@@ -283,7 +296,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                           LengthLimitingTextInputFormatter(10),
                         ],
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 20),
+                          contentPadding: const EdgeInsets.only(left: 20),
                           //  hintText: "+1 (514) 888-7722",hintStyle: TextStyle(color: Color(0xff292929)),
                           labelText: "Phone Number",
 
@@ -471,27 +484,71 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                         : Container(
                             height: 15,
                           ),
-                    TextField(
-                      controller: provincecontriller,
-                      onChanged: (value) {
-                        provinceStatus = false;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 20),
-                        hintText: "Province",
-                        hintStyle: const TextStyle(color: Color(0xff414141)),
-                        labelStyle: const TextStyle(
-                            fontFamily: 'spartan', color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.black38),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.black38),
+                    DropdownButtonHideUnderline(
+                      child: Container(
+                        height: 48,
+                        width: width,
+                        padding: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: const Color(0xff707070), width: 1)),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: const Padding(
+                            padding: EdgeInsets.only(left: 0),
+                            child: Text(
+                              'Province',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: "spartan",
+                                color: Color(0xff707070),
+                              ),
+                            ),
+                          ),
+                          items: getProvince==null?[]:(getProvince!.data ?? []).map((items) {
+                            return DropdownMenuItem(
+                              value: items.id,
+                              child: Text(
+                                items.name ?? "",
+                                style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                              ),
+                            );
+                          }).toList(),
+                          value: provinceValue,
+                          onChanged: (value) {
+                            setState(() {
+                              provinceValue = value.toString();
+                            });
+                          },
+                          icon: (const Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                            color: Color(0xff707070),
+                          )),
                         ),
                       ),
                     ),
+                    // TextField(
+                    //   controller: provincecontriller,
+                    //   onChanged: (value) {
+                    //     provinceStatus = false;
+                    //   },
+                    //   decoration: InputDecoration(
+                    //     contentPadding: const EdgeInsets.only(left: 20),
+                    //     hintText: "Province",
+                    //     hintStyle: const TextStyle(color: Color(0xff414141)),
+                    //     labelStyle: const TextStyle(
+                    //         fontFamily: 'spartan', color: Colors.black54),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5),
+                    //       borderSide: const BorderSide(color: Colors.black38),
+                    //     ),
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5),
+                    //       borderSide: const BorderSide(color: Colors.black38),
+                    //     ),
+                    //   ),
+                    // ),
                     provinceStatus
                         ? Container(
                             alignment: Alignment.topLeft,
@@ -564,7 +621,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     // apartmentStoreStatus
                     //     ? Container(
                     //         alignment: Alignment.topLeft,
@@ -587,18 +644,18 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                           cityStatus = false;
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 20),
+                          contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "City",
-                          hintStyle: TextStyle(color: Color(0xff414141)),
-                          labelStyle: TextStyle(
+                          hintStyle: const TextStyle(color: Color(0xff414141)),
+                          labelStyle: const TextStyle(
                               fontFamily: 'spartan', color: Colors.black54),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide(color: Colors.black38),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide(color: Colors.black38),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
                         ),
                       ),
@@ -664,7 +721,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                         String businessNumber = phoneNumbercontriller.text;
                         String address = enterYourAddresscontriller.text;
                         String country = countrycontriller.text;
-                        String province = provincecontriller.text;
+                        String? province = provinceValue;
                         String street_address = streetAddresscontriller.text;
                         String apartment = apartmentStorecontriller.text;
                         String city = citycontriller.text;
@@ -689,7 +746,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                           } else if (country.isEmpty) {
                             canadaStatus = true;
                             status = "Please Enter country";
-                          } else if (province.isEmpty) {
+                          } else if (provinceValue!.isEmpty) {
                             provinceStatus = true;
                             status = "Please Enter province";
                           } else if (street_address.isEmpty) {
@@ -707,7 +764,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                                   businessNumber,
                                   address,
                                   country,
-                                  province,
+                                  province!,
                                   street_address,
                                   apartment,
                                   city,
@@ -807,8 +864,8 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
           color: Colors.white,
           child: GestureDetector(
             onTap: () async {
+              getlatitude(double.parse(lat),double.parse(long));
               setState(() {
-                enterYourAddresscontriller.text = address;
                 mapscreen = false;
               });
             },
@@ -862,8 +919,10 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                       markers: Set.from(markers),
                       initialCameraPosition: _initialLocation,
                       onCameraMove: (CameraPosition cameraPositiona) {
-                        getlatitude(cameraPositiona.target.latitude,
-                            cameraPositiona.target.longitude);
+                        lat = cameraPositiona.target.latitude.toString();
+                        long = cameraPositiona.target.longitude.toString();
+                        // getlatitude(cameraPositiona.target.latitude,
+                        //     cameraPositiona.target.longitude);
                         //   getlatitude(p!.latitude, p!.longitude);
                       },
                       // onCameraIdle: () {
@@ -1046,6 +1105,11 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
     } finally {
       Loader.hide();
     }
+  }
+  getProvinceData() async {
+    getProvince = await addressService.getProvince();
+    isLoading = false;
+    setState(() {});
   }
 }
 

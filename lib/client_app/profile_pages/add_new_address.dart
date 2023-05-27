@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
+import 'package:new_sliikeapps_apps/services/address_service.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +17,7 @@ class add_new_address extends StatefulWidget {
   String Apartment_suite;
   String Province_name;
   String Zip_Code;
+  bool addressValue;
 
   add_new_address({
     Key? key,
@@ -23,6 +26,7 @@ class add_new_address extends StatefulWidget {
     required this.Apartment_suite,
     required this.Province_name,
     required this.Zip_Code,
+    required this.addressValue
   }) : super(key: key);
 
   @override
@@ -33,12 +37,15 @@ class _add_new_addressState extends State<add_new_address> {
   bool home = true;
   bool work = false;
   bool other = false;
-  bool isLoading = false;
+  AddressService addressService = AddressService();
+  GetProvince? getProvince;
+  bool isLoading = true;
   String ad_value = "";
+  String? province;
   TextEditingController Address_home = TextEditingController();
   TextEditingController Address = TextEditingController();
   TextEditingController apartment = TextEditingController();
-  TextEditingController province = TextEditingController();
+  // TextEditingController province = TextEditingController();
   TextEditingController zip_code = TextEditingController();
   ClientAddress? a;
 
@@ -54,12 +61,18 @@ class _add_new_addressState extends State<add_new_address> {
       apartment.text = widget.Apartment_suite;
     }
     if (widget.Province_name != "") {
-      province.text = widget.Province_name;
+      province = widget.Province_name;
     }
     if (widget.Zip_Code != "") {
       zip_code.text = widget.Zip_Code;
     }
+    if(widget.addressValue != false){
+      home = widget.addressValue;
+      work = widget.addressValue;
+      other = widget.addressValue;
+    }
     super.initState();
+    getProvinceData();
   }
 
   @override
@@ -389,24 +402,68 @@ class _add_new_addressState extends State<add_new_address> {
                     SizedBox(
                       height: height * 0.03,
                     ),
-                    TextField(
-                      controller: province,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 20),
-                        hintText: "Province",
-                        labelText: "Province",
-                        labelStyle: const TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'spartan',
-                            color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.black38),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.black38),
+                    // TextField(
+                    //   controller: province,
+                    //   cursorColor: Colors.black,
+                    //   decoration: InputDecoration(
+                    //     contentPadding: const EdgeInsets.only(left: 20),
+                    //     hintText: "Province",
+                    //     labelText: "Province",
+                    //     labelStyle: const TextStyle(
+                    //         fontSize: 12,
+                    //         fontFamily: 'spartan',
+                    //         color: Colors.black54),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5),
+                    //       borderSide: const BorderSide(color: Colors.black38),
+                    //     ),
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5),
+                    //       borderSide: const BorderSide(color: Colors.black38),
+                    //     ),
+                    //   ),
+                    // ),
+                    DropdownButtonHideUnderline(
+                      child: Container(
+                        height: 48,
+                        width: width,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Color(0xff707070), width: 1)),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: Text(
+                              'Province',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: "spartan",
+                                color: Color(0xff707070),
+                              ),
+                            ),
+                          ),
+                          items: getProvince==null?[]:(getProvince!.data ?? []).map((items) {
+                            return DropdownMenuItem(
+                              value: items.id,
+                              child: Text(
+                                items.name ?? "",
+                                style: TextStyle(fontSize: 14, color: Color(0xff292929)),
+                              ),
+                            );
+                          }).toList(),
+                          value: province,
+                          onChanged: (value) {
+                            setState(() {
+                              province = value.toString();
+                            });
+                          },
+                          icon: (Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                            color: Color(0xff707070),
+                          )),
                         ),
                       ),
                     ),
@@ -506,12 +563,12 @@ class _add_new_addressState extends State<add_new_address> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
-      if (home = true) {
+      if (home == true && work == false && other == false) {
         addressValue = "Home";
-      } else if (work = true) {
+      } else if (home == false && work == true && other == false) {
         addressValue = "Work";
       } else {
         addressValue = "Other";
@@ -519,13 +576,13 @@ class _add_new_addressState extends State<add_new_address> {
       ad_value = addressValue;
 
       var bodydata = {
-        "addressType": addressValue,
+        "addressType": ad_value,
         "address": Address.text.trim(),
-        "province": province.text.trim(),
+        "province": province,
         "street_address": Address_home.text.trim(),
         "apartment": apartment.text.trim(),
         "post_code": zip_code.text.trim(),
-        "coordinates": [41.3326643802986, 19.8263257802456],
+        // "coordinates": [41.3326643802986, 19.8263257802456],
       };
 
       print("hearders :: $headers ");
@@ -573,6 +630,12 @@ class _add_new_addressState extends State<add_new_address> {
         isLoading = false;
       });
     }
+  }
+
+  getProvinceData() async {
+    getProvince = await addressService.getProvince();
+    isLoading = false;
+    setState(() {});
   }
 }
 

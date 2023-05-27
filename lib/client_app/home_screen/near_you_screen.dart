@@ -246,7 +246,7 @@ class _NearYouState extends State<NearYou> {
             // )
             InkWell(
               onTap: (){
-                Navigator.pop(context, [latitude,longitude]);
+                Navigator.pop(context, [latitude,longitude,address]);
               },
               child: Container(
                 alignment: Alignment.center,

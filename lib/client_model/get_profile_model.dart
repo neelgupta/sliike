@@ -50,7 +50,7 @@ class ProfileData {
   DateTime? dob;
   String? gender;
   String? profileImage;
-  List<Address> address;
+  List<AddressData> address;
   // DateTime createdAt;
   // DateTime updatedAt;
   int v;
@@ -80,7 +80,7 @@ class ProfileData {
         country: json["country"] ?? "",
         gender: json["gender"] ?? "",
         profileImage: json["profileImage"] ?? "",
-    address: List<Address>.from((json["address"] ?? []).map((x) => Address.fromJson(x))),
+    address: List<AddressData>.from((json["address"] ?? []).map((x) => AddressData.fromJson(x))),
 
     countryCode: json["country_code"] ?? 0,
         isDeleted: json["isDeleted"] ?? 0,
@@ -102,7 +102,7 @@ class ProfileData {
         "profileImage": profileImage,
         "gender": gender,
         "DOB": dob!.toIso8601String(),
-        "address": List<Address>.from(address.map((x) => x)),
+        "address": List<AddressData>.from(address.map((x) => x)),
         // "createdAt": createdAt.toIso8601String(),
         // "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
@@ -110,18 +110,18 @@ class ProfileData {
 }
 
 
-class Address {
+class AddressData {
   AddressId addressId;
   String addressType;
   String id;
 
-  Address({
+  AddressData({
     required this.addressId,
     required this.addressType,
     required this.id,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
+  factory AddressData.fromJson(Map<String, dynamic> json) => AddressData(
     addressId: AddressId.fromJson(json["addressId"] ?? {}),
     addressType: json["addressType"] ?? "",
     id: json["_id"] ?? "",

@@ -11,16 +11,17 @@ import 'package:new_sliikeapps_apps/client_app/profile_pages/profile.dart';
 import 'home_appointments.dart';
 
 class homescreen extends StatefulWidget {
-  const homescreen({Key? key}) : super(key: key);
+  int selectedIndex = 0;
+
+  homescreen({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   State<homescreen> createState() => _homescreenState();
 }
 
 class _homescreenState extends State<homescreen> {
-  int _selectedIndex = 0;
   final List _screens = [
-    const home_explore(),
+    home_explore(),
     const home_appointments(),
     // const products(),
     // const brands(),
@@ -29,18 +30,18 @@ class _homescreenState extends State<homescreen> {
 
   void _onselectIndex(int index) {
     setState(() {
-      _selectedIndex = index;
+      widget.selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: _screens[widget.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: const IconThemeData(color: Color(0xFFDD5103)),
         iconSize: 10,
-        currentIndex: _selectedIndex,
+        currentIndex: widget.selectedIndex,
         onTap: _onselectIndex,
         selectedItemColor: const Color(0xFFDD5103),
         items: [
@@ -48,8 +49,9 @@ class _homescreenState extends State<homescreen> {
             icon: Image(
               image: const AssetImage("assets/images/Group 21.png"),
               width: 20,
-              color:
-                  _selectedIndex == 0 ? const Color(0xFFDD5103) : Colors.grey,
+              color: widget.selectedIndex == 0
+                  ? const Color(0xFFDD5103)
+                  : Colors.grey,
             ),
             label: "explore".tr(),
           ),
@@ -57,32 +59,34 @@ class _homescreenState extends State<homescreen> {
               icon: Image(
                 image: const AssetImage("assets/images/note.png"),
                 width: 20,
-                color:
-                    _selectedIndex == 1 ? const Color(0xFFDD5103) : Colors.grey,
+                color: widget.selectedIndex == 1
+                    ? const Color(0xFFDD5103)
+                    : Colors.grey,
               ),
               label: "appointments".tr()),
-          // BottomNavigationBarItem(
-          //     icon: Image(
-          //       image: const AssetImage("assets/images/archive.png"),
-          //       width: 20,
-          //       color:
-          //           _selectedIndex == 2 ? const Color(0xFFDD5103) : Colors.grey,
-          //     ),
-          //     label: "products".tr()),
-          // BottomNavigationBarItem(
-          //     icon: Image(
-          //       image: const AssetImage("assets/images/category.png"),
-          //       width: 20,
-          //       color:
-          //           _selectedIndex == 3 ? const Color(0xFFDD5103) : Colors.grey,
-          //     ),
-          //     label: "brands".tr()),
+// BottomNavigationBarItem(
+//     icon: Image(
+//       image: const AssetImage("assets/images/archive.png"),
+//       width: 20,
+//       color:
+//           _selectedIndex == 2 ? const Color(0xFFDD5103) : Colors.grey,
+//     ),
+//     label: "products".tr()),
+// BottomNavigationBarItem(
+//     icon: Image(
+//       image: const AssetImage("assets/images/category.png"),
+//       width: 20,
+//       color:
+//           _selectedIndex == 3 ? const Color(0xFFDD5103) : Colors.grey,
+//     ),
+//     label: "brands".tr()),
           BottomNavigationBarItem(
               icon: Image(
                 image: const AssetImage("assets/images/menu.png"),
                 width: 20,
-                color:
-                    _selectedIndex == 4 ? const Color(0xFFDD5103) : Colors.grey,
+                color: widget.selectedIndex == 4
+                    ? const Color(0xFFDD5103)
+                    : Colors.grey,
               ),
               label: "more".tr()),
         ],

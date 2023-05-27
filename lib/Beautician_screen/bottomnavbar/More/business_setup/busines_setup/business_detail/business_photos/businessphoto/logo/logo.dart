@@ -223,6 +223,8 @@ class _logoState extends State<logo> {
         p = Temperatures.fromJson(map);
         getimages = p?.data?.logo!.toString();
         print(getimages);
+
+
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

@@ -51,10 +51,8 @@ class _locaionAllowState extends State<locaionAllow> {
     super.initState();
     getLocation();
   }
-  //CameraPosition _initialLocation = CameraPosition(target: startLocation, zoom: 20);
   getlatitude(double lat, double long) async {
-    List<Placemark> placemarks =
-    await placemarkFromCoordinates(lat,long);
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat,long);
     Placemark places = placemarks[0];
     //get pl// ace name from lat and lang
       print("placemarks---$placemarks");
@@ -117,7 +115,6 @@ class _locaionAllowState extends State<locaionAllow> {
       startLocation = LatLng(lati!, longi!);
 
       print("startLocation==$startLocation");
-      //CameraPosition(target: startLocation, zoom: 20);
       print("startLocation==$startLocation");
       // showLocation =  LatLng(lati!, longi!);
       _initialLocation = CameraPosition(target: startLocation, zoom: 20);
@@ -130,9 +127,7 @@ class _locaionAllowState extends State<locaionAllow> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  ///,,,,,,,,,,,,,,,
 
-  ///..........
 
   @override
   Widget build(BuildContext context) {
@@ -271,38 +266,8 @@ class _locaionAllowState extends State<locaionAllow> {
                       zoomControlsEnabled: false,
                       zoomGesturesEnabled: true,
                       polylines: Set<Polyline>.of(polylines.values),
-
                       markers: Set.from(markers),
-                      // onCameraMove: (CameraPosition cameraPositiona) {
-                      //   _initialLocation ; //when map is dragging\
-                      // },
-                                       // onCameraIdle: () async {
-                        //when map drag stops
-                        // List<Placemark> placemarks =
-                        //     await placemarkFromCoordinates(
-                        //         cameraPosition!.target.latitude,
-                        //         cameraPosition!.target.longitude);
-                        // Placemark places = placemarks[0];
-                        //
-                        //
-                        // setState(() {
-                        //   //get pl// ace name from lat and lang
-                        //   print("placemarks---$placemarks");
-                        //
-                        //   tempsadress =
-                        //       "${places.country}Street Address===${places.street}City===${places.locality}\tsubAdministrativeArea===${places.subAdministrativeArea}\tpostalCode===${places.postalCode}\tsubLocality===${places.subLocality}\t${places.name}\t${places.subThoroughfare}";
-                        //   citypostlcode =
-                        //       "${placemarks.first.subAdministrativeArea},${placemarks.first.postalCode}";
-                        //   tempscountry = "${placemarks.first.country}";
-                        //   tempslocation = places.administrativeArea.toString();
-                        //   tempsstreetadress = places.street.toString();
-                        //   tempscity = places.locality.toString();
-                        //   tempspostalcode = places.postalCode.toString();
 
-                          ///,,,,,
-                      //  }
-    //  );
-                     // },
                     ),
                   ),
                   Align(

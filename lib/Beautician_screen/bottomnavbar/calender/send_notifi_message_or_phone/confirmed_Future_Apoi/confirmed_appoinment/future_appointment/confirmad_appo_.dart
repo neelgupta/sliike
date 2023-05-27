@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/confirmed_Future_Apoi/confirmed_appoinment/future_appointment/edit_apoinment/edit_add_service.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/payment_detail/confirmed_payment.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
-import '../../../../../../calender/send_notifi_message_or_phone/calender_screen/calender.dart';
-import '../../../../../../calender/send_notifi_message_or_phone/confirmed_Future_Apoi/confirmed_appoinment/future_appointment/edit_apoinment/edit_add_service.dart';
-import '../../../../../../calender/send_notifi_message_or_phone/payment_detail/confirmed_payment.dart';
 
 class confirmed_fut_appoinment extends StatefulWidget {
   const confirmed_fut_appoinment({Key? key}) : super(key: key);

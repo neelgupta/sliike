@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 
-import '../../../../../../../calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 
 class edit_add_service extends StatefulWidget {
   const edit_add_service({Key? key}) : super(key: key);

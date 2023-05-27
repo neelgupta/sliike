@@ -1,5 +1,6 @@
 class ApiUrlList {
   static String baseUrl = 'https://hungry-duck-zipper.cyclic.app/api/v1/';
+  // static String baseUrl = 'https://sliike-server.onrender.com/api/v1/';
   static String logowork = 'https://sliike-server.onrender.com/api/v1/';
   // static String baseUrl = 'https://cyan-friendly-reindeer.cyclic.app/api/v1/';
 
@@ -17,6 +18,7 @@ class ApiUrlList {
   static String fetchServiceTypes = "${baseUrl}option/fetchServiceTypes";
   static String getClientPersonalInfo =
       "${baseUrl}client/getClientPersonalInfo";
+  static String getProvince = "${baseUrl}option/getProvinceList";
   static String addPersonalInfo = "${baseUrl}client/addPersonalInfo";
   static String updateProfileImage = "${baseUrl}client/updateProfileImage";
   static String addClientAddress = "${baseUrl}client/addClientAddress";
@@ -36,6 +38,11 @@ class ApiUrlList {
   static String getAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
   static String getRecentBeauticians = "${baseUrl}client/getRecentBeauticians";
   static String getBusinessDeatils = "${baseUrl}client/getBusinessDeatils";
+  static String getRecomadedBeauticians = "${baseUrl}client/getRecomadedBeauticians";
+  static String getSingleAppointmentData = "${baseUrl}client/getSingleAppointmentData/";
+  static String cancelAppointment = "${baseUrl}client/cancelAppointment/";
+  static String updateAppointment = "${baseUrl}client/updateAppointment/";
+  static String appointmentDetails = "${baseUrl}client/appointmentDetails";
   static String postlogoimage = "${logowork}beautician/addBusinessLogo";
   static String addWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
   static String getlogoimage = "${baseUrl}beautician/getBeauticianLogoImg";
@@ -44,7 +51,6 @@ class ApiUrlList {
   static String getUpcomingAppointmentList =
       "${baseUrl}client/getAppointmentList?status=upcoming";
   static String getpastAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
-  static String getSingleAppointmentData = "${baseUrl}client/getSingleAppointmentData/";
 
   ///Beautician Apps
   static String addBusinessDetail = "${baseUrl}beautician/addBusinessDetail";
@@ -73,4 +79,9 @@ class ApiUrlList {
 
 //  static SharedPreferences?preferences;
   static String sucsessMsg = "";
+
+
+  /// Payment APIs
+  static String paymentDetail = '${baseUrl}client/getPrePaymentDetails';
+  static String makePayment = '${baseUrl}client/maKePayment';
 }

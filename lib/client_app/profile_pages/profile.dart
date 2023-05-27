@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/clients/clients_detail/payment/payments.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/home_appointments.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/products_page/cart.dart';
 import 'package:new_sliikeapps_apps/client_app/products_page/my_order.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/add_new_address.dart';
@@ -40,7 +42,7 @@ class _profileState extends State<profile> {
 
   // PersonalInfo? p;
   ProfileData? profileData;
-  Address? addressData;
+  AddressData? addressData;
 
   File? userImageFile;
 
@@ -136,13 +138,13 @@ class _profileState extends State<profile> {
         MediaQuery.of(context).padding.left;
     return isLoading
         ? const Center(
-            child: CircularProgressIndicator(
-              color: Color(0xffDD6A03),
-            ),
-          )
+      child: CircularProgressIndicator(
+        color: Color(0xffDD6A03),
+      ),
+    )
         : editProfile
-            ? editProfileBody(height, width)
-            : viewProfileBody(height, width);
+        ? editProfileBody(height, width)
+        : viewProfileBody(height, width);
   }
 
   Widget viewProfileBody(double height, double width) {
@@ -163,13 +165,13 @@ class _profileState extends State<profile> {
                       borderRadius: const BorderRadius.all(Radius.circular(200)),
                       child: profileData!=null && profileData?.profileImage != ""
                           ? Image.network(
-                              profileData!.profileImage!,
-                              fit: BoxFit.cover,
-                            )
+                        profileData!.profileImage!,
+                        fit: BoxFit.cover,
+                      )
                           : Image.asset(
-                              "assets/images/Ellipse 202.png",
-                              fit: BoxFit.fill,
-                            ),
+                        "assets/images/Ellipse 202.png",
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -289,76 +291,83 @@ class _profileState extends State<profile> {
             //   ),
             // ),
             // SizedBox(height: height * 0.01),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 15),
-            //   child: Container(
-            //     padding: const EdgeInsets.symmetric(
-            //       vertical: 17,
-            //     ),
-            //     decoration: const BoxDecoration(
-            //         border: Border(bottom: BorderSide(color: Colors.black12))),
-            //     child: Row(
-            //       children: [
-            //         SizedBox(
-            //           height: 30,
-            //           child: Image.asset("assets/images/calendar-2.png"),
-            //         ),
-            //         const SizedBox(
-            //           width: 15,
-            //         ),
-            //         textComoon("my_appointments", 14, const Color(0xff414141),
-            //             FontWeight.w500),
-            //         const Spacer(),
-            //         SizedBox(
-            //           height: 15,
-            //           width: 30,
-            //           child: Image.asset("assets/images/righticon.png"),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: height * 0.01),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.push(context, MaterialPageRoute(
-            //       builder: (context) {
-            //         return const my_favorites();
-            //       },
-            //     ));
-            //   },
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 15),
-            //     child: Container(
-            //       padding: const EdgeInsets.symmetric(
-            //         vertical: 17,
-            //       ),
-            //       decoration: const BoxDecoration(
-            //           border:
-            //               Border(bottom: BorderSide(color: Colors.black12))),
-            //       child: Row(
-            //         children: [
-            //           SizedBox(
-            //             height: 30,
-            //             child: Image.asset("assets/images/heart-1.png"),
-            //           ),
-            //           const SizedBox(
-            //             width: 15,
-            //           ),
-            //           textComoon("my_favorites", 14, const Color(0xff414141),
-            //               FontWeight.w500),
-            //           const Spacer(),
-            //           SizedBox(
-            //             height: 15,
-            //             width: 30,
-            //             child: Image.asset("assets/images/righticon.png"),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: height * 0.01),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return  homescreen(selectedIndex: 1,);
+                },));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
+                  ),
+                  decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Image.asset("assets/images/calendar-2.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      textComoon("my_appointments", 14, const Color(0xff414141),
+                          FontWeight.w500),
+                      const Spacer(),
+                      SizedBox(
+                        height: 15,
+                        width: 30,
+                        child: Image.asset("assets/images/righticon.png"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: height * 0.01),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const my_favorites();
+                  },
+                ));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
+                  ),
+                  decoration: const BoxDecoration(
+                      border:
+                      Border(bottom: BorderSide(color: Colors.black12))),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Image.asset("assets/images/heart-1.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      textComoon("my_favorites", 14, const Color(0xff414141),
+                          FontWeight.w500),
+                      const Spacer(),
+                      SizedBox(
+                        height: 15,
+                        width: 30,
+                        child: Image.asset("assets/images/righticon.png"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: height * 0.01),
             // InkWell(
             //   onTap: () {
             //     Navigator.push(context, MaterialPageRoute(
@@ -642,7 +651,7 @@ class _profileState extends State<profile> {
                           return const signInScreen();
                         },
                       ),
-                      (route) => false,
+                          (route) => false,
                     );
                   });
                 },
@@ -652,7 +661,7 @@ class _profileState extends State<profile> {
                   ),
                   decoration: const BoxDecoration(
                       border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
+                      Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
                       SizedBox(
@@ -762,21 +771,21 @@ class _profileState extends State<profile> {
                         width: width * 0.25,
                         child: ClipRRect(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(200)),
+                          const BorderRadius.all(Radius.circular(200)),
                           child: profileData?.profileImage != ""
                               ? Image.network(
-                                  profileData!.profileImage!,
-                                  fit: BoxFit.fill,
-                                )
+                            profileData!.profileImage!,
+                            fit: BoxFit.fill,
+                          )
                               : userImageFile != null
-                                  ? Image.file(
-                                      userImageFile!,
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.asset(
-                                      "assets/images/Ellipse 202.png",
-                                      fit: BoxFit.fill,
-                                    ),
+                              ? Image.file(
+                            userImageFile!,
+                            fit: BoxFit.fill,
+                          )
+                              : Image.asset(
+                            "assets/images/Ellipse 202.png",
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ),
@@ -823,8 +832,8 @@ class _profileState extends State<profile> {
                             return edit_profile(
                               email: profileData?.userId.email ?? "",
                               PhoneNumber:
-                                  profileData?.userId.phoneNumber.toString() ??
-                                      "",
+                              profileData?.userId.phoneNumber.toString() ??
+                                  "",
                               firstName: profileData?.firstName ?? "",
                               lastName: profileData?.lastName ?? "",
                               day: day,
@@ -938,12 +947,12 @@ class _profileState extends State<profile> {
                 profileData?.dob == null
                     ? const SizedBox()
                     : Text(
-                        DateFormat("dd - MMM - yyyy").format(profileData!.dob!),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: "spartan",
-                          color: Colors.black,
-                        )),
+                    DateFormat("dd - MMM - yyyy").format(profileData!.dob!),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontFamily: "spartan",
+                      color: Colors.black,
+                    )),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -982,7 +991,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                            const AssetImage("assets/images/Group 12095.png"),
+                        const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1016,13 +1025,13 @@ class _profileState extends State<profile> {
                 profileData?.gender == ""
                     ? const SizedBox()
                     : Text(
-                        "${profileData?.gender}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: "spartan",
-                          color: Colors.black,
-                        ),
-                      ),
+                  "${profileData?.gender}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontFamily: "spartan",
+                    color: Colors.black,
+                  ),
+                ),
                 SizedBox(height: height * 0.01),
                 GestureDetector(
                   onTap: () {
@@ -1058,7 +1067,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                            const AssetImage("assets/images/Group 12095.png"),
+                        const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1090,57 +1099,57 @@ class _profileState extends State<profile> {
                 addressData == null
                     ? const SizedBox()
                     : Text(
-                        addressData!.addressType,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Colors.black54,
-                        ),
-                      ),
+                  addressData!.addressType,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: "spartan",
+                    color: Colors.black54,
+                  ),
+                ),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                        height: height * 0.01,
-                      ),
+                  height: height * 0.01,
+                ),
                 addressData == null
                     ? const SizedBox()
                     : Text(addressData!.addressId.address,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Colors.black54,
-                        )),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: "spartan",
+                      color: Colors.black54,
+                    )),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                        height: height * 0.01,
-                      ),
-                addressData == null
-                    ? const SizedBox()
-                    : Text(addressData!.addressId.province,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Colors.black54,
-                        )),
+                  height: height * 0.01,
+                ),
+                // addressData == null
+                //     ? const SizedBox()
+                //     : Text(addressData!.addressId.province,
+                //     style: const TextStyle(
+                //       fontSize: 16,
+                //       fontFamily: "spartan",
+                //       color: Colors.black54,
+                //     )),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                        height: height * 0.01,
-                      ),
+                  height: height * 0.01,
+                ),
                 addressData == null
                     ? const SizedBox()
                     : Text(addressData!.addressId.apartment,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontFamily: "spartan",
-                          color: Colors.black54,
-                        )),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: "spartan",
+                      color: Colors.black54,
+                    )),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                        height: height * 0.02,
-                      ),
+                  height: height * 0.02,
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -1151,6 +1160,7 @@ class _profileState extends State<profile> {
                           Province_name: addressData?.addressId.province ?? "",
                           Location: "surat",
                           Zip_Code: "395004",
+                          addressValue: false,
                         );
                       },
                     )).then((value) {
@@ -1163,7 +1173,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                            const AssetImage("assets/images/Group 12095.png"),
+                        const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1257,7 +1267,7 @@ class _profileState extends State<profile> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");
@@ -1271,13 +1281,16 @@ class _profileState extends State<profile> {
         // Map map = jsonDecode(response.body);
         print(profileData);
         GetProfileModel getProfileModel =
-            GetProfileModel.fromJson(jsonDecode(response.body));
+        GetProfileModel.fromJson(jsonDecode(response.body));
         if (getProfileModel.status == 200) {
           profileData = getProfileModel.data;
           if (getProfileModel.data.address.isNotEmpty) {
             addressData = getProfileModel.data.address.first;
           }
         }
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       rethrow;

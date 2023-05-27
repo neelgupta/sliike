@@ -17,7 +17,7 @@ class StripeWebViews extends StatefulWidget {
 
 class _StripeWebViewsState extends State<StripeWebViews> {
   late final WebViewController _controller;
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -44,6 +44,9 @@ class _StripeWebViewsState extends State<StripeWebViews> {
             debugPrint('Page started loading: $url');
           },
           onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
             debugPrint('Page finished loading: $url');
           },
           onWebResourceError: (WebResourceError error) {
@@ -91,8 +94,10 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: WebViewWidget(
-        controller: _controller,
+      child: Scaffold(
+        body: isLoading?const Center(child: CircularProgressIndicator(),):WebViewWidget(
+          controller: _controller,
+        ),
       ),
     );
   }
@@ -118,6 +123,7 @@ Page resource error:
     print("Webview response body : ${response.body}");
 
     if(response.statusCode==200 || response.statusCode == 201) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       Fluttertoast.showToast(
           msg: "Stripe Setup Done!!",

@@ -67,7 +67,7 @@ class _emailVeriSuceesfulState extends State<emailVeriSuceesful> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const homescreen();
+                          return homescreen(selectedIndex: 0,);
                         },
                       ),(route) => false,
                     );

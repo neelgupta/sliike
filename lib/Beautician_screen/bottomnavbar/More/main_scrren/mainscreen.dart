@@ -76,18 +76,38 @@ String Userid="";
                            return profilePage();
                          },));
                        },
-                       child: Container(
-                         height: 65,
-                         width: 65,
-                         decoration: BoxDecoration(
-                           color: Colors.white,
-                           shape: BoxShape.circle,
-                         ),
-                         child: Padding(
-                           padding: const EdgeInsets.all(20),
-                           child: Image.asset("assets/images/people.png",height: 10),
+                       child:  Padding(
+                         padding: const EdgeInsets.all(20),
+                         child: SizedBox(
+                           height: 65,
+                           width: 65,
+                           child: ClipRRect(
+                             borderRadius:
+                             const BorderRadius.all(Radius.circular(200)),
+                             child: getmodelProfile != null
+                                 ? Image.network(
+                               getmodelProfile!.data!.profileImage!,
+                               fit: BoxFit.fill,
+                             ) : Image.asset(
+                               "assets/images/Ellipse 202.png",
+                               fit: BoxFit.fill,
+                             ),
+                           ),
                          ),
                        ),
+
+                       // Container(
+                       //   height: 65,
+                       //   width: 65,
+                       //   decoration: BoxDecoration(
+                       //     color: Colors.white,
+                       //     shape: BoxShape.circle,
+                       //   ),
+                       //   child: Padding(
+                       //     padding: const EdgeInsets.all(20),
+                       //     child: getmodelProfile!.data!.profileImage!= "" ?Image.network("${getmodelProfile!.data!.profileImage}",height: 10,fit: BoxFit.cover,) : Image.asset("assets/images/people.png",height: 10),
+                       //   ),
+                       // ),
                      ),
                     textComoon(businessname, 14, Colors.white, FontWeight.w700),
                     SizedBox(height: 5),
@@ -101,7 +121,7 @@ String Userid="";
       ),
       body: isLoading?Center(
         child: CircularProgressIndicator(),
-      ):SingleChildScrollView(
+      ): getmodelProfile != null ? SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
@@ -186,7 +206,12 @@ String Userid="";
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return business_SetUp(email: getmodelProfile!.data!.userId!.email!);
-                    },));
+                    },)).then((value) {
+                      getBeauticianProfile();
+                      setState(() {
+
+                      });
+                    });
                   },
                   child: Row(
                     children: [
@@ -401,12 +426,10 @@ String Userid="";
               padding: const EdgeInsets.only(left: 20,right: 20),
               child: InkWell(
                 onTap: (){
-    logoutdata();
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return signInScreen();
-    },),(route) => false,);
-
-
+                logoutdata();
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                    return signInScreen();
+                      },),(route) => false,);
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 17,),
@@ -431,6 +454,8 @@ String Userid="";
 
           ],
         ),
+      ): Center(
+        child: Text("No Data Found!!"),
       ),
     );
   }

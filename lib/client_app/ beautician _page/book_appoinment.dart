@@ -1,12 +1,14 @@
 // ignore_for_file: use_build_context_synchronously, camel_case_types, must_be_immutable
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_summary.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -14,21 +16,22 @@ import 'package:http/http.dart' as http;
 import '../../commonClass.dart';
 
 class book_appoinment extends StatefulWidget {
-  String serviceTypeName;
-  String price;
-  String duration;
-  String beauticianId;
-  String serviceId;
-  String serviceDuration;
+  String? serviceTypeName;
+  String? price;
+  String? duration;
+  String? beauticianId;
+  String? serviceId;
+  String? serviceDuration;
+  String? bookingId;
 
   book_appoinment({Key? key,
-    required this.serviceTypeName,
-    required this.price,
-    required this.duration,
-    required this.beauticianId,
-    required this.serviceId,
-    required this.serviceDuration})
-      : super(key: key);
+    this.serviceTypeName,
+    this.price,
+    this.duration,
+    this.beauticianId,
+    this.serviceId,
+    this.serviceDuration,
+    this.bookingId}) : super(key: key);
 
   @override
   State<book_appoinment> createState() => _book_appoinmentState();
@@ -44,6 +47,7 @@ class _book_appoinmentState extends State<book_appoinment> {
   int i = 0;
   String calenderTime = "";
   String calenderDate = "";
+  OnlyoneModal? onlyonemodal;
   List time = [
     "00:00",
     "01:00",
@@ -140,6 +144,51 @@ class _book_appoinmentState extends State<book_appoinment> {
     "23:45",
     "24:00",
   ];
+  getTimeFormatedValue(String minute) {
+    String formatedTime = "";
+    switch (minute) {
+      case "00:30":
+        formatedTime = "30 min";
+        break;
+      case "01:00":
+        formatedTime = "60 min";
+        break;
+      case "01:30":
+        formatedTime = "90 min";
+        break;
+      case "02:00":
+        formatedTime = "110 min";
+        break;
+      case "02:30":
+        formatedTime = "140 min";
+        break;
+      case "03:00":
+        formatedTime = "170 min";
+        break;
+      case "03:30":
+        formatedTime = "200 min";
+        break;
+      case "04:00":
+        formatedTime = "230 min";
+        break;
+      case "04:30":
+        formatedTime = "260 min";
+        break;
+      case "05:00":
+        formatedTime = "290 min";
+        break;
+      case "05:30":
+        formatedTime = "310 min";
+        break;
+      case "06:00":
+        formatedTime = "340 min";
+        break;
+      case "06:30":
+        formatedTime = "360 min";
+        break;
+    }
+    return formatedTime;
+  }
   DateTime datetime = DateTime.now();
   List<Data> stylistName = [];
   List servicePlace = [
@@ -157,7 +206,7 @@ class _book_appoinmentState extends State<book_appoinment> {
   void initState() {
     super.initState();
     datetime = getDateTime();
-    getStylistList();
+    widget.bookingId != null ? getAppointmentPastList(widget.bookingId):getStylistList();
   }
 
   @override
@@ -259,7 +308,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(widget.serviceTypeName,
+                    child: Text(onlyonemodal != null ? "${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}":"${widget.serviceTypeName}",
                         style: const TextStyle(
                             fontSize: 20,
                             fontFamily: "spartan",
@@ -269,12 +318,12 @@ class _book_appoinmentState extends State<book_appoinment> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("\$${widget.price}",
+                      Text(onlyonemodal != null ? "\$${onlyonemodal!.data!.serviceId!.price}":"\$${widget.price}",
                           style: const TextStyle(
                               fontSize: 16,
                               fontFamily: "spartan",
                               color: Colors.black)),
-                      Text(widget.duration,
+                      Text(onlyonemodal != null ? "for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}":"${widget.duration}",
                           style: const TextStyle(
                               fontSize: 14,
                               fontFamily: "spartan",
@@ -321,12 +370,12 @@ class _book_appoinmentState extends State<book_appoinment> {
                     children: [
                       Text('$_text $calenderTime',
                           style: const TextStyle(
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              color: Color(0xff707070),
-                              fontFamily: "spartan",
-                              fontWeight: FontWeight.w500,))
-                        ,
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                            color: Color(0xff707070),
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.w500,))
+                      ,
                       const Spacer(),
                       const VerticalDivider(
                         color: Colors.black54,
@@ -351,11 +400,11 @@ class _book_appoinmentState extends State<book_appoinment> {
             ),
             dateTime
                 ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  alignment: Alignment.topLeft,
-                  height: 30,
-                  child: Text(status,
-                  style: const TextStyle(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              alignment: Alignment.topLeft,
+              height: 30,
+              child: Text(status,
+                style: const TextStyle(
                     fontFamily: 'spartan',
                     fontSize: 12,
                     color: Colors.red
@@ -566,7 +615,9 @@ class _book_appoinmentState extends State<book_appoinment> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {
-                  if (pickedtime.isEmpty && _text.isEmpty) {
+                  if(widget.bookingId != null){
+                    updateAppointment(widget.bookingId);
+                  } else if (pickedtime.isEmpty && _text.isEmpty) {
                     setState(() {
                       dateTime = true;
                       status = "Please select Date and Time";
@@ -643,34 +694,21 @@ class _book_appoinmentState extends State<book_appoinment> {
                                 controller: _controller,
                                 viewNavigationMode: ViewNavigationMode.none,
                                 onSelectionChanged: (details) {
-                                //   if (_controller.view == CalendarView.month ||
-                                //       _controller.view ==
-                                //           CalendarView.timelineMonth) {
-                                //     _text = DateFormat('dd, MMMM yyyy')
-                                //         .format(details.date!)
-                                //         .toString();
-                                //     setState1(() {});
-                                //   } else {
-                                //     _text = DateFormat('dd, MMMM yyyy hh:mm a')
-                                //         .format(details.date!)
-                                //         .toString();
-                                //     setState1(() {});
-                                //   }
                                 },
                                 onTap: (details) {
-                                    if (_controller.view == CalendarView.month ||
-                                        _controller.view ==
-                                            CalendarView.timelineMonth) {
-                                      _text = DateFormat('dd, MMMM yyyy')
-                                          .format(details.date!)
-                                          .toString();
-                                      setState1(() {});
-                                    } else {
-                                      _text = DateFormat('dd, MMMM yyyy hh:mm a')
-                                          .format(details.date!)
-                                          .toString();
-                                      setState1(() {});
-                                    }
+                                  if (_controller.view == CalendarView.month ||
+                                      _controller.view ==
+                                          CalendarView.timelineMonth) {
+                                    _text = DateFormat('dd, MMMM yyyy')
+                                        .format(details.date!)
+                                        .toString();
+                                    setState1(() {});
+                                  } else {
+                                    _text = DateFormat('dd, MMMM yyyy hh:mm a')
+                                        .format(details.date!)
+                                        .toString();
+                                    setState1(() {});
+                                  }
                                 },
                                 headerHeight: 55,
                                 headerStyle: const CalendarHeaderStyle(
@@ -803,6 +841,47 @@ class _book_appoinmentState extends State<book_appoinment> {
     return DateTime(now.year, now.month, now.day, now.hour, 0);
   }
 
+  getAppointmentPastList(id) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var geturi = Uri.parse("${ApiUrlList.getSingleAppointmentData}$id");
+      print("getSingleAppointmentData uri=$geturi");
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      print("bookingId ====> ${widget.bookingId}");
+      log("get profile url is  : $geturi");
+      log("res headers  : $headers");
+      var response = await http.get(
+        geturi,
+        headers: headers,
+      );
+      log("getSingleAppointmentData response.body ==> ${response.body}");
+      log("getSingleAppointmentData status code ==> ${response.statusCode}");
+      Map map = jsonDecode(response.body);
+      if (map["status"] == 200) {
+        onlyonemodal = OnlyoneModal.fromJson(jsonDecode(response.body));
+        note.text = onlyonemodal!.data!.note ?? "";
+        _selectedPlace = onlyonemodal!.data!.place == 0?"Beautician’s place":"At my place";
+        var startData = DateFormat('dd MMM,yyyy').format(DateTime.parse('${onlyonemodal!.data!.dateTime}'));
+        _text = startData;
+        var endData = DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}'));
+        calenderTime = endData;
+        setState(() {});
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   getStylistList() async {
     var posturi = Uri.parse(ApiUrlList.getStylistList);
     try {
@@ -835,6 +914,9 @@ class _book_appoinmentState extends State<book_appoinment> {
           sl = StylistList.fromjson(map);
           stylistName = sl!.data!;
         }
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       rethrow;
@@ -881,9 +963,70 @@ class _book_appoinmentState extends State<book_appoinment> {
         print(Helper.serviceId);
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return const booking_summary();
+            return booking_summary(beauticianId: widget.beauticianId,);
           },
         ));
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  updateAppointment(id) async {
+    var posturi = Uri.parse("${ApiUrlList.updateAppointment}$id");
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      var bodydata = {
+        "serviceId": widget.serviceId,
+        "dateTime": "$_text $pickedtime",
+        "employeeId": widget.beauticianId,
+        "price": widget.price,
+        "serviceDuration": widget.serviceDuration,
+        "place": placeid,
+        "note": note.text,
+      };
+      print("updateAppointment url is ====> $posturi ");
+      print("updateAppointment bodydata ====> $bodydata ");
+      var response = await http.post(posturi,
+        body: jsonEncode(bodydata),
+        headers: headers,
+      );
+      print("updateAppointment status code ====> ${response.statusCode}");
+      print("updateAppointment res body is ====>  ${response.body}");
+      Map map = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        print("updateAppointment status ====>  ${map['status']}");
+        a = Appointment.fromjson(map);
+        Navigator.pop(context);
+        Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -962,4 +1105,28 @@ class Data {
       lastName: map1['lastName'] ?? "",
     );
   }
+}
+
+class UpdateUppointment {
+  bool success;
+  int status;
+  String message;
+
+  UpdateUppointment({
+    required this.success,
+    required this.status,
+    required this.message,
+  });
+
+  factory UpdateUppointment.fromJson(Map<String, dynamic> json) => UpdateUppointment(
+    success: json["success"],
+    status: json["status"],
+    message: json["message"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "success": success,
+    "status": status,
+    "message": message,
+  };
 }

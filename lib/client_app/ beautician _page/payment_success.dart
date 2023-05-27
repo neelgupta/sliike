@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_summary_paymentconfirm.dart';
 
 class payment_success extends StatefulWidget {
-  const payment_success({Key? key}) : super(key: key);
+  final String bookingId;
+  const payment_success({Key? key, required this.bookingId}) : super(key: key);
 
   @override
   State<payment_success> createState() => _payment_successState();
@@ -17,9 +18,9 @@ class _payment_successState extends State<payment_success> {
     // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      //   return  booking_summary_paymentconfirm();
-      // },));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return  booking_summary_paymentconfirm(bookingId: widget.bookingId,);
+      },));
     });
   }
 

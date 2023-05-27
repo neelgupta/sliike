@@ -840,7 +840,7 @@ class _signUpState extends State<signUp> {
         'country': country,
         'phoneNumber': phoneNumber,
         'country_code': countrycode.replaceAll("+", ""),
-        'diviceToken' : deviceToken,
+        'deviceToken' : deviceToken,
         'firebaseToken' : firebaseToken
       };
       var headers = {
