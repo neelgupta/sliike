@@ -510,6 +510,7 @@ class _booking_summary_paymentconfirmState extends State<booking_summary_payment
       var bodydata = {
         "bookingId": widget.bookingId,
       };
+      print(headers);
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");
       var response = await http.post(posturi,

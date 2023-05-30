@@ -300,7 +300,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                               : datalist[index].status == 2
                                                               ? "Delivered"
                                                               : datalist[index].status == 3
-                                                              ? "Cancel"
+                                                              ? "Cancelled"
                                                               : datalist[index].status == 4
                                                               ? "No Show"
                                                               : "pending",
@@ -515,7 +515,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                             : data[index].status == 2
                                                             ? "Delivered"
                                                             : data[index].status == 3
-                                                            ? "Cancel"
+                                                            ? "Cancelled"
                                                             : data[index].status == 4
                                                             ? "No Show"
                                                             : "pending",

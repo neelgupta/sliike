@@ -92,8 +92,8 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
         child: CircularProgressIndicator(
           color: Color(0xffDD6A03),
         ),
-      ) :SingleChildScrollView(
-        child: onlyonemodal != null ? Column(
+      ) : onlyonemodal != null ? SingleChildScrollView(
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: height*0.08,),
@@ -471,16 +471,17 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
             ),
             SizedBox(height: height*0.05,)
           ],
-        ): const Text(
-          "No Data Found!!!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 14,
-            fontFamily: "spartan",
-          ),
-        ),
+        )
+      ) : const Center(
+    child: Text(
+    "No Data Found!!!",
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontFamily: "spartan",
       ),
+    ),
+    ),
     );
   }
   getAppointmentPastList(id) async {
@@ -506,6 +507,15 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
       Map map = jsonDecode(response.body);
       if (map["status"] == 200) {
         onlyonemodal = OnlyoneModal.fromJson(jsonDecode(response.body));
+        if(onlyonemodal!.data!.place == 0){
+          setState(() {
+            place = "Beautician’s place";
+          });
+        }else{
+          setState(() {
+            place = "At my place";
+          });
+        }
         setState(() {});
       }
     } catch (e) {

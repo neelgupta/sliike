@@ -295,6 +295,7 @@ class _editLocationState extends State<editLocation> {
 
     displayPrediction(p, context);
   }
+
   Future<void> displayPrediction(Prediction? p, BuildContext context) async {
     if (p != null) {
       GoogleMapsPlaces _places = GoogleMapsPlaces(

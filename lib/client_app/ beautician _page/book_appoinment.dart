@@ -89,7 +89,7 @@ class _book_appoinmentState extends State<book_appoinment> {
     "10:00",
     "10:15",
     "10:30",
-    "11:45",
+    "10:45",
     "11:00",
     "11:15",
     "11:30",

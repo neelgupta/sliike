@@ -315,80 +315,76 @@ class _searchservicesState extends State<searchservices> {
       children: [
         searchData.isNotEmpty?const Text("Services",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
         searchData.isNotEmpty?SizedBox(height: height*0.03,):Container(),
-        searchData.isNotEmpty?SizedBox(
-          height: height*0.30,
-          child: ListView.builder(
-            itemCount: searchData.length,
-            itemBuilder: (context, index) {
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: height*0.007),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return searchScreen(
-                      searchService: [searchData[index].serviceCategoryId!],
-                    );
-                  },));
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      height: width*0.08,
-                      width: width*0.08,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFF2994A)),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Image.asset("assets/images/search.png",height: width*0.04,color: const Color(0xFFF2994A),),
-                    ),
-                    SizedBox(width: width*0.02,),
-                    Text("${searchData[index].serviceTypeName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
-                  ],
-                ),
-              ),
-            );
-          },),
-        ):Container(),
-        searchData.isNotEmpty?SizedBox(height: height*0.02,):Container(),
-        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?const Text("Beutician",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
-        SizedBox(height: height*0.03,),
-        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?SizedBox(
-          height: height*0.40,
-          child: ListView.builder(
-            itemCount: ss!.data!.beuticianTypes!.length,
-            itemBuilder: (context, index) {
-            return GestureDetector(
+        searchData.isNotEmpty?ListView.builder(
+          shrinkWrap: true,
+          itemCount: searchData.length,
+          itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: height*0.007),
+            child: GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return services(
-                    beauticianId: "${ss!.data!.beuticianTypes![index].id}",
-                    businessName: ss!.data!.beuticianTypes![index].businessName,
+                  return searchScreen(
+                    searchService: [searchData[index].serviceCategoryId!],
                   );
                 },));
               },
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: height*0.007),
-                child: Row(
-                  children: [
-                    Container(
-                      height: width*0.08,
-                      width: width*0.08,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        image: const DecorationImage(
-                          image: AssetImage("assets/images/Group 12006.jpg"),
-                          fit: BoxFit.fill
-                        )
-                      ),
+              child: Row(
+                children: [
+                  Container(
+                    height: width*0.08,
+                    width: width*0.08,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFF2994A)),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    SizedBox(width: width*0.02,),
-                    Text("${ss!.data!.beuticianTypes![index].businessName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
-                  ],
-                ),
+                    child: Image.asset("assets/images/search.png",height: width*0.04,color: const Color(0xFFF2994A),),
+                  ),
+                  SizedBox(width: width*0.02,),
+                  Text("${searchData[index].serviceTypeName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
+                ],
               ),
-            );
-          },),
-        ):Container(),
+            ),
+          );
+        },):Container(),
+        searchData.isNotEmpty?SizedBox(height: height*0.02,):Container(),
+        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?const Text("Beutician",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
+        SizedBox(height: height*0.03,),
+        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?ListView.builder(
+          shrinkWrap: true,
+          itemCount: ss!.data!.beuticianTypes!.length,
+          itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return services(
+                  beauticianId: "${ss!.data!.beuticianTypes![index].id}",
+                  businessName: ss!.data!.beuticianTypes![index].businessName,
+                );
+              },));
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: height*0.007),
+              child: Row(
+                children: [
+                  Container(
+                    height: width*0.08,
+                    width: width*0.08,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/images/Group 12006.jpg"),
+                        fit: BoxFit.fill
+                      )
+                    ),
+                  ),
+                  SizedBox(width: width*0.02,),
+                  Text("${ss!.data!.beuticianTypes![index].businessName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
+                ],
+              ),
+            ),
+          );
+        },):Container(),
       ],
     );
   }

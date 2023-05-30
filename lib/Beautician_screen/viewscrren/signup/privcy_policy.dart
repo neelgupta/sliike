@@ -119,7 +119,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
     } catch (e) {
       rethrow;
     } finally {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

@@ -378,208 +378,209 @@ class _servicesState extends State<services> {
                                 height: height,
                                 child: TabBarView(
                                   children: [
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15, top: 20),
-                                          child: TextField(
-                                            autofocus: false,
-                                            controller: search,
-                                            onChanged: (value) {},
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 20),
-                                              hintText: "search_service".tr(),
-                                              hintStyle: const TextStyle(
-                                                  color: Color(0xff707070)),
-                                              suffixIcon: Container(
-                                                width: width * 0.2,
-                                                color: const Color(0xFFDD6A03),
-                                                height: 5,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  child: Image.asset(
-                                                      "assets/images/search-whitenormal.png"),
+                                    SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15, right: 15, top: 20),
+                                            child: TextField(
+                                              autofocus: false,
+                                              controller: search,
+                                              onChanged: (value) {},
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 20),
+                                                hintText: "search_service".tr(),
+                                                hintStyle: const TextStyle(
+                                                    color: Color(0xff707070)),
+                                                suffixIcon: Container(
+                                                  width: width * 0.2,
+                                                  color: const Color(0xFFDD6A03),
+                                                  height: 5,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(10),
+                                                    child: Image.asset(
+                                                        "assets/images/search-whitenormal.png"),
+                                                  ),
                                                 ),
-                                              ),
-                                              labelStyle: const TextStyle(
-                                                  fontFamily: 'spartan',
-                                                  color: Colors.black54),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.black38),
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.black38),
+                                                labelStyle: const TextStyle(
+                                                    fontFamily: 'spartan',
+                                                    color: Colors.black54),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.black38),
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.black38),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        const Divider(
-                                          color: Colors.black54,
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text("services",
-                                                        style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily:
-                                                                "spartan",
-                                                            color:
-                                                                Colors.black))
-                                                    .tr(),
+                                          SizedBox(
+                                            height: height * 0.02,
+                                          ),
+                                          const Divider(
+                                            color: Colors.black54,
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.02,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: const Text("services",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              fontFamily:
+                                                                  "spartan",
+                                                              color:
+                                                                  Colors.black))
+                                                      .tr(),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                    "(${sb!.data!.total})",
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontFamily: "spartan",
-                                                        color: Colors.black54)),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                      "(${sb!.data!.total})",
+                                                      style: const TextStyle(
+                                                          fontSize: 18,
+                                                          fontFamily: "spartan",
+                                                          color: Colors.black54)),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            padding:
-                                                const EdgeInsets.only(top: 20),
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: Beauticiandata[0]
-                                                .beauticianServiceId!
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              if (index < 5) {
-                                                return serviceSingalItem(index);
-                                              } else if (viewMore) {
-                                                return serviceSingalItem(index);
-                                              } else {
-                                                return const SizedBox();
-                                              }
-                                            }),
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        viewMore = false;
-                                                      });
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 20),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: const Text(
-                                                                    "view_less",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontFamily:
-                                                                            "spartan",
-                                                                        color: Color(
-                                                                            0xFFDD6A03)))
-                                                                .tr(),
-                                                          ),
-                                                        ),
-                                                        const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 2),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_up,
-                                                              color: Color(
-                                                                  0xFFDD6A03),
+                                            ],
+                                          ),
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              padding: const EdgeInsets.only(top: 20),
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemCount: Beauticiandata[0].beauticianServiceId!.length,
+                                              itemBuilder: (context, index) {
+                                                if (index < 5) {
+                                                  return serviceSingalItem(index);
+                                                } else if (viewMore) {
+                                                  return serviceSingalItem(index);
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              }),
+                                          SizedBox(
+                                            height: height * 0.02,
+                                          ),
+                                          Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore
+                                                  ? InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          viewMore = false;
+                                                        });
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 20),
+                                                            child: Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: const Text(
+                                                                      "view_less",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontFamily:
+                                                                              "spartan",
+                                                                          color: Color(
+                                                                              0xFFDD6A03)))
+                                                                  .tr(),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        viewMore = true;
-                                                      });
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 20),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: const Text(
-                                                                    "more_services",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontFamily:
-                                                                            "spartan",
-                                                                        color: Color(
-                                                                            0xFFDD6A03)))
-                                                                .tr(),
-                                                          ),
-                                                        ),
-                                                        const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 2),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down_rounded,
-                                                              color: Color(
-                                                                  0xFFDD6A03),
+                                                          const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 2),
+                                                            child: Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_up,
+                                                                color: Color(
+                                                                    0xFFDD6A03),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                            : const SizedBox(),
-                                      ],
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          viewMore = true;
+                                                        });
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 20),
+                                                            child: Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: const Text(
+                                                                      "more_services",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontFamily:
+                                                                              "spartan",
+                                                                          color: Color(
+                                                                              0xFFDD6A03)))
+                                                                  .tr(),
+                                                            ),
+                                                          ),
+                                                          const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 2),
+                                                            child: Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Icon(
+                                                                Icons
+                                                                    .keyboard_arrow_down_rounded,
+                                                                color: Color(
+                                                                    0xFFDD6A03),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                              : const SizedBox(),
+                                          SizedBox(
+                                              height: height* 0.04,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                     const Center(
                                       child: Text(

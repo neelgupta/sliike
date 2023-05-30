@@ -1100,44 +1100,53 @@ class _home_exploreState extends State<home_explore> {
 
   getRecomadedBeauticians() async {
     var posturi = Uri.parse(ApiUrlList.getRecomadedBeauticians);
-    setState(() {
-      isLoading = true;
-    });
-    var headers = {
-      // 'Content-Type': "application/json; charset=utf-8",
-      "authorization":
-      "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
-    };
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var headers = {
+        // 'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
 
-    print("longitude ===> $longitude");
-    print("latitude ===> $latitude");
+      print("longitude ===> $longitude");
+      print("latitude ===> $latitude");
 
-    var bodydata = {
-      "longitude": longitude,
-      "latitude": latitude,
-    };
+      var bodydata = {
+        "longitude": longitude,
+        "latitude": latitude,
+      };
 
-    print("getRecomadedBeauticians url is ====> $posturi");
+      print("getRecomadedBeauticians url is ====> $posturi");
 
-    var response = await http.post(
-      posturi,
-      body: bodydata,
-      headers: headers,
-    );
+      var response = await http.post(
+        posturi,
+        body: bodydata,
+        headers: headers,
+      );
 
-    print("getRecomadedBeauticians status code ====> ${response.statusCode}");
-    print("getRecomadedBeauticians res body is ====>  ${response.body}");
-    if (response.statusCode == 200) {
-      Map map = jsonDecode(response.body);
-      if (map['status'] == 200) {
-        r = Recommended.fromJson(jsonDecode(response.body));
-        recommended = r!.beauticians.data;
+      print("getRecomadedBeauticians status code ====> ${response.statusCode}");
+      print("getRecomadedBeauticians res body is ====>  ${response.body}");
+      if (response.statusCode == 200) {
+        Map map = jsonDecode(response.body);
+        if (map['status'] == 200) {
+          r = Recommended.fromJson(jsonDecode(response.body));
+          recommended = r!.beauticians.data;
+        }
       }
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-    setState(() {
-      isLoading = false;
-    });
   }
+
 
   Future<Position> getLocation() async {
     bool serviceEnabled;
