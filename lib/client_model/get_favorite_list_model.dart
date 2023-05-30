@@ -110,20 +110,37 @@ class FavoritesData {
 class Address{
   String? id;
   String? address;
-  String? province;
+  Province? province;
   String? apartment;
   String? city;
-  int? zipCode;
+  String? zipCode;
 
   Address({this.id,this.address,this.province,this.apartment,this.city,this.zipCode});
   factory Address.fromjson(Map<dynamic, dynamic>map){
     return Address(
       id: map['_id'] ?? "",
       address: map['address'] ?? "",
-      province: map['province'] ?? "",
+      province: Province.fromjson(map['province'] ?? ""),
       apartment: map['apartment'] ?? "",
       city: map['city'] ?? "",
-      zipCode: map['zipCode'] ?? 0,
+      zipCode: map["zipCode"].toString(),
+    );
+  }
+}
+
+class Province{
+  String? id;
+  String? province;
+
+  Province({
+    this.id,
+    this.province
+  });
+
+  factory Province.fromjson(Map<dynamic, dynamic>map){
+    return Province(
+      id: map['_id'] ?? "",
+      province: map['province'] ?? "",
     );
   }
 }

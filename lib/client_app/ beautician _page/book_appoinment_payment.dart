@@ -1,9 +1,11 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/payment_success.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -412,7 +414,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
       "appointmentIds": Helper.serviceId,
       "addressId" : widget.addressId
     };
-
+    log("body ===> $bodydata");
     await paymentService.getPaymentDetail(body: jsonEncode(bodydata)).then((value) {
       paymentDetail = value;
     });
@@ -425,6 +427,14 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
   }
 
   addPaymentForAppointment() async {
+    Loader.show(context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator: const CircularProgressIndicator(
+            backgroundColor: Color(0xffDD6A03)),
+        themeData: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color(0xff01635D))));
     var body = {
       "appointmentIds": Helper.serviceId,
     "cardName": cardNameController.text,
@@ -439,10 +449,12 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
     "total": paymentDetail!.data!.total,
     "addressId": widget.addressId
     };
-    print(body);
+
+    log("body ===> $body");
 
     await paymentService.addPayment(body: jsonEncode(body)).then((value) {
       print(value);
+      Loader.hide();
       if(value!=null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return payment_success(bookingId: value);

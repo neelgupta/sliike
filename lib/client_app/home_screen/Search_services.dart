@@ -421,7 +421,7 @@ class _searchservicesState extends State<searchservices> {
   }
 
   searchServiceType() async {
-    var geturi = Uri.parse("https://easy-red-elk-sari.cyclic.app/api/v1/client/searchServiceType?search=${searchCotroller.text}");
+    var geturi = Uri.parse("https://sliike-server.onrender.com/api/v1/client/searchServiceType?search=${searchCotroller.text}");
     try {
       setState(() {
         isLoading = true;

@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/select_address.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -72,6 +73,7 @@ class _booking_pandingState extends State<booking_panding> {
   @override
   void initState() {
     super.initState();
+    print("widget.id =====> ${widget.id}");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         getAppointmentPastList(widget.id);
@@ -136,7 +138,7 @@ class _booking_pandingState extends State<booking_panding> {
               ),
               SizedBox(height: height*0.02,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
                     CachedNetworkImage(
@@ -413,7 +415,12 @@ class _booking_pandingState extends State<booking_panding> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Helper.serviceId.add(widget.id);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return const SelectAddress();
+                      },));
+                    },
                     child: Container(
                       alignment: Alignment.center,
                       width: width,
@@ -563,7 +570,7 @@ class Data {
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
-    paymentDetails: json["paymentDetails"] == null ? null : PaymentDetails.fromJson(json["PaymentDetails"]),
+    paymentDetails: PaymentDetails.fromJson(json["paymentDetails"] ?? {}),
   );
 
   Map<String, dynamic> toJson() => {
@@ -626,10 +633,10 @@ class BeauticianId {
 class Address {
   String? id;
   String? address;
-  String? province;
+  Province? province;
   String? apartment;
   String? city;
-  int? zipCode;
+  String? zipCode;
 
   Address({
     this.id,
@@ -643,10 +650,10 @@ class Address {
   factory Address.fromJson(Map<String, dynamic> json) => Address(
     id: json["_id"],
     address: json["address"],
-    province: json["province"],
+    province: Province.fromjson(json["province"]),
     apartment: json["apartment"],
     city: json["city"],
-    zipCode: json["zipCode"],
+    zipCode: json["zipCode"].toString(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -657,6 +664,23 @@ class Address {
     "city": city,
     "zipCode": zipCode,
   };
+}
+
+class Province{
+  String? id;
+  String? province;
+
+  Province({
+    this.id,
+    this.province
+  });
+
+  factory Province.fromjson(Map<dynamic, dynamic>map){
+    return Province(
+      id: map['_id'] ?? "",
+      province: map['province'] ?? "",
+    );
+  }
 }
 
 class ServiceId {
@@ -729,7 +753,7 @@ class ServiceType {
   });
 
   factory ServiceType.fromJson(Map<String, dynamic> json) => ServiceType(
-    id: json["_id"],
+    id: json["_id"] ?? "",
     serviceTypeName: json["serviceTypeName"],
   );
 

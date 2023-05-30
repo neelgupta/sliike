@@ -1,6 +1,6 @@
 class ApiUrlList {
-  static String baseUrl = 'https://hungry-duck-zipper.cyclic.app/api/v1/';
-  // static String baseUrl = 'https://sliike-server.onrender.com/api/v1/';
+  // static String baseUrl = 'https://hungry-duck-zipper.cyclic.app/api/v1/';
+  static String baseUrl = 'https://sliike-server.onrender.com/api/v1/';
   static String logowork = 'https://sliike-server.onrender.com/api/v1/';
   // static String baseUrl = 'https://cyan-friendly-reindeer.cyclic.app/api/v1/';
 
@@ -43,6 +43,7 @@ class ApiUrlList {
   static String cancelAppointment = "${baseUrl}client/cancelAppointment/";
   static String updateAppointment = "${baseUrl}client/updateAppointment/";
   static String appointmentDetails = "${baseUrl}client/appointmentDetails";
+  static String getTerms = "${baseUrl}admin/getTerms";
   static String postlogoimage = "${logowork}beautician/addBusinessLogo";
   static String addWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
   static String getlogoimage = "${baseUrl}beautician/getBeauticianLogoImg";

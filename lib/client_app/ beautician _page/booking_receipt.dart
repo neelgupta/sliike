@@ -204,7 +204,7 @@ class _booking_receiptState extends State<booking_receipt> {
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Row(
+                        appointment[0].gstORhst != 0 ? Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -221,11 +221,11 @@ class _booking_receiptState extends State<booking_receipt> {
                                     fontFamily: "spartan",
                                     color: Colors.black)),
                           ],
-                        ),
+                        ): Container(),
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Row(
+                        appointment[0].pstORqst != 0  ? Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -236,13 +236,13 @@ class _booking_receiptState extends State<booking_receipt> {
                                         color: Colors.black))
                                 .tr(),
                             const Spacer(),
-                            Text("\$${appointment[0].pstORqst}",
+                             Text("\$${appointment[0].pstORqst}",
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "spartan",
                                     color: Colors.black)),
                           ],
-                        ),
+                        ):Container(),
                         SizedBox(
                           height: height * 0.02,
                         ),
@@ -381,42 +381,38 @@ class _booking_receiptState extends State<booking_receipt> {
                             SizedBox(
                               width: width * 0.04,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                        appointment[0]
-                                            .beauticianDetails
-                                            .businessName,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: "spartan",
-                                            color: Colors.black)),
-                                    SizedBox(
-                                      width: width * 0.12,
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                    "${appointment[0].beauticianDetails.address.address} \n ${appointment[0].beauticianDetails.address.city} ${appointment[0].beauticianDetails.address.zipCode}",
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: "spartan",
-                                        color: Colors.black54)),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Divider(
-                                    color: Colors.black54,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                          appointment[0]
+                                              .beauticianDetails
+                                              .businessName,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: "spartan",
+                                              color: Colors.black)),
+                                      SizedBox(
+                                        width: width * 0.12,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                      "${appointment[0].beauticianDetails.address.address} \n ${appointment[0].beauticianDetails.address.city} ${appointment[0].beauticianDetails.address.zipCode}",
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              ),
                             )
                           ],
                         ),
                         SizedBox(
-                          height: height * 0.04,
+                          height: height * 0.02,
                         ),
                         ListView.builder(
                           shrinkWrap: true,
@@ -469,7 +465,7 @@ class _booking_receiptState extends State<booking_receipt> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        appointment[0].appointmentDetails[0].stylist.isEmpty ? Center(
+                        appointment[0].appointmentDetails[0].stylist.isEmpty ? const Center(
                           child: Text("No Data Found!!"),
                         ) : Row(
                           children: [

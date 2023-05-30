@@ -154,7 +154,7 @@ class Address {
   String? province;
   String? apartment;
   String? city;
-  int? zipCode;
+  String? zipCode;
 
   Address({
     this.id,
@@ -171,7 +171,7 @@ class Address {
     province: json["province"],
     apartment: json["apartment"],
     city: json["city"],
-    zipCode: json["zipCode"],
+    zipCode: json["zipCode"].toString(),
   );
 
   Map<String, dynamic> toJson() => {

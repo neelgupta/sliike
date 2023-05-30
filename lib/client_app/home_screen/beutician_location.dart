@@ -41,12 +41,27 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
       print("type ===> ${widget.locationData[index].location.type}");
       if(widget.locationData[index].location!=null && widget.locationData[index].location.coordinates!=null && widget.locationData[index].location.coordinates[0]!=null && widget.locationData[index].location.coordinates[1]!=null) {
         marker.add(Marker(
+          // onTap: () {
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //     return services(
+          //       beauticianId: widget.locationData[index].id,
+          //       businessName: widget.locationData[index].businessName,
+          //     );
+          //   },));
+          // },
             markerId: MarkerId(widget.locationData[index].id),
             position: LatLng(
               widget.locationData[index].location.coordinates[1],
               widget.locationData[index].location.coordinates[0],
             ),
-            infoWindow: InfoWindow(title: widget.locationData[index].location.type)
+            infoWindow: InfoWindow(title: widget.locationData[index].businessName,onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return services(
+                  beauticianId: widget.locationData[index].id,
+                  businessName: widget.locationData[index].businessName,
+                );
+              },));
+            })
         ));
       }
     }

@@ -331,6 +331,7 @@ class _booking_cancelState extends State<booking_cancel> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                     onTap: () {
+                      Helper.serviceId.clear();
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return book_appoinment(
                             bookingId: widget.id,
@@ -458,8 +459,7 @@ class _booking_cancelState extends State<booking_cancel> {
       print("getSingleAppointmentData uri=$geturi");
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");

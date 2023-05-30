@@ -12,6 +12,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverification/emailverification.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/privcy_policy.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/teams_and_condition.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -692,31 +694,47 @@ class _signUpState extends State<signUp> {
                   width: width * 0.9,
                   child: Wrap(
                     alignment: WrapAlignment.center,
-                    children: const [
-                      Text('By signing up I agree to the ',
+                    children: [
+                      const Text('By signing up I agree to the ',
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w300,
                               letterSpacing: 1.1,
                               height: 1.3)),
-                      Text('Terms & Conditions ',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.1,
-                              height: 1.3)),
-                      Text('and to the ',
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return const TeamsAndCondition();
+                          },));
+                        },
+                        child: const Text('Terms & Conditions ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color:  Color(0xffDD6A03),
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.1,
+                                height: 1.3)),
+                      ),
+                      const Text('and to the ',
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w300,
                               letterSpacing: 1.1,
                               height: 1.3)),
-                      Text('Privacy Policy',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.1,
-                              height: 1.3)),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return const PrivacyPolicy();
+                          },));
+                        },
+                        child: const Text('Privacy Policy',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color:  Color(0xffDD6A03),
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.1,
+                                height: 1.3)),
+                      ),
                     ],
                   ),
                 ),

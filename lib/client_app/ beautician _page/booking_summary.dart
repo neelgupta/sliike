@@ -80,6 +80,7 @@ class _booking_summaryState extends State<booking_summary> {
   @override
   void initState() {
     super.initState();
+    print(widget.beauticianId);
     getLocation();
   }
   @override
@@ -415,7 +416,6 @@ class _booking_summaryState extends State<booking_summary> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                   onTap: () {
-                    appointmentData.clear();
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return const SelectAddress();
                     },));
@@ -445,14 +445,11 @@ class _booking_summaryState extends State<booking_summary> {
   getBookedPendingAppointment() async {
     var geturi = Uri.parse(ApiUrlList.getBookedPendingAppointment);
     try {
-      setState(() {
-        isLoading = true;
-      });
-
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
+      print("booking headers body : ${jsonEncode(headers)}");
       var bodydata = {
         "appointmentIds": Helper.serviceId,
         "longitude": longitude,
@@ -483,7 +480,13 @@ class _booking_summaryState extends State<booking_summary> {
       });
     }
   }
+
   Future<Position> getLocation() async {
+
+    setState(() {
+      isLoading = true;
+    });
+
     bool serviceEnabled;
     LocationPermission permission;
 

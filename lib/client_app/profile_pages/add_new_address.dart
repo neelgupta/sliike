@@ -11,6 +11,8 @@ import 'package:http/http.dart' as http;
 
 import '../../utils/preferences.dart';
 
+const kGoogleApiKey = "AIzaSyCziqe1Q-d4HMC3D9ZyYDFkBtx8ZHrzGzM";
+
 class add_new_address extends StatefulWidget {
   String Address_Name;
   String Location;
@@ -427,20 +429,20 @@ class _add_new_addressState extends State<add_new_address> {
                       child: Container(
                         height: 48,
                         width: width,
-                        padding: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Color(0xff707070), width: 1)),
+                            border: Border.all(color: const Color(0xff707070), width: 1)),
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          hint: Padding(
-                            padding: const EdgeInsets.only(left: 0),
+                          hint: const Padding(
+                            padding: EdgeInsets.only(left: 0),
                             child: Text(
                               'Province',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontFamily: "spartan",
-                                color: Color(0xff707070),
+                                color: const Color(0xff707070),
                               ),
                             ),
                           ),
@@ -449,7 +451,7 @@ class _add_new_addressState extends State<add_new_address> {
                               value: items.id,
                               child: Text(
                                 items.name ?? "",
-                                style: TextStyle(fontSize: 14, color: Color(0xff292929)),
+                                style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
                               ),
                             );
                           }).toList(),
@@ -459,10 +461,10 @@ class _add_new_addressState extends State<add_new_address> {
                               province = value.toString();
                             });
                           },
-                          icon: (Icon(
+                          icon: (const Icon(
                             Icons.keyboard_arrow_down,
                             size: 30,
-                            color: Color(0xff707070),
+                            color: const Color(0xff707070),
                           )),
                         ),
                       ),
@@ -475,7 +477,6 @@ class _add_new_addressState extends State<add_new_address> {
                       child: TextField(
                         controller: zip_code,
                         cursorColor: Colors.black,
-                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "Zip Code",
@@ -553,6 +554,7 @@ class _add_new_addressState extends State<add_new_address> {
             ),
     );
   }
+
 
   addClientAddress(context, String addressValue) async {
     var Posturi = Uri.parse(ApiUrlList.addClientAddress);
@@ -638,6 +640,7 @@ class _add_new_addressState extends State<add_new_address> {
     setState(() {});
   }
 }
+
 
 class ClientAddress {
   int? status;

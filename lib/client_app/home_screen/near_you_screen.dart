@@ -163,7 +163,6 @@ class _NearYouState extends State<NearYou> {
                             ),
                           ),
                           Container(
-
                             margin: const EdgeInsets.only(left: 5),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.end,
                               children: [

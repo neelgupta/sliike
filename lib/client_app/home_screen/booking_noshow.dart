@@ -333,6 +333,7 @@ class _booking_noshowState extends State<booking_noshow> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                     onTap: () {
+                      Helper.serviceId.clear();
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return book_appoinment(
                           bookingId: widget.id,

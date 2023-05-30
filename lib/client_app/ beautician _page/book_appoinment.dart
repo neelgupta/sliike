@@ -206,6 +206,7 @@ class _book_appoinmentState extends State<book_appoinment> {
   void initState() {
     super.initState();
     datetime = getDateTime();
+    print(widget.beauticianId);
     widget.bookingId != null ? getAppointmentPastList(widget.bookingId):getStylistList();
   }
 
@@ -873,6 +874,9 @@ class _book_appoinmentState extends State<book_appoinment> {
         calenderTime = endData;
         setState(() {});
       }
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       rethrow;
     } finally {
@@ -1025,8 +1029,31 @@ class _book_appoinmentState extends State<book_appoinment> {
       if (response.statusCode == 201) {
         print("updateAppointment status ====>  ${map['status']}");
         a = Appointment.fromjson(map);
-        Navigator.pop(context);
-        Navigator.pop(context);
+        if(onlyonemodal!.data!.status == 0){
+          Navigator.pop(context);
+          Navigator.pop(context);
+        } else if(onlyonemodal!.data!.status == 1){
+          Helper.serviceId.add(map['data']['appointmentId']);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }else if(onlyonemodal!.data!.status == 2){
+          Helper.serviceId.add(map['data']['appointmentId']);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return booking_summary(beauticianId: widget.beauticianId,);
+            },
+          ));
+        }else if(onlyonemodal!.data!.status == 3){
+          Helper.serviceId.add(map['data']['appointmentId']);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return booking_summary(beauticianId: widget.beauticianId,);
+            },
+          ));
+        }else{
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

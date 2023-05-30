@@ -1363,10 +1363,10 @@ class Location {
 class Address {
   String? id;
   String? address;
-  String? province;
+  Province? province;
   String? apartment;
   String? city;
-  int? zipCode;
+  String? zipCode;
 
   Address(
       {this.id,
@@ -1380,10 +1380,27 @@ class Address {
     return Address(
       id: map['_id'] ?? "",
       address: map['address'] ?? "",
-      province: map['province'] ?? "",
+      province: Province.fromjson(map['province'] ?? ""),
       apartment: map['apartment'] ?? "",
       city: map['city'] ?? "",
-      zipCode: map['zipCode'] ?? 0,
+      zipCode: map["zipCode"].toString()
+    );
+  }
+}
+
+class Province{
+  String? id;
+  String? province;
+
+  Province({
+    this.id,
+    this.province
+});
+
+  factory Province.fromjson(Map<dynamic, dynamic>map){
+    return Province(
+      id: map['_id'] ?? "",
+      province: map['province'] ?? "",
     );
   }
 }
@@ -1477,7 +1494,7 @@ class RecommendedAddress {
   String province;
   String apartment;
   String city;
-  int zipCode;
+  String zipCode;
 
   RecommendedAddress({
     required this.address,
@@ -1492,7 +1509,7 @@ class RecommendedAddress {
     province: json["province"],
     apartment: json["apartment"],
     city: json["city"],
-    zipCode: json["zipCode"],
+    zipCode: json["zipCode"].toString(),
   );
 
   Map<String, dynamic> toJson() => {

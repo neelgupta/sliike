@@ -37,7 +37,7 @@ class _home_appointmentsState extends State<home_appointments> {
   void initState() {
     super.initState();
     getAppointmentUpcomingList();
-    getAppointmentList();
+    // getAppointmentList();
   }
 
   @override
@@ -613,9 +613,10 @@ class _home_appointmentsState extends State<home_appointments> {
     } catch (e) {
       rethrow;
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      getAppointmentList();
+      // setState(() {
+      //   isLoading = false;
+      // });
     }
   }
 
@@ -646,17 +647,15 @@ class _home_appointmentsState extends State<home_appointments> {
           p = PastAppointment.fromjson(map);
           data = p!.data!;
         }
-        setState(() {
-          isLoading = false;
-        });
       }
     } catch (e) {
       rethrow;
     } finally {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
   }
-
 }
 
 class ApintMentUpcomingModel {
@@ -1001,9 +1000,9 @@ class BeauticianIdPast{
 class Address{
   String? id;
   String? address;
-  String? province;
+  Province? province;
   String? apartment;
-  int? zipCode;
+  String? zipCode;
   String? createdAt;
   String? updatedAt;
   int? v;
@@ -1013,12 +1012,29 @@ class Address{
     return Address(
       id: map4['_id'],
       address: map4['address'],
-      province: map4['province'],
+      province: Province.fromjson(map4['province']),
       apartment: map4['apartment'],
       zipCode: map4['zipCode'],
       createdAt: map4['createdAt'],
       updatedAt: map4['updatedAt'],
       v: map4['__v'],
+    );
+  }
+}
+
+class Province{
+  String? id;
+  String? province;
+
+  Province({
+    this.id,
+    this.province
+  });
+
+  factory Province.fromjson(Map<dynamic, dynamic>map){
+    return Province(
+      id: map['_id'] ?? "",
+      province: map['province'] ?? "",
     );
   }
 }

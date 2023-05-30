@@ -83,16 +83,16 @@ class _SelectAddressState extends State<SelectAddress> {
           ),
         ),
       ),
-      body: isLoading?Center(child: CircularProgressIndicator()):Container(
-        padding: EdgeInsets.all(10),
+      body: isLoading?const Center(child: const CircularProgressIndicator()):Container(
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             Expanded(child: getProfile!=null?ListView.builder(
               itemCount: getProfile!.data.address.length,
               itemBuilder: (context, index) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
-                padding: EdgeInsets.all(5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Colors.black38)
@@ -100,8 +100,12 @@ class _SelectAddressState extends State<SelectAddress> {
                 child: Row(
                   children: [
                     Text("${getProfile!.data.address[index].addressId.address}, ${getProfile!.data.address[index].addressId.apartment}"),
-                    Spacer(),
-                    Radio<String>(value: getProfile!.data.address[index].addressId.id, groupValue: addressId, onChanged: (value) {
+                    const Spacer(),
+                    Radio<String>(
+                      activeColor: const Color(0xffDD6A03),
+                      value: getProfile!.data.address[index].addressId.id,
+                      groupValue: addressId,
+                      onChanged: (value) {
                       setState(() {
                         addressId = getProfile!.data.address[index].addressId.id;
                       });
@@ -122,41 +126,37 @@ class _SelectAddressState extends State<SelectAddress> {
               },
               child: Row(
                 children: [
-                  Icon(Icons.add_circle_outline,color: Colors.blue,size: 15,),
+                  const Icon(Icons.add_circle_outline,color: Color(0xffDD6A03),size: 20,),
                   SizedBox(width: width*0.01),
-                  Text("add_new_address",style: TextStyle(fontSize: 10,color: Colors.blue),).tr()
+                  const Text("add_new_address",style: TextStyle(fontSize: 15,color: Color(0xffDD6A03)),).tr()
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: InkWell(
-                onTap: () {
-                  if(addressId.isNotEmpty) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return book_appoinment_payment(addressId: addressId);
-                    },));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Address")));
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: width,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color(0xffDD6A03)),
-                  child: const Text("continue",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "spartan",
-                          color: Colors.white))
-                      .tr(),
-                ),
+            InkWell(
+              onTap: () {
+                if(addressId.isNotEmpty) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return book_appoinment_payment(addressId: addressId);
+                  },));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please Select Address")));
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: width,
+                height: height * 0.06,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: const Color(0xffDD6A03)),
+                child: const Text("continue",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "spartan",
+                        color: Colors.white)).tr(),
               ),
             ),
           ],

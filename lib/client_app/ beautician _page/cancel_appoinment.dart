@@ -181,7 +181,7 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
     );
   }
   cancelAppointment(id) async {
-    var deleteuri = Uri.parse("https://hungry-duck-zipper.cyclic.app/api/v1/client/cancelAppointment/$id");
+    var deleteuri = Uri.parse("https://sliike-server.onrender.com/api/v1/client/cancelAppointment/$id");
     try {
       setState(() {
         isLoading = true;
@@ -193,6 +193,7 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
 
       print("addPersonalInfo url is ====> $deleteuri ");
       print("BookingId is ====> $id ");
+      print(headers);
 
       var response = await http.delete(
         deleteuri,

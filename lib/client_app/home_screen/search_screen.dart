@@ -985,7 +985,7 @@ class Address {
   String province;
   String apartment;
   String city;
-  int zipCode;
+  String zipCode;
   DateTime createdAt;
   DateTime updatedAt;
   int v;
@@ -1008,7 +1008,7 @@ class Address {
         province: json["province"] ?? "",
         apartment: json["apartment"] ?? "",
         city: json["city"] ?? "",
-        zipCode: json["zipCode"] ?? 0,
+        zipCode: json["zipCode"].toString(),
         createdAt: DateTime.parse(json["createdAt"] ?? ""),
         updatedAt: DateTime.parse(json["updatedAt"] ?? ""),
         v: json["__v"] ?? 0,
