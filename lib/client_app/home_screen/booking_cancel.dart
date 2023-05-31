@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -414,6 +415,8 @@ class _booking_cancelState extends State<booking_cancel> {
               SizedBox(height: height*0.05,),
               InkWell(
                 onTap: () {
+                  Helper.serviceId.clear();
+                  Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString());
                   },));
@@ -483,6 +486,11 @@ class _booking_cancelState extends State<booking_cancel> {
           });
         }
         setState(() {});
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

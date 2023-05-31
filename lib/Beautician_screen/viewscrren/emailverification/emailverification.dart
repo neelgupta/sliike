@@ -7,6 +7,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverification/emailverification_suceess.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -331,7 +332,12 @@ class _emailVeriFicationState extends State<emailVeriFication> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else {
+      } else if(responce.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

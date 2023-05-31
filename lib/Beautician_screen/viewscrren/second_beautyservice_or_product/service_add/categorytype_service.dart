@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
@@ -1409,6 +1410,11 @@ class _addServiceState extends State<addServicetype> {
             categoryDataList = c!.data;
           }
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1513,6 +1519,11 @@ class _addServiceState extends State<addServicetype> {
 
           }
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

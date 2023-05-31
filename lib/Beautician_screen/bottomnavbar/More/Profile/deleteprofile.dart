@@ -326,6 +326,11 @@ class _delete_my_accountbState extends State<delete_my_accountb> {
         setState(() {
 
         });
+      }else if(responce.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       print(e.toString());

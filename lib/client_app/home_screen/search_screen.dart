@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/beutician_location.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
@@ -755,6 +756,11 @@ class _searchScreenState extends State<searchScreen> {
             like;
             print("like =====> $like");
           });
+        }else if(response.statusCode == 401){
+          logoutdata();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            return signInScreen();
+          },), (route) => false);
         }
         setState(() {
           isLoading = false;

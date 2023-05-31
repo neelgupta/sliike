@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/services/address_service.dart';
@@ -25,7 +26,6 @@ class add_new_address extends StatefulWidget {
   String Province_name;
   String Zip_Code;
   bool addressValue;
-  final List<dynamic> data;
 
   add_new_address({
     Key? key,
@@ -35,7 +35,6 @@ class add_new_address extends StatefulWidget {
     required this.Province_name,
     required this.Zip_Code,
     required this.addressValue,
-    required this.data,
   }) : super(key: key);
 
   @override
@@ -56,7 +55,6 @@ class _add_new_addressState extends State<add_new_address> {
   TextEditingController Address_home = TextEditingController();
   TextEditingController Address = TextEditingController();
   TextEditingController apartment = TextEditingController();
-  // TextEditingController province = TextEditingController();
   TextEditingController zip_code = TextEditingController();
   ClientAddress? a;
 
@@ -78,18 +76,16 @@ class _add_new_addressState extends State<add_new_address> {
       zip_code.text = widget.Zip_Code;
     }
     if(widget.addressValue != false){
-      home = widget.addressValue;
-      work = widget.addressValue;
-      other = widget.addressValue;
+      if(home = true){
+        home = widget.addressValue;
+      }else if(work = true){
+        work = widget.addressValue;
+      }else{
+        other = widget.addressValue;
+      }
     }
 
     super.initState();
-    Address_home.text = widget.data[2];
-    apartment.text = widget.data[6];
-    Address.text = widget.data[3];
-    zip_code.text = widget.data[5];
-    latitude = widget.data[0];
-    longitude = widget.data[1];
     getProvinceData();
   }
 
@@ -700,7 +696,12 @@ class _add_new_addressState extends State<add_new_address> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else {
+        } else if(response.statusCode == 401){
+          logoutdata();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            return signInScreen();
+          },), (route) => false);
+        }else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,

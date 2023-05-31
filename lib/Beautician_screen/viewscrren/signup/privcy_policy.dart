@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -58,14 +59,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Text(teamsList[0].policy,
-                    style: const TextStyle(
-                        fontSize: 15,
-                        fontFamily:
-                        "spartan",
-                        color:
-                        Colors.black)
-                ),
+                Html(
+                  data: teamsList[0].policy,)
               ],
             ),
           ),

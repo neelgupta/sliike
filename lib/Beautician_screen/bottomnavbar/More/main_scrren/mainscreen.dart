@@ -84,7 +84,7 @@ String Userid="";
                            child: ClipRRect(
                              borderRadius:
                              const BorderRadius.all(Radius.circular(200)),
-                             child: getmodelProfile != null
+                             child: getmodelProfile != null && getmodelProfile!.data!.profileImage != ""
                                  ? Image.network(
                                getmodelProfile!.data!.profileImage!,
                                fit: BoxFit.fill,
@@ -205,7 +205,7 @@ String Userid="";
                 child: InkWell(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return business_SetUp(email: getmodelProfile!.data!.userId!.email!);
+                      return business_SetUp(email: getmodelProfile!.data!.userId!.email!,isStripeSetUp: getmodelProfile!.data!.isStripeSetUp!,);
                     },)).then((value) {
                       getBeauticianProfile();
                       setState(() {

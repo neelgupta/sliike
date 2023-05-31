@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import '../../utils/apiurllist.dart';
@@ -592,7 +593,12 @@ class _edit_profileState extends State<edit_profile> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else {
+        } else if(response.statusCode == 401){
+          logoutdata();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            return signInScreen();
+          },), (route) => false);
+        }else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,

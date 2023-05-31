@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_summary.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -1050,6 +1051,11 @@ class _book_appoinmentState extends State<book_appoinment> {
               return booking_summary(beauticianId: widget.beauticianId,);
             },
           ));
+        }else if(response.statusCode == 401){
+          logoutdata();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            return signInScreen();
+          },), (route) => false);
         }else{
           Navigator.pop(context);
           Navigator.pop(context);

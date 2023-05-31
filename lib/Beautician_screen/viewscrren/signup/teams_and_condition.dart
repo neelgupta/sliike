@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class TeamsAndCondition extends StatefulWidget {
   const TeamsAndCondition({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
             child: const Icon(Icons.arrow_back_ios)
         ),
         title: const Text(
-          "Teams & Condition",
+          "Terms & Condition",
             style: TextStyle(
                 fontSize: 20,
                 fontFamily:
@@ -57,15 +58,9 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
-              children: [
-                Text(teamsList[0].policy,
-                  style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily:
-                  "spartan",
-                  color:
-                  Colors.black)
-                ),
+                children: [
+                Html(
+                  data: teamsList[0].policy,)
                 ],
               ),
             ),
@@ -86,11 +81,10 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
       setState(() {
         isLoading = true;
       });
-      var headers = {
-        // 'Content-Type': "application/json; charset=utf-8",
-        "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
-      };
+      // var headers = {
+      //   // 'Content-Type': "application/json; charset=utf-8",
+      //   "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      // };
 
       var bodydata = {
         "id": "English",
@@ -102,7 +96,7 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
       var response = await http.post(
         geturi,
         body: bodydata,
-        headers: headers,
+        // headers: headers,
       );
       print("getTerms status code ====> ${response.statusCode}");
       log(" getTerms res body is ====>  ${response.body}");

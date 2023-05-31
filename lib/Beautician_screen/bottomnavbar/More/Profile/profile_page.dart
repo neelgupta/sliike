@@ -12,6 +12,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofil
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/deleteprofile.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
@@ -1083,6 +1084,11 @@ class _profilePageState extends State<profilePage> {
             Loader.hide();
           });
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

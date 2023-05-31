@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_explore.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -296,6 +297,11 @@ class _RecentlyViewedViewAllState extends State<RecentlyViewedViewAll> {
           rb = RecentBeauticians.fromjson(map);
           recentList = rb!.data!.recentList!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

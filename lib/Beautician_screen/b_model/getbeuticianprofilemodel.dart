@@ -29,7 +29,8 @@ class Data {
     // ignore: non_constant_identifier_names
     String? DOB;
     String? gender;
-   Data({this.id,this.userId,this.firstName,this.lastName,this.country,this.countryCode,this.businessName,this.businessNumber,this.uid,this.profileImage,this.DOB,this.gender});
+    bool? isStripeSetUp;
+   Data({this.id,this.userId,this.firstName,this.lastName,this.country,this.countryCode,this.businessName,this.businessNumber,this.uid,this.profileImage,this.DOB,this.gender,this.isStripeSetUp});
 
     factory Data.fromjson(Map<dynamic,dynamic>map1){
         Map map2 = map1['userId'] ??{} ;
@@ -46,7 +47,9 @@ class Data {
             uid: map1['uid'] ?? "",
             profileImage: map1['profileImage'] ?? "",
             DOB: map1['DOB'] ?? "",
-            gender: map1['gender'] ?? "");
+            gender: map1['gender'] ?? "",
+            isStripeSetUp: map1['isStripeSetUp'] ?? false
+        );
     }
 }
 

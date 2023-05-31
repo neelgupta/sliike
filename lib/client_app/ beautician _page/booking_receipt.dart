@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_summary_paymentconfirm.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -416,10 +417,7 @@ class _booking_receiptState extends State<booking_receipt> {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: appointment[0]
-                              .appointmentDetails[0]
-                              .stylist
-                              .length,
+                          itemCount: appointment[0].appointmentDetails[0].stylist.length,
                           itemBuilder: (context, index) {
                             return Column(
                               children: [
@@ -596,25 +594,26 @@ class _booking_receiptState extends State<booking_receipt> {
         isLoading = true;
       });
       var headers = {
-        // 'Content-Type': "application/json; charset=utf-8",
+        'Content-Type': "application/json; charset=utf-8",
         "authorization":
             "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
         "bookingId": widget.bookingId,
+        "appointmentIds": Helper.serviceId,
       };
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");
       var response = await http.post(
         posturi,
-        body: bodydata,
+        body: jsonEncode(bodydata),
         headers: headers,
       );
       print("addAppointment status code ====> ${response.statusCode}");
       print("addAppointment res body is ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        ad = AppointmentDetails.fromJson(jsonDecode(response.body));
+        ad = AppointmentDetails.fromMap(jsonDecode(response.body));
         appointment = ad!.data;
 
         if (appointment[0].appointmentDetails.isNotEmpty) {
@@ -628,6 +627,13 @@ class _booking_receiptState extends State<booking_receipt> {
         }
 
         print("addAppointment status ====>  ${map['status']}");
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else{
+
       }
     } catch (e) {
       rethrow;

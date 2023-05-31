@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
@@ -406,6 +407,11 @@ class _searchservicesState extends State<searchservices> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -433,6 +439,11 @@ class _searchservicesState extends State<searchservices> {
           ss = SearchService.fromjson(map);
           searchData = ss!.data!.serviceTypes!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

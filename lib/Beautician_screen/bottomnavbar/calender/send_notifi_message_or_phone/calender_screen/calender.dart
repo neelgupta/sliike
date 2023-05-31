@@ -88,20 +88,20 @@ class _calenderState extends State<calender> {
                             child: Image.asset("assets/images/arrowdown.png"),
                           ),
                           const Spacer(),
-                          InkWell(
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: Image.asset("assets/images/setting-4.png"),
-                            ),
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return const filter();
-                                },
-                              ));
-                            },
-                          )
+                          // InkWell(
+                          //   child: SizedBox(
+                          //     height: 20,
+                          //     width: 20,
+                          //     child: Image.asset("assets/images/setting-4.png"),
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.push(context, MaterialPageRoute(
+                          //       builder: (context) {
+                          //         return const filter();
+                          //       },
+                          //     ));
+                          //   },
+                          // )
                         ],
                       ),
                     ),
@@ -110,7 +110,7 @@ class _calenderState extends State<calender> {
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: const Text("TODAY - TUESDAY",
+                      child: Text("TODAY - ${DateFormat('EEEE').format(pickeddate!).toUpperCase()}",
                           style: TextStyle(
                               fontSize: 10,
                               overflow: TextOverflow.ellipsis,

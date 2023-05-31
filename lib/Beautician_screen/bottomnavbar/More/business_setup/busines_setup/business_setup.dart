@@ -12,7 +12,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 
 class business_SetUp extends StatefulWidget {
   final String email;
-  const business_SetUp( {Key? key,required this.email}) : super(key: key);
+  bool isStripeSetUp;
+  business_SetUp( {Key? key,required this.email,required this.isStripeSetUp}) : super(key: key);
 
   @override
   State<business_SetUp> createState() => _business_SetUpState();
@@ -203,7 +204,7 @@ class _business_SetUpState extends State<business_SetUp> {
               InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return bank_detail(email: widget.email,);
+                    return bank_detail(email: widget.email,isStripeSetUp: widget.isStripeSetUp,);
                   },));
                 },
                 child: Padding(

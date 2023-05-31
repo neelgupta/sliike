@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/advanced_search.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
@@ -945,6 +946,11 @@ class _filterpageState extends State<filterpage> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -972,6 +978,11 @@ class _filterpageState extends State<filterpage> {
           d = Demography.fromjson(map);
           demographyName = d!.data!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

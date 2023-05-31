@@ -60,7 +60,21 @@ class _manage_appoinmentState extends State<manage_appoinment> {
                   SizedBox(
                       height: height*0.12,
                       width: width*0.25,
-                      child: const Image(image: AssetImage("assets/images/Rectangle 944.png"),fit: BoxFit.fill,)),
+                      child:
+                      Center(
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              const Text("No Image")
+                            ],
+                          )),
+                  ),
                   SizedBox(width: width*0.04,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

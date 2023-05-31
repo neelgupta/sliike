@@ -1,18 +1,37 @@
+// ignore_for_file: camel_case_types
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/payment_sales/bank_detail/payment_set_up/payment_set_up.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/payment_sales/bank_detail/sales_tax_setting/sales_tax_setting.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/payment_detail/stripe_setup_web_view.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:http/http.dart' as http;
 
 class bank_detail extends StatefulWidget {
   final String email;
-  const bank_detail({Key? key,required this.email}) : super(key: key);
+  bool isStripeSetUp;
+  bank_detail({Key? key,required this.email,required this.isStripeSetUp}) : super(key: key);
 
   @override
   State<bank_detail> createState() => _bank_detailState();
 }
 
 class _bank_detailState extends State<bank_detail> {
+
+  bool isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getTaxSetUpStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -26,7 +45,7 @@ class _bank_detailState extends State<bank_detail> {
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.14, //
         flexibleSpace: Container(
-          color: Color(0xffF5F7F7),
+          color: const Color(0xffF5F7F7),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -41,17 +60,17 @@ class _bank_detailState extends State<bank_detail> {
                             Navigator.pop(context);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             height: height * 0.06,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.black)),
                             child: Center(
                               child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Image(
+                                  padding: const EdgeInsets.all(5),
+                                  child: const Image(
                                     image:
-                                    AssetImage("assets/images/Group 55.png"),
+                                    const AssetImage("assets/images/Group 55.png"),
 
                                   )),
                             ),
@@ -64,11 +83,11 @@ class _bank_detailState extends State<bank_detail> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text("Bank Details & Tax Profile",
+                              child: const Text("Bank Details & Tax Profile",
                                   style: TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: Color(0xff292929),
+                                      color: const Color(0xff292929),
                                       fontFamily: "spartan",
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -83,7 +102,12 @@ class _bank_detailState extends State<bank_detail> {
           ),
         ),
       ),
-      body: Padding(
+      body: isLoading
+          ? const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xffDD6A03),
+        ),
+      ): Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +115,7 @@ class _bank_detailState extends State<bank_detail> {
             SizedBox(
               height: height * 0.04,
             ),
-            textComoon("Bank Details & Tax Settings", 14, Color(0xff292929),
+            textComoon("Bank Details & Tax Settings", 14, const Color(0xff292929),
                 FontWeight.w700),
             SizedBox(
               height: height * 0.02,
@@ -99,22 +123,24 @@ class _bank_detailState extends State<bank_detail> {
             textComoonfade(
                 "Provide bank details for us to wire your payment and Sales Tax profile to collect sales taxes on all your services/product sales.",
                 12,
-                Color(0xff414141),
+                const Color(0xff414141),
                 FontWeight.w500),
-            textComoon("1/2", 12, Color(0xff414141), FontWeight.w500),
+            textComoon("1/2", 12, const Color(0xff414141), FontWeight.w500),
             SizedBox(
               height: height * 0.025,
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return StripeWebViews(email: widget.email);
-                },));
+                if (!widget.isStripeSetUp) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return StripeWebViews(email: widget.email);
+                  },));
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Color(0xff2D9CDB)),
+                    color: !widget.isStripeSetUp?Color(0xff2D9CDB):Colors.black38),
                 child: Padding(
                   padding: const EdgeInsets.only(
                       top: 22, bottom: 22, left: 12, right: 12),
@@ -122,10 +148,10 @@ class _bank_detailState extends State<bank_detail> {
                     children: [
                       Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
-                          Text(
+                          const Text(
                             "Beautician Bank Account Details",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -135,7 +161,7 @@ class _bank_detailState extends State<bank_detail> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Container(
                             height: 15,
                             width: 30,
@@ -214,3 +240,4 @@ class _bank_detailState extends State<bank_detail> {
     );
   }
 }
+

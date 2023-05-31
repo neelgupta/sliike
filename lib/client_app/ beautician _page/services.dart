@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -36,6 +37,7 @@ class _servicesState extends State<services> {
   List<BeauticianServiceId> serviceNameList = [];
   List<SingalBeauticianData> Beauticiandata = [];
   List<Beautician> BeauticianDetails = [];
+  List<BeauticianServiceId> temp = [];
   TextEditingController search = TextEditingController();
   List<String> colors = [
     "black",
@@ -375,7 +377,7 @@ class _servicesState extends State<services> {
                                     ).tr()),
                                   ]),
                               SizedBox(
-                                height: height,
+                                height: height*0.8,
                                 child: TabBarView(
                                   children: [
                                     SingleChildScrollView(
@@ -387,7 +389,11 @@ class _servicesState extends State<services> {
                                             child: TextField(
                                               autofocus: false,
                                               controller: search,
-                                              onChanged: (value) {},
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  searchService(value);
+                                                });
+                                              },
                                               decoration: InputDecoration(
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -456,7 +462,7 @@ class _servicesState extends State<services> {
                                                 child: Align(
                                                   alignment: Alignment.centerLeft,
                                                   child: Text(
-                                                      "(${sb!.data!.total})",
+                                                      "(${search.text.isEmpty?sb!.data!.total:temp.length})",
                                                       style: const TextStyle(
                                                           fontSize: 18,
                                                           fontFamily: "spartan",
@@ -465,24 +471,30 @@ class _servicesState extends State<services> {
                                               ),
                                             ],
                                           ),
-                                          ListView.builder(
-                                              shrinkWrap: true,
-                                              padding: const EdgeInsets.only(top: 20),
-                                              physics: const NeverScrollableScrollPhysics(),
-                                              itemCount: Beauticiandata[0].beauticianServiceId!.length,
-                                              itemBuilder: (context, index) {
-                                                if (index < 5) {
-                                                  return serviceSingalItem(index);
-                                                } else if (viewMore) {
-                                                  return serviceSingalItem(index);
-                                                } else {
-                                                  return const SizedBox();
-                                                }
-                                              }),
+                                          Container(
+                                            height: ((Beauticiandata[0].beauticianServiceId!.length<=5?Beauticiandata[0].beauticianServiceId!.length:
+                                            viewMore?Beauticiandata[0].beauticianServiceId!.length:5) * 60) + 20,
+                                            child: ListView.builder(
+                                                shrinkWrap: true,
+                                                padding: const EdgeInsets.only(top: 20),
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                itemCount: search.text.isNotEmpty?temp.length:Beauticiandata[0].beauticianServiceId!.length<=5?Beauticiandata[0].beauticianServiceId!.length:
+                                                viewMore?Beauticiandata[0].beauticianServiceId!.length:5,
+                                                itemBuilder: (context, index) {
+                                                  // if (index < 5) {
+                                                  //   return serviceSingalItem(index);
+                                                  // } else if (viewMore) {
+                                                    return search.text.isNotEmpty?showSearchItem(index):serviceSingalItem(index);
+                                                  // } else {
+                                                  //   return const SizedBox();
+                                                  // }
+                                                }),
+                                          ),
                                           SizedBox(
                                             height: height * 0.02,
                                           ),
-                                          Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore
+                                          if(search.text.isEmpty)
+                                            Beauticiandata[0].beauticianServiceId!.length > 5 ? viewMore
                                                   ? InkWell(
                                                       onTap: () {
                                                         setState(() {
@@ -1403,6 +1415,7 @@ class _servicesState extends State<services> {
                                     // ),
                                     BeauticianDetails.isNotEmpty
                                         ? SingleChildScrollView(
+                                          physics: NeverScrollableScrollPhysics(),
                                             child: Column(
                                               //  crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -1764,6 +1777,7 @@ class _servicesState extends State<services> {
                                                             )
                                                           : ListView.builder(
                                                               shrinkWrap: true,
+                                                              physics: NeverScrollableScrollPhysics(),
                                                               itemCount:
                                                                   BeauticianDetails[
                                                                           0]
@@ -1990,7 +2004,8 @@ class _servicesState extends State<services> {
           infoDilog(index);
         });
       },
-      child: Padding(
+      child: Container(
+        height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
@@ -2051,6 +2066,85 @@ class _servicesState extends State<services> {
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
+                        .tr()),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  showSearchItem(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState((){
+          infoDilog(index);
+        });
+      },
+      child: Container(
+        height: 60,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 100,
+                  child: Text(
+                      "${temp[index].serviceType!.serviceTypeName}",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black))
+                      .tr(),
+                ),
+                const Spacer(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        "\$${temp[index].price}",
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontFamily: "spartan",
+                            color: Colors.black)),
+                    Text(
+                        getTimeFormatedValue(temp[index]
+                            .duration
+                            .toString()),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: "spartan",
+                            color: Colors.black54)),
+                  ],
+                ),
+                const Spacer(),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return book_appoinment(
+                            serviceTypeName: "${temp[index].serviceType!.serviceTypeName}",
+                            price: "${temp[index].price}",
+                            duration: getTimeFormatedValue(temp[index].duration.toString()),
+                            beauticianId: widget.beauticianId,
+                            serviceId: temp[index].id!,
+                            serviceDuration: "${temp[index].duration}",
+                          );
+                        },
+                      ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFFDD6A03),
+                    ),
+                    child: const Text("book",
+                        style: TextStyle(fontFamily: "spartan"))
                         .tr()),
               ],
             ),
@@ -2123,7 +2217,9 @@ class _servicesState extends State<services> {
                           alignment: Alignment.centerLeft,
                           width: 100,
                           child: Text(
-                              "${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}",
+                              search.text.isEmpty?
+                              "${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}":
+                              "${temp[index].serviceType!.serviceTypeName}",
                               style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: "spartan",
@@ -2136,16 +2232,17 @@ class _servicesState extends State<services> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "\$${Beauticiandata[0].beauticianServiceId![index].price}",
+                                search.text.isEmpty?"\$${Beauticiandata[0].beauticianServiceId![index].price}":
+                                "${temp[index].price}",
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "spartan",
                                     color: Colors.black)),
                             Text(
-                                getTimeFormatedValue(Beauticiandata[0]
+                                getTimeFormatedValue(search.text.isEmpty?Beauticiandata[0]
                                     .beauticianServiceId![index]
                                     .duration
-                                    .toString()),
+                                    .toString():temp[index].duration.toString()),
                                 style: const TextStyle(
                                     fontSize: 14,
                                     fontFamily: "spartan",
@@ -2155,9 +2252,24 @@ class _servicesState extends State<services> {
                         ),
                       ],
                     ),
-                    Beauticiandata[0].beauticianServiceId![index].description != ""? Expanded(
+                    search.text.isEmpty?Beauticiandata[0].beauticianServiceId![index].description != ""? Expanded(
                       child: Text(
                           "${Beauticiandata[0].beauticianServiceId![index].description}",
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              color: Colors.black)),
+                    ) : const Center(
+                      child: Text(
+                          "No Description",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              color: Colors.black)),
+                    ):
+                    temp[index].description != ""? Expanded(
+                      child: Text(
+                          "${temp[index].description}",
                           style: const TextStyle(
                               fontSize: 16,
                               fontFamily: "spartan",
@@ -2493,6 +2605,11 @@ class _servicesState extends State<services> {
           Beauticiandata[0].isFav!;
           Beauticiandata[0].isFav!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
       // setState(() {
       //   isLoading = false;
@@ -2547,6 +2664,11 @@ class _servicesState extends State<services> {
             locationLatLng();
           }
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
       // setState(() {
       //   isLoading = false;
@@ -2557,6 +2679,20 @@ class _servicesState extends State<services> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  searchService(String value) {
+    if(search.text.isNotEmpty) {
+      temp.clear();
+      for(int i = 0;i<Beauticiandata[0].beauticianServiceId!.length;i++) {
+        print(Beauticiandata[0].beauticianServiceId![i].serviceType!.serviceTypeName!);
+        if(Beauticiandata[0].beauticianServiceId![i].serviceType!.serviceTypeName!.toLowerCase().contains(search.text.toLowerCase())) {
+          print("data : ${Beauticiandata[0].beauticianServiceId![i].serviceType!.serviceTypeName!}");
+            temp.add(Beauticiandata[0].beauticianServiceId![i]);
+            // setState(() {});
+        }
+      }
     }
   }
 }

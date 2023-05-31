@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
 import 'dart:convert';
 import '../../utils/apiurllist.dart';
@@ -203,6 +204,11 @@ class _viewpageState extends State<viewpage> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;

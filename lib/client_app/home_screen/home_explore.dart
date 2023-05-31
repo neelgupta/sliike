@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/Filter.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/Search_services.dart';
@@ -91,13 +92,13 @@ class _home_exploreState extends State<home_explore> {
                     ),
                     // child: Image.asset("assets/images/client_home_bg.png"),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        right: width * 0.06, top: height * 0.07),
-                    alignment: Alignment.centerRight,
-                    child: Image.asset("assets/images/cart.png",
-                        height: width * 0.13),
-                  ),
+                  // Container(
+                  //   margin: EdgeInsets.only(
+                  //       right: width * 0.06, top: height * 0.07),
+                  //   alignment: Alignment.centerRight,
+                  //   child: Image.asset("assets/images/cart.png",
+                  //       height: width * 0.13),
+                  // ),
                   Container(
                     margin: EdgeInsets.only(
                         left: width * 0.06, top: height * 0.3),
@@ -1016,6 +1017,11 @@ class _home_exploreState extends State<home_explore> {
         setState(() {
           isLoading = false;
         });
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1051,6 +1057,11 @@ class _home_exploreState extends State<home_explore> {
           f = FavoriteListModel.fromjson(map);
           favoritelist = f!.data!.favoritesList!;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1088,6 +1099,11 @@ class _home_exploreState extends State<home_explore> {
         setState(() {
           isLoading = false;
         });
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1134,6 +1150,11 @@ class _home_exploreState extends State<home_explore> {
           r = Recommended.fromJson(jsonDecode(response.body));
           recommended = r!.beauticians.data;
         }
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
       setState(() {
         isLoading = false;

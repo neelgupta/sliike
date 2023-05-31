@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_receipt.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/manage_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
@@ -191,11 +192,11 @@ class _booking_summary_paymentconfirmState extends State<booking_summary_payment
                             SizedBox(width: width*0.12,),
                           ],
                         ),
-                        Text("${appointment[0].beauticianDetails.address.address} \n ${appointment[0].beauticianDetails.address.city} ${appointment[0].beauticianDetails.address.zipCode}",
+                        appointment[0].beauticianDetails.address != "" ? Text("${appointment[0].beauticianDetails.address.address} \n ${appointment[0].beauticianDetails.address.city} ${appointment[0].beauticianDetails.address.zipCode}",
                             style: const TextStyle(
                                 fontSize: 13,
                                 fontFamily: "spartan",
-                                color: Colors.blue)),
+                                color: Colors.blue)) : Container(),
                       ],
                     ),
                   )
@@ -344,7 +345,7 @@ class _booking_summary_paymentconfirmState extends State<booking_summary_payment
                               category: appointment[0].serviceTypeDetails[0].serviceTypeName,
                               time: "$startData - $endData",
                               businessName: appointment[0].beauticianDetails.businessName,
-                              bookingId: appointment[0].appointmentDetails[0].serviceId,
+                              bookingId: appointment[0].appointmentDetails[0].id,
                               price: "${appointment[0].appointmentDetails[0].price}",
                               serviceDuration: appointment[0].appointmentDetails[0].serviceDetails.duration,
                               serviceId: appointment[0].appointmentDetails[0].serviceId,
@@ -503,27 +504,33 @@ class _booking_summary_paymentconfirmState extends State<booking_summary_payment
         isLoading = true;
       });
       var headers = {
-        // 'Content-Type': "application/json; charset=utf-8",
+        'Content-Type': "application/json; charset=utf-8",
         "authorization":
         "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
         "bookingId": widget.bookingId,
+        "appointmentIds": Helper.serviceId,
       };
       print(headers);
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");
       var response = await http.post(posturi,
-        body: bodydata,
+        body: jsonEncode(bodydata),
         headers: headers,
       );
       print("addAppointment status code ====> ${response.statusCode}");
       print("addAppointment res body is ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        ad = AppointmentDetails.fromJson(jsonDecode(response.body));
+        ad = AppointmentDetails.fromMap(jsonDecode(response.body));
         appointment = ad!.data;
         print("addAppointment status ====>  ${map['status']}");
+      }else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -546,26 +553,29 @@ class AppointmentDetails {
     required this.data,
   });
 
-  factory AppointmentDetails.fromJson(Map<String, dynamic> json) => AppointmentDetails(
+  factory AppointmentDetails.fromMap(Map<String, dynamic> json) => AppointmentDetails(
     status: json["status"],
     success: json["success"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "status": status,
     "success": success,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toMap())),
   };
 }
 
 class Datum {
   String id;
   int subTotal;
-  double discount;
-  double gstORhst;
-  double pstORqst;
-  double totalPrice;
+  int discount;
+  String gstORhst;
+  String pstORqst;
+  String totalPrice;
+  int gstORhstInPer;
+  int pstORqstInPer;
+  int total;
   String bookingId;
   int paymentStatus;
   CardDetails cardDetails;
@@ -580,6 +590,9 @@ class Datum {
     required this.gstORhst,
     required this.pstORqst,
     required this.totalPrice,
+    required this.gstORhstInPer,
+    required this.pstORqstInPer,
+    required this.total,
     required this.bookingId,
     required this.paymentStatus,
     required this.cardDetails,
@@ -588,34 +601,40 @@ class Datum {
     required this.serviceTypeDetails,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
     id: json["_id"],
     subTotal: json["subTotal"],
-    discount: json["discount"]?.toDouble(),
-    gstORhst: json["gstORhst"]?.toDouble(),
-    pstORqst: json["pstORqst"]?.toDouble(),
-    totalPrice: json["TotalPrice"]?.toDouble(),
+    discount: json["discount"],
+    gstORhst: json["gstORhst"],
+    pstORqst: json["pstORqst"],
+    totalPrice: json["TotalPrice"],
+    gstORhstInPer: json["gstORhstInPer"],
+    pstORqstInPer: json["pstORqstInPer"],
+    total: json["total"],
     bookingId: json["BookingId"],
     paymentStatus: json["paymentStatus"],
-    cardDetails: CardDetails.fromJson(json["cardDetails"]),
-    appointmentDetails: List<AppointmentDetail>.from(json["appointmentDetails"].map((x) => AppointmentDetail.fromJson(x))),
-    beauticianDetails: BeauticianDetails.fromJson(json["beauticianDetails"]),
-    serviceTypeDetails: List<ServiceTypeDetail>.from(json["ServiceTypeDetails"].map((x) => ServiceTypeDetail.fromJson(x))),
+    cardDetails: CardDetails.fromMap(json["cardDetails"]),
+    appointmentDetails: List<AppointmentDetail>.from(json["appointmentDetails"].map((x) => AppointmentDetail.fromMap(x))),
+    beauticianDetails: BeauticianDetails.fromMap(json["beauticianDetails"]),
+    serviceTypeDetails: List<ServiceTypeDetail>.from(json["ServiceTypeDetails"].map((x) => ServiceTypeDetail.fromMap(x))),
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
     "subTotal": subTotal,
     "discount": discount,
     "gstORhst": gstORhst,
     "pstORqst": pstORqst,
     "TotalPrice": totalPrice,
+    "gstORhstInPer": gstORhstInPer,
+    "pstORqstInPer": pstORqstInPer,
+    "total": total,
     "BookingId": bookingId,
     "paymentStatus": paymentStatus,
-    "cardDetails": cardDetails.toJson(),
-    "appointmentDetails": List<dynamic>.from(appointmentDetails.map((x) => x.toJson())),
-    "beauticianDetails": beauticianDetails.toJson(),
-    "ServiceTypeDetails": List<dynamic>.from(serviceTypeDetails.map((x) => x.toJson())),
+    "cardDetails": cardDetails.toMap(),
+    "appointmentDetails": List<dynamic>.from(appointmentDetails.map((x) => x.toMap())),
+    "beauticianDetails": beauticianDetails.toMap(),
+    "ServiceTypeDetails": List<dynamic>.from(serviceTypeDetails.map((x) => x.toMap())),
   };
 }
 
@@ -631,9 +650,9 @@ class AppointmentDetail {
   int place;
   String note;
   int status;
-  String updatedBy;
+  String paymentDetails;
   ServiceDetails serviceDetails;
-  List<Stylist> stylist;
+  List<dynamic> stylist;
 
   AppointmentDetail({
     required this.id,
@@ -647,12 +666,12 @@ class AppointmentDetail {
     required this.place,
     required this.note,
     required this.status,
-    required this.updatedBy,
+    required this.paymentDetails,
     required this.serviceDetails,
     required this.stylist,
   });
 
-  factory AppointmentDetail.fromJson(Map<String, dynamic> json) => AppointmentDetail(
+  factory AppointmentDetail.fromMap(Map<String, dynamic> json) => AppointmentDetail(
     id: json["_id"],
     clientId: json["clientId"],
     beauticianId: json["beauticianId"],
@@ -664,12 +683,12 @@ class AppointmentDetail {
     place: json["place"],
     note: json["note"],
     status: json["status"],
-    updatedBy: json["updatedBy"],
-    serviceDetails: ServiceDetails.fromJson(json["serviceDetails"]),
-    stylist: List<Stylist>.from(json["Stylist"].map((x) => Stylist.fromJson(x))),
+    paymentDetails: json["paymentDetails"],
+    serviceDetails: ServiceDetails.fromMap(json["serviceDetails"]),
+    stylist: List<dynamic>.from(json["Stylist"].map((x) => x)),
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
     "clientId": clientId,
     "beauticianId": beauticianId,
@@ -681,9 +700,9 @@ class AppointmentDetail {
     "place": place,
     "note": note,
     "status": status,
-    "updatedBy": updatedBy,
-    "serviceDetails": serviceDetails.toJson(),
-    "Stylist": List<dynamic>.from(stylist.map((x) => x.toJson())),
+    "paymentDetails": paymentDetails,
+    "serviceDetails": serviceDetails.toMap(),
+    "Stylist": List<dynamic>.from(stylist.map((x) => x)),
   };
 }
 
@@ -704,7 +723,7 @@ class ServiceDetails {
     required this.description,
   });
 
-  factory ServiceDetails.fromJson(Map<String, dynamic> json) => ServiceDetails(
+  factory ServiceDetails.fromMap(Map<String, dynamic> json) => ServiceDetails(
     id: json["_id"],
     serviceCategory: json["serviceCategory"],
     serviceType: json["serviceType"],
@@ -713,7 +732,7 @@ class ServiceDetails {
     description: json["description"],
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
     "serviceCategory": serviceCategory,
     "serviceType": serviceType,
@@ -723,53 +742,25 @@ class ServiceDetails {
   };
 }
 
-class Stylist {
-  String id;
-  String firstName;
-  String lastName;
-  String profileImage;
-
-  Stylist({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.profileImage,
-  });
-
-  factory Stylist.fromJson(Map<String, dynamic> json) => Stylist(
-    id: json["_id"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    profileImage: json["profileImage"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "firstName": firstName,
-    "lastName": lastName,
-    "profileImage": profileImage,
-  };
-}
-
 class BeauticianDetails {
   Address address;
   String businessName;
-  String logo;
+  dynamic logo;
 
   BeauticianDetails({
     required this.address,
     required this.businessName,
-    required this.logo,
+    this.logo,
   });
 
-  factory BeauticianDetails.fromJson(Map<String, dynamic> json) => BeauticianDetails(
-    address: Address.fromJson(json["address"]),
+  factory BeauticianDetails.fromMap(Map<String, dynamic> json) => BeauticianDetails(
+    address: Address.fromMap(json["address"]),
     businessName: json["businessName"],
     logo: json["logo"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "address": address.toJson(),
+  Map<String, dynamic> toMap() => {
+    "address": address.toMap(),
     "businessName": businessName,
     "logo": logo,
   };
@@ -777,23 +768,27 @@ class BeauticianDetails {
 
 class Address {
   String address;
+  String province;
   String city;
   String zipCode;
 
   Address({
     required this.address,
+    required this.province,
     required this.city,
     required this.zipCode,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
+  factory Address.fromMap(Map<String, dynamic> json) => Address(
     address: json["address"],
+    province: json["province"],
     city: json["city"],
-    zipCode: json["zipCode"].toString(),
+    zipCode: json["zipCode"],
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "address": address,
+    "province": province,
     "city": city,
     "zipCode": zipCode,
   };
@@ -808,12 +803,12 @@ class CardDetails {
     required this.cardBrand,
   });
 
-  factory CardDetails.fromJson(Map<String, dynamic> json) => CardDetails(
+  factory CardDetails.fromMap(Map<String, dynamic> json) => CardDetails(
     id: json["_id"],
     cardBrand: json["cardBrand"],
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
     "cardBrand": cardBrand,
   };
@@ -830,16 +825,15 @@ class ServiceTypeDetail {
     required this.serviceTypeName,
   });
 
-  factory ServiceTypeDetail.fromJson(Map<String, dynamic> json) => ServiceTypeDetail(
+  factory ServiceTypeDetail.fromMap(Map<String, dynamic> json) => ServiceTypeDetail(
     id: json["_id"],
     serviceCategoryId: json["serviceCategoryId"],
     serviceTypeName: json["serviceTypeName"],
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     "_id": id,
     "serviceCategoryId": serviceCategoryId,
     "serviceTypeName": serviceTypeName,
   };
 }
-

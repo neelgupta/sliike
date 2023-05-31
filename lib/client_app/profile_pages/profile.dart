@@ -1161,7 +1161,6 @@ class _profileState extends State<profile> {
                           Location: "surat",
                           Zip_Code: "395004",
                           addressValue: false,
-                          data: [],
                         );
                       },
                     )).then((value) {
@@ -1288,6 +1287,11 @@ class _profileState extends State<profile> {
           if (getProfileModel.data.address.isNotEmpty) {
             addressData = getProfileModel.data.address.first;
           }
+        }else if(response.statusCode == 401){
+          logoutdata();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            return signInScreen();
+          },), (route) => false);
         }
         setState(() {
           isLoading = false;
@@ -1329,7 +1333,12 @@ class _profileState extends State<profile> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

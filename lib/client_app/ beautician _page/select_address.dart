@@ -118,7 +118,7 @@ class _SelectAddressState extends State<SelectAddress> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return add_new_address(Address_Name: "",Apartment_suite: "",Location: "",Province_name: "",Zip_Code: "",addressValue: false,data: [],);
+                    return add_new_address(Address_Name: "",Apartment_suite: "",Location: "",Province_name: "",Zip_Code: "",addressValue: false,);
                   },
                 )).then((value) {
                   getAddress();

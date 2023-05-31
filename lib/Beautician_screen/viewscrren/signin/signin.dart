@@ -50,11 +50,14 @@ class _signInScreenState extends State<signInScreen> {
   final LoginService l = LoginService();
   SendOtpModel? sendotpmodel;
   bool emailstatus = false;
+  bool emailValidStatus = false;
   bool rememberMe = false;
   bool? check1 = false;
   bool passwordstatus = false;
   bool isLoading = false;
-  String status = "";
+  String emailError = "";
+  String passwordError = "";
+  String validEmail = "";
   bool showstatus = false;
   String email = "";
   String firebaseToken = "";
@@ -147,13 +150,15 @@ class _signInScreenState extends State<signInScreen> {
                   ),
                   TextField(
                     controller: temail,
-                    onChanged: (value) {
-                      emailstatus = false;
+                    onTap: () {
+                      setState((){
+                        emailstatus = false;
+                      });
                     },
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: "Enter your email",
-                      labelText: "Enter your email",
+                      hintText: "Enter Email Address",
+                      labelText: "Enter Email Address",
                       labelStyle: const TextStyle(
                           fontFamily: 'spartan', color: Colors.black54),
                       focusedBorder: OutlineInputBorder(
@@ -171,28 +176,27 @@ class _signInScreenState extends State<signInScreen> {
                           alignment: Alignment.topLeft,
                           height: 30,
                           child: Text(
-                            status,
+                            emailError,
                             style: const TextStyle(
                                 fontFamily: 'spartan',
                                 fontSize: 12,
                                 color: Colors.red),
                           ),
                         )
-                      : Container(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                      : const SizedBox(height: 20,),
                   TextFormField(
                     controller: tpassword,
                     obscuringCharacter: "*",
-                    onChanged: (value) {
-                      passwordstatus = false;
+                    onTap: () {
+                      setState((){
+                        passwordstatus = false;
+                      });
                     },
                     obscureText: showstatus,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: "Password",
-                      labelText: "Password",
+                      hintText: "Enter Password",
+                      labelText: "Enter Password",
                       suffixIcon: showstatus
                           ? IconButton(
                               onPressed: () {
@@ -231,17 +235,14 @@ class _signInScreenState extends State<signInScreen> {
                           alignment: Alignment.topLeft,
                           height: 30,
                           child: Text(
-                            status,
+                            passwordError,
                             style: const TextStyle(
                                 fontFamily: 'spartan',
                                 fontSize: 12,
                                 color: Colors.red),
                           ),
                         )
-                      : Container(),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                      : const SizedBox(height: 10,),
                   Row(
                     children: <Widget>[
                        Checkbox(
@@ -297,15 +298,18 @@ class _signInScreenState extends State<signInScreen> {
                         bool emailValid = RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(email);
-                        if (email.isEmpty) {
+                         if (email.isEmpty && password.isEmpty) {
                           emailstatus = true;
-                          status = "Please Enter Email ID";
-                        } else if (!emailValid) {
+                          passwordstatus = true;
+                          emailError = "Please Enter Email ID";
+                          passwordError = "Please Enter Password";
+                        } else if (email.isEmpty && !emailValid) {
+                          emailValidStatus = true;
                           emailstatus = true;
-                          status = "Please Enter Correct Email ID";
+                          emailError = "Please Enter Correct Email ID";
                         } else if (password.isEmpty) {
                           passwordstatus = true;
-                          status = "Please Enter Password";
+                          passwordError = "Please Enter Password";
                         } else {
                           loginApi(email, password);
                         }

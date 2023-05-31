@@ -332,7 +332,12 @@ class _delete_my_accountState extends State<delete_my_account> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

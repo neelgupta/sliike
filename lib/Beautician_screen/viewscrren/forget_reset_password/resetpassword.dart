@@ -681,7 +681,12 @@ class _resetPassWordState extends State<resetPassWord> {
         setState(() {
           _showdialog(context);
         });
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -746,7 +751,12 @@ class _resetPassWordState extends State<resetPassWord> {
           isPasswordEnter = true;
         });
         print("preset===$isPasswordEnter");
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -814,7 +824,12 @@ class _resetPassWordState extends State<resetPassWord> {
           isProcessDone = true;
         });
         print("........$isProcessDone");
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

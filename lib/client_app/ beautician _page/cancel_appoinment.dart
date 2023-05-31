@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_appointments.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
@@ -215,7 +216,12 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else {
+      } else if(response.statusCode == 401){
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
