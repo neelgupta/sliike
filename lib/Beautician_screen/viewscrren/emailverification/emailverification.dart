@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -149,7 +150,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                       const SizedBox(
                         height: 20,
                       ),
-                      !enableResend?Center(
+                      Center(
                         child: Text(
                           "00:$secondsRemaining",
                           style: const TextStyle(
@@ -158,7 +159,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                               fontFamily: "spartan",
                               fontWeight: FontWeight.w200),
                         ),
-                      ) : SizedBox(),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -180,12 +181,9 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                       Center(
                         child: InkWell(
                             onTap: () {
-                              if(enableResend){
-                                _resendCode();
-                              }
-                              // setState(() {
-                              //   enableResend ? _resendCode() : null;
-                              // });
+                              setState(() {
+                                enableResend ? _resendCode() : null;
+                              });
                             },
                             child: Text(
                               "Resend Code",
@@ -254,12 +252,15 @@ class _emailVeriFicationState extends State<emailVeriFication> {
         'Content-Type': "application/json; charset=utf-8",
       };
 
-      var respnce = await http.post(Uri.parse(ApiUrlList.verifyOtp), body: jsonEncode(bodydata), headers: headers);
+      var respnce = await http.post(Uri.parse(ApiUrlList.verifyOtp),
+          body: jsonEncode(bodydata), headers: headers);
       print('verifyOtp status : ${respnce.statusCode}');
       print('verifyOtp body :${respnce.body}');
       var map = jsonDecode(respnce.body);
       if (respnce.statusCode == 200) {
         verifyotpmodel = VerifyOtpModel.fromJson(map);
+        // log("verifyotpmodel ; ${verifyotpmodel.success}");
+
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -269,12 +270,15 @@ class _emailVeriFicationState extends State<emailVeriFication> {
             textColor: Colors.white,
             fontSize: 16.0);
         Helper.prefs!.setString(UserPrefs.keyutoken, verifyotpmodel!.token!);
+        // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
           builder: (context) {
             return emailVeriSuceesful();
           },
         ),(route) => false,);
       } else {
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

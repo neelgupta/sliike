@@ -1,4 +1,5 @@
 // ignore_for_file: camel_case_types, must_be_immutable, must_be_immutable, duplicate_ignore, non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:card_swiper/card_swiper.dart';
@@ -1729,8 +1730,17 @@ class _servicesState extends State<services> {
                                                       const Divider(
                                                         color: Colors.black54,
                                                       ),
-                                                      const Text("Opening Hours", style: TextStyle(fontSize: 22, fontFamily: "spartan",color: Colors.black)),
-                                                      SizedBox(height: height * 0.02,),
+                                                      const Text(
+                                                          "Opening Hours",
+                                                          style: TextStyle(
+                                                              fontSize: 22,
+                                                              fontFamily:
+                                                                  "spartan",
+                                                              color: Colors
+                                                                  .black)),
+                                                      SizedBox(
+                                                        height: height * 0.02,
+                                                      ),
                                                       // Row(
                                                       //   children:  [
                                                       //     const Text("Monday - Friday",
@@ -1749,7 +1759,9 @@ class _servicesState extends State<services> {
                                                       // SizedBox(
                                                       //   height: height * 0.02,
                                                       // ),
-                                                      BeauticianDetails[0].workHours.isEmpty
+                                                      BeauticianDetails[0]
+                                                              .workHours
+                                                              .isEmpty
                                                           ? const Center(
                                                               child: Text(
                                                                 "No Data Found!!!",
@@ -1763,29 +1775,45 @@ class _servicesState extends State<services> {
                                                                 ),
                                                               ),
                                                             )
-                                                          : Container(
-                                                            // color: Colors.red,
-                                                            height: height*0.5,
-                                                            child: ListView.builder(
-                                                                itemCount: BeauticianDetails[0].workHours[0].dayDetails.length,
-                                                                itemBuilder: (context, index) {
-                                                                  return Column(
-                                                                    children: [
-                                                                      Row(
-                                                                        children: [
-                                                                          Text("${BeauticianDetails[0].workHours[0].dayDetails[index].day}", style: const TextStyle(fontSize: 16, fontFamily: "spartan", color: Colors.black54)),
-                                                                          const Spacer(),
-                                                                          Text("${BeauticianDetails[0].workHours[0].dayDetails[index].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[index].endTime}", style: const TextStyle(fontSize: 20, fontFamily: "spartan", color: Colors.black)),
-                                                                        ],
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      )
-                                                                    ],
-                                                                  );
-                                                                }),
-                                                          ),
+                                                          : ListView.builder(
+                                                              shrinkWrap: true,
+                                                              physics: NeverScrollableScrollPhysics(),
+                                                              itemCount:
+                                                                  BeauticianDetails[
+                                                                          0]
+                                                                      .workHours[
+                                                                          0]
+                                                                      .dayDetails
+                                                                      .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                            "${BeauticianDetails[0].workHours[0].dayDetails[index].day}",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontFamily: "spartan",
+                                                                                color: Colors.black54)),
+                                                                        const Spacer(),
+                                                                        Text(
+                                                                            "${BeauticianDetails[0].workHours[0].dayDetails[index].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[index].endTime}",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 20,
+                                                                                fontFamily: "spartan",
+                                                                                color: Colors.black)),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              }),
                                                       // Row(
                                                       //   children: [
                                                       //     const Text("Sarturday",

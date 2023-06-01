@@ -56,7 +56,7 @@ class _emailVeriSuceesfulState extends State<emailVeriSuceesful> {
               SizedBox(
                 height: height * 0.03,
               ),
-              const Text("Continue to explore Sliike best of beauty services, products and brand.",textAlign: TextAlign.center,style: TextStyle(color: Colors.black45, fontSize: 14, fontFamily: "spartan",),),
+              const Text("Continue to explore Sliikes best of beauty services, products and brand.",textAlign: TextAlign.center,style: TextStyle(color: Colors.black45, fontSize: 14, fontFamily: "spartan",),),
               SizedBox(height: height*0.05,),
               InkWell(
                 onTap: () async {

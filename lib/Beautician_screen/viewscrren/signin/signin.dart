@@ -303,7 +303,8 @@ class _signInScreenState extends State<signInScreen> {
                           passwordstatus = true;
                           emailError = "Please Enter Email ID";
                           passwordError = "Please Enter Password";
-                        } else if (!emailValid) {
+                        } else if (email.isEmpty && !emailValid) {
+                          emailValidStatus = true;
                           emailstatus = true;
                           emailError = "Please Enter Correct Email ID";
                         } else if (password.isEmpty) {

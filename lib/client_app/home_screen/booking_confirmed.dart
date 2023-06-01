@@ -400,12 +400,8 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {
-                  Helper.serviceId.clear();
-                  Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString(),
-                      serviceId: onlyonemodal!.data!.serviceId!.id,
-                    );
+                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString());
                   },));
                 },
                 child: Container(
