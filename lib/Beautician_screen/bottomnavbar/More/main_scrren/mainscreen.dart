@@ -84,7 +84,7 @@ String Userid="";
                            child: ClipRRect(
                              borderRadius:
                              const BorderRadius.all(Radius.circular(200)),
-                             child: getmodelProfile != null && getmodelProfile!.data!.profileImage != ""
+                             child: getmodelProfile != null
                                  ? Image.network(
                                getmodelProfile!.data!.profileImage!,
                                fit: BoxFit.fill,

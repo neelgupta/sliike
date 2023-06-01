@@ -541,15 +541,20 @@ class _resetPassWordState extends State<resetPassWord> {
 
             String email = emailContoller.text;
             bool emailValid = RegExp(
-                    r"^[a-zA-Z.a-zA-Z!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z]+\.[a-zA-Z]+")
+                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                 .hasMatch(email);
             if (email.isEmpty) {
+              setState((){
               emailstatus = true;
               status = "Please Enter Email ID";
+              });
             } else if (!emailValid) {
-              emailstatus = true;
-              status = "Please Enter Correct Email ID";
+              setState((){
+                emailstatus = true;
+                status = "Please Enter Correct Email ID";
+              });
             } else {
+              emailstatus = false;
               forgotPassword(email);
             }
             setState(() {});

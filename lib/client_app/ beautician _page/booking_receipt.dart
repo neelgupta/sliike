@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,9 @@ import '../../commonClass.dart';
 
 class booking_receipt extends StatefulWidget {
   final String bookingId;
+  final String? serviceId;
 
-  const booking_receipt({Key? key, required this.bookingId}) : super(key: key);
+  booking_receipt({Key? key, required this.bookingId,this.serviceId}) : super(key: key);
 
   @override
   State<booking_receipt> createState() => _booking_receiptState();
@@ -388,10 +390,8 @@ class _booking_receiptState extends State<booking_receipt> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
-                                          appointment[0]
-                                              .beauticianDetails
-                                              .businessName,
+                                      appointment[0].beauticianDetails.businessName == null ? Text("") :  Text(
+                                           appointment[0].beauticianDetails.businessName,
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontFamily: "spartan",
@@ -415,9 +415,9 @@ class _booking_receiptState extends State<booking_receipt> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        ListView.builder(
+                        appointment[0].appointmentDetails.isNotEmpty? ListView.builder(
                           shrinkWrap: true,
-                          itemCount: appointment[0].appointmentDetails[0].stylist.length,
+                          itemCount: appointment[0].appointmentDetails != [] ?appointment[0].appointmentDetails[0].stylist.length : null,
                           itemBuilder: (context, index) {
                             return Column(
                               children: [
@@ -453,7 +453,7 @@ class _booking_receiptState extends State<booking_receipt> {
                               ],
                             );
                           },
-                        ),
+                        ) : Container(),
                         SizedBox(
                           height: height * 0.01,
                         ),
@@ -463,12 +463,12 @@ class _booking_receiptState extends State<booking_receipt> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        appointment[0].appointmentDetails[0].stylist.isEmpty ? const Center(
+                        appointment[0].appointmentDetails == [] ? const Center(
                           child: Text("No Data Found!!"),
                         ) : Row(
                           children: [
                             CachedNetworkImage(
-                              imageUrl:  appointment[0].appointmentDetails[0].stylist[0].profileImage ,
+                              imageUrl:  appointment[0].appointmentDetails == [] ? appointment[0].appointmentDetails[0].stylist[0].profileImage :  "",
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 padding: const EdgeInsets.all(10),
@@ -522,12 +522,12 @@ class _booking_receiptState extends State<booking_receipt> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                Text(
-                                    "${appointment[0].appointmentDetails[0].stylist[0].firstName} ${appointment[0].appointmentDetails[0].stylist[0].lastName}",
+                                appointment[0].appointmentDetails.isNotEmpty?   Text(
+                                    appointment[0].appointmentDetails[0].stylist.isNotEmpty ? "${appointment[0].appointmentDetails[0].stylist[0].firstName} ${appointment[0].appointmentDetails[0].stylist[0].lastName}" : "",
                                     style: const TextStyle(
                                         fontSize: 16,
                                         fontFamily: "spartan",
-                                        color: Colors.black)),
+                                        color: Colors.black)) : Text("")
                               ],
                             )
                           ],
@@ -594,13 +594,13 @@ class _booking_receiptState extends State<booking_receipt> {
         isLoading = true;
       });
       var headers = {
-        'Content-Type': "application/json; charset=utf-8",
+        'Content-Type': "application/json",
         "authorization":
             "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
         "bookingId": widget.bookingId,
-        "appointmentIds": Helper.serviceId,
+        "appointmentIds": Helper.serviceId.isNotEmpty ? Helper.serviceId : [widget.serviceId],
       };
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");
@@ -610,7 +610,7 @@ class _booking_receiptState extends State<booking_receipt> {
         headers: headers,
       );
       print("addAppointment status code ====> ${response.statusCode}");
-      print("addAppointment res body is ====>  ${response.body}");
+      log("addAppointment res body is ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (response.statusCode == 200) {
         ad = AppointmentDetails.fromMap(jsonDecode(response.body));

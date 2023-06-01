@@ -31,6 +31,7 @@ class _searchservicesState extends State<searchservices> {
   double height = 0;
   double width = 0;
   bool searchbyservice = false;
+  String ShowServiceName = "";
 
   @override
   void initState() {
@@ -39,29 +40,32 @@ class _searchservicesState extends State<searchservices> {
     // searchServiceType();
   }
 
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
     width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
-    return Scaffold(
-      body: WillPopScope(
+    return WillPopScope(
         onWillPop: () async {
-          if(searchbyservice) {
-            setState(() {
-              searchbyservice = false;
-            });
-            return false;
-          } else {
-            Navigator.pop(context);
-            return true;
-          }
-        },
-        child: isLoading
+      if(searchbyservice) {
+        setState(() {
+          searchbyservice = false;
+        });
+        return false;
+      } else {
+        Navigator.pop(context);
+        return true;
+      }
+    },
+      child: Scaffold(
+        body: isLoading
             ? const Center(
             child: CircularProgressIndicator(
             color: Color(0xffDD6A03),
           ),
-        ) :SafeArea(
+        ) :
+         SafeArea(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: width*0.03,vertical: 10),
             child: SingleChildScrollView(
@@ -128,7 +132,7 @@ class _searchservicesState extends State<searchservices> {
               ),
             ),
           ),
-        ),
+        )
       ),
     );
   }
@@ -196,10 +200,12 @@ class _searchservicesState extends State<searchservices> {
             for (int i = 0; i < serviceName.length; i++)
               GestureDetector(
                 onTap: () {
+                  ShowServiceName = "";
                   setState(() {
-                    serviceName[i].isSelected =
-                    !serviceName[i].isSelected;
+                    serviceName[i].isSelected = !serviceName[i].isSelected;
+                    ShowServiceName  = serviceName[i].serviceCategoryName!;
                   });
+                  print(ShowServiceName);
                 },
                 child: Container(
                   height: height * 0.06,
@@ -238,6 +244,8 @@ class _searchservicesState extends State<searchservices> {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return searchScreen(
                 selectedService: selectedService,
+                  serviceName: ShowServiceName,
+                isMultipleSearched: selectedService.length == 1 ?false : true,
               );
             },));
           },
@@ -311,7 +319,8 @@ class _searchservicesState extends State<searchservices> {
       child: CircularProgressIndicator(
         color: Color(0xffDD6A03),
       ),
-    ) :Column(
+    ) :
+    searchData.isNotEmpty ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         searchData.isNotEmpty?const Text("Services",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
@@ -387,8 +396,12 @@ class _searchservicesState extends State<searchservices> {
           );
         },):Container(),
       ],
-    );
-  }
+    ):
+    Container(
+    height: height *0.75,
+      child: const Center(
+        child: Text("Not yet available. More beauty experience coming soon.")
+      ));}
 
   fetchServiceCategories() async {
     var geturi = Uri.parse(ApiUrlList.fetchServiceCategories);
