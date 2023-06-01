@@ -815,7 +815,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          Navigator.pushReplacement(context, MaterialPageRoute(
+                          Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
                               return const BussIneSSInfo();
                             },
@@ -1086,11 +1086,11 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return const bussinessInfoCATEGORY();
           },
-        ),(route) => false);
+        ));
       } else if(responce.statusCode == 401){
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {

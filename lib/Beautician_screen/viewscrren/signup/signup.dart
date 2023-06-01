@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -103,8 +102,13 @@ class _signUpState extends State<signUp> {
   bool passwordstatus = false;
   bool butten = false;
   bool butten1 = false;
-  String status = "";
+  // String status = "";
   String statusv = "";
+  String fnameMsg = "";
+  String lnameMsg = "";
+  String emailMsg = "";
+  String phoneMsg = "";
+  String passwordMsg = "";
   bool showstatus = false;
   bool isEmailVerify = false;
   String _radioSelected = "user";
@@ -118,14 +122,13 @@ class _signUpState extends State<signUp> {
   String vemail = "";
 
   void _checkPassword(String value) {
-
     if (tpassword.text.isEmpty) {
       setState(() {
         strength = 1 / 4;
         displayText = '';
         password_strength_color = Colors.red;
       });
-    }else if (tpassword.text.length <= 6) {
+    } else if (tpassword.text.length <= 6) {
       setState(() {
         strength = 1 / 4;
         displayText = 'weak';
@@ -137,15 +140,16 @@ class _signUpState extends State<signUp> {
         displayText = 'good';
         password_strength_color = Colors.orange;
       });
-    } else if (letterReg.hasMatch(tpassword.text) && numReg.hasMatch(tpassword.text)) {
-        setState(() {
-          // Password length >= 8
-          // But doesn't contain both letter and digit characters
-          strength = 3 / 4;
-          displayText = 'strong';
-          password_strength_color = Colors.green;
-        });
-      }
+    } else if (letterReg.hasMatch(tpassword.text) &&
+        numReg.hasMatch(tpassword.text)) {
+      setState(() {
+        // Password length >= 8
+        // But doesn't contain both letter and digit characters
+        strength = 3 / 4;
+        displayText = 'strong';
+        password_strength_color = Colors.green;
+      });
+    }
   }
 
   @override
@@ -156,6 +160,16 @@ class _signUpState extends State<signUp> {
     double width = MediaQuery.of(context).size.width -
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
+
+    var border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(10),
+      ),
+      borderSide: BorderSide(
+        color: Colors.grey,
+        width: 1,
+      ),
+    );
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -239,347 +253,336 @@ class _signUpState extends State<signUp> {
                 const SizedBox(
                   height: 20,
                 ),
-                if (isEmailVerify) Column(
-                        children: [
-                          TextField(
-                            controller: verifyemailcontroller,
-                            onChanged: (value) {
-                              veriyemailAdressstatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Email Address",
-                              labelText: "Email Address",
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
+                if (isEmailVerify)
+                  Column(
+                    children: [
+                      TextField(
+                        readOnly: true,
+                        controller: verifyemailcontroller,
+                        onChanged: (value) {
+                          veriyemailAdressstatus = false;
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Email Address",
+                          labelText: "Email Address",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
-                          veriyemailAdressstatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    statusv,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(),
-                        ],
-                      ) else Column(
-                        children: [
-                          TextField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                            ],
-                            controller: tname,
-                            onChanged: (value) {
-                              setState(() {
-                                namestatus = false;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "First Name",
-                              labelText: "First Name",
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
                           ),
-                          namestatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 20,
-                                ),
-                          TextField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                            ],
-                            controller: tlastname,
-                            onChanged: (value) {
-                              lastnamestatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Last Name",
-                              labelText: "Last Name",
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          lastnamestatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 20,
-                                ),
-                          TextField(
-                            controller: temailAdress,
-                            onChanged: (value) {
-                              emailAdressstatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Email Address",
-                              labelText: "Email Address",
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          emailAdressstatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 20,
-                                ),
-                          TextField(
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(10),
-                            ],
-                            keyboardType: TextInputType.phone,
-                            controller: tphone,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff292929),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "spartan"),
-                            onChanged: (value) {
-                              setState(() {
-                                phonestatusup = false;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Phone Number",
-                              labelText: "Phone Number",
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              prefixIcon: SizedBox(
-                                width: width * 0.35,
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    children: [
-                                      CountryCodePicker(
-                                        flagWidth: 25,
-                                        showCountryOnly: false,
-                                        onChanged: (obj) {
-                                          setState(() {
-                                            _countryname =
-                                                obj.name.toString();
-                                            _countrycode =
-                                                obj.dialCode.toString();
-                                            print(
-                                                "obj country ;; ${obj.name}");
-                                            print(
-                                                "obj country2 ;; $_countryname");
-                                          });
-                                        },
-                                        // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                                        initialSelection: 'Ca',
-                                        enabled: true,
-                                        favorite: const ['+1', 'Ca'],
-                                        // countryFilter: ['IT', 'FR'],
-                                        textStyle: const TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black87),
-                                        // optional. Shows only country name and flag
-                                        //showCountryOnly: false,
-                                        // optional. Shows only country name and flag when popup is closed.
-                                        showOnlyCountryWhenClosed: false,
-                                        // optional. aligns the flag and the Text left
-                                        alignLeft: false,
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 5, bottom: 5),
-                                        child: VerticalDivider(
-                                          thickness: 1,
-                                          color: Color(0xffCECECE),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          phonestatusup
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 20,
-                                ),
-                          TextField(
-                            controller: tpassword,
-                            onChanged: (value) {
-                              _checkPassword(value);
-                              passwordstatus = false;
-                            },
-                            obscureText: showstatus,
-                            obscuringCharacter: "*",
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Password",
-                              labelText: "Password",
-                              suffixIcon: showstatus
-                                  ? IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          showstatus = !showstatus;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                          Icons.visibility_off_outlined),
-                                    )
-                                  : IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          showstatus = !showstatus;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                          Icons.visibility_outlined)),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan',
-                                  color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(left: 5),
-                          //   child: Align(
-                          //     alignment: Alignment.topLeft,
-                          //     child: Text(
-                          //       displayText,
-                          //       style:  TextStyle(fontSize: 10,
-                          //       color: password_strength_color,
-                          //         fontFamily: 'spartan',
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                          passwordstatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 20,
-                                ),
-                        ],
+                        ),
                       ),
+                      veriyemailAdressstatus
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                statusv,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      TextField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                        ],
+                        controller: tname,
+                        onChanged: (value) {
+                          setState(() {
+                            namestatus = false;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "First Name",
+                          labelText: "First Name",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                        ),
+                      ),
+                      namestatus
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                fnameMsg,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      TextField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                        ],
+                        controller: tlastname,
+                        onChanged: (value) {
+                          lastnamestatus = false;
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Last Name",
+                          labelText: "Last Name",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                        ),
+                      ),
+                      lastnamestatus
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                lnameMsg,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      TextField(
+                        controller: temailAdress,
+                        onChanged: (value) {
+                          emailAdressstatus = false;
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Email Address",
+                          labelText: "Email Address",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                        ),
+                      ),
+                      emailAdressstatus
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                emailMsg,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      TextField(
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        keyboardType: TextInputType.phone,
+                        controller: tphone,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff292929),
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "spartan"),
+                        onChanged: (value) {
+                          setState(() {
+                            phonestatusup = false;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Phone Number",
+                          labelText: "Phone Number",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          prefixIcon: SizedBox(
+                            width: width * 0.35,
+                            child: IntrinsicHeight(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CountryCodePicker(
+                                    searchDecoration: InputDecoration(
+                                      isDense: true,
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
+                                      contentPadding: EdgeInsets.only(),
+
+
+                                    ),
+                                    flagWidth: 25,
+                                    hideSearch: false,
+                                    showCountryOnly: false,
+
+                                    onChanged: (obj) {
+                                      setState(() {
+                                        _countryname = obj.name.toString();
+                                        _countrycode = obj.dialCode.toString();
+                                        print("obj country ;; ${obj.name}");
+                                        print("obj country2 ;; $_countryname");
+                                      });
+                                    },
+                                    // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                    initialSelection: 'Ca',
+                                    enabled: true,
+                                    favorite: const ['+1', 'Ca'],
+                                    // countryFilter: ['IT', 'FR'],
+                                    textStyle: const TextStyle(
+                                        fontSize: 10, color: Colors.black87),
+                                    // optional. Shows only country name and flag
+                                    //showCountryOnly: false,
+                                    // optional. Shows only country name and flag when popup is closed.
+                                    showOnlyCountryWhenClosed: false,
+                                    // optional. aligns the flag and the Text left
+                                    alignLeft: false,
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: VerticalDivider(
+                                      thickness: 1,
+                                      color: Color(0xffCECECE),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                        ),
+                      ),
+                      phonestatusup
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                phoneMsg,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      TextField(
+                        controller: tpassword,
+                        onChanged: (value) {
+                          _checkPassword(value);
+                          passwordstatus = false;
+                        },
+                        obscureText: showstatus,
+                        obscuringCharacter: "*",
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Password",
+                          labelText: "Password",
+                          suffixIcon: showstatus
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      showstatus = !showstatus;
+                                    });
+                                  },
+                                  icon:
+                                      const Icon(Icons.visibility_off_outlined),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      showstatus = !showstatus;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.visibility_outlined)),
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black38),
+                          ),
+                        ),
+                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 5),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Text(
+                      //       displayText,
+                      //       style:  TextStyle(fontSize: 10,
+                      //       color: password_strength_color,
+                      //         fontFamily: 'spartan',
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      passwordstatus
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              child: Text(
+                                passwordMsg,
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                    ],
+                  ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -634,30 +637,42 @@ class _signUpState extends State<signUp> {
                                   r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(email);
                           setState(() {
+                            if(firstName.isEmpty && lastName.isEmpty && phoneNumber.isEmpty && email.isEmpty && password.isEmpty){
+                              namestatus = true;
+                              fnameMsg = "Please Enter  First Name";
+                              lastnamestatus = true;
+                              lnameMsg = "Please Enter LastName";
+                              emailAdressstatus = true;
+                              emailMsg = "Please Enter Email ID";
+                              phonestatusup = true;
+                              phoneMsg = "Please Enter Phone Number";
+                              passwordstatus = true;
+                              passwordMsg = "Please Enter Password";
+                            }
                             if (firstName.isEmpty) {
                               namestatus = true;
-                              status = "Please Enter Name";
+                              fnameMsg = "Please Enter  First Name";
                             } else if (lastName.isEmpty) {
                               lastnamestatus = true;
-                              status = "Please Enter LastName";
+                              lnameMsg = "Please Enter LastName";
                             } else if (email.isEmpty) {
                               emailAdressstatus = true;
-                              status = "Please Enter Email ID";
+                              emailMsg = "Please Enter Email ID";
                             } else if (!emailValid) {
                               emailAdressstatus = true;
-                              status = "Please Enter Correct Email ID";
+                              emailMsg = "Please Enter Correct Email ID";
                             } else if (phoneNumber.isEmpty) {
                               phonestatusup = true;
-                              status = "Please Enter Phone Number";
+                              phoneMsg = "Please Enter Phone Number";
                             } else if (!contactValid) {
                               phonestatusup = true;
-                              status = "Please Enter Correct Phone Number";
+                              phoneMsg = "Please Enter Correct Phone Number";
                             } else if (password.isEmpty) {
                               passwordstatus = true;
-                              status = "Please Enter Password";
+                              passwordMsg = "Please Enter Password";
                             } else if (password.length < 6) {
                               passwordstatus = true;
-                              status = "Please Enter 6 Character";
+                              passwordMsg = "Please Enter 6 Character";
                             } else {
                               setState(() {
                                 SignUp(
@@ -703,14 +718,16 @@ class _signUpState extends State<signUp> {
                               height: 1.3)),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return const TeamsAndCondition();
-                          },));
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return const TeamsAndCondition();
+                            },
+                          ));
                         },
                         child: const Text('Terms & Conditions ',
                             style: TextStyle(
                                 fontSize: 12,
-                                color:  Color(0xffDD6A03),
+                                color: Color(0xffDD6A03),
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1.1,
                                 height: 1.3)),
@@ -723,14 +740,16 @@ class _signUpState extends State<signUp> {
                               height: 1.3)),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return const PrivacyPolicy();
-                          },));
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return const PrivacyPolicy();
+                            },
+                          ));
                         },
                         child: const Text('Privacy Policy',
                             style: TextStyle(
                                 fontSize: 12,
-                                color:  Color(0xffDD6A03),
+                                color: Color(0xffDD6A03),
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1.1,
                                 height: 1.3)),
@@ -858,8 +877,8 @@ class _signUpState extends State<signUp> {
         'country': country,
         'phoneNumber': phoneNumber,
         'country_code': countrycode.replaceAll("+", ""),
-        'deviceToken' : deviceToken,
-        'firebaseToken' : firebaseToken
+        'deviceToken': deviceToken,
+        'firebaseToken': firebaseToken
       };
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
@@ -905,7 +924,7 @@ class _signUpState extends State<signUp> {
 
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> getNotification() async {
     /// Create an Android Notification Channel.
@@ -919,10 +938,10 @@ class _signUpState extends State<signUp> {
     );
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     var androiInit =
-    const AndroidInitializationSettings('@mipmap/ic_launcher'); //for logo
+        const AndroidInitializationSettings('@mipmap/ic_launcher'); //for logo
     var iosInit = const DarwinInitializationSettings();
     var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
     flutterLocalNotificationsPlugin.initialize(initSetting);
@@ -990,7 +1009,6 @@ class _signUpState extends State<signUp> {
     return await Geolocator.getCurrentPosition();
   }
 
-
   ///client SendOtp
   // ignore: non_constant_identifier_names
   SendOtp(String vemail) async {
@@ -1000,14 +1018,13 @@ class _signUpState extends State<signUp> {
           // isBottomBarOverlay: false,
           // overlayFromBottom: 80,
           overlayColor: Colors.black26,
-          progressIndicator:
-              const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xffDD6A03)),
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
                   .copyWith(secondary: const Color(0xff01635D))));
       var bodydatamy = {
         'email': vemail,
-
       };
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
@@ -1031,11 +1048,14 @@ class _signUpState extends State<signUp> {
             textColor: Colors.white,
             fontSize: 16.0);
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return emailVeriFication(vemail, userid);
-          },
-        ),);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return emailVeriFication(vemail, userid);
+            },
+          ),
+        );
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
@@ -1061,7 +1081,6 @@ class SendOtpModel {
   String? message;
   String? id;
 
-
   SendOtpModel({this.success, this.status, this.message, this.id});
 
   SendOtpModel.fromJson(Map<String, dynamic> json) {
@@ -1080,7 +1099,6 @@ class SendOtpModel {
     return data;
   }
 }
-
 
 class SignUpModel {
   bool? success;

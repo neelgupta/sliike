@@ -249,139 +249,142 @@ class _booking_summaryState extends State<booking_summary> {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Divider(color: Colors.black54,),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: appointmentData.length,
-                itemBuilder: (context, index) {
-                  String beauticianId = appointmentData[index].beauticianId!.id!;
-                  var startData = DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${appointmentData[index].dateTime}'));
-                  var endData = DateFormat('h:mm').format(DateTime.parse('${appointmentData[index].endDateTime}'));
-                  print("stylist name ====> ${appointmentData[index].stylistID?.firstName}");
-                  if(appointmentData[index].place!.contains("0")){
-                    place = "Beautician’s place";
-                  }else{
-                    place = "At my place";
-                  }
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            SizedBox(height: height * 0.03,),
-                            Row(
-                              children: [
-                                Text("$startData - $endData",
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                              ],
-                            ),
-                            SizedBox(height: height * 0.03,),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("${appointmentData[index].serviceId!.serviceType!.serviceTypeName}",
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                                const Spacer(),
-                                Text("\$${appointmentData[index].serviceId!.price}",
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                              ],
-                            ),
-                            SizedBox(height: height * 0.01,),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("for ${getTimeFormatedValue(appointmentData[index].serviceId!.duration.toString())}",
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "spartan",
-                                        color: Colors.black54)),
-                              ],
-                            ),
-                            SizedBox(height: height * 0.02,),
-                          ],
+            SizedBox(
+              height: height*0.50,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: appointmentData.length,
+                  itemBuilder: (context, index) {
+                    String beauticianId = appointmentData[index].beauticianId!.id!;
+                    var startData = DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${appointmentData[index].dateTime}'));
+                    var endData = DateFormat('h:mm').format(DateTime.parse('${appointmentData[index].endDateTime}'));
+                    print("stylist name ====> ${appointmentData[index].stylistID?.firstName}");
+                    if(appointmentData[index].place!.contains("0")){
+                      place = "Beautician’s place";
+                    }else{
+                      place = "At my place";
+                    }
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              SizedBox(height: height * 0.03,),
+                              Row(
+                                children: [
+                                  Text("$startData - $endData",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: height * 0.03,),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("${appointmentData[index].serviceId!.serviceType!.serviceTypeName}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                  const Spacer(),
+                                  Text("\$${appointmentData[index].serviceId!.price}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: height * 0.01,),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text("for ${getTimeFormatedValue(appointmentData[index].serviceId!.duration.toString())}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              ),
+                              SizedBox(height: height * 0.02,),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(color: Colors.black54,),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            SizedBox(height: height * 0.01,),
-                            const Text("stylist",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)).tr(),
-                            SizedBox(width: width * 0.02,),
-                            appointmentData[index].stylistID!.firstName != ""?Row(
-                              children: [
-                                Image(
-                                  image: const AssetImage("assets/images/Ellipse 150.png"),
-                                  height: height * 0.04,
-                                  width: width * 0.06,),
-                                SizedBox(width: width * 0.02,),
-                                Text("${appointmentData[index].stylistID!.firstName} ${appointmentData[index].stylistID!.lastName}",
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                        color: Colors.black
-                                    )
-                                ),
-                              ],
-                            ): const Text("No Preference",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                    color: Colors.black)),
-                          ],
-                        )
-                      ),
-                      SizedBox(height: height * 0.01,),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(color: Colors.black54,),
-                      ),
-                      SizedBox(height: height * 0.01,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Preferred place of service:",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)),
-                            SizedBox(width: width*0.01,),
-                            Text(place,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "spartan",
-                                    color: Colors.black)),
-                          ],
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(color: Colors.black54,),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(color: Colors.black54,),
-                      ),
-                    ],
-                  );
-                },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              SizedBox(height: height * 0.01,),
+                              const Text("stylist",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black54)).tr(),
+                              SizedBox(width: width * 0.02,),
+                              appointmentData[index].stylistID!.firstName != ""?Row(
+                                children: [
+                                  Image(
+                                    image: const AssetImage("assets/images/Ellipse 150.png"),
+                                    height: height * 0.04,
+                                    width: width * 0.06,),
+                                  SizedBox(width: width * 0.02,),
+                                  Text("${appointmentData[index].stylistID!.firstName} ${appointmentData[index].stylistID!.lastName}",
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "spartan",
+                                          color: Colors.black
+                                      )
+                                  ),
+                                ],
+                              ): const Text("No Preference",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black)),
+                            ],
+                          )
+                        ),
+                        SizedBox(height: height * 0.01,),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(color: Colors.black54,),
+                        ),
+                        SizedBox(height: height * 0.01,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Preferred place of service:",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "spartan",
+                                      color: Colors.black54)),
+                              SizedBox(width: width*0.01,),
+                              Text(place,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "spartan",
+                                      color: Colors.black)),
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(color: Colors.black54,),
+                        ),
+                      ],
+                    );
+                  },
+              ),
             ),
             const Spacer(),
             Padding(

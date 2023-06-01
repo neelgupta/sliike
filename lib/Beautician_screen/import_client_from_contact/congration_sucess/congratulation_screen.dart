@@ -47,7 +47,7 @@ class _conGraTuLation_HoursState extends State<conGraTuLation> {
                             child: Image.asset("assets/images/right.png"),
                           ),
                         SizedBox(height: height*0.02,),
-                        const Text("Congratulations on a\nsuccessful business set-up",textAlign: TextAlign.center,
+                        const Text("Congratulations on a\nsuccessful business set up",textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "spartan",

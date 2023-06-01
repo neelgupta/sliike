@@ -25,6 +25,8 @@ class searchScreen extends StatefulWidget {
   int? priceValue;
   String? latitude;
   String? longitude;
+  String? serviceName;
+  bool? isMultipleSearched;
 
   searchScreen(
       {Key? key,
@@ -38,6 +40,8 @@ class searchScreen extends StatefulWidget {
       this.searchService,
       this.latitude,
       this.longitude,
+        this.serviceName,
+        this.isMultipleSearched
       })
       : super(key: key);
 
@@ -101,7 +105,7 @@ class _searchScreenState extends State<searchScreen> {
                     color: Color(0xffDD6A03),
                   ),
                 )
-              : Column(
+              : datum.isNotEmpty ? Column(
                   children: [
                     widget.isAdvanced ?? false
                         ? Column(
@@ -339,7 +343,7 @@ class _searchScreenState extends State<searchScreen> {
                             color: Colors.white,
                             child: Row(
                               children: [
-                                GestureDetector(
+                                InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
@@ -357,12 +361,12 @@ class _searchScreenState extends State<searchScreen> {
                                   alignment: Alignment.center,
                                   height: height * 0.05,
                                   width: width * 0.8,
-                                  child: const Text("Your Selected Service",
+                                  child: Text(!widget.isMultipleSearched! ?  widget.serviceName! : "Your Selected Service",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
                                           fontFamily: "spartan",
-                                          fontWeight: FontWeight.w800)),
+                                          fontWeight: FontWeight.w800))
                                 ),
                               ],
                             ),
@@ -375,12 +379,18 @@ class _searchScreenState extends State<searchScreen> {
                         padding: const EdgeInsets.only(left: 20, right: 15),
                         child: Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("${datum.length} Result Found",
+                            child: datum.length <= 1? Text("${datum.length} Result Found",
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
                                     fontFamily: "spartan",
-                                    fontWeight: FontWeight.w800))),
+                                    fontWeight: FontWeight.w800)) : Text("${datum.length} Results Found",
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.w800))
+                        ),
                       ),
                     const SizedBox(
                       height: 20,
@@ -594,7 +604,9 @@ class _searchScreenState extends State<searchScreen> {
                       ]),
                     )
                   ],
-                ),
+                ):
+                const Center(child: Text("No Service Available"),
+          )
         ),
       ),
     );
@@ -748,23 +760,27 @@ class _searchScreenState extends State<searchScreen> {
       print("addPersonalInfo status code ====> ${response.statusCode}");
       log(" addPersonalInfo res body is ====>  ${response.body}");
       if (response.statusCode == 200) {
+        print("object");
         Map map = jsonDecode(response.body);
+        isLoading = false;
         if (map['status'] == 200) {
           setState(() {
+            isLoading = false;
             sf = ServicesFilter.fromJson(jsonDecode(response.body));
             datum = sf!.data.data;
             like;
-            print("like =====> $like");
+            print("like =====> $datum");
           });
         }else if(response.statusCode == 401){
           logoutdata();
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
             return signInScreen();
           },), (route) => false);
+        }else{
+          setState(() {
+            isLoading = false;
+          });
         }
-        setState(() {
-          isLoading = false;
-        });
       }
     } catch (e) {
       rethrow;

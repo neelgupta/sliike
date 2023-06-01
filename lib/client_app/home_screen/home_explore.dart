@@ -365,7 +365,7 @@ class _home_exploreState extends State<home_explore> {
                               child: favoritelist.isEmpty
                                   ? const Center(
                                 child: Text(
-                                  "No Favourite Products",
+                                  "No Favorite Products",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
@@ -1177,7 +1177,6 @@ class _home_exploreState extends State<home_explore> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (serviceEnabled == LocationPermission.denied) {
       await Geolocator.openLocationSettings();
-
       return Future.error('Location services are disabled.');
     }
 
@@ -1185,7 +1184,7 @@ class _home_exploreState extends State<home_explore> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        Navigator.pop(context);
+        // Navigator.pop(context);
         return Future.error('Location permissions are denied');
       }
     }
