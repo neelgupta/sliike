@@ -734,6 +734,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                         setState(() {
                           if (businessName.isEmpty) {
                             businessnamestatus = true;
+                            provinceStatus = false;
                             status = "Please Enter Business Name";
                           } else if (businessNumber.isEmpty) {
                             phoneNumberStatus = true;
@@ -747,7 +748,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                           } else if (country.isEmpty) {
                             canadaStatus = true;
                             status = "Please Enter country";
-                          } else if (provinceValue!.isEmpty) {
+                          } else if (provinceValue == null) {
                             provinceStatus = true;
                             status = "Please Enter province";
                           } else if (street_address.isEmpty) {

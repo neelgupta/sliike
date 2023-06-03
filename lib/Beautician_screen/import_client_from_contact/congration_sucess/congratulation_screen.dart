@@ -51,13 +51,16 @@ class _conGraTuLation_HoursState extends State<conGraTuLation> {
                             style: TextStyle(
                                 fontSize: 15,
                                 fontFamily: "spartan",
-                                color: Colors.white,)
+                                letterSpacing: 1,
+                                color: Colors.white,fontWeight: FontWeight.w900)
                         ),
                         SizedBox(height: height*0.02,),
                         const Text("You are now ready to do business on\nSliike App. We are here to assist you all\nthe way. Welcome!",textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 12,
                               fontFamily: "spartan",
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600,
                               color: Colors.white,)
                         ),
                         SizedBox(height: height*0.05,),
@@ -83,7 +86,7 @@ class _conGraTuLation_HoursState extends State<conGraTuLation> {
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "spartan",
-                                      color: Color(0xff01635D),fontWeight: FontWeight.w500)
+                                      color: Color(0xff01635D),fontWeight: FontWeight.w900)
                                 ),
                               ),
                             ),

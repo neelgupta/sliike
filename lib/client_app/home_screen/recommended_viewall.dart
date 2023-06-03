@@ -283,9 +283,7 @@ class _RecommendedViewAllState extends State<RecommendedViewAll> {
 
   getRecomadedBeauticians() async {
     var posturi = Uri.parse(ApiUrlList.getRecomadedBeauticians);
-    setState(() {
-      isLoading = true;
-    });
+
     var headers = {
       // 'Content-Type': "application/json; charset=utf-8",
       "authorization":
@@ -330,6 +328,10 @@ class _RecommendedViewAllState extends State<RecommendedViewAll> {
   Future<Position> getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
+
+    setState(() {
+      isLoading = true;
+    });
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();

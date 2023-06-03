@@ -44,8 +44,7 @@ class _signInScreenState extends State<signInScreen> {
   // getScreenStatusmodel? getscreenstatusmodel;
 
   TextEditingController temail = TextEditingController();
-
-  bool isCheckedl = false;
+  bool isChecked = false;
   TextEditingController tpassword = TextEditingController();
   final LoginService l = LoginService();
   SendOtpModel? sendotpmodel;
@@ -88,6 +87,38 @@ class _signInScreenState extends State<signInScreen> {
     }
   }
 
+  void _handleRememberMe(bool value) {
+    isChecked = value;
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', temail.text);
+        prefs.setString('password', tpassword.text);
+      },
+    );
+    setState(() {
+      isChecked = value;
+    });
+  }
+
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _email = _prefs.getString("email") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+      if (_remeberMe) {
+        setState(() {
+          isChecked = true;
+        });
+        temail.text = _email ?? "";
+        tpassword.text = _password ?? "";
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -95,6 +126,7 @@ class _signInScreenState extends State<signInScreen> {
     getNotification();
     getFirebaseToken();
     getDeviceInfo();
+    _loadUserEmailPassword();
   }
 
   @override
@@ -246,20 +278,12 @@ class _signInScreenState extends State<signInScreen> {
                   Row(
                     children: <Widget>[
                        Checkbox(
-                           value: rememberMe,
+                           value: isChecked,
                           activeColor: Color(0xFFDD6A03),
                           onChanged:(newValue){
                             setState(() {
-                              rememberMe = newValue!;
-                              if(rememberMe){
-                                if(Helper.prefs!.getString(UserPrefs.keyemail) != null){
-                                  temail.text = Helper.prefs!.getString(UserPrefs.keyemail)!;
-                                  print(Helper.prefs!.getString(UserPrefs.keyemail));
-                                  print(temail.text);
-                                }
-                              }else{
-                                temail.text = "";
-                              }
+                              _handleRememberMe(newValue!);
+                              isChecked = newValue;
                             });
                           }),
                       Container(child: Text('Remember me',style: TextStyle( fontFamily: "spartan",color: Colors.black,fontSize: 12),))

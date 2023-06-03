@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -11,7 +10,6 @@ import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/addwork_hours_save_or_thanks_page.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/breaktime_select_page.dart';
-
 
 import '../../../custom_widget/checkbox.dart';
 
@@ -34,6 +32,9 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   bool status = true;
   AddWorkModel? addworkMmdel;
   bool isbottomSheet = true;
+
+  int startTimeIndex = 0;
+  int endTimeIndex = 0;
   List<DayDetails> dayDetailsList = [
     DayDetails(
       day: "Monday",
@@ -93,21 +94,18 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[0];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
         isValid = false;
         print("isValid=$isValid");
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-        {
-          isValid = false;
-          print("isValid00=$isValid");
-        }
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
+        isValid = false;
+        print("isValid00=$isValid");
+      }
     } else if (selectedValue == "Tuesday") {
       var dayd = dayDetailsList[1];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
         isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
@@ -115,10 +113,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[2];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
-    isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+        isValid = false;
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
@@ -126,10 +122,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[3];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
         isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
@@ -137,10 +131,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[4];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
         isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
@@ -148,10 +140,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[5];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
         isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
@@ -159,17 +149,13 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       var dayd = dayDetailsList[6];
 
       if (dayd.startTime == "" || dayd.endTime == "") {
-
         isValid = false;
-      }else if(dayd.startTime == "00:00" || dayd.endTime == "00:00")
-      {
+      } else if (dayd.startTime == "00:00" || dayd.endTime == "00:00") {
         isValid = false;
         print("isValid00=$isValid");
       }
     }
-    setState(() {
-
-    });
+    setState(() {});
     return isValid;
   }
 
@@ -939,10 +925,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                                             : selectedValue == "Friday"
                                                 ? dayDetailsList[4].isOpen!
                                                 : selectedValue == "Saturday"
-                                                    ? dayDetailsList[5]
-                                                        .isOpen!
-                                                    : selectedValue ==
-                                                            "Sunday"
+                                                    ? dayDetailsList[5].isOpen!
+                                                    : selectedValue == "Sunday"
                                                         ? dayDetailsList[6]
                                                             .isOpen!
                                                         : Onoff,
@@ -1100,18 +1084,27 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                           fontSize: 16.0);
                       print("onofffalse=$Onoff");
                     }
-                    else if (!emptystartendtime()) {
-                      Fluttertoast.showToast(
-                          msg: "Enter Your Start End Time",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      print("startendtime=====");
+                    else if (startTimeIndex == endTimeIndex) {
+                      Fluttertoast.showToast(msg: "Time cannot be same");
+                    } else if (startTimeIndex > endTimeIndex) {
+                      Fluttertoast.showToast(msg: "Invaild selected time !");
                     }
+                    // else {
+                    //   onDayendtimeChanged(endTime: endTime);
+                    // }
+                    // else if (!emptystartendtime()) {
+                    //   Fluttertoast.showToast(
+                    //       msg: "Enter Your Start End Time",
+                    //       toastLength: Toast.LENGTH_SHORT,
+                    //       gravity: ToastGravity.BOTTOM,
+                    //       timeInSecForIosWeb: 1,
+                    //       backgroundColor: Colors.black,
+                    //       textColor: Colors.white,
+                    //       fontSize: 16.0);
+                    //   print("startendtime=====");
+                    // }
                     else {
+                      onDayendtimeChanged(endTime: endTime);
                       if (isbottomSheet == true) {
                         showModalBottomSheet<void>(
                           isScrollControlled: true,
@@ -1190,7 +1183,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          physics: const BouncingScrollPhysics(),
+                                          physics:
+                                              const BouncingScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: dayDetailsList.length,
                                           itemBuilder: (context, index) {
@@ -1266,7 +1260,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
-                                                  color: const Color(0xff01635D)),
+                                                  color:
+                                                      const Color(0xff01635D)),
                                               child: const Text("SAVE",
                                                   style: TextStyle(
                                                       fontSize: 14,
@@ -1300,11 +1295,12 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                                                 borderRadius:
                                                     BorderRadius.circular(5),
                                                 border: Border.all(
-                                                    color: const Color(0xff01635D),
+                                                    color:
+                                                        const Color(0xff01635D),
                                                     width: 1),
                                               ),
                                               child: const Text(
-                                                "no, thanks",
+                                                "No, Thanks",
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: "spartan",
@@ -1492,66 +1488,78 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
     return SizedBox(
       height: height * 0.45,
       child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SizedBox(
-        width: 100,
-        child: CupertinoPicker(
-          itemExtent: 60,
-          onSelectedItemChanged: (index) {
-            setState(() {
-              // startTime = time[index];
-              onDayStartTimeChanged(startTime: time[index]);
-              print("startTime$startTime");
-            });
-          },
-          children: time
-              .map((text) => Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(text,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black)),
-                    ),
-                  ))
-              .toList(),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: textComoon("to", 15, const Color(0xff292929), FontWeight.w500),
-      ),
-      SizedBox(
-        width: 100,
-        child: CupertinoPicker(
-          //scrollController: ,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 100,
+            child: CupertinoPicker(
+              itemExtent: 60,
+              onSelectedItemChanged: (index) {
+                setState(() {
+                  // startTime = time[index];
+                  startTimeIndex = index;
+                  onDayStartTimeChanged(startTime: time[index]);
+                  print("startTime$startTime");
+                });
+              },
+              children: time
+                  .map((text) => Center(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(text,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "spartan",
+                                  color: Colors.black)),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child:
+                textComoon("to", 15, const Color(0xff292929), FontWeight.w500),
+          ),
+          SizedBox(
+            width: 100,
+            child: CupertinoPicker(
+              //scrollController: ,
 
-          itemExtent: 60,
-          onSelectedItemChanged: (index) {
-            setState(() {
-              // endTime = time[index];
-              onDayendtimeChanged(endTime: time[index]);
+              itemExtent: 60,
+              onSelectedItemChanged: (index) {
+                setState(() {
+                  endTimeIndex = index;
+                  endTime = time[index];
 
-              // print("endTime$endTime");
-            });
-          },
-          children: timeend
-              .map((text2) => Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(text2,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black)),
-                    ),
-                  ))
-              .toList(),
-        ),
-      ),
-    ],
+//               var now =DateTime.now()
+// ;              var sTim = DateTime(now.year,);
+//               var eTime = DateTime(now.year,);
+                  // print("endTime$endTime");
+                });
+                  if (endTime == startTime) {
+                    Fluttertoast.showToast(msg: "Time cannot be same");
+                  } else if (startTimeIndex > endTimeIndex) {
+                    Fluttertoast.showToast(msg: "Invaild selected time !");
+                  } else {
+                    onDayendtimeChanged(endTime: time[index]);
+                  }
+              },
+              children: timeend
+                  .map((text2) => Center(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(text2,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "spartan",
+                                  color: Colors.black)),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1576,10 +1584,16 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   }
 
   Future<void> navigtorbackshowdialodhide(BuildContext context) async {
-    final result1 = Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-      builder: (context) {
-        return addWork_Save_or_NoThanks_Page(widget.secondflow, dayDetailsList);
-      },),(route) => false,);
+    final result1 = Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return addWork_Save_or_NoThanks_Page(
+              widget.secondflow, dayDetailsList);
+        },
+      ),
+      (route) => false,
+    );
 
     if (!mounted) return;
     // bool? data1 = await result1;
@@ -1605,8 +1619,6 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   }
 
   Future<bool> backwillpop() async {
-
-
     if (isbottomSheet == false) {
       await navigtorbackshowdialodhide(context);
     } else {

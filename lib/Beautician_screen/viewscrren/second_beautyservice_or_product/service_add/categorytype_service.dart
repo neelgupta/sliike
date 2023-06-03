@@ -58,6 +58,8 @@ class _addServiceState extends State<addServicetype> {
   TextEditingController description = TextEditingController();
   TextEditingController servicePrice = TextEditingController();
   bool servicePriceStatus = false;
+  bool serviceStatus = false;
+  bool categoryStatus = false;
   bool descriptionstatus = false;
   String status = "";
   bool arrow = false;
@@ -437,6 +439,9 @@ class _addServiceState extends State<addServicetype> {
                       ),
                       InkWell(
                         onTap: () {
+                          setState(() {
+                            categoryStatus = false;
+                          });
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -489,7 +494,7 @@ class _addServiceState extends State<addServicetype> {
                                                         "${singleItem.serviceCategoryName}",
                                                         style: const TextStyle(
                                                             fontSize:
-                                                            12,
+                                                            15,
                                                             color: Color(
                                                                 0xff292929),
                                                             fontFamily:
@@ -502,21 +507,15 @@ class _addServiceState extends State<addServicetype> {
                                                         activeColor:
                                                         const Color(
                                                             0xff01635D),
-                                                        groupValue:
-                                                        selectedServiceIdValue,
-                                                        onChanged:
-                                                            (value) {
-                                                          setState(
-                                                                  () {
+                                                        groupValue: selectedServiceIdValue,
+                                                        onChanged: (value) {
+                                                          setState(() {
                                                                 print("000");
-                                                                selectedServiceCategoryIdValue =
-                                                                singleItem.id!;
-                                                                selectedServiceCategoryNameValue =
-                                                                singleItem.serviceCategoryName!;
-                                                                fetchServicesType(
-                                                                    selectedServiceCategoryIdValue);
-                                                                Navigator.pop(
-                                                                    context);
+                                                                selectedServiceCategoryIdValue = singleItem.id!;
+                                                                selectedServiceCategoryNameValue = singleItem.serviceCategoryName!;
+                                                                fetchServicesType(selectedServiceCategoryIdValue);
+                                                                Navigator.pop(context);
+                                                                print(selectedServiceCategoryNameValue);
                                                               });
                                                         },
                                                       )
@@ -556,8 +555,7 @@ class _addServiceState extends State<addServicetype> {
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
                               children: [
-                                selectedServiceCategoryNameValue ==
-                                    " "
+                                selectedServiceCategoryNameValue == ""
                                     ? const Text(
                                   "Service category",
                                   style: TextStyle(
@@ -573,11 +571,9 @@ class _addServiceState extends State<addServicetype> {
                                   selectedServiceCategoryNameValue,
                                   style: const TextStyle(
                                       fontSize: 14,
-                                      color:
-                                      Color(0xff292929),
+                                      color: Color(0xff292929),
                                       fontFamily: "spartan",
-                                      fontWeight:
-                                      FontWeight.normal),
+                                      fontWeight: FontWeight.normal),
                                 ),
                                 const Icon(
                                   Icons.keyboard_arrow_right,
@@ -589,8 +585,19 @@ class _addServiceState extends State<addServicetype> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      categoryStatus
+                          ? SizedBox(
+                        height: 30,
+                        child: Text(
+                          status,
+                          style: TextStyle(
+                              fontFamily: 'spartan',
+                              fontSize: 12,
+                              color: Colors.red),
+                        ),
+                      )
+                          : Container(
+                        height: 30,
                       ),
                       const Divider(
                         color: Color(0xffCFCFCF),
@@ -645,6 +652,7 @@ class _addServiceState extends State<addServicetype> {
                                     TypesData>(
                                   onTap: () {
                                     setState(() {
+                                      serviceStatus = false;
                                       dropdown =
                                       false;
                                     });
@@ -1006,23 +1014,23 @@ class _addServiceState extends State<addServicetype> {
                                         ),
                                       ),
                                     ),
-                                    servicePriceStatus
-                                        ? SizedBox(
-                                      height: 30,
-                                      child: Text(
-                                        status,
-                                        style: TextStyle(
-                                            fontFamily:
-                                            'spartan',
-                                            fontSize:
-                                            12,
-                                            color:
-                                            Colors.red),
-                                      ),
-                                    )
-                                        : Container(
-                                      height: 30,
-                                    ),
+                                    // servicePriceStatus
+                                    //     ? SizedBox(
+                                    //   height: 30,
+                                    //   child: Text(
+                                    //     status,
+                                    //     style: TextStyle(
+                                    //         fontFamily:
+                                    //         'spartan',
+                                    //         fontSize:
+                                    //         12,
+                                    //         color:
+                                    //         Colors.red),
+                                    //   ),
+                                    // )
+                                    //     : Container(
+                                    //   height: 30,
+                                    // ),
                                   ],
                                 )
                                     : Container()
@@ -1031,7 +1039,7 @@ class _addServiceState extends State<addServicetype> {
                           ),
                         ),
                       ),
-                      servicePriceStatus
+                      serviceStatus || servicePriceStatus
                           ? SizedBox(
                         height: 30,
                         child: Text(
@@ -1112,12 +1120,12 @@ class _addServiceState extends State<addServicetype> {
                           if( selectedServiceCategoryIdValue == ""){
                             status = "Please Select  Service Category";
                             datachanghe = true;
-                            servicePriceStatus = true;
+                            categoryStatus = true;
 
                           } else if(selectedServiceIdValue==""){
                             status = "Please Select  Service Type";
                             datachanghe = true;
-                            servicePriceStatus = true;
+                            serviceStatus = true;
                           }
                           else
                           if (servicePrice.text.isEmpty ) {

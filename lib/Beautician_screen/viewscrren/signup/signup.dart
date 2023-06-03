@@ -102,6 +102,7 @@ class _signUpState extends State<signUp> {
   bool passwordstatus = false;
   bool butten = false;
   bool butten1 = false;
+  bool passStr = false;
   // String status = "";
   String statusv = "";
   String fnameMsg = "";
@@ -118,39 +119,69 @@ class _signUpState extends State<signUp> {
   String displayText = '';
   RegExp numReg = RegExp(r".*[0-9].*");
   RegExp letterReg = RegExp(r".*[A-Za-z].*");
-  Color? password_strength_color;
+  Color? strengthColor;
   String vemail = "";
+  String strengthMsg = "";
 
-  void _checkPassword(String value) {
-    if (tpassword.text.isEmpty) {
+  void _passwordStrength(String value){
+    if(value.isEmpty){
       setState(() {
-        strength = 1 / 4;
-        displayText = '';
-        password_strength_color = Colors.red;
+        strengthMsg = "Password cannot be empty";
+        strengthColor = Colors.red;
+        passStr = true;
       });
-    } else if (tpassword.text.length <= 6) {
+    }else if(value.length <= 6){
       setState(() {
-        strength = 1 / 4;
-        displayText = 'weak';
-        password_strength_color = Colors.red;
+        strengthMsg = "Weak";
+        strengthColor = Colors.red;
+        passStr = true;
       });
-    } else if (tpassword.text.length <= 8) {
+    }else if(value.length <= 8){
       setState(() {
-        strength = 2 / 4;
-        displayText = 'good';
-        password_strength_color = Colors.orange;
+        strengthMsg = "Good";
+        strengthColor = Colors.orange;
+        passStr = true;
       });
-    } else if (letterReg.hasMatch(tpassword.text) &&
-        numReg.hasMatch(tpassword.text)) {
+    }else if(RegExp(r'^((?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&*]{6,20})$').hasMatch(value)){
       setState(() {
-        // Password length >= 8
-        // But doesn't contain both letter and digit characters
-        strength = 3 / 4;
-        displayText = 'strong';
-        password_strength_color = Colors.green;
+        strengthMsg = "Strong";
+        strengthColor = Colors.green;
+        passStr = true;
       });
     }
+    print(strengthMsg);
+    print(strengthColor);
   }
+
+  // void _checkPassword(String value) {
+  //   if (tpassword.text.isEmpty) {
+  //     setState(() {
+  //       strength = 1 / 4;
+  //       displayText = '';
+  //       password_strength_color = Colors.red;
+  //     });
+  //   } else if (tpassword.text.length <= 6) {
+  //     setState(() {
+  //       strength = 1 / 4;
+  //       displayText = 'Weak';
+  //       password_strength_color = Colors.red;
+  //     });
+  //   } else if (tpassword.text.length <= 8) {
+  //     setState(() {
+  //       strength = 2 / 4;
+  //       displayText = 'Good';
+  //       password_strength_color = Colors.orange;
+  //     });
+  //   } else if (letterReg.hasMatch(tpassword.text) &&
+  //       numReg.hasMatch(tpassword.text)) {
+  //     setState(() {
+  //       strength = 3 / 4;
+  //       displayText = 'Strong';
+  //       password_strength_color = Colors.green;
+  //     });
+  //   }
+  //   print(displayText);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -515,8 +546,16 @@ class _signUpState extends State<signUp> {
                       TextField(
                         controller: tpassword,
                         onChanged: (value) {
-                          _checkPassword(value);
-                          passwordstatus = false;
+                           if(value.isEmpty){
+                             setState(() {
+                               passStr = false;
+                             });
+                           }else{
+                             setState(() {
+                              _passwordStrength(value);
+                              passwordstatus = false;
+                             });
+                           }
                         },
                         obscureText: showstatus,
                         obscuringCharacter: "*",
@@ -566,8 +605,21 @@ class _signUpState extends State<signUp> {
                       //     ),
                       //   ),
                       // ),
-                      passwordstatus
-                          ? Container(
+                      passStr?
+                      Container(
+                        // color: Colors.red,
+                        alignment: Alignment.centerLeft,
+                        height: 30,
+                        child: Text(
+                          strengthMsg,
+                          style:  TextStyle(
+                              fontFamily: 'spartan',
+                              fontSize: 12,
+                              color: strengthColor),
+                        ),
+                      ):
+                      passwordstatus?
+                      Container(
                               alignment: Alignment.topLeft,
                               height: 30,
                               child: Text(
@@ -577,8 +629,8 @@ class _signUpState extends State<signUp> {
                                     fontSize: 12,
                                     color: Colors.red),
                               ),
-                            )
-                          : Container(
+                            ):
+                      Container(
                               height: 20,
                             ),
                     ],

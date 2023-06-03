@@ -12,9 +12,9 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../commonClass.dart';
 import '../../utils/preferences.dart';
-
 class services extends StatefulWidget {
   String beauticianId;
   String? businessName;
@@ -72,7 +72,6 @@ class _servicesState extends State<services> {
   MyFavorites? mf;
   String serviceTypeList = "";
   late CameraPosition _initialLocation;
-
   List<Marker> markers = <Marker>[];
   Position? p;
   String lat = "";
@@ -143,6 +142,26 @@ class _servicesState extends State<services> {
           ),
           infoWindow: InfoWindow(title: BeauticianDetails[0].location.type)),
     );
+  }
+
+  void _launchMapsUrl(double lat, double lon) async {
+    final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void _launchDailer(String mobileNumber) async{
+    Uri phoneno = Uri.parse('tel:${mobileNumber}');
+    if (await launchUrl(phoneno)) {
+       print("dailer open");
+      //dialer opened
+    }else{
+      print("dailer is not open");
+      //dailer is not opened
+    }
   }
 
   @override
@@ -375,8 +394,9 @@ class _servicesState extends State<services> {
                                           fontFamily: "spartan", fontSize: 15),
                                     ).tr()),
                                   ]),
-                              SizedBox(
-                                height: height*0.8,
+                              Container(
+                                // color: Colors.red,
+                                height: height*0.99,
                                 child: TabBarView(
                                   children: [
                                     SingleChildScrollView(
@@ -476,7 +496,7 @@ class _servicesState extends State<services> {
                                             child: ListView.builder(
                                                 shrinkWrap: true,
                                                 padding: const EdgeInsets.only(top: 20),
-                                                physics: const NeverScrollableScrollPhysics(),
+                                                // physics: const NeverScrollableScrollPhysics(),
                                                 itemCount: search.text.isNotEmpty?temp.length:Beauticiandata[0].beauticianServiceId!.length<=5?Beauticiandata[0].beauticianServiceId!.length:
                                                 viewMore?Beauticiandata[0].beauticianServiceId!.length:5,
                                                 itemBuilder: (context, index) {
@@ -1420,31 +1440,20 @@ class _servicesState extends State<services> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                    SizedBox(
-                                                      height: height * 0.35,
-                                                      width: width,
+                                                    SizedBox(height: height * 0.35, width: width,
                                                       child: GoogleMap(
                                                         onTap: (latLng) {
-                                                          lat = latLng.latitude
-                                                              .toString();
-                                                          long = latLng
-                                                              .longitude
-                                                              .toString();
+                                                          lat = latLng.latitude.toString();
+                                                          long = latLng.longitude.toString();
                                                         },
-                                                        mapToolbarEnabled:
-                                                            false,
-                                                        initialCameraPosition:
-                                                            _initialLocation,
-                                                        myLocationButtonEnabled:
-                                                            false,
+                                                        mapToolbarEnabled: false,
+                                                        initialCameraPosition: _initialLocation,
+                                                        myLocationButtonEnabled:false,
                                                         myLocationEnabled: true,
                                                         mapType: MapType.normal,
-                                                        zoomControlsEnabled:
-                                                            false,
-                                                        zoomGesturesEnabled:
-                                                            true,
-                                                        markers: Set<Marker>.of(
-                                                            markers),
+                                                        zoomControlsEnabled:false,
+                                                        zoomGesturesEnabled:true,
+                                                        markers: Set<Marker>.of(markers),
                                                       ),
                                                     ),
                                                     Positioned(
@@ -1454,46 +1463,25 @@ class _servicesState extends State<services> {
                                                           height: height * 0.12,
                                                           width: width - 20,
                                                           decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              color:
-                                                                  Colors.white),
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              color: Colors.white),
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        15),
+                                                            padding: const EdgeInsets.symmetric(horizontal: 15),
                                                             child: Row(
                                                               children: [
                                                                 Expanded(
                                                                   child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                                     children: [
                                                                       Text(
-                                                                          BeauticianDetails[0]
-                                                                              .businessName,
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontFamily:
-                                                                                "spartan",
+                                                                          BeauticianDetails[0].businessName,
+                                                                          style: const TextStyle(
+                                                                            fontSize: 15,
+                                                                            color: Colors.black,
+                                                                            fontFamily: "spartan",
                                                                           )),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            height *
-                                                                                0.01,
-                                                                      ),
+                                                                      SizedBox(height: height * 0.01,),
                                                                       Expanded(
                                                                         child: Text(
                                                                             "${BeauticianDetails[0].beauticianAddress[0].address}\n${BeauticianDetails[0].beauticianAddress[0].city} ${BeauticianDetails[0].beauticianAddress[0].zipCode}",
@@ -1509,30 +1497,27 @@ class _servicesState extends State<services> {
                                                                 ),
                                                                 const SizedBox(width: 10,),
                                                                 const Padding(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          vertical:
-                                                                              10),
+                                                                  padding: EdgeInsets.symmetric(vertical: 10),
                                                                   child: VerticalDivider(
-                                                                      color: Colors
-                                                                          .black),
+                                                                      color: Colors.black),
                                                                 ),
-                                                                const SizedBox(
-                                                                    width: 10),
+                                                                const SizedBox(width: 10),
                                                                 Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          height *
-                                                                              0.05,
-                                                                      child: Image
-                                                                          .asset(
-                                                                        "assets/images/Group 12665.png",
-                                                                        fit: BoxFit
-                                                                            .fill,
+                                                                    InkWell(
+                                                                      onTap: (){
+                                                                        _launchMapsUrl(
+                                                                            BeauticianDetails[0].location.coordinates[1],
+                                                                            BeauticianDetails[0].location.coordinates[0]
+                                                                        );
+                                                                      },
+                                                                      child: SizedBox(
+                                                                        height: height * 0.05,
+                                                                        child: Image.asset(
+                                                                          "assets/images/Group 12665.png",
+                                                                          fit: BoxFit.fill,
+                                                                        ),
                                                                       ),
                                                                     )
                                                                   ],
@@ -1544,13 +1529,9 @@ class _servicesState extends State<services> {
                                                   ],
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 15),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 15),
                                                   child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       // SizedBox(
                                                       //   height: height * 0.04,
@@ -1657,72 +1638,50 @@ class _servicesState extends State<services> {
                                                       // const Divider(
                                                       //   color: Colors.black54,
                                                       // ),
-                                                      SizedBox(
-                                                        height: height * 0.02,
-                                                      ),
+                                                      SizedBox(height: height * 0.02,),
                                                       const Text("Contact",
-                                                          style: TextStyle(
-                                                              fontSize: 22,
-                                                              fontFamily:
-                                                                  "spartan",
-                                                              color: Colors
-                                                                  .black)),
-                                                      SizedBox(
-                                                        height: height * 0.02,
-                                                      ),
+                                                          style: TextStyle(fontSize: 22,
+                                                              fontFamily: "spartan",
+                                                              color: Colors.black)),
+                                                      SizedBox(height: height * 0.02,),
                                                       InkWell(
                                                         onTap: () {},
                                                         child: Row(
                                                           children: [
                                                             CircleAvatar(
                                                               radius: 30,
-                                                              backgroundColor:
-                                                                  const Color(
-                                                                      0xffF3F3F3),
-                                                              child:
-                                                                  Image.asset(
+                                                              backgroundColor: const Color(0xffF3F3F3),
+                                                              child: Image.asset(
                                                                 "assets/images/contact_call.png",
-                                                                color: const Color(
-                                                                    0xff707070),
+                                                                color: const Color(0xff707070),
                                                                 height: 20,
                                                               ),
                                                             ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
+                                                            const SizedBox(width: 10,),
                                                             textComoon(
-                                                                "${BeauticianDetails[0].businessNumber}",
-                                                                15,
-                                                                const Color(
-                                                                    0xff292929),
-                                                                FontWeight
-                                                                    .w600),
+                                                                "${BeauticianDetails[0].businessNumber}", 15,
+                                                                const Color(0xff292929),
+                                                                FontWeight.w600),
                                                             const Spacer(),
-                                                            Container(
-                                                                height: 40,
-                                                                width: 80,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        color: const Color(
-                                                                            0xffFCF0E6),
-                                                                        border: Border
-                                                                            .all(
-                                                                          width:
-                                                                              1,
-                                                                          color:
-                                                                              const Color(0xffE48835),
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                5)),
-                                                                child: Center(
-                                                                    child: textComoon(
-                                                                        "Call",
-                                                                        15,
-                                                                        const Color(
-                                                                            0xffDD6A03),
-                                                                        FontWeight
-                                                                            .w600))),
+                                                            InkWell(
+                                                              onTap: (){
+                                                                _launchDailer(BeauticianDetails[0].businessNumber.toString());
+                                                              },
+                                                              child: Container(
+                                                                  height: 40,
+                                                                  width: 80,
+                                                                  decoration:
+                                                                      BoxDecoration(color: const Color(0xffFCF0E6),
+                                                                          border: Border.all(
+                                                                            width: 1,
+                                                                            color: const Color(0xffE48835),
+                                                                          ),
+                                                                          borderRadius: BorderRadius.circular(5)),
+                                                                  child: Center(
+                                                                      child: textComoon("Call",
+                                                                          15, const Color(0xffDD6A03),
+                                                                          FontWeight.w600))),
+                                                            ),
                                                           ],
                                                         ),
                                                       ),

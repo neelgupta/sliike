@@ -1,6 +1,10 @@
 // ignore_for_file: camel_case_types
-
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:http/http.dart' as http;
 
 class faq_page extends StatefulWidget {
   const faq_page({Key? key}) : super(key: key);
@@ -10,6 +14,16 @@ class faq_page extends StatefulWidget {
 }
 
 class _faq_pageState extends State<faq_page> {
+
+  Header ? faq;
+  bool isLoading = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getClientFAQList();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -19,10 +33,7 @@ class _faq_pageState extends State<faq_page> {
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, // Set this height
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              color: Color(0xFFFCF0E6),
-              image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)
-          ),
+          decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -61,38 +72,35 @@ class _faq_pageState extends State<faq_page> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading ? Center(child: CircularProgressIndicator(color: Color(0xffDD6A03))):
+      faq!=null && faq!.data.length!=0 ? SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              SizedBox(height: height*0.04,),
-              const TextField(
-                style: TextStyle(fontFamily: "spartan",fontSize: 12),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Describe your issue"
-                ),
-              ),
+              // const TextField(
+              //   style: TextStyle(fontFamily: "spartan",fontSize: 12),
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     hintText: "Describe your issue"
+              //   ),
+              // ),
               SizedBox(height: height*0.02,),
-              SizedBox(
+              Container(
+                // color: Colors.red,
                 height: height*0.80,
                 child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 12,
+                  itemCount: faq!.data.length,
                   itemBuilder: (context, index) {
                   return Column(
                     children: [
                       Row(
-                        children: const [
-                          Text("How can I upload my busness on Sliike?",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "spartan",
-                                  color: Colors.black)),
+                        children:  [
+                          Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
                           Spacer(),
                           Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
                         ],),
+                      const SizedBox(height: 05,),
                       const Divider(color: Colors.black54,)
                     ],
                   );
@@ -101,7 +109,64 @@ class _faq_pageState extends State<faq_page> {
             ],
           ),
         ),
-      ),
+      ):
+      Center(child: Text("No FAQ's Available !!"))
     );
+  }
+  getClientFAQList() async {
+    var postUri = Uri.parse(ApiUrlList.getClientFAQList);
+    var request = http.MultipartRequest("GET", postUri);
+
+    http.StreamedResponse response = await request.send();
+
+    log('getClientFAQList Code ====>>> ${response.statusCode}');
+    final res = await http.Response.fromStream(response);
+
+    log('getClientFAQList Body ====>>> ${res.body}');
+    Map map = jsonDecode(res.body);
+    if(map['status']==200){
+      setState(() {
+        faq = Header.fromjson(map);
+        isLoading = false;
+      });
+    }else{
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      setState(() {
+        faq = null;
+        isLoading = false;
+      });
+    }
+  }
+}
+
+class Header{
+  int status;
+  String message;
+  List<Data> data;
+  Header(this.status, this.message,this.data);
+
+  factory Header.fromjson(Map<dynamic,dynamic>map){
+    List list = map["data"];
+    List<Data> d = list.map((e) => Data.fromjson(e)).toList();
+    return Header(map['status'], map['message'],d);
+  }
+}
+class Data{
+  // String _id;
+  String useFor;
+  String question;
+  String answer;
+  Data(this.useFor, this.question, this.answer);
+
+  factory Data.fromjson(Map<dynamic,dynamic>map){
+    return Data(map["useFor"], map["question"], map["answer"]);
   }
 }

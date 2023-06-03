@@ -86,4 +86,17 @@ class ApiUrlList {
   /// Payment APIs
   static String paymentDetail = '${baseUrl}client/getPrePaymentDetails';
   static String makePayment = '${baseUrl}client/maKePayment';
+
+
+  /// FAQ ENDPOINT
+  // client //
+  static String getClientFAQList = "${baseUrl}help/getFAQList/client";
+  //beautician//
+  static String getBeautyFAQList = "${baseUrl}help/getFAQList/beautician";
+
+  /// FEEDBACK ENDPOINT ///
+  // client //
+  static String addFeedbackClient = "${baseUrl}help/addFeedback/client";
+  //beautician//
+  static String addFeedbackBeauty = "${baseUrl}help/addFeedback/beautician";
 }

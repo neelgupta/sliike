@@ -49,6 +49,7 @@ class _book_appoinmentState extends State<book_appoinment> {
   String calenderTime = "";
   String calenderDate = "";
   OnlyoneModal? onlyonemodal;
+  String StylistId = "";
   List time = [
     "00:00",
     "01:00",
@@ -467,6 +468,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                       setState(() {
                         dateTime = false;
                         _selectedLocation = newValue;
+                        StylistId = _selectedLocation!;
                       });
                     },
                     items: stylistName.map((stylist) {
@@ -946,7 +948,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var bodydata = {
         "serviceId": widget.serviceId,
         "dateTime": "$_text $pickedtime",
-        "employeeId": widget.beauticianId,
+        "employeeId": StylistId,
         "price": widget.price,
         "serviceDuration": widget.serviceDuration,
         "place": placeid,
@@ -1012,7 +1014,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var bodydata = {
         "serviceId": widget.serviceId,
         "dateTime": "$_text $pickedtime",
-        "employeeId": widget.beauticianId,
+        "employeeId": StylistId,
         "price": widget.price,
         "serviceDuration": widget.serviceDuration,
         "place": placeid,

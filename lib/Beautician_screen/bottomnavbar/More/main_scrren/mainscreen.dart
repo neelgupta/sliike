@@ -1,30 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/profile_page.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/email_marketing/email_main.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/gist/gist_beauticin.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/notification/main_notification_screen.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/report/all_activities/all_acitivities.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
-import 'package:new_sliikeapps_apps/client_app/home_screen/home_explore.dart';
-import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:http/http.dart' as http;
-
 import '../business_setup/busines_setup/business_setup.dart';
-import 'package:new_sliikeapps_apps/commonClass.dart';
-import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import 'package:http/http.dart' as http;
 
 class more_Main_Sccreen extends StatefulWidget {
   const more_Main_Sccreen({Key? key}) : super(key: key);
@@ -42,11 +28,12 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getBeauticianProfile();
     });
+    print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
   getBeauticianProfilemodel? getmodelProfile;
-bool isLoading=false;
-String businessname="";
-String Userid="";
+  bool isLoading = false;
+  String businessname = "";
+  String Userid = "";
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +47,6 @@ String Userid="";
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.18, //
-
         flexibleSpace: Container(
           color: Color(0xff01635D),
           child: Column(
@@ -84,14 +70,8 @@ String Userid="";
                            child: ClipRRect(
                              borderRadius:
                              const BorderRadius.all(Radius.circular(200)),
-                             child: getmodelProfile != null
-                                 ? Image.network(
-                               getmodelProfile!.data!.profileImage!,
-                               fit: BoxFit.fill,
-                             ) : Image.asset(
-                               "assets/images/Ellipse 202.png",
-                               fit: BoxFit.fill,
-                             ),
+                             child: getmodelProfile!.data!.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
+                             Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
                            ),
                          ),
                        ),
@@ -119,9 +99,12 @@ String Userid="";
           ),
         ),
       ),
-      body: isLoading?Center(
+      body: isLoading?
+      Center(
         child: CircularProgressIndicator(),
-      ): getmodelProfile != null ? SingleChildScrollView(
+      ):
+      getmodelProfile != null ?
+      SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
@@ -369,32 +352,32 @@ String Userid="";
 
               color: Color(0xffF3F3F3),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 20,right: 20),
-            //   child: Container(
-            //     padding: EdgeInsets.symmetric(vertical: 17,),
-            //     decoration: BoxDecoration(
-            //         border: Border(bottom: BorderSide(color: Colors.black12))
-            //     ),
-            //     child: InkWell(
-            //       onTap: (){
-            //         // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //         //   return help_center_beauti();
-            //         // },));
-            //       },
-            //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //         children: [
-            //           textComoon("Help Center",14,Color(0xff414141), FontWeight.w500),
-            //           Container(
-            //             height: 15,
-            //             width: 30,
-            //             child: Image.asset("assets/images/righticon.png"),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 17,),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.black12))
+                ),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return help_center_beauti();
+                    },));
+                  },
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      textComoon("Help Center",14,Color(0xff414141), FontWeight.w500),
+                      Container(
+                        height: 15,
+                        width: 30,
+                        child: Image.asset("assets/images/righticon.png"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             // InkWell(
             //   onTap: () {
             //     // Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -454,7 +437,8 @@ String Userid="";
 
           ],
         ),
-      ): Center(
+      ):
+      Center(
         child: Text("No Data Found!!"),
       ),
     );
@@ -479,7 +463,6 @@ String Userid="";
       //     ),
       //   ),
       // );
-
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
@@ -495,21 +478,13 @@ String Userid="";
       log("getAPi status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         // Map map = jsonDecode(response.body);
-
-        getmodelProfile =
-        getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
-
+        getmodelProfile = getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
         if (getmodelProfile!.status == 200) {
           setState(() {
             businessname = getmodelProfile!.data?.businessName ?? '';
             Userid = getmodelProfile!.data?.uid ?? '';
           });
-
-
-
-
           //imagepath = getmodelProfile?.data?.profileImage ?? '';
-
           // print("dataphone===${getmodelProfile?.data?.userId?.phoneNumber}");
           // print("data_countryname===${_countryname}");
         }
