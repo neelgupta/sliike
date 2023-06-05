@@ -64,7 +64,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
     address = "${places.street},${places.locality},${places.subLocality}";
     enterYourAddresscontriller.text = address;
     countrycontriller.text = "${places.country}";
-    streetAddresscontriller.text = "${places.administrativeArea}";
+    // streetAddresscontriller.text = "${places.administrativeArea}";
     citycontriller.text = "${places.locality}";
     postalCodecontriller.text = "${places.postalCode}";
     setState(() {});

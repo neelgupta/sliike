@@ -36,7 +36,8 @@ class _MyFavoritesViewAllState extends State<MyFavoritesViewAll> {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
     double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
     return Scaffold(
-      body: isLoading ? const Center(child: CircularProgressIndicator(color: Color(0xffDD6A03),),):Padding(
+      body: isLoading ? const Center(child: CircularProgressIndicator(color: Color(0xffDD6A03),),)
+          :Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [

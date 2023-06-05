@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -932,6 +933,7 @@ class _addServiceState extends State<addServicetype> {
                                     ),
                                     Container(
                                       child: TextField(
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
                                         keyboardType:
                                         TextInputType
                                             .number,

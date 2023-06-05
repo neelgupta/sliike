@@ -44,8 +44,8 @@ class _my_favoritesState extends State<my_favorites> {
           ? const Center(
         child: CircularProgressIndicator(
           color: Color(0xffDD6A03),
-        ),
-      ) :SingleChildScrollView(
+        ),) :
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
@@ -108,56 +108,56 @@ class _my_favoritesState extends State<my_favorites> {
                               color: service?Colors.white:Colors.black)).tr(),
                     ),
                   ),
-                  SizedBox(width: width*0.02,),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        service = false;
-                        products = true;
-                        brands = false;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: height*0.05,
-                      width: width*0.25,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: products?const Color(0xFFDD5103):Colors.black),
-                          color: products?const Color(0xFFDD5103):Colors.white
-                      ),
-                      child: Text("products",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              color: products?Colors.white:Colors.black)).tr(),
-                    ),
-                  ),
-                  SizedBox(width: width*0.02,),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        service = false;
-                        products = false;
-                        brands = true;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: height*0.05,
-                      width: width*0.25,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: brands?const Color(0xFFDD5103):Colors.black),
-                          color: brands?const Color(0xFFDD5103):Colors.white
-                      ),
-                      child: Text("brands",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              color: brands?Colors.white:Colors.black)).tr(),
-                    ),
-                  ),
+                  // SizedBox(width: width*0.02,),
+                  // InkWell(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       service = false;
+                  //       products = true;
+                  //       brands = false;
+                  //     });
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     height: height*0.05,
+                  //     width: width*0.25,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(20),
+                  //         border: Border.all(color: products?const Color(0xFFDD5103):Colors.black),
+                  //         color: products?const Color(0xFFDD5103):Colors.white
+                  //     ),
+                  //     child: Text("products",
+                  //         style: TextStyle(
+                  //             fontSize: 14,
+                  //             fontFamily: "spartan",
+                  //             color: products?Colors.white:Colors.black)).tr(),
+                  //   ),
+                  // ),
+                  // SizedBox(width: width*0.02,),
+                  // InkWell(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       service = false;
+                  //       products = false;
+                  //       brands = true;
+                  //     });
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     height: height*0.05,
+                  //     width: width*0.25,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(20),
+                  //         border: Border.all(color: brands?const Color(0xFFDD5103):Colors.black),
+                  //         color: brands?const Color(0xFFDD5103):Colors.white
+                  //     ),
+                  //     child: Text("brands",
+                  //         style: TextStyle(
+                  //             fontSize: 14,
+                  //             fontFamily: "spartan",
+                  //             color: brands?Colors.white:Colors.black)).tr(),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -439,7 +439,7 @@ class _my_favoritesState extends State<my_favorites> {
                     SizedBox(height: height*0.02,),
                     Container(
                       alignment: Alignment.center,
-                      width: width,
+                      width: double.infinity,
                       height: height * 0.06,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),

@@ -1,16 +1,13 @@
 import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/addwork_hours_save_or_thanks_page.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/breaktime_select_page.dart';
-
 import '../../../custom_widget/checkbox.dart';
 
 // ignore: camel_case_types
@@ -1430,40 +1427,46 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                     fontFamily: "spartan",
                     fontWeight: FontWeight.normal),
               )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                breakstartTime,
-                style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xff707070),
-                    fontFamily: "spartan",
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: width * 0.08,
-              ),
-              const Text(
-                "to",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xff707070),
-                    fontFamily: "spartan",
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: width * 0.08,
-              ),
-              Text(
-                breakendTime,
-                style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xff707070),
-                    fontFamily: "spartan",
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+          InkWell(
+            onTap: () async {
+              await navigateBreakTimeScreen(context);
+              setState(() {});
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  breakstartTime,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff707070),
+                      fontFamily: "spartan",
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: width * 0.08,
+                ),
+                const Text(
+                  "to",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff707070),
+                      fontFamily: "spartan",
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: width * 0.08,
+                ),
+                Text(
+                  breakendTime,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff707070),
+                      fontFamily: "spartan",
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
           const Padding(
             padding: EdgeInsets.only(left: 20, right: 20),

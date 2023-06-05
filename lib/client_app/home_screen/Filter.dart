@@ -20,7 +20,7 @@ class filterpage extends StatefulWidget {
 
 class _filterpageState extends State<filterpage> {
   double _startValue = 0.0;
-  double _endValue = 90.0;
+  double _endValue = 200.0;
   String? character = "forYou";
   String? gender = "Male";
   ServiceCategories? s;
@@ -58,18 +58,27 @@ class _filterpageState extends State<filterpage> {
   ];
   List<ServiceCategorieData> serviceName = [];
   List<DemographyData> demographyName = [];
+  bool Change = false;
 
   @override
+
   void initState() {
     fetchServiceCategories();
     getDemography();
+    setState(() {
+      price = true;
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.right - MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -79,8 +88,7 @@ class _filterpageState extends State<filterpage> {
                 color: Color(0xFFFCF0E6),
                 image: DecorationImage(
                     image: AssetImage("assets/images/bgappbar.png"),
-                    fit: BoxFit.fill)
-            ),
+                    fit: BoxFit.fill)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -101,8 +109,7 @@ class _filterpageState extends State<filterpage> {
                               child: const Image(
                                 image: AssetImage("assets/images/Group 55.png"),
                                 color: Colors.black,
-                              )
-                          ),
+                              )),
                         ),
                       ),
                       SizedBox(
@@ -116,9 +123,7 @@ class _filterpageState extends State<filterpage> {
                                   fontSize: 23,
                                   color: Colors.black,
                                   fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold
-                              )
-                          ),
+                                  fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],
@@ -145,16 +150,19 @@ class _filterpageState extends State<filterpage> {
                               left: 20, right: 20, top: 20),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return const AdvancedSearch();
-                              },
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return const AdvancedSearch();
+                                },
                               ));
                             },
                             child: Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    border: Border.all(color: const Color(0xFFDD5103))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    border: Border.all(
+                                        color: const Color(0xFFDD5103))),
                                 height: height * 0.07,
                                 width: width,
                                 child: Row(
@@ -166,20 +174,23 @@ class _filterpageState extends State<filterpage> {
                                         ),
                                         color: const Color(0xFFDD5103),
                                         height: height * 0.025),
-                                    const SizedBox(width: 5,),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
                                     const Text(
                                       "Go To Advanced Search",
                                       style: TextStyle(
-                                      fontFamily: "spartan",
-                                      color: Color(0xFFDD5103),
-                                      fontSize: 12),
+                                          fontFamily: "spartan",
+                                          color: Color(0xFFDD5103),
+                                          fontSize: 12),
                                     )
                                   ],
-                                )
-                            ),
+                                )),
                           ),
                         ),
-                        const SizedBox(height: 30,),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -195,7 +206,9 @@ class _filterpageState extends State<filterpage> {
                                     fontWeight: FontWeight.w600)),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -207,13 +220,12 @@ class _filterpageState extends State<filterpage> {
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return const NearYou();
-                                          },
-                                        )).then((value) {
-                                      if (value!=null) {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return const NearYou();
+                                      },
+                                    )).then((value) {
+                                      if (value != null) {
                                         latitude = value[0];
                                         longitude = value[1];
                                         address = value[2];
@@ -222,10 +234,13 @@ class _filterpageState extends State<filterpage> {
                                     });
                                   },
                                   child: Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
                                       decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                          border: Border.all(color: Colors.grey)),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          border:
+                                              Border.all(color: Colors.grey)),
                                       height: height * 0.06,
                                       child: Row(
                                         mainAxisAlignment:
@@ -235,41 +250,62 @@ class _filterpageState extends State<filterpage> {
                                             padding:
                                                 const EdgeInsets.only(left: 10),
                                             child: Image(
-                                                image: const AssetImage("assets/images/Group 71.png",),
+                                                image: const AssetImage(
+                                                  "assets/images/Group 71.png",
+                                                ),
                                                 color: const Color(0xFFDD5103),
                                                 height: height * 0.03),
                                           ),
-                                          const SizedBox(width: 5,),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
                                           Expanded(
                                             child: Text(
-                                              address.isEmpty?"Near You":address,
+                                              address.isEmpty
+                                                  ? "Near You"
+                                                  : address,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(fontSize: 12),
+                                              style:
+                                                  const TextStyle(fontSize: 12),
                                             ),
                                           ),
-                                          address.isEmpty?Container():InkWell(onTap: () {
-                                            setState(() {
-                                              address = "";
-                                              latitude = "";
-                                              longitude = "";
-                                            });
-                                          },child: const Icon(Icons.close,size: 20,color: Colors.black12,)),
-                                          const SizedBox(width: 5,),
+                                          address.isEmpty
+                                              ? Container()
+                                              : InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      address = "";
+                                                      latitude = "";
+                                                      longitude = "";
+                                                    });
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    size: 20,
+                                                    color: Colors.black12,
+                                                  )),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
                                         ],
                                       )),
                                 ),
                               ),
-                              const SizedBox(width: 20,),
+                              const SizedBox(
+                                width: 20,
+                              ),
                               Expanded(
                                 child: Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
                                         border: Border.all(color: Colors.grey)),
                                     height: height * 0.06,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding:
@@ -281,7 +317,9 @@ class _filterpageState extends State<filterpage> {
                                               color: const Color(0xFFDD5103),
                                               height: height * 0.03),
                                         ),
-                                        const SizedBox(width: 5,),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
                                         const Text(
                                           "All Availabities",
                                           style: TextStyle(fontSize: 12),
@@ -292,7 +330,9 @@ class _filterpageState extends State<filterpage> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -300,7 +340,8 @@ class _filterpageState extends State<filterpage> {
                           ),
                           child: Container(
                             alignment: Alignment.topLeft,
-                            child: const Text("Where do you want us to serve you?",
+                            child: const Text(
+                                "Where do you want us to serve you?",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -308,7 +349,9 @@ class _filterpageState extends State<filterpage> {
                                     fontWeight: FontWeight.w600)),
                           ),
                         ),
-                        SizedBox(height: height * 0.02,),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
                         Wrap(
                           alignment: WrapAlignment.start,
                           runSpacing: 10,
@@ -318,16 +361,18 @@ class _filterpageState extends State<filterpage> {
                               GestureDetector(
                                 onTap: () {
                                   for (var item in preferenceName) {
-                                    if (item.prefenceName == preferenceName[i].prefenceName) {
-                                      if(preferenceName[i].place == 0){
+                                    if (item.prefenceName ==
+                                        preferenceName[i].prefenceName) {
+                                      if (preferenceName[i].place == 0) {
                                         myPlace = "0";
-                                      }else if(preferenceName[i].place == 1){
+                                      } else if (preferenceName[i].place == 1) {
                                         myPlace = "1";
-                                      }else{
+                                      } else {
                                         myPlace = "2";
                                       }
                                       setState(() {
-                                        preferenceName[i].isSelected = !preferenceName[i].isSelected;
+                                        preferenceName[i].isSelected =
+                                            !preferenceName[i].isSelected;
                                       });
                                     } else {
                                       setState(() {
@@ -338,7 +383,8 @@ class _filterpageState extends State<filterpage> {
                                 },
                                 child: Container(
                                   height: height * 0.06,
-                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 8),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -361,11 +407,18 @@ class _filterpageState extends State<filterpage> {
                               )
                           ],
                         ),
-                        SizedBox(height: height * 0.01,),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
                         const Divider(),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20,),
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                          ),
                           child: Container(
                             alignment: Alignment.topLeft,
                             child: const Text("Services",
@@ -376,7 +429,9 @@ class _filterpageState extends State<filterpage> {
                                     fontWeight: FontWeight.w600)),
                           ),
                         ),
-                        SizedBox(height: height * 0.02,),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
                         Wrap(
                           alignment: WrapAlignment.start,
                           runSpacing: 10,
@@ -392,7 +447,8 @@ class _filterpageState extends State<filterpage> {
                                 },
                                 child: Container(
                                   height: height * 0.06,
-                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 8),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -415,9 +471,13 @@ class _filterpageState extends State<filterpage> {
                               )
                           ],
                         ),
-                        SizedBox(height: height * 0.01,),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
                         const Divider(),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
@@ -430,7 +490,9 @@ class _filterpageState extends State<filterpage> {
                                     fontWeight: FontWeight.w600)),
                           ),
                         ),
-                        SizedBox(height: height * 0.02,),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Wrap(
@@ -448,7 +510,8 @@ class _filterpageState extends State<filterpage> {
                                   },
                                   child: Container(
                                     height: height * 0.06,
-                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 8),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
@@ -472,9 +535,13 @@ class _filterpageState extends State<filterpage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: height * 0.01,),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
                         const Divider(),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
@@ -521,7 +588,8 @@ class _filterpageState extends State<filterpage> {
                               Row(
                                 children: [
                                   Radio(
-                                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                                    visualDensity: const VisualDensity(
+                                        horizontal: 0, vertical: 0),
                                     activeColor: const Color(0xFFDD5103),
                                     value: "myfavorite",
                                     groupValue: character,
@@ -545,7 +613,8 @@ class _filterpageState extends State<filterpage> {
                               Row(
                                 children: [
                                   Radio(
-                                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                                    visualDensity: const VisualDensity(
+                                        horizontal: 0, vertical: 0),
                                     activeColor: const Color(0xFFDD5103),
                                     value: "topRated",
                                     groupValue: character,
@@ -570,7 +639,9 @@ class _filterpageState extends State<filterpage> {
                           ),
                         ),
                         const Divider(),
-                        const SizedBox(height: 30,),
+                        const SizedBox(
+                          height: 30,
+                        ),
                       ],
                     ),
                     Container(
@@ -596,7 +667,9 @@ class _filterpageState extends State<filterpage> {
                             ],
                           ),
                         )),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Column(
                       children: [
                         Padding(
@@ -616,7 +689,8 @@ class _filterpageState extends State<filterpage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Radio(
-                                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                                    visualDensity: const VisualDensity(
+                                        horizontal: 0, vertical: 0),
                                     value: "Male",
                                     groupValue: gender,
                                     activeColor: const Color(0xFFDD5103),
@@ -633,7 +707,8 @@ class _filterpageState extends State<filterpage> {
                                         fontFamily: "spartan",
                                       )),
                                   Radio(
-                                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                                    visualDensity: const VisualDensity(
+                                        horizontal: 0, vertical: 0),
                                     value: "Female",
                                     groupValue: gender,
                                     activeColor: const Color(0xFFDD5103),
@@ -650,7 +725,8 @@ class _filterpageState extends State<filterpage> {
                                         fontFamily: "spartan",
                                       )),
                                   Radio(
-                                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                                    visualDensity: const VisualDensity(
+                                        horizontal: 0, vertical: 0),
                                     value: "Other",
                                     groupValue: gender,
                                     activeColor: const Color(0xFFDD5103),
@@ -669,7 +745,9 @@ class _filterpageState extends State<filterpage> {
                                 ],
                               ),
                               const Divider(),
-                              const SizedBox(height: 10,),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: const Text("Price Range",
@@ -679,12 +757,14 @@ class _filterpageState extends State<filterpage> {
                                         fontFamily: "spartan",
                                         fontWeight: FontWeight.w600)),
                               ),
-                              const SizedBox(height: 20,),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   GestureDetector(
-                                    onTap:() {
+                                    onTap: () {
                                       setState(() {
                                         price = true;
                                         price1 = false;
@@ -694,16 +774,25 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                      height: 35,
+                                      width: 35,
                                       decoration: BoxDecoration(
-                                        border: Border.all(width: 1, color: const Color(0xffA0A0A0)),
-                                        color: price ?  const Color(0xff292929) : Colors.white ,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xffA0A0A0)),
+                                        color: price
+                                            ? const Color(0xff292929)
+                                            : Colors.white,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
-                                          child: textComoon("\$", 12,
-                                              price ? Colors.white : Colors.black, FontWeight.w500)),
+                                          child: textComoon(
+                                              "\$20",
+                                              12,
+                                              price
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              FontWeight.w500)),
                                     ),
                                   ),
                                   Padding(
@@ -716,7 +805,7 @@ class _filterpageState extends State<filterpage> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap:() {
+                                    onTap: () {
                                       setState(() {
                                         price = true;
                                         price1 = true;
@@ -726,17 +815,25 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                      height: 35,
+                                      width: 35,
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            width: 1, color: const Color(0xffA0A0A0)),
-                                        color: price1 ?  const Color(0xff292929) : Colors.white,
+                                            width: 1,
+                                            color: const Color(0xffA0A0A0)),
+                                        color: price1
+                                            ? const Color(0xff292929)
+                                            : Colors.white,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
-                                          child: textComoon("\$\$", 10,
-                                              price1 ? Colors.white : Colors.black, FontWeight.w500)),
+                                          child: textComoon(
+                                              "\$99",
+                                              10,
+                                              price1
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              FontWeight.w500)),
                                     ),
                                   ),
                                   Padding(
@@ -749,7 +846,7 @@ class _filterpageState extends State<filterpage> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap:() {
+                                    onTap: () {
                                       setState(() {
                                         price = true;
                                         price1 = true;
@@ -759,18 +856,24 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                      height: 35,
+                                      width: 35,
                                       decoration: BoxDecoration(
-                                        border: Border.all(width: 1, color: const Color(0xffA0A0A0)),
-                                        color: price2 ?  const Color(0xff292929) : Colors.white,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xffA0A0A0)),
+                                        color: price2
+                                            ? const Color(0xff292929)
+                                            : Colors.white,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
                                           child: textComoon(
-                                              "\$\$\$",
+                                              "\$100",
                                               10,
-                                              price2 ? Colors.white : Colors.black,
+                                              price2
+                                                  ? Colors.white
+                                                  : Colors.black,
                                               FontWeight.w500)),
                                     ),
                                   ),
@@ -784,7 +887,7 @@ class _filterpageState extends State<filterpage> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap:() {
+                                    onTap: () {
                                       setState(() {
                                         price = true;
                                         price1 = true;
@@ -793,33 +896,39 @@ class _filterpageState extends State<filterpage> {
                                         priceValue = 10000;
                                       });
                                     },
-
                                     child: Container(
-                                      height: 30,
-                                      width: 30,
+                                      height: 35,
+                                      width: 35,
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            width: 1, color: const Color(0xffA0A0A0)),
-                                        color: price3 ?  const Color(0xff292929) : Colors.white,
+                                            width: 1,
+                                            color: const Color(0xffA0A0A0)),
+                                        color: price3
+                                            ? const Color(0xff292929)
+                                            : Colors.white,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
                                           child: textComoon(
-                                              "\$\$\$\$",
-                                              10,
-                                              price3 ? Colors.white : Colors.black,
+                                              "\$1000",
+                                              08,
+                                              price3
+                                                  ? Colors.white
+                                                  : Colors.black,
                                               FontWeight.w500)),
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: height * 0.01,),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
                               const Divider(),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Center(
                                       child: Text("Distance",
                                           style: TextStyle(
@@ -828,21 +937,35 @@ class _filterpageState extends State<filterpage> {
                                               fontFamily: "spartan",
                                               fontWeight: FontWeight.w600))),
                                   Center(
-                                      child: Text("5.0 km",
-                                          style: TextStyle(
-                                              color: Color(0xff414141),
-                                              fontSize: 12,
-                                              fontFamily: "spartan",
-                                              fontWeight: FontWeight.w600))),
+                                    child: Text(
+                                      "${_startValue.toStringAsFixed(1)} - ${_endValue.toStringAsFixed(1)} km",
+                                      style: TextStyle(
+                                        color: Color(0xff414141),
+                                        fontSize: 12,
+                                        fontFamily: "spartan",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 10,),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               RangeSlider(
+                                onChangeStart: (value) {
+                                  _startValue = value.start;
+                                },
+                                onChangeEnd: (value) {
+                                  _endValue = value.end;
+                                },
                                 min: 0.0,
-                                max: 100.0,
+                                max: 200.0,
                                 inactiveColor: const Color(0xffCFCFCF),
                                 activeColor: const Color(0xffDD6A03),
                                 values: RangeValues(_startValue, _endValue),
+                                labels: RangeLabels(_startValue.toString(),
+                                    _endValue.toString()),
                                 onChanged: (values) {
                                   setState(() {
                                     _startValue = values.start;
@@ -851,13 +974,15 @@ class _filterpageState extends State<filterpage> {
                                 },
                               ),
                               const Divider(),
-                              const SizedBox(height: 20,),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   GestureDetector(
-                                    onTap:() {
+                                    onTap: () {
                                       Navigator.pop(context);
                                     },
                                     child: Container(
@@ -865,7 +990,8 @@ class _filterpageState extends State<filterpage> {
                                       height: height * 0.07,
                                       width: width * 0.4,
                                       decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey),
+                                          border:
+                                              Border.all(color: Colors.grey),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5))),
                                       child: const Text("Clear All"),
@@ -879,23 +1005,27 @@ class _filterpageState extends State<filterpage> {
                                             selectedService.add(item.id!);
                                           }
                                         }
-                                        for(var item in demographyName){
-                                          if(item.isSelected) {
+                                        for (var item in demographyName) {
+                                          if (item.isSelected) {
                                             selectedDemography.add(item.id!);
                                           }
                                         }
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          return searchScreen(
-                                            myPlace: myPlace,
-                                            selectedService: selectedService,
-                                            selectedDemography: selectedDemography,
-                                            gender: gender,
-                                            sortBy: character,
-                                            priceValue: priceValue,
-                                            latitude: latitude,
-                                            longitude: longitude,
-                                          );
-                                        },));
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                          builder: (context) {
+                                            return searchScreen(
+                                              myPlace: myPlace,
+                                              selectedService: selectedService,
+                                              selectedDemography:
+                                                  selectedDemography,
+                                              gender: gender,
+                                              sortBy: character,
+                                              priceValue: priceValue,
+                                              latitude: latitude,
+                                              longitude: longitude,
+                                            );
+                                          },
+                                        ));
                                       });
                                     },
                                     child: Container(
@@ -903,12 +1033,11 @@ class _filterpageState extends State<filterpage> {
                                       height: height * 0.07,
                                       width: width * 0.4,
                                       decoration: BoxDecoration(
-                                          border: Border.all(color: const Color(0xFFDD5103)),
+                                          border: Border.all(
+                                              color: const Color(0xFFDD5103)),
                                           color: const Color(0xFFDD5103),
                                           borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)
-                                          )
-                                      ),
+                                              Radius.circular(5))),
                                       child: const Text(
                                         "APPLY",
                                         style: TextStyle(color: Colors.white),
@@ -917,7 +1046,9 @@ class _filterpageState extends State<filterpage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 20,),
+                              const SizedBox(
+                                height: 20,
+                              ),
                             ],
                           ),
                         )
@@ -925,8 +1056,7 @@ class _filterpageState extends State<filterpage> {
                     )
                   ],
                 ),
-        )
-    );
+              ));
   }
 
   fetchServiceCategories() async {
@@ -946,11 +1076,13 @@ class _filterpageState extends State<filterpage> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -978,11 +1110,13 @@ class _filterpageState extends State<filterpage> {
           d = Demography.fromjson(map);
           demographyName = d!.data!;
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1022,14 +1156,16 @@ class ServiceCategorieData {
   bool isSelected;
 
   ServiceCategorieData(
-      {this.id, this.serviceCategoryName, this.imgPath,this.isSelected = false});
+      {this.id,
+      this.serviceCategoryName,
+      this.imgPath,
+      this.isSelected = false});
 
   factory ServiceCategorieData.fromjson(Map<dynamic, dynamic> map1) {
     return ServiceCategorieData(
-      id: map1['_id'] ?? "",
-      serviceCategoryName: map1['serviceCategoryName'] ?? "",
-        imgPath: map1['imgPath'] ?? ""
-    );
+        id: map1['_id'] ?? "",
+        serviceCategoryName: map1['serviceCategoryName'] ?? "",
+        imgPath: map1['imgPath'] ?? "");
   }
 }
 
@@ -1043,7 +1179,8 @@ class Demography {
 
   factory Demography.fromjson(Map<dynamic, dynamic> map) {
     List list = map['data'] ?? "";
-    List<DemographyData> data = list.map((e) => DemographyData.fromjson(e)).toList();
+    List<DemographyData> data =
+        list.map((e) => DemographyData.fromjson(e)).toList();
     return Demography(
         status: map['status'] ?? 0,
         success: map['success'] ?? false,
@@ -1082,11 +1219,13 @@ class DemographyData {
   }
 }
 
-
 class PrferenceNameModel {
   String prefenceName;
   bool isSelected;
   int place;
 
-  PrferenceNameModel({required this.prefenceName, required this.isSelected,required this.place});
+  PrferenceNameModel(
+      {required this.prefenceName,
+      required this.isSelected,
+      required this.place});
 }

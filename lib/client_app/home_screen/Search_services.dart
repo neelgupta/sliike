@@ -397,11 +397,13 @@ class _searchservicesState extends State<searchservices> {
         },):Container(),
       ],
     ):
+    searchCotroller.text.isEmpty ? Container() :
     Container(
     height: height *0.75,
       child: const Center(
         child: Text("Not yet available. More beauty experience coming soon.")
-      ));}
+      ));
+  }
 
   fetchServiceCategories() async {
     var geturi = Uri.parse(ApiUrlList.fetchServiceCategories);
