@@ -6,8 +6,12 @@ import 'package:new_sliikeapps_apps/theme/theme_configration.dart';
 
 class Util {
   final DateFormat formatter = DateFormat('dd-mm-yyyy');
-  final DateFormat eMMMYYformatter = DateFormat('E, MMM yy');
+  final DateFormat eMMMdformatter = DateFormat('E, MMM d');
   final DateFormat hhmmaformatter = DateFormat('hh:mm a');
+  final DateFormat MDEAformatter = DateFormat('MMM d . h:a');
+  final DateFormat eMMMdYYYYhaformatter = DateFormat('E, MMM d, yyyy. ');
+  final DateFormat haformatter = DateFormat('ha');
+  final DateFormat mmmDformatter = DateFormat('MMM d');
 
   // var box=GetStorage();
 

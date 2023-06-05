@@ -8,6 +8,7 @@ import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 import '../Beautician_screen/b_model/appointment_details_model.dart';
+import '../Beautician_screen/b_model/appointment_payment_details.dart';
 import '../Beautician_screen/b_model/employee_get_list.dart';
 import '../Beautician_screen/b_model/get_appointment_details_model.dart';
 
@@ -104,19 +105,56 @@ class CalenderService {
         "authorization":
             "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
-      // log("getAppointmentData url is  : $geturi");
-      // log("getAppointmentData  headers  : $headers");
+      log("getAppointmentData url is  : $geturi");
+      log("getAppointmentData  headers  : $headers");
 
       var response = await http.get(
         geturi,
         headers: headers,
       );
-      // log("getAppointmentData response.body ==> ${response.body}");
-      // log("getAppointmentData status code ==> ${response.statusCode}");
+      log("getAppointmentData response.body ==> ${response.body}");
+      log("getAppointmentData status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         // Map map = jsonDecode(response.body);
 
         return AppointmentDetailsModel.fromJson(jsonDecode(response.body));
+        // if (getProfileModel.status == 200) {
+        //   profileData = getProfileModel.data;
+        //   if (getProfileModel.data.address.isNotEmpty) {
+        //     addressData = getProfileModel.data.address.first;
+        //   }
+        // }
+      }
+    } catch (e) {
+      rethrow;
+      // return null;
+    }
+    return null;
+  }
+
+  Future<AppointmentPaymentDetails?> getAppointmentPaymentData(
+      {required String appointmentId}) async {
+    var geturi =
+        Uri.parse("${ApiUrlList.getAppointmentPaymentDetails}/$appointmentId");
+    try {
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      log("getAppointmentPaymentData url is  : $geturi");
+      log("getAppointmentPaymentData  headers  : $headers");
+
+      var response = await http.get(
+        geturi,
+        headers: headers,
+      );
+      log("getAppointmentPaymentData response.body ==> ${response.body}");
+      log("getAppointmentPaymentData status code ==> ${response.statusCode}");
+      if (response.statusCode == 200) {
+        // Map map = jsonDecode(response.body);
+
+        return AppointmentPaymentDetails.fromJson(jsonDecode(response.body));
         // if (getProfileModel.status == 200) {
         //   profileData = getProfileModel.data;
         //   if (getProfileModel.data.address.isNotEmpty) {

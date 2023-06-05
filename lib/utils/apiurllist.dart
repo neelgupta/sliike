@@ -72,6 +72,8 @@ class ApiUrlList {
       "${baseUrl}beautician/getCalenderAppointmentList";
   static String getAppointmentDetails =
       "${baseUrl}beautician/getAppointmentDetails";
+  static String getAppointmentPaymentDetails =
+      "${baseUrl}beautician/getAppointmentPaymentDetails";
   static String handlePastAppointmentStatus =
       "${baseUrl}beautician/handlePastAppointmentStatus";
   static String cancelAppointment = "${baseUrl}beautician/cancelAppointment";

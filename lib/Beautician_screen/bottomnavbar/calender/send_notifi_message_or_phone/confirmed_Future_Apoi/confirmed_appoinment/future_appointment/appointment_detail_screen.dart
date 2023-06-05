@@ -2,14 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/confirmed_Future_Apoi/confirmed_appoinment/future_appointment/edit_apoinment/edit_add_service.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/payment_detail/confirmed_payment.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 import '../../../../../../../services/calender_service.dart';
 import '../../../../../../../utils/util.dart';
 import '../../../../../../b_model/appointment_details_model.dart';
+import '../../../payment_detail/payment_details_screen.dart';
 
 class AppointmentDetailScreen extends StatefulWidget {
   const AppointmentDetailScreen({
@@ -145,11 +144,11 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         InkWell(
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return const edit_add_service();
-              },
-            ));
+            // Navigator.push(context, MaterialPageRoute(
+            //   builder: (context) {
+            //     return const edit_add_service();
+            //   },
+            // ));
           },
           child: Row(
             children: [
@@ -455,22 +454,25 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                       const Text(
                                         "Date",
                                         style: TextStyle(
-                                            fontSize: 10,
-                                            color: Color(0xff707070),
-                                            fontFamily: "spartan",
-                                            fontWeight: FontWeight.w500),
+                                          fontSize: 10,
+                                          color: Color(0xff707070),
+                                          fontFamily: "spartan",
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        Util().eMMMYYformatter.format(
-                                              appointmentDetails!.data.dateTime,
+                                        Util().eMMMdformatter.format(
+                                              appointmentDetails!.data.dateTime
+                                                  .toLocal(),
                                             ),
                                         // "Wed, Mar 16",
                                         style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xff292929),
-                                            fontFamily: "spartan",
-                                            fontWeight: FontWeight.w600),
+                                          fontSize: 12,
+                                          color: Color(0xff292929),
+                                          fontFamily: "spartan",
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -701,107 +703,109 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 45,
-                                  height: 45,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xffCFCFCF),
-                                    shape: BoxShape.circle,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PaymentDetailScreen(
+                                  appointmentId: appointmentDetails!.data.id,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xffCFCFCF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(
+                                          "assets/images/card.png",
+                                          fit: BoxFit.fill),
+                                    ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset("assets/images/card.png",
-                                        fit: BoxFit.fill),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      textComoon(
-                                          "Credit Card",
-                                          14,
-                                          const Color(0xff292929),
-                                          FontWeight.w700),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Container(
-                                          child: textComoon(
-                                            appointmentDetails!
-                                                        .data
-                                                        .paymentDetails
-                                                        .paymentStatus ==
-                                                    0
-                                                ? "Pending"
-                                                : appointmentDetails!
-                                                            .data
-                                                            .paymentDetails
-                                                            .paymentStatus ==
-                                                        1
-                                                    ? "confirmed"
-                                                    : appointmentDetails!
-                                                                .data
-                                                                .paymentDetails
-                                                                .paymentStatus ==
-                                                            2
-                                                        ? "Failed"
-                                                        : "Paid",
-                                            10,
-                                            const Color(0xff219653),
-                                            FontWeight.w600,
+                                  const SizedBox(width: 20),
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        textComoon(
+                                            "Credit Card",
+                                            14,
+                                            const Color(0xff292929),
+                                            FontWeight.w700),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: Container(
+                                            child: textComoon(
+                                              appointmentDetails!
+                                                          .data
+                                                          .paymentDetails
+                                                          .paymentStatus ==
+                                                      0
+                                                  ? "Pending"
+                                                  : appointmentDetails!
+                                                              .data
+                                                              .paymentDetails
+                                                              .paymentStatus ==
+                                                          1
+                                                      ? "confirmed"
+                                                      : appointmentDetails!
+                                                                  .data
+                                                                  .paymentDetails
+                                                                  .paymentStatus ==
+                                                              2
+                                                          ? "Failed"
+                                                          : "Paid",
+                                              10,
+                                              const Color(0xff219653),
+                                              FontWeight.w600,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Container(
-                                      child: textComoon(
-                                          "\$${appointmentDetails!.data.paymentDetails.totalPrice}.00",
-                                          12,
-                                          const Color(0xff01635D),
-                                          FontWeight.w700),
+                                      ],
                                     ),
-                                    const SizedBox(width: 10),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const PaymentDetailScreen();
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        child: textComoon(
+                                            "\$${appointmentDetails!.data.paymentDetails.totalPrice}.00",
+                                            12,
+                                            const Color(0xff01635D),
+                                            FontWeight.w700),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Container(
                                         alignment: Alignment.topRight,
                                         height: 15,
                                         width: 15,
                                         child: Image.asset(
                                           "assets/images/righticon.png",
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -827,29 +831,29 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                         FontWeight.w600,
                         Colors.white,
                         () {
-                          if (widget.isFuture) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const edit_add_service();
-                                },
-                              ),
-                            );
-                          } else {
-                            handlePastAppointmentChangeStatus(
-                              appointmentDetails!.data.id,
-                              "delivered",
-                            );
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) {
-                            //       return const PaymentDetailScreen();
-                            //     },
-                            //   ),
-                            // );
-                          }
+                          // if (widget.isFuture) {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) {
+                          //         return const edit_add_service();
+                          //       },
+                          //     ),
+                          //   );
+                          // } else {
+                          //   handlePastAppointmentChangeStatus(
+                          //     appointmentDetails!.data.id,
+                          //     "delivered",
+                          //   );
+                          //   // Navigator.push(
+                          //   //   context,
+                          //   //   MaterialPageRoute(
+                          //   //     builder: (context) {
+                          //   //       return const PaymentDetailScreen();
+                          //   //     },
+                          //   //   ),
+                          //   // );
+                          // }
                         },
                       ),
                     ),
