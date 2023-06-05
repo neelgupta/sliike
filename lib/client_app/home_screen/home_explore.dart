@@ -66,6 +66,7 @@ class _home_exploreState extends State<home_explore> {
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(

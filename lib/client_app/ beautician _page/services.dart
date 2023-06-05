@@ -2177,7 +2177,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFDD6A03),
+                      primary: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2254,7 +2254,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFDD6A03),
+                      primary: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))

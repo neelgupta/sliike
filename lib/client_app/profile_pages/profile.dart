@@ -141,6 +141,7 @@ class _profileState extends State<profile> {
 
   Widget viewProfileBody(double height, double width) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

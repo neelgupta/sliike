@@ -78,8 +78,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(200)),
                                       child: getmodelProfile!
-                                                  .data!.profileImage !=
-                                              null
+                                                  .data!.profileImage!.isNotEmpty
                                           ? Image.network(
                                               getmodelProfile!
                                                   .data!.profileImage!,
