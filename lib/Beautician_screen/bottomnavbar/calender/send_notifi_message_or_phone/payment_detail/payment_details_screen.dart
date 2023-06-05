@@ -307,7 +307,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                                     children: [
                                       Container(
                                         child: textComoon(
-                                          "\$${paymentData!.serviceDetails.price}.00",
+                                          "\$${paymentData!.serviceDetails.price}",
                                           12,
                                           const Color(0xff292929),
                                           FontWeight.w700,
@@ -346,7 +346,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.discount}.00",
+                              "\$${paymentData!.paymentInfo.discount}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,
@@ -376,7 +376,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.subTotal}.00",
+                              "\$${paymentData!.paymentInfo.subTotal}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,
@@ -404,7 +404,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.gstORhst}:00",
+                              "\$${paymentData!.paymentInfo.gstORhst}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,
@@ -432,7 +432,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.pstORqst}.00",
+                              "\$${paymentData!.paymentInfo.pstORqst}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,
@@ -459,7 +459,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: 30,
                           ),
                           textComoon(
-                            "\$${paymentData!.paymentInfo.total}.00",
+                            "\$${paymentData!.paymentInfo.total}",
                             12,
                             const Color(0xff292929),
                             FontWeight.w500,
@@ -482,14 +482,14 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             FontWeight.w500,
                           ),
                           textComoon(
-                            "- Credit Card - ${Util().mmmDformatter.format(paymentData!.paymentInfo.paymentDate)} - ${Util().haformatter.format(paymentData!.paymentInfo.paymentDate)}",
+                            "- Credit Card - ${Util().mmmDformatter.format(paymentData!.paymentInfo.paymentDate.toLocal())} - ${Util().haformatter.format(paymentData!.paymentInfo.paymentDate.toLocal())}",
                             12,
                             const Color(0xff707070),
                             FontWeight.w500,
                           ),
                           const Spacer(),
                           textComoon(
-                            "\$${paymentData!.paymentInfo.total}.00",
+                            "\$${paymentData!.paymentInfo.total}",
                             12,
                             const Color(0xff292929),
                             FontWeight.bold,
@@ -520,7 +520,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: 30,
                           ),
                           textComoon(
-                            "\$${paymentData!.paymentInfo.total}.00",
+                            "\$${paymentData!.paymentInfo.total}",
                             12,
                             const Color(0xff292929),
                             FontWeight.w500,

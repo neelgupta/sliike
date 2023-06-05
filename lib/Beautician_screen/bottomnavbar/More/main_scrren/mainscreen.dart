@@ -377,39 +377,41 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                         width: width,
                         color: Color(0xffF3F3F3),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 17,
-                          ),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.black12))),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return help_center_beauti();
-                                },
-                              ));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                textComoon("Help Center", 14, Color(0xff414141),
-                                    FontWeight.w500),
-                                Container(
-                                  height: 15,
-                                  width: 30,
-                                  child: Image.asset(
-                                      "assets/images/righticon.png"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+
+                      ////help center
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20, right: 20),
+                      //   child: Container(
+                      //     padding: EdgeInsets.symmetric(
+                      //       vertical: 17,
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //         border: Border(
+                      //             bottom: BorderSide(color: Colors.black12))),
+                      //     child: InkWell(
+                      //       onTap: () {
+                      //         Navigator.push(context, MaterialPageRoute(
+                      //           builder: (context) {
+                      //             return help_center_beauti();
+                      //           },
+                      //         ));
+                      //       },
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           textComoon("Help Center", 14, Color(0xff414141),
+                      //               FontWeight.w500),
+                      //           Container(
+                      //             height: 15,
+                      //             width: 30,
+                      //             child: Image.asset(
+                      //                 "assets/images/righticon.png"),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       // InkWell(
                       //   onTap: () {
                       //     // Navigator.push(context, MaterialPageRoute(builder: (context) {

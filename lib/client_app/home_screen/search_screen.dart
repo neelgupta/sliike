@@ -383,9 +383,7 @@ class _searchScreenState extends State<searchScreen> {
                                           height: height * 0.05,
                                           width: width * 0.8,
                                           child: Text(
-                                              !widget.isMultipleSearched!
-                                                  ? widget.serviceName!
-                                                  : "Your Selected Service",
+                                              widget.serviceName ??  "Your Selected Service",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 18,

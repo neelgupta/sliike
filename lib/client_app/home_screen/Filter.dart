@@ -61,7 +61,6 @@ class _filterpageState extends State<filterpage> {
   bool Change = false;
 
   @override
-
   void initState() {
     fetchServiceCategories();
     getDemography();
@@ -432,45 +431,51 @@ class _filterpageState extends State<filterpage> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        Wrap(
-                          alignment: WrapAlignment.start,
-                          runSpacing: 10,
-                          spacing: 8,
-                          children: [
-                            for (int i = 0; i < serviceName.length; i++)
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    serviceName[i].isSelected =
-                                        !serviceName[i].isSelected;
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 25),
-                                  height: height * 0.06,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                          color: serviceName[i].isSelected
-                                              ? const Color(0xFFDD5103)
-                                              : Colors.black45),
-                                      color: serviceName[i].isSelected
-                                          ? const Color(0xFFDD5103)
-                                          : Colors.transparent),
-                                  child: Text(
-                                    "${serviceName[i].serviceCategoryName}",
-                                    style: TextStyle(
-                                        fontFamily: "spartan",
-                                        fontSize: 16,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                          ),
+                          child: Wrap(
+                            alignment: WrapAlignment.start,
+                            runSpacing: 10,
+                            spacing: 8,
+                            children: [
+                              for (int i = 0; i < serviceName.length; i++)
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      serviceName[i].isSelected =
+                                          !serviceName[i].isSelected;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    height: height * 0.06,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                            color: serviceName[i].isSelected
+                                                ? const Color(0xFFDD5103)
+                                                : Colors.black45),
                                         color: serviceName[i].isSelected
-                                            ? Colors.white
-                                            : Colors.black54),
+                                            ? const Color(0xFFDD5103)
+                                            : Colors.transparent),
+                                    child: Text(
+                                      "${serviceName[i].serviceCategoryName}",
+                                      style: TextStyle(
+                                          fontFamily: "spartan",
+                                          fontSize: 16,
+                                          color: serviceName[i].isSelected
+                                              ? Colors.white
+                                              : Colors.black54),
+                                    ),
                                   ),
-                                ),
-                              )
-                          ],
+                                )
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: height * 0.01,

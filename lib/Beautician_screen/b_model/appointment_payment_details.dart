@@ -91,11 +91,11 @@ class ClientEmail {
 class PaymentInfo {
   String bookingId;
   DateTime paymentDate;
-  int subTotal;
-  int discount;
-  int gstORhst;
-  int pstORqst;
-  int total;
+  double subTotal;
+  double discount;
+  double gstORhst;
+  double pstORqst;
+  double total;
 
   PaymentInfo({
     required this.bookingId,
@@ -110,11 +110,11 @@ class PaymentInfo {
   factory PaymentInfo.fromJson(Map<String, dynamic> json) => PaymentInfo(
         bookingId: json["BookingId"] ?? "",
         paymentDate: DateTime.parse(json["paymentDate"]),
-        subTotal: json["subTotal"] ?? 0,
-        discount: json["discount"] ?? 0,
-        gstORhst: json["gstORhst"] ?? 0,
-        pstORqst: json["pstORqst"] ?? 0,
-        total: json["total"] ?? 0,
+        subTotal: double.parse((json["subTotal"] ?? 0).toString()),
+        discount: double.parse((json["discount"] ?? 0).toString()),
+        gstORhst: double.parse((json["gstORhst"] ?? 0).toString()),
+        pstORqst: double.parse((json["pstORqst"] ?? 0).toString()),
+        total: double.parse((json["total"] ?? 0).toString()),
       );
 
   Map<String, dynamic> toJson() => {
