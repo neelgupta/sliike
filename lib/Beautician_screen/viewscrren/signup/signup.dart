@@ -123,26 +123,27 @@ class _signUpState extends State<signUp> {
   String vemail = "";
   String strengthMsg = "";
 
-  void _passwordStrength(String value){
-    if(value.isEmpty){
+  void _passwordStrength(String value) {
+    if (value.isEmpty) {
       setState(() {
         strengthMsg = "Password cannot be empty";
         strengthColor = Colors.red;
         passStr = true;
       });
-    }else if(value.length <= 6){
+    } else if (value.length <= 6) {
       setState(() {
         strengthMsg = "Weak";
         strengthColor = Colors.red;
         passStr = true;
       });
-    }else if(value.length <= 8){
+    } else if (value.length <= 8) {
       setState(() {
         strengthMsg = "Good";
         strengthColor = Colors.orange;
         passStr = true;
       });
-    }else if(RegExp(r'^((?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&*]{6,20})$').hasMatch(value)){
+    } else if (RegExp(r'^((?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&*]{6,20})$')
+        .hasMatch(value)) {
       setState(() {
         strengthMsg = "Strong";
         strengthColor = Colors.green;
@@ -478,8 +479,6 @@ class _signUpState extends State<signUp> {
                                       enabledBorder: border,
                                       focusedBorder: border,
                                       contentPadding: EdgeInsets.only(),
-
-
                                     ),
                                     flagWidth: 25,
                                     hideSearch: false,
@@ -546,16 +545,16 @@ class _signUpState extends State<signUp> {
                       TextField(
                         controller: tpassword,
                         onChanged: (value) {
-                           if(value.isEmpty){
-                             setState(() {
-                               passStr = false;
-                             });
-                           }else{
-                             setState(() {
+                          if (value.isEmpty) {
+                            setState(() {
+                              passStr = false;
+                            });
+                          } else {
+                            setState(() {
                               _passwordStrength(value);
                               passwordstatus = false;
-                             });
-                           }
+                            });
+                          }
                         },
                         obscureText: showstatus,
                         obscuringCharacter: "*",
@@ -605,34 +604,34 @@ class _signUpState extends State<signUp> {
                       //     ),
                       //   ),
                       // ),
-                      passStr?
-                      Container(
-                        // color: Colors.red,
-                        alignment: Alignment.centerLeft,
-                        height: 30,
-                        child: Text(
-                          strengthMsg,
-                          style:  TextStyle(
-                              fontFamily: 'spartan',
-                              fontSize: 12,
-                              color: strengthColor),
-                        ),
-                      ):
-                      passwordstatus?
-                      Container(
-                              alignment: Alignment.topLeft,
+                      passStr
+                          ? Container(
+                              // color: Colors.red,
+                              alignment: Alignment.centerLeft,
                               height: 30,
                               child: Text(
-                                passwordMsg,
-                                style: const TextStyle(
+                                strengthMsg,
+                                style: TextStyle(
                                     fontFamily: 'spartan',
                                     fontSize: 12,
-                                    color: Colors.red),
+                                    color: strengthColor),
                               ),
-                            ):
-                      Container(
-                              height: 20,
-                            ),
+                            )
+                          : passwordstatus
+                              ? Container(
+                                  alignment: Alignment.topLeft,
+                                  height: 30,
+                                  child: Text(
+                                    passwordMsg,
+                                    style: const TextStyle(
+                                        fontFamily: 'spartan',
+                                        fontSize: 12,
+                                        color: Colors.red),
+                                  ),
+                                )
+                              : Container(
+                                  height: 20,
+                                ),
                     ],
                   ),
                 const SizedBox(
@@ -689,11 +688,15 @@ class _signUpState extends State<signUp> {
                                   r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(email);
                           setState(() {
-                            if(firstName.isEmpty && lastName.isEmpty && phoneNumber.isEmpty && email.isEmpty && password.isEmpty){
+                            if (firstName.isEmpty &&
+                                lastName.isEmpty &&
+                                phoneNumber.isEmpty &&
+                                email.isEmpty &&
+                                password.isEmpty) {
                               namestatus = true;
                               fnameMsg = "Please Enter  First Name";
                               lastnamestatus = true;
-                              lnameMsg = "Please Enter LastName";
+                              lnameMsg = "Please Enter Last Name";
                               emailAdressstatus = true;
                               emailMsg = "Please Enter Email ID";
                               phonestatusup = true;
@@ -944,6 +947,7 @@ class _signUpState extends State<signUp> {
       var map = jsonDecode(response.body);
       if (response.statusCode == 201) {
         s1 = SignUpModel.fromJson(map);
+        Helper.prefs!.setString(UserPrefs.keyDeviceToken, deviceToken);
         Helper.prefs!.setString(UserPrefs.keyusertype, radiovalue);
         Helper.prefs!.setString(UserPrefs.keybusinessNumber, phoneNumber);
         Fluttertoast.showToast(

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,7 +12,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/help.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/business_setup_all_scrren/setup_profile.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverification/emailverification.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
@@ -25,7 +23,6 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/main.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import 'package:new_sliikeapps_apps/utils/userdetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../client_service_api/login_service.dart';
 import '../signup/signup.dart';
@@ -88,17 +85,27 @@ class _signInScreenState extends State<signInScreen> {
   }
 
   void _handleRememberMe(bool value) {
-    isChecked = value;
-    SharedPreferences.getInstance().then(
-          (prefs) {
-        prefs.setBool("remember_me", value);
-        prefs.setString('email', temail.text);
-        prefs.setString('password', tpassword.text);
-      },
-    );
+    // isChecked = value;
     setState(() {
       isChecked = value;
     });
+    if (value) {
+      SharedPreferences.getInstance().then(
+        (prefs) {
+          prefs.setBool("remember_me", true);
+          prefs.setString('email', temail.text);
+          prefs.setString('password', tpassword.text);
+        },
+      );
+    } else {
+      SharedPreferences.getInstance().then(
+        (prefs) {
+          prefs.setBool("remember_me", false);
+          prefs.setString('email', "");
+          prefs.setString('password', "");
+        },
+      );
+    }
   }
 
   void _loadUserEmailPassword() async {
@@ -111,8 +118,8 @@ class _signInScreenState extends State<signInScreen> {
         setState(() {
           isChecked = true;
         });
-        temail.text = _email ?? "";
-        tpassword.text = _password ?? "";
+        temail.text = _email;
+        tpassword.text = _password;
       }
     } catch (e) {
       print(e);
@@ -123,6 +130,8 @@ class _signInScreenState extends State<signInScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    temail.clear();
+    tpassword.clear();
     getNotification();
     getFirebaseToken();
     getDeviceInfo();
@@ -183,7 +192,7 @@ class _signInScreenState extends State<signInScreen> {
                   TextField(
                     controller: temail,
                     onTap: () {
-                      setState((){
+                      setState(() {
                         emailstatus = false;
                       });
                     },
@@ -215,12 +224,14 @@ class _signInScreenState extends State<signInScreen> {
                                 color: Colors.red),
                           ),
                         )
-                      : const SizedBox(height: 20,),
+                      : const SizedBox(
+                          height: 20,
+                        ),
                   TextFormField(
                     controller: tpassword,
                     obscuringCharacter: "*",
                     onTap: () {
-                      setState((){
+                      setState(() {
                         passwordstatus = false;
                       });
                     },
@@ -274,19 +285,30 @@ class _signInScreenState extends State<signInScreen> {
                                 color: Colors.red),
                           ),
                         )
-                      : const SizedBox(height: 10,),
+                      : const SizedBox(
+                          height: 10,
+                        ),
                   Row(
                     children: <Widget>[
-                       Checkbox(
-                           value: isChecked,
+                      Checkbox(
+                          value: isChecked,
                           activeColor: Color(0xFFDD6A03),
-                          onChanged:(newValue){
-                            setState(() {
-                              _handleRememberMe(newValue!);
-                              isChecked = newValue;
-                            });
+                          onChanged: (newValue) {
+                            // setState(() {
+                            //   isChecked = newValue!;
+                            // });
+                            // if (newValue!) {
+                            _handleRememberMe(newValue!);
+                            // }
                           }),
-                      Container(child: Text('Remember me',style: TextStyle( fontFamily: "spartan",color: Colors.black,fontSize: 12),))
+                      Container(
+                          child: Text(
+                        'Remember me',
+                        style: TextStyle(
+                            fontFamily: "spartan",
+                            color: Colors.black,
+                            fontSize: 12),
+                      ))
                     ],
                   ),
                   const SizedBox(
@@ -322,7 +344,7 @@ class _signInScreenState extends State<signInScreen> {
                         bool emailValid = RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(email);
-                         if (email.isEmpty && password.isEmpty) {
+                        if (email.isEmpty && password.isEmpty) {
                           emailstatus = true;
                           passwordstatus = true;
                           emailError = "Please Enter Email ID";
@@ -340,7 +362,6 @@ class _signInScreenState extends State<signInScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-
                       width: width,
                       height: height * 0.06,
                       decoration: BoxDecoration(
@@ -579,65 +600,69 @@ class _signInScreenState extends State<signInScreen> {
       print("login response :: ${response.body}");
       if (response.statusCode == 200) {
         signinmodel = SigninModel.fromJson(map);
+        Helper.prefs!.setString(UserPrefs.keyDeviceToken, deviceToken);
         Helper.prefs!
             .setString(UserPrefs.keyusertype, signinmodel!.success!.type!);
         Helper.prefs!
             .setString(UserPrefs.keyutoken, signinmodel!.success!.token ?? "");
-        if(signinmodel!.success!.type == "user") {
-          if((signinmodel!.success!.screenStatus ?? 0) == 2) {
+
+        if (signinmodel!.success!.type == "user") {
+          if ((signinmodel!.success!.screenStatus ?? 0) == 2) {
             SendOtp(email);
-          }
-          else {
+          } else {
             Loader.hide();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return homescreen(selectedIndex: 0,);
-                  },
-                ),
-                (route) => false,
-              );
-              Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return homescreen(
+                    selectedIndex: 0,
+                  );
+                },
+              ),
+              (route) => false,
+            );
+            Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
           }
-        }
-        else {
-          if((signinmodel!.success!.screenStatus ?? 0) == 2) {
+        } else {
+          if ((signinmodel!.success!.screenStatus ?? 0) == 2) {
             SendOtp(email);
-          }
-          else if((signinmodel!.success!.screenStatus ?? 0) == 3) {
+          } else if ((signinmodel!.success!.screenStatus ?? 0) == 3) {
             Loader.hide();
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return setup_profile();
-              },
-            ),);
-          }
-          else if((signinmodel!.success!.screenStatus ?? 0) == 4) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return setup_profile();
+                },
+              ),
+            );
+          } else if ((signinmodel!.success!.screenStatus ?? 0) == 4) {
             Loader.hide();
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return const bussinessInfoCATEGORY();
               },
             ));
-          }
-          else if ((signinmodel!.success!.screenStatus ?? 0) == 5) {
+          } else if ((signinmodel!.success!.screenStatus ?? 0) == 5) {
             Loader.hide();
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return addServicetype(secondflow: true);
               },
             ));
-          }
-          else if ((signinmodel!.success!.screenStatus ?? 0) == 6) {
+          } else if ((signinmodel!.success!.screenStatus ?? 0) == 6) {
             Loader.hide();
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-              builder: (context) {
-                return add_Your_Work_Hours(secondflow: true);
-              },
-            ),(route) => false,);
-          }
-          else if((signinmodel!.success!.screenStatus ?? 0) == 7) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return add_Your_Work_Hours(secondflow: true);
+                },
+              ),
+              (route) => false,
+            );
+          } else if ((signinmodel!.success!.screenStatus ?? 0) == 7) {
             Loader.hide();
             Fluttertoast.showToast(
                 msg: "${map['message']}",
@@ -647,20 +672,20 @@ class _signInScreenState extends State<signInScreen> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);
-            Helper.prefs!.setBool(UserPrefs.keyisserviceprovide,true);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const BottomNavigation();
-                    },
-                  ),
-                  (route) => false,
-                );
+            Helper.prefs!.setBool(UserPrefs.keyisserviceprovide, true);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const BottomNavigation();
+                },
+              ),
+              (route) => false,
+            );
             Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
           }
         }
-        } else {
+      } else {
         Loader.hide();
         Fluttertoast.showToast(
             msg: "${map['message']}",
@@ -674,6 +699,9 @@ class _signInScreenState extends State<signInScreen> {
     } catch (e) {
       print(e.toString());
       rethrow;
+    } finally {
+      temail.clear();
+      tpassword.clear();
     }
   }
 
@@ -681,7 +709,6 @@ class _signInScreenState extends State<signInScreen> {
     try {
       var bodydatamy = {
         'email': vemail,
-
       };
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
@@ -696,11 +723,14 @@ class _signInScreenState extends State<signInScreen> {
         sendotpmodel = SendOtpModel.fromJson(map);
         String userid = (sendotpmodel!.id ?? "");
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return emailVeriFication(vemail, userid);
-          },
-        ),);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return emailVeriFication(vemail, userid);
+            },
+          ),
+        );
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
@@ -719,8 +749,6 @@ class _signInScreenState extends State<signInScreen> {
     }
   }
 }
-
-
 
 // class SigninModel{
 //   int? statusCode;
@@ -784,5 +812,6 @@ class Success {
 logoutdata() async {
   Helper.prefs!.setBool(UserPrefs.keyuserlogin, false);
   Helper.prefs!.setString(UserPrefs.keyusertype, "");
+  Helper.prefs!.setString(UserPrefs.keyDeviceToken, "");
   Helper.prefs!.setString(UserPrefs.keyutoken, "");
 }

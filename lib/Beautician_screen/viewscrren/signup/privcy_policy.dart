@@ -15,7 +15,6 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-
   bool isLoading = false;
   TeamsAndConditions? tac;
   List<Datum> teamsList = [];
@@ -37,44 +36,41 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: const Icon(Icons.arrow_back_ios)
-          ),
-          title: const Text(
-              "Privacy Policy",
+              child: const Icon(Icons.arrow_back_ios)),
+          title: const Text("Privacy Policy",
               style: TextStyle(
-                  fontSize: 20,
-                  fontFamily:
-                  "spartan",
-                  color:
-                  Colors.white)
-          ),
+                  fontSize: 20, fontFamily: "spartan", color: Colors.white)),
         ),
         body: isLoading
             ? const Center(
-          child: CircularProgressIndicator(
-            color: Color(0xffDD6A03),
-          ),
-        ) : teamsList.isNotEmpty ? SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Html(
-                  data: teamsList[0].policy,)
-              ],
-            ),
-          ),
-        ): const Center(
-          child: Text("No Data Found!!",
-            style: TextStyle(
-                fontSize: 20,
-                fontFamily:
-                "spartan",
-                color:
-                Colors.black),
-          ),
-        ));
+                child: CircularProgressIndicator(
+                  color: Color(0xffDD6A03),
+                ),
+              )
+            : teamsList.isNotEmpty
+                ? SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Html(
+                            data: teamsList[0].policy,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : const Center(
+                    child: Text(
+                      "No Data Found!!",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: "spartan",
+                          color: Colors.black),
+                    ),
+                  ));
   }
+
   getTerms() async {
     var geturi = Uri.parse(ApiUrlList.getTerms);
     try {
@@ -84,13 +80,10 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       var headers = {
         // 'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
-      var bodydata = {
-        "id": "English",
-        "type":"policy"
-      };
+      var bodydata = {"id": "English", "type": "policy"};
 
       print("getTerms url is ====> $geturi ");
       log("getTerms bodydata is ====> $bodydata ");
@@ -132,17 +125,18 @@ class TeamsAndConditions {
     required this.data,
   });
 
-  factory TeamsAndConditions.fromJson(Map<String, dynamic> json) => TeamsAndConditions(
-    status: json["status"],
-    success: json["success"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+  factory TeamsAndConditions.fromJson(Map<String, dynamic> json) =>
+      TeamsAndConditions(
+        status: json["status"],
+        success: json["success"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "status": status,
+        "success": success,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
 }
 
 class Datum {
@@ -157,14 +151,14 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["_id"],
-    terms: json["terms"],
-    policy: json["policy"],
-  );
+        id: json["_id"],
+        terms: json["terms"],
+        policy: json["policy"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "terms": terms,
-    "policy": policy,
-  };
+        "_id": id,
+        "terms": terms,
+        "policy": policy,
+      };
 }

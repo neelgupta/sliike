@@ -40,9 +40,8 @@ class searchScreen extends StatefulWidget {
       this.searchService,
       this.latitude,
       this.longitude,
-        this.serviceName,
-        this.isMultipleSearched
-      })
+      this.serviceName,
+      this.isMultipleSearched})
       : super(key: key);
 
   @override
@@ -83,7 +82,7 @@ class _searchScreenState extends State<searchScreen> {
   @override
   void initState() {
     super.initState();
-      findServices();
+    findServices();
   }
 
   @override
@@ -97,517 +96,588 @@ class _searchScreenState extends State<searchScreen> {
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
-          height: height,
-          // padding: EdgeInsets.symmetric(horizontal: width*0.03,vertical: 10),
-          child: isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xffDD6A03),
-                  ),
-                )
-              : datum.isNotEmpty ? Column(
-                  children: [
-                    widget.isAdvanced ?? false
-                        ? Column(
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/bgappbar.png"),
-                                  fit: BoxFit.fill,
-                                )),
-                                child: Column(
+            height: height,
+            // padding: EdgeInsets.symmetric(horizontal: width*0.03,vertical: 10),
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xffDD6A03),
+                    ),
+                  )
+                : datum.isNotEmpty
+                    ? Column(
+                        children: [
+                          widget.isAdvanced ?? false
+                              ? Column(
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(
-                                        top: 20,
-                                        left: width * 0.03,
-                                        right: width * 0.03,
-                                      ),
-                                      padding: const EdgeInsets.only(),
-                                      height: height * 0.06,
-                                      width: width,
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: TextField(
-                                        controller: search,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "What are you looking for?",
-                                          prefixIcon: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20,
-                                                top: 12,
-                                                right: 12,
-                                                bottom: 10),
-                                            child: SizedBox(
-                                              height: 5,
-                                              child: Image.asset(
-                                                  "assets/images/search-normal.png"),
+                                      decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/bgappbar.png"),
+                                        fit: BoxFit.fill,
+                                      )),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              top: 20,
+                                              left: width * 0.03,
+                                              right: width * 0.03,
+                                            ),
+                                            padding: const EdgeInsets.only(),
+                                            height: height * 0.06,
+                                            width: width,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: TextField(
+                                              controller: search,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText:
+                                                    "What are you looking for?",
+                                                prefixIcon: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20,
+                                                          top: 12,
+                                                          right: 12,
+                                                          bottom: 10),
+                                                  child: SizedBox(
+                                                    height: 5,
+                                                    child: Image.asset(
+                                                        "assets/images/search-normal.png"),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                      border: Border.all(
+                                                          color: Colors.grey),
+                                                      color: Colors.white),
+                                                  height: height * 0.06,
+                                                  width: width * 0.43,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: Image(
+                                                            image:
+                                                                const AssetImage(
+                                                              "assets/images/Group 71.png",
+                                                            ),
+                                                            color: const Color(
+                                                                0xFFDD5103),
+                                                            height:
+                                                                width * 0.05),
+                                                      ),
+                                                      SizedBox(
+                                                        width: width * 0.02,
+                                                      ),
+                                                      InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                                return const NearYou();
+                                                              },
+                                                            ));
+                                                          },
+                                                          child: SizedBox(
+                                                              width:
+                                                                  width * 0.32,
+                                                              child: const Text(
+                                                                "Near You",
+                                                                maxLines: 1,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontFamily:
+                                                                        'spartan'),
+                                                              )))
+                                                    ],
+                                                  )),
+                                              SizedBox(
+                                                width: width * 0.06,
+                                              ),
+                                              Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                      border: Border.all(
+                                                          color: Colors.grey),
+                                                      color: Colors.white),
+                                                  height: height * 0.06,
+                                                  width: width * 0.43,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 10),
+                                                        child: Image(
+                                                            image:
+                                                                const AssetImage(
+                                                              "assets/images/note.png",
+                                                            ),
+                                                            color: const Color(
+                                                                0xFFDD5103),
+                                                            height:
+                                                                width * 0.05),
+                                                      ),
+                                                      SizedBox(
+                                                        width: width * 0.02,
+                                                      ),
+                                                      SizedBox(
+                                                          width: width * 0.32,
+                                                          child: const Text(
+                                                            "When?",
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                    "spartan"),
+                                                          ))
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                color: Colors.white),
-                                            height: height * 0.06,
-                                            width: width * 0.43,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10),
-                                                  child: Image(
-                                                      image: const AssetImage(
-                                                        "assets/images/Group 71.png",
-                                                      ),
-                                                      color: const Color(
-                                                          0xFFDD5103),
-                                                      height: width * 0.05),
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.02,
-                                                ),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return const NearYou();
-                                                        },
-                                                      ));
-                                                    },
-                                                    child: SizedBox(
-                                                        width: width * 0.32,
-                                                        child: const Text(
-                                                          "Near You",
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  'spartan'),
-                                                        )))
-                                              ],
-                                            )),
-                                        SizedBox(
-                                          width: width * 0.06,
-                                        ),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                color: Colors.white),
-                                            height: height * 0.06,
-                                            width: width * 0.43,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10),
-                                                  child: Image(
-                                                      image: const AssetImage(
-                                                        "assets/images/note.png",
-                                                      ),
-                                                      color: const Color(
-                                                          0xFFDD5103),
-                                                      height: width * 0.05),
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.02,
-                                                ),
-                                                SizedBox(
-                                                    width: width * 0.32,
-                                                    child: const Text(
-                                                      "When?",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontFamily:
-                                                              "spartan"),
-                                                    ))
-                                              ],
-                                            )),
-                                      ],
                                     ),
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // Wrap(
-                              //   alignment: WrapAlignment.start,
-                              //   runSpacing: 10,
-                              //   spacing: 8,
-                              //   children: [
-                              //     for (int i = 0; i < serviceName.length; i++)
-                              //       GestureDetector(
-                              //         onTap: () {
-                              //           setState(() {
-                              //             serviceName[i].isSelected =
-                              //             !serviceName[i].isSelected;
-                              //           });
-                              //         },
-                              //         child: Container(
-                              //           height: height * 0.06,
-                              //           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                              //           decoration: BoxDecoration(
-                              //               borderRadius: BorderRadius.circular(20),
-                              //               border: Border.all(
-                              //                   color: serviceName[i].isSelected
-                              //                       ? const Color(0xFFDD5103)
-                              //                       : Colors.black45),
-                              //               color: serviceName[i].isSelected
-                              //                   ? const Color(0xFFDD5103)
-                              //                   : Colors.transparent),
-                              //           child: Text(
-                              //             "${serviceName[i].serviceCategoryName}",
-                              //             style: TextStyle(
-                              //                 fontFamily: "spartan",
-                              //                 fontSize: 16,
-                              //                 color: serviceName[i].isSelected
-                              //                     ? Colors.white
-                              //                     : Colors.black54),
-                              //           ),
-                              //         ),
-                              //       )
-                              //   ],
-                              // ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              GestureDetector(
-                                // onTap: () {
-                                //   setState(() {
-                                //     findServices();
-                                //   });
-                                // },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: height * 0.07,
-                                    width: width,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(0xFFDD5103)),
-                                        color: const Color(0xFFDD5103),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5))),
-                                    child: const Text(
-                                      "APPLY",
-                                      style: TextStyle(color: Colors.white),
+                                    // Wrap(
+                                    //   alignment: WrapAlignment.start,
+                                    //   runSpacing: 10,
+                                    //   spacing: 8,
+                                    //   children: [
+                                    //     for (int i = 0; i < serviceName.length; i++)
+                                    //       GestureDetector(
+                                    //         onTap: () {
+                                    //           setState(() {
+                                    //             serviceName[i].isSelected =
+                                    //             !serviceName[i].isSelected;
+                                    //           });
+                                    //         },
+                                    //         child: Container(
+                                    //           height: height * 0.06,
+                                    //           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                    //           decoration: BoxDecoration(
+                                    //               borderRadius: BorderRadius.circular(20),
+                                    //               border: Border.all(
+                                    //                   color: serviceName[i].isSelected
+                                    //                       ? const Color(0xFFDD5103)
+                                    //                       : Colors.black45),
+                                    //               color: serviceName[i].isSelected
+                                    //                   ? const Color(0xFFDD5103)
+                                    //                   : Colors.transparent),
+                                    //           child: Text(
+                                    //             "${serviceName[i].serviceCategoryName}",
+                                    //             style: TextStyle(
+                                    //                 fontFamily: "spartan",
+                                    //                 fontSize: 16,
+                                    //                 color: serviceName[i].isSelected
+                                    //                     ? Colors.white
+                                    //                     : Colors.black54),
+                                    //           ),
+                                    //         ),
+                                    //       )
+                                    //   ],
+                                    // ),
+                                    SizedBox(
+                                      height: height * 0.02,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              )
-                            ],
-                          )
-                        : Container(
-                            padding: const EdgeInsets.only(
-                                bottom: 20, top: 10, left: 20, right: 20),
-                            color: Colors.white,
-                            child: Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: SizedBox(
-                                    height: width * 0.04,
-                                    width: width * 0.04,
-                                    child: const Image(
-                                      image: AssetImage(
-                                          "assets/images/Vector (1).png"),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: width*0.04,),
-                                Container(
-                                  alignment: Alignment.center,
-                                  height: height * 0.05,
-                                  width: width * 0.8,
-                                  child: Text(!widget.isMultipleSearched! ?  widget.serviceName! : "Your Selected Service",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontFamily: "spartan",
-                                          fontWeight: FontWeight.w800))
-                                ),
-                              ],
-                            ),
-                          ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (datum.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 15),
-                        child: Container(
-                            alignment: Alignment.centerLeft,
-                            child: datum.length <= 1? Text("${datum.length} Result Found",
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w800)) : Text("${datum.length} Results Found",
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w800))
-                        ),
-                      ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      child: Stack(children: [
-                        SizedBox(
-                          height: height,
-                          child: datum.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: datum.length,
-                                  itemBuilder: (context, index) {
-                                    beauticianId = datum[index].id;
-                                    businessName = datum[index].businessName;
-                                    businessAddress = datum[index].address;
-                                     like = datum[index].isFav!;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        // print("data =====> ${datum[index].id}");
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return services(
-                                                beauticianId: datum[index].id,
-                                                businessName:
-                                                    datum[index].businessName);
-                                          }),
-                                        );
-                                        print("selectedFavoritesId ======> ${datum[index]}");
-                                      },
-                                      child: Container(
-                                        color: Colors.white,
-                                        margin:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15, right: 15),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(10),
-                                                alignment: Alignment.center,
-                                                height: height * 0.25,
-                                                width: width,
-                                                decoration: BoxDecoration(
-                                                    // image: const DecorationImage(
-                                                    //     image: AssetImage(
-                                                    //         "assets/images/Rectangle 863.png"),
-                                                    //     fit: BoxFit.fill),
-                                                    // color: Colors.yellow,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8)),
-                                                margin: const EdgeInsets.all(5),
-                                                child: const Text("No Image Found!!!"),
-                                              ),
-                                            ),
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 20, right: 15),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          alignment:
-                                                              Alignment.topLeft,
-                                                          child: Text(
-                                                              datum[index]
-                                                                  .businessName,
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 16,
-                                                                  fontFamily:
-                                                                      "spartan",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600)),
-                                                        ),
-                                                        SizedBox(
-                                                            width:
-                                                                width * 0.01),
-                                                        SizedBox(
-                                                          height: height * 0.03,
-                                                          child: const Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/Subtract (1).png")),
-                                                        ),
-                                                        const Spacer(),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (like!) {
-                                                              setState(() {
-                                                                removeFromMyFavorites(datum[index].id);
-                                                              });
-                                                            } else {
-                                                              setState(() {
-                                                                addToMyFavorites(datum[index].id
-                                                                );
-                                                              });
-                                                            }
-                                                          },
-                                                          child: Icon( like! ? Icons.favorite : Icons.favorite_border_outlined,color: const Color(0xFFDD5103),size: 30),
-                                                        ),
-                                                        SizedBox(
-                                                            width: width * 0.02)
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    datum[index].address.isEmpty
-                                                        ? const SizedBox()
-                                                        : Text(
-                                                            "${datum[index].address[0].apartment} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    "spartan")),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    // Row(
-                                                    //   children: [
-                                                    //     SizedBox(
-                                                    //       height: height * 0.02,
-                                                    //       child: const Image(
-                                                    //           image: AssetImage(
-                                                    //               "assets/images/Star 1.png")),
-                                                    //     ),
-                                                    //     const SizedBox(
-                                                    //       width: 5,
-                                                    //     ),
-                                                    //     Container(
-                                                    //       alignment:
-                                                    //           Alignment.topLeft,
-                                                    //       child: const Text(
-                                                    //           "4.0 Ratings",
-                                                    //           style: TextStyle(
-                                                    //               color: Colors
-                                                    //                   .black,
-                                                    //               fontSize: 14,
-                                                    //               fontFamily:
-                                                    //                   "spartan")),
-                                                    //     ),
-                                                    //     const SizedBox(
-                                                    //       width: 5,
-                                                    //     ),
-                                                    //     Container(
-                                                    //       alignment:
-                                                    //           Alignment.topLeft,
-                                                    //       child: const Text(
-                                                    //           "120reviews",
-                                                    //           style: TextStyle(
-                                                    //               color: Colors
-                                                    //                   .grey,
-                                                    //               fontSize: 14,
-                                                    //               fontFamily:
-                                                    //                   "spartan")),
-                                                    //     ),
-                                                    //   ],
-                                                    // ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                  ],
-                                                ))
-                                          ],
+                                    GestureDetector(
+                                      // onTap: () {
+                                      //   setState(() {
+                                      //     findServices();
+                                      //   });
+                                      // },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: height * 0.07,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xFFDD5103)),
+                                              color: const Color(0xFFDD5103),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5))),
+                                          child: const Text(
+                                            "APPLY",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
-                                    );
-                                  },
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.02,
+                                    )
+                                  ],
                                 )
-                              : const Center(
-                                  child: Text("No Data Found!!!"),
+                              : Container(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 20, top: 10, left: 20, right: 20),
+                                  color: Colors.white,
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: SizedBox(
+                                          height: width * 0.04,
+                                          width: width * 0.04,
+                                          child: const Image(
+                                            image: AssetImage(
+                                                "assets/images/Vector (1).png"),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.04,
+                                      ),
+                                      Container(
+                                          alignment: Alignment.center,
+                                          height: height * 0.05,
+                                          width: width * 0.8,
+                                          child: Text(
+                                              !widget.isMultipleSearched!
+                                                  ? widget.serviceName!
+                                                  : "Your Selected Service",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontFamily: "spartan",
+                                                  fontWeight:
+                                                      FontWeight.w800))),
+                                    ],
+                                  ),
                                 ),
-                        ),
-                        if(datum.isNotEmpty)Positioned(
-                          right: 10,
-                          top: 150,
-                          child: SizedBox(
-                            height: height*0.10,
-                            width: width*0.20,
-                            child: GestureDetector(
-                              onTap: () {
-                                if((widget.latitude ?? "").isEmpty) {
-                                  getLocation();
-                                } else {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return BeuticianLocation(
-                                          locationData: datum,
-                                          lat: double.parse(widget.latitude!),
-                                          long: double.parse(widget.longitude!),);
-                                      },));
-                                }
-                              },
-                                child: Image.asset("assets/images/Group 12530.png",fit: BoxFit.fill,)
-                            ),
+                          const SizedBox(
+                            height: 10,
                           ),
-                        )
-                      ]),
-                    )
-                  ],
-                ):
-                const Center(child: Text("No Service Available"),
-          )
-        ),
+                          if (datum.isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 15),
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: datum.length <= 1
+                                      ? Text("${datum.length} Result Found",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontFamily: "spartan",
+                                              fontWeight: FontWeight.w800))
+                                      : Text("${datum.length} Results Found",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontFamily: "spartan",
+                                              fontWeight: FontWeight.w800))),
+                            ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: Stack(children: [
+                              SizedBox(
+                                height: height,
+                                child: datum.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: datum.length,
+                                        itemBuilder: (context, index) {
+                                          beauticianId = datum[index].id;
+                                          businessName =
+                                              datum[index].businessName;
+                                          businessAddress =
+                                              datum[index].address;
+                                          like = datum[index].isFav!;
+                                          return GestureDetector(
+                                            onTap: () {
+                                              // print("data =====> ${datum[index].id}");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                                  return services(
+                                                      beauticianId:
+                                                          datum[index].id,
+                                                      businessName: datum[index]
+                                                          .businessName);
+                                                }),
+                                              );
+                                              print(
+                                                  "selectedFavoritesId ======> ${datum[index]}");
+                                            },
+                                            child: Container(
+                                              color: Colors.white,
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15,
+                                                            right: 15),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      height: height * 0.25,
+                                                      width: width,
+                                                      decoration: BoxDecoration(
+                                                          // image: const DecorationImage(
+                                                          //     image: AssetImage(
+                                                          //         "assets/images/Rectangle 863.png"),
+                                                          //     fit: BoxFit.fill),
+                                                          // color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      margin:
+                                                          const EdgeInsets.all(
+                                                              5),
+                                                      child: const Text(
+                                                          "No Image Found!!!"),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 15),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topLeft,
+                                                                child: Text(
+                                                                    datum[index]
+                                                                        .businessName,
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontFamily:
+                                                                            "spartan",
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                              ),
+                                                              SizedBox(
+                                                                  width: width *
+                                                                      0.01),
+                                                              SizedBox(
+                                                                height: height *
+                                                                    0.03,
+                                                                child: const Image(
+                                                                    image: AssetImage(
+                                                                        "assets/images/Subtract (1).png")),
+                                                              ),
+                                                              const Spacer(),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  if (like!) {
+                                                                    setState(
+                                                                        () {
+                                                                      removeFromMyFavorites(
+                                                                          datum[index]
+                                                                              .id);
+                                                                    });
+                                                                  } else {
+                                                                    setState(
+                                                                        () {
+                                                                      addToMyFavorites(
+                                                                          datum[index]
+                                                                              .id);
+                                                                    });
+                                                                  }
+                                                                },
+                                                                child: Icon(
+                                                                    like!
+                                                                        ? Icons
+                                                                            .favorite
+                                                                        : Icons
+                                                                            .favorite_border_outlined,
+                                                                    color: const Color(
+                                                                        0xFFDD5103),
+                                                                    size: 30),
+                                                              ),
+                                                              SizedBox(
+                                                                  width: width *
+                                                                      0.02)
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          datum[index]
+                                                                  .address
+                                                                  .isEmpty
+                                                              ? const SizedBox()
+                                                              : Text(
+                                                                  "${datum[index].address[0].apartment} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontFamily:
+                                                                          "spartan")),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          // Row(
+                                                          //   children: [
+                                                          //     SizedBox(
+                                                          //       height: height * 0.02,
+                                                          //       child: const Image(
+                                                          //           image: AssetImage(
+                                                          //               "assets/images/Star 1.png")),
+                                                          //     ),
+                                                          //     const SizedBox(
+                                                          //       width: 5,
+                                                          //     ),
+                                                          //     Container(
+                                                          //       alignment:
+                                                          //           Alignment.topLeft,
+                                                          //       child: const Text(
+                                                          //           "4.0 Ratings",
+                                                          //           style: TextStyle(
+                                                          //               color: Colors
+                                                          //                   .black,
+                                                          //               fontSize: 14,
+                                                          //               fontFamily:
+                                                          //                   "spartan")),
+                                                          //     ),
+                                                          //     const SizedBox(
+                                                          //       width: 5,
+                                                          //     ),
+                                                          //     Container(
+                                                          //       alignment:
+                                                          //           Alignment.topLeft,
+                                                          //       child: const Text(
+                                                          //           "120reviews",
+                                                          //           style: TextStyle(
+                                                          //               color: Colors
+                                                          //                   .grey,
+                                                          //               fontSize: 14,
+                                                          //               fontFamily:
+                                                          //                   "spartan")),
+                                                          //     ),
+                                                          //   ],
+                                                          // ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                        ],
+                                                      ))
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: Text("No Data Found!!!"),
+                                      ),
+                              ),
+                              if (datum.isNotEmpty)
+                                Positioned(
+                                  right: 10,
+                                  top: 150,
+                                  child: SizedBox(
+                                    height: height * 0.10,
+                                    width: width * 0.20,
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          if ((widget.latitude ?? "").isEmpty) {
+                                            getLocation();
+                                          } else {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                              builder: (context) {
+                                                return BeuticianLocation(
+                                                  locationData: datum,
+                                                  lat: double.parse(
+                                                      widget.latitude!),
+                                                  long: double.parse(
+                                                      widget.longitude!),
+                                                );
+                                              },
+                                            ));
+                                          }
+                                        },
+                                        child: Image.asset(
+                                          "assets/images/Group 12530.png",
+                                          fit: BoxFit.fill,
+                                        )),
+                                  ),
+                                )
+                            ]),
+                          )
+                        ],
+                      )
+                    : const Center(
+                        child: Text("No Service Available"),
+                      )),
       ),
     );
   }
@@ -621,7 +691,7 @@ class _searchScreenState extends State<searchScreen> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -679,7 +749,7 @@ class _searchScreenState extends State<searchScreen> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -771,12 +841,14 @@ class _searchScreenState extends State<searchScreen> {
             like;
             print("like =====> $datum");
           });
-        }else if(response.statusCode == 401){
+        } else if (response.statusCode == 401) {
           logoutdata();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-            return signInScreen();
-          },), (route) => false);
-        }else{
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ), (route) => false);
+        } else {
           setState(() {
             isLoading = false;
           });
@@ -820,13 +892,15 @@ class _searchScreenState extends State<searchScreen> {
       Position? p = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) {
-            return BeuticianLocation(
-              locationData: datum,
-              lat: double.parse(p.latitude.toString()),
-              long: double.parse(p.longitude.toString()),);
-          },));
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          return BeuticianLocation(
+            locationData: datum,
+            lat: double.parse(p.latitude.toString()),
+            long: double.parse(p.longitude.toString()),
+          );
+        },
+      ));
     }
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -933,40 +1007,40 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["_id"] ?? "",
-        userId: json["userId"] ?? "",
-        uid: json["uid"] ?? "",
-        firstName: json["firstName"] ?? "",
-        lastName: json["lastName"] ?? "",
-        workSpaceImgs:
-            List<dynamic>.from(json["workSpaceImgs"] ?? [].map((x) => x)),
-        country: json["country"] ?? "",
-        countryCode: json["country_code"] ?? "",
-        beauticianServiceId:
-            List<String>.from(json["beauticianServiceId"] ?? [].map((x) => x)),
-        isProvideService: json["isProvideService"] ?? 0,
-        isProvideProduct: json["isProvideProduct"] ?? 0,
-        totalEmployee: json["totalEmployee"] ?? 0,
-        demographicIds:
-            List<dynamic>.from(json["demographicIds"] ?? [].map((x) => x)),
-        hasShop: json["hasShop"] ?? 0,
-        isServeAtClient: json["IsServeAtClient"] ?? 0,
-        isServeAtOwnPlace: json["IsServeAtOwnPlace"] ?? 0,
-        screenStatus: json["screenStatus"] ?? 0,
-        isDeleted: json["isDeleted"] ?? 0,
-        createdAt: DateTime.parse(json["createdAt"] ?? ""),
-        updatedAt: DateTime.parse(json["updatedAt"] ?? ""),
-        v: json["__v"] ?? 0,
-        businessName: json["businessName"] ?? "",
-        businessNumber: json["businessNumber"] ?? 0,
-        location: json["location"]!=null?Location.fromJson(json["location"]):null,
-        beauticianServiceDetails: List<BeauticianServiceDetail>.from(
-            json["beauticianServiceDetails"]
-                .map((x) => BeauticianServiceDetail.fromJson(x))),
-        address:
-            List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
-    isFav: json["isFav"] ?? false
-      );
+      id: json["_id"] ?? "",
+      userId: json["userId"] ?? "",
+      uid: json["uid"] ?? "",
+      firstName: json["firstName"] ?? "",
+      lastName: json["lastName"] ?? "",
+      workSpaceImgs:
+          List<dynamic>.from(json["workSpaceImgs"] ?? [].map((x) => x)),
+      country: json["country"] ?? "",
+      countryCode: json["country_code"] ?? "",
+      beauticianServiceId:
+          List<String>.from(json["beauticianServiceId"] ?? [].map((x) => x)),
+      isProvideService: json["isProvideService"] ?? 0,
+      isProvideProduct: json["isProvideProduct"] ?? 0,
+      totalEmployee: json["totalEmployee"] ?? 0,
+      demographicIds:
+          List<dynamic>.from(json["demographicIds"] ?? [].map((x) => x)),
+      hasShop: json["hasShop"] ?? 0,
+      isServeAtClient: json["IsServeAtClient"] ?? 0,
+      isServeAtOwnPlace: json["IsServeAtOwnPlace"] ?? 0,
+      screenStatus: json["screenStatus"] ?? 0,
+      isDeleted: json["isDeleted"] ?? 0,
+      createdAt: DateTime.parse(json["createdAt"] ?? ""),
+      updatedAt: DateTime.parse(json["updatedAt"] ?? ""),
+      v: json["__v"] ?? 0,
+      businessName: json["businessName"] ?? "",
+      businessNumber: json["businessNumber"] ?? 0,
+      location:
+          json["location"] != null ? Location.fromJson(json["location"]) : null,
+      beauticianServiceDetails: List<BeauticianServiceDetail>.from(
+          json["beauticianServiceDetails"]
+              .map((x) => BeauticianServiceDetail.fromJson(x))),
+      address:
+          List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
+      isFav: json["isFav"] ?? false);
 
   Map<String, dynamic> toJson() => {
         "_id": id,
@@ -997,7 +1071,7 @@ class Datum {
         "beauticianServiceDetails":
             List<dynamic>.from(beauticianServiceDetails.map((x) => x.toJson())),
         "address": List<Address>.from(address.map((x) => x)),
-    "isFav": isFav
+        "isFav": isFav
       };
 }
 

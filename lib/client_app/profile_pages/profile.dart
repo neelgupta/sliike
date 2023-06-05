@@ -8,21 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/clients/clients_detail/payment/payments.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
-import 'package:new_sliikeapps_apps/client_app/home_screen/home_appointments.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
-import 'package:new_sliikeapps_apps/client_app/products_page/cart.dart';
-import 'package:new_sliikeapps_apps/client_app/products_page/my_order.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/add_new_address.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/change_language.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/delete_my_account.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/edit_profile.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/gist.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/help_center.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/my_favorites.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/notification.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/rating_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
@@ -138,13 +130,13 @@ class _profileState extends State<profile> {
         MediaQuery.of(context).padding.left;
     return isLoading
         ? const Center(
-      child: CircularProgressIndicator(
-        color: Color(0xffDD6A03),
-      ),
-    )
+            child: CircularProgressIndicator(
+              color: Color(0xffDD6A03),
+            ),
+          )
         : editProfile
-        ? editProfileBody(height, width)
-        : viewProfileBody(height, width);
+            ? editProfileBody(height, width)
+            : viewProfileBody(height, width);
   }
 
   Widget viewProfileBody(double height, double width) {
@@ -162,16 +154,18 @@ class _profileState extends State<profile> {
                     height: height * 0.12,
                     width: width * 0.25,
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(200)),
-                      child: profileData!=null && profileData?.profileImage != ""
-                          ? Image.network(
-                        profileData!.profileImage!,
-                        fit: BoxFit.cover,
-                      )
-                          : Image.asset(
-                        "assets/images/Ellipse 202.png",
-                        fit: BoxFit.fill,
-                      ),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(200)),
+                      child:
+                          profileData != null && profileData?.profileImage != ""
+                              ? Image.network(
+                                  profileData!.profileImage!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  "assets/images/Ellipse 202.png",
+                                  fit: BoxFit.fill,
+                                ),
                     ),
                   ),
                   SizedBox(
@@ -293,9 +287,13 @@ class _profileState extends State<profile> {
             // SizedBox(height: height * 0.01),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return  homescreen(selectedIndex: 1,);
-                },));
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return homescreen(
+                      selectedIndex: 1,
+                    );
+                  },
+                ));
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -304,7 +302,8 @@ class _profileState extends State<profile> {
                     vertical: 17,
                   ),
                   decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))),
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
                       SizedBox(
@@ -344,7 +343,7 @@ class _profileState extends State<profile> {
                   ),
                   decoration: const BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.black12))),
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
                       SizedBox(
@@ -642,18 +641,19 @@ class _profileState extends State<profile> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    logoutdata();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const signInScreen();
-                        },
-                      ),
-                          (route) => false,
-                    );
-                  });
+                  handleLogoutFunction();
+                  // setState(() {
+                  //   logoutdata();
+                  //   Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) {
+                  //         return const signInScreen();
+                  //       },
+                  //     ),
+                  //     (route) => false,
+                  //   );
+                  // });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -661,7 +661,7 @@ class _profileState extends State<profile> {
                   ),
                   decoration: const BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.black12))),
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
                       SizedBox(
@@ -771,21 +771,21 @@ class _profileState extends State<profile> {
                         width: width * 0.25,
                         child: ClipRRect(
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(200)),
+                              const BorderRadius.all(Radius.circular(200)),
                           child: profileData?.profileImage != ""
                               ? Image.network(
-                            profileData!.profileImage!,
-                            fit: BoxFit.fill,
-                          )
+                                  profileData!.profileImage!,
+                                  fit: BoxFit.fill,
+                                )
                               : userImageFile != null
-                              ? Image.file(
-                            userImageFile!,
-                            fit: BoxFit.fill,
-                          )
-                              : Image.asset(
-                            "assets/images/Ellipse 202.png",
-                            fit: BoxFit.fill,
-                          ),
+                                  ? Image.file(
+                                      userImageFile!,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/Ellipse 202.png",
+                                      fit: BoxFit.fill,
+                                    ),
                         ),
                       ),
                     ),
@@ -832,8 +832,8 @@ class _profileState extends State<profile> {
                             return edit_profile(
                               email: profileData?.userId.email ?? "",
                               PhoneNumber:
-                              profileData?.userId.phoneNumber.toString() ??
-                                  "",
+                                  profileData?.userId.phoneNumber.toString() ??
+                                      "",
                               firstName: profileData?.firstName ?? "",
                               lastName: profileData?.lastName ?? "",
                               day: day,
@@ -947,12 +947,12 @@ class _profileState extends State<profile> {
                 profileData?.dob == null
                     ? const SizedBox()
                     : Text(
-                    DateFormat("dd - MMM - yyyy").format(profileData!.dob!),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontFamily: "spartan",
-                      color: Colors.black,
-                    )),
+                        DateFormat("dd - MMM - yyyy").format(profileData!.dob!),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontFamily: "spartan",
+                          color: Colors.black,
+                        )),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -991,7 +991,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                        const AssetImage("assets/images/Group 12095.png"),
+                            const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1025,13 +1025,13 @@ class _profileState extends State<profile> {
                 profileData?.gender == ""
                     ? const SizedBox()
                     : Text(
-                  "${profileData?.gender}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontFamily: "spartan",
-                    color: Colors.black,
-                  ),
-                ),
+                        "${profileData?.gender}",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontFamily: "spartan",
+                          color: Colors.black,
+                        ),
+                      ),
                 SizedBox(height: height * 0.01),
                 GestureDetector(
                   onTap: () {
@@ -1067,7 +1067,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                        const AssetImage("assets/images/Group 12095.png"),
+                            const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1099,31 +1099,31 @@ class _profileState extends State<profile> {
                 addressData == null
                     ? const SizedBox()
                     : Text(
-                  addressData!.addressType,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontFamily: "spartan",
-                    color: Colors.black54,
-                  ),
-                ),
+                        addressData!.addressType,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black54,
+                        ),
+                      ),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                  height: height * 0.01,
-                ),
+                        height: height * 0.01,
+                      ),
                 addressData == null
                     ? const SizedBox()
                     : Text(addressData!.addressId.address,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontFamily: "spartan",
-                      color: Colors.black54,
-                    )),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black54,
+                        )),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                  height: height * 0.01,
-                ),
+                        height: height * 0.01,
+                      ),
                 // addressData == null
                 //     ? const SizedBox()
                 //     : Text(addressData!.addressId.province,
@@ -1135,28 +1135,29 @@ class _profileState extends State<profile> {
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                  height: height * 0.01,
-                ),
+                        height: height * 0.01,
+                      ),
                 addressData == null
                     ? const SizedBox()
                     : Text(addressData!.addressId.apartment,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontFamily: "spartan",
-                      color: Colors.black54,
-                    )),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black54,
+                        )),
                 addressData == null
                     ? const SizedBox()
                     : SizedBox(
-                  height: height * 0.02,
-                ),
+                        height: height * 0.02,
+                      ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return add_new_address(
                           Address_Name: addressData?.addressId.address ?? "",
-                          Apartment_suite: addressData?.addressId.apartment ?? "",
+                          Apartment_suite:
+                              addressData?.addressId.apartment ?? "",
                           Province_name: addressData?.addressId.province ?? "",
                           Location: "surat",
                           Zip_Code: "395004",
@@ -1173,7 +1174,7 @@ class _profileState extends State<profile> {
                     children: [
                       Image(
                         image:
-                        const AssetImage("assets/images/Group 12095.png"),
+                            const AssetImage("assets/images/Group 12095.png"),
                         height: height * 0.03,
                       ),
                       SizedBox(
@@ -1257,6 +1258,76 @@ class _profileState extends State<profile> {
     );
   }
 
+  handleLogoutFunction() async {
+    var geturi = Uri.parse(ApiUrlList.handleLogout);
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var userRole = Helper.prefs!.getString(UserPrefs.keyusertype);
+
+      var deviceToken = Helper.prefs!.getString(UserPrefs.keyDeviceToken);
+      // var userToken = Helper.prefs!.getString(UserPrefs.keyutoken);
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+
+      var resBody = {
+        "deviceToken": "${deviceToken}",
+        "role": "${userRole}",
+      };
+      log("handleLogoutFunction url is  : $geturi");
+      log("handleLogoutFunction headers  : $headers");
+      log("handleLogoutFunction resBody  : $resBody");
+      var response = await http.post(
+        geturi,
+        body: jsonEncode(resBody),
+        headers: headers,
+      );
+      log("handleLogoutFunction response.body ==> ${response.body}");
+      log("handleLogoutFunction status code ==> ${response.statusCode}");
+      if (response.statusCode == 200) {
+        // Map map = jsonDecode(response.body);
+        // getmodelProfile =
+        //     getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
+        // if (getmodelProfile!.status == 200) {
+        logoutdata();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ),
+          (route) => false,
+        );
+        Fluttertoast.showToast(
+          msg: "Logged Out Successfully.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        // setState(() {
+        //   businessname = getmodelProfile!.data?.businessName ?? '';
+        //   Userid = getmodelProfile!.data?.uid ?? '';
+        // });
+        // }
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+      // Loader.hide();
+    }
+  }
+
   getClientPersonalInfo() async {
     var geturi = Uri.parse(ApiUrlList.getClientPersonalInfo);
     try {
@@ -1267,7 +1338,7 @@ class _profileState extends State<profile> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");
@@ -1281,17 +1352,19 @@ class _profileState extends State<profile> {
         // Map map = jsonDecode(response.body);
         print(profileData);
         GetProfileModel getProfileModel =
-        GetProfileModel.fromJson(jsonDecode(response.body));
+            GetProfileModel.fromJson(jsonDecode(response.body));
         if (getProfileModel.status == 200) {
           profileData = getProfileModel.data;
           if (getProfileModel.data.address.isNotEmpty) {
             addressData = getProfileModel.data.address.first;
           }
-        }else if(response.statusCode == 401){
+        } else if (response.statusCode == 401) {
           logoutdata();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-            return signInScreen();
-          },), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ), (route) => false);
         }
         setState(() {
           isLoading = false;
@@ -1313,8 +1386,10 @@ class _profileState extends State<profile> {
       });
       var postUri = Uri.parse(ApiUrlList.updateProfileImage);
       var request = http.MultipartRequest("POST", postUri);
-      request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-      http.MultipartFile multipartFile = await http.MultipartFile.fromPath('profileImage', userImageFile!.path);
+      request.headers['Authorization'] =
+          "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+          'profileImage', userImageFile!.path);
       request.files.add(multipartFile);
 
       http.StreamedResponse response = await request.send();
@@ -1333,12 +1408,14 @@ class _profileState extends State<profile> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
-      }else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

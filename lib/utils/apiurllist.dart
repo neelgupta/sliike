@@ -12,6 +12,7 @@ class ApiUrlList {
   static String forgotPassword = "${baseUrl}auth/forgotPassword";
   static String verifyResetCode = "${baseUrl}auth/verifyResetCode";
   static String resetPassword = "${baseUrl}auth/resetPassword";
+  static String handleLogout = "${baseUrl}auth/handleLogOut";
   static String saveStripeCode = "${baseUrl}beautician/saveStripeAccId";
   static String fetchServiceCategories =
       "${baseUrl}option/fetchServiceCategories";
@@ -34,25 +35,28 @@ class ApiUrlList {
   static String getBeauticianDetails = "${baseUrl}client/getBeauticianDetails";
   static String getStylistList = "${baseUrl}client/getStylistList";
   static String addAppointment = "${baseUrl}client/addAppointment";
-  static String getBookedPendingAppointment = "${baseUrl}client/getBookedPendingAppointment";
-  static String getAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
+  static String getBookedPendingAppointment =
+      "${baseUrl}client/getBookedPendingAppointment";
+
+  static String getAppointmentList =
+      "${baseUrl}client/getAppointmentList?status=past";
   static String getRecentBeauticians = "${baseUrl}client/getRecentBeauticians";
   static String getBusinessDeatils = "${baseUrl}client/getBusinessDeatils";
-  static String getRecomadedBeauticians = "${baseUrl}client/getRecomadedBeauticians";
-  static String getSingleAppointmentData = "${baseUrl}client/getSingleAppointmentData/";
-  static String cancelAppointment = "${baseUrl}client/cancelAppointment/";
+  static String getRecomadedBeauticians =
+      "${baseUrl}client/getRecomadedBeauticians";
+  static String getSingleAppointmentData =
+      "${baseUrl}client/getSingleAppointmentData/";
   static String updateAppointment = "${baseUrl}client/updateAppointment/";
   static String appointmentDetails = "${baseUrl}client/appointmentDetails";
-  static String getTerms = "${baseUrl}admin/getTerms";
   static String postlogoimage = "${logowork}beautician/addBusinessLogo";
   static String addWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
   static String getlogoimage = "${baseUrl}beautician/getBeauticianLogoImg";
-  static String getTaxSetUpStatus = "${baseUrl}beautician/getTaxSetUpStatus";
 
   ///Appointments
   static String getUpcomingAppointmentList =
       "${baseUrl}client/getAppointmentList?status=upcoming";
-  static String getpastAppointmentList = "${baseUrl}client/getAppointmentList?status=past";
+  static String getpastAppointmentList =
+      "${baseUrl}client/getAppointmentList?status=past";
 
   ///Beautician Apps
   static String addBusinessDetail = "${baseUrl}beautician/addBusinessDetail";
@@ -64,6 +68,16 @@ class ApiUrlList {
   ///calender
 
   static String addWorkHours = "${baseUrl}beautician/addWorkHours";
+  static String getCalenderAppointmentList =
+      "${baseUrl}beautician/getCalenderAppointmentList";
+  static String getAppointmentDetails =
+      "${baseUrl}beautician/getAppointmentDetails";
+  static String handlePastAppointmentStatus =
+      "${baseUrl}beautician/handlePastAppointmentStatus";
+  static String cancelAppointment = "${baseUrl}beautician/cancelAppointment";
+  static String getEmployeeList = "${baseUrl}beautician/getEmployeeList";
+
+  static String getTerms = "${baseUrl}admin/getTerms";
 
   ///Beautician Profile
   static String getBeauticianProfile =
@@ -82,11 +96,9 @@ class ApiUrlList {
 //  static SharedPreferences?preferences;
   static String sucsessMsg = "";
 
-
   /// Payment APIs
   static String paymentDetail = '${baseUrl}client/getPrePaymentDetails';
   static String makePayment = '${baseUrl}client/maKePayment';
-
 
   /// FAQ ENDPOINT
   // client //
