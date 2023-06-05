@@ -524,13 +524,13 @@ class _searchScreenState extends State<searchScreen> {
                                                               SizedBox(
                                                                   width: width *
                                                                       0.01),
-                                                              SizedBox(
-                                                                height: height *
-                                                                    0.03,
-                                                                child: const Image(
-                                                                    image: AssetImage(
-                                                                        "assets/images/Subtract (1).png")),
-                                                              ),
+                                                              // SizedBox(
+                                                              //   height: height *
+                                                              //       0.03,
+                                                              //   child: const Image(
+                                                              //       image: AssetImage(
+                                                              //           "assets/images/Subtract (1).png")),
+                                                              // ),
                                                               const Spacer(),
                                                               GestureDetector(
                                                                 onTap: () {

@@ -566,14 +566,14 @@ class _home_exploreState extends State<home_explore> {
                                                                 const SizedBox(
                                                                   width: 5,
                                                                 ),
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.03,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Subtract (1).png")),
-                                                                )
+                                                                // SizedBox(
+                                                                //   height:
+                                                                //       height *
+                                                                //           0.03,
+                                                                //   child: const Image(
+                                                                //       image: AssetImage(
+                                                                //           "assets/images/Subtract (1).png")),
+                                                                // )
                                                               ],
                                                             ),
                                                             const SizedBox(
@@ -851,14 +851,14 @@ class _home_exploreState extends State<home_explore> {
                                                                 const SizedBox(
                                                                   width: 5,
                                                                 ),
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.03,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Subtract (1).png")),
-                                                                )
+                                                                // SizedBox(
+                                                                //   height:
+                                                                //       height *
+                                                                //           0.03,
+                                                                //   child: const Image(
+                                                                //       image: AssetImage(
+                                                                //           "assets/images/Subtract (1).png")),
+                                                                // )
                                                               ],
                                                             ),
                                                             const SizedBox(
@@ -1135,14 +1135,14 @@ class _home_exploreState extends State<home_explore> {
                                                                 const SizedBox(
                                                                   width: 5,
                                                                 ),
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.03,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Subtract (1).png")),
-                                                                )
+                                                                // SizedBox(
+                                                                //   height:
+                                                                //       height *
+                                                                //           0.03,
+                                                                //   child: const Image(
+                                                                //       image: AssetImage(
+                                                                //           "assets/images/Subtract (1).png")),
+                                                                // )
                                                               ],
                                                             ),
                                                             const SizedBox(

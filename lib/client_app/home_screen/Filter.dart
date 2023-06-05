@@ -446,6 +446,7 @@ class _filterpageState extends State<filterpage> {
                                   });
                                 },
                                 child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 25),
                                   height: height * 0.06,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 8),
