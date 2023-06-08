@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class contact_us_beauty extends StatefulWidget {
   const contact_us_beauty({Key? key}) : super(key: key);
@@ -9,6 +10,16 @@ class contact_us_beauty extends StatefulWidget {
 }
 
 class _contact_us_beautyState extends State<contact_us_beauty> {
+  void _launchDailer(String mobileNumber) async{
+    Uri phoneno = Uri.parse('tel:${mobileNumber}');
+    if (await launchUrl(phoneno)) {
+      print("dailer open");
+      //dialer opened
+    }else{
+      print("dailer is not open");
+      //dailer is not opened
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -106,51 +117,34 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
               ),
               SizedBox(height: height*0.04,),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: height*0.07,
-                    width: width*0.45,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF01635D)),
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,color: Color(0xFF01635D),),
-                        SizedBox(width: width*0.02,),
-                        Text("Live chat",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "spartan",
-                                color: Color(0xFF01635D))),
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  Container(alignment: Alignment.center,
-                    height: height*0.07,
-                    width: width*0.45,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF01635D)),
-                        color:Color(0xFF01635D) ,
-                        borderRadius: BorderRadius.all(Radius.circular(5)
-                        )
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage("assets/images/call.png"),height: height*0.03,),
-                        SizedBox(width: width*0.02,),
-                        Text("Call Us",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: "spartan",
-                                color: Colors.white)),
-                      ],
+                  InkWell(
+                    onTap: (){
+                      _launchDailer("+987654231");
+                    },
+                    child: Container(alignment: Alignment.center,
+                      height: height*0.07,
+                      width: width*0.45,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFF01635D)),
+                          color:Color(0xFF01635D) ,
+                          borderRadius: BorderRadius.all(Radius.circular(5)
+                          )
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage("assets/images/call.png"),height: height*0.03,),
+                          SizedBox(width: width*0.02,),
+                          Text("Call Us",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: "spartan",
+                                  color: Colors.white)),
+                        ],
+                      ),
                     ),
                   ),
                 ],

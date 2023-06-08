@@ -138,7 +138,7 @@ class _SelectAddressState extends State<SelectAddress> {
             InkWell(
               onTap: () {
                 if(addressId.isNotEmpty) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                     return book_appoinment_payment(addressId: addressId);
                   },));
                 } else {

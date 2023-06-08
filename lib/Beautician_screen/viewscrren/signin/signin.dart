@@ -85,7 +85,22 @@ class _signInScreenState extends State<signInScreen> {
   }
 
   void _handleRememberMe(bool value) {
+<<<<<<< Updated upstream
     // isChecked = value;
+=======
+<<<<<<< HEAD
+    isChecked = value;
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', temail.text);
+        // prefs.setString('password', tpassword.text);
+      },
+    );
+=======
+    // isChecked = value;
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
     setState(() {
       isChecked = value;
     });
@@ -112,14 +127,24 @@ class _signInScreenState extends State<signInScreen> {
     try {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       var _email = _prefs.getString("email") ?? "";
-      var _password = _prefs.getString("password") ?? "";
+      // var _password = _prefs.getString("password") ?? "";
       var _remeberMe = _prefs.getBool("remember_me") ?? false;
       if (_remeberMe) {
         setState(() {
           isChecked = true;
         });
+<<<<<<< Updated upstream
         temail.text = _email;
         tpassword.text = _password;
+=======
+<<<<<<< HEAD
+        temail.text = _email ?? "";
+        // tpassword.text = _password ?? "";
+=======
+        temail.text = _email;
+        tpassword.text = _password;
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
       }
     } catch (e) {
       print(e);

@@ -105,27 +105,27 @@ class _help_center_beautiState extends State<help_center_beauti> {
                       ])),
 
               SizedBox(height:height*0.02,),
-              Container(
-                  alignment: Alignment.center,
-                  width: width,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xff01635D)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(image: AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,),
-                      SizedBox(width: width*0.02,),
-                      Text("Start live chat",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              color: Colors.white)),
-                    ],
-                  )
-              ),
+              // Container(
+              //     alignment: Alignment.center,
+              //     width: width,
+              //     height: height * 0.06,
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(5),
+              //         color: Color(0xff01635D)),
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Image(image: AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,),
+              //         SizedBox(width: width*0.02,),
+              //         // Text("Start live chat",
+              //         //     style: TextStyle(
+              //         //         fontSize: 14,
+              //         //         fontFamily: "spartan",
+              //         //         color: Colors.white)),
+              //       ],
+              //     )
+              // ),
               SizedBox(height:height*0.04,),
               GestureDetector(
                 onTap: () {

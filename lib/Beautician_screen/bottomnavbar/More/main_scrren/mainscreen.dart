@@ -57,6 +57,30 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                 padding: const EdgeInsets.only(left: 0, bottom: 10),
                 child: Column(
                   children: [
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                     InkWell(
+                       onTap: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (context) {
+                           return profilePage();
+                         },));
+                       },
+                       child:  Padding(
+                         padding: const EdgeInsets.all(20),
+                         child: SizedBox(
+                           height: 65,
+                           width: 65,
+                           child: ClipRRect(
+                             borderRadius:
+                             const BorderRadius.all(Radius.circular(200)),
+                             child: getmodelProfile?.data?.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
+                             Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
+                           ),
+                         ),
+                       ),
+=======
+>>>>>>> Stashed changes
                     isLoading
                         ? SizedBox()
                         : getmodelProfile == null
@@ -89,6 +113,10 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                     ),
                                   ),
                                 ),
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
 
                                 // Container(
                                 //   height: 65,

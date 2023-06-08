@@ -98,7 +98,7 @@ class _logoState extends State<logo> {
       body: isLoading
           ? const Center(
         child: CircularProgressIndicator(
-          color: Color(0xffDD6A03),
+          color: Color(0xff01635D),
         ),
       )
           :SingleChildScrollView(
@@ -124,16 +124,26 @@ class _logoState extends State<logo> {
 
                     }
                   },
-                  child: Container(
+                  child: imagepath.isNotEmpty?
+                  Container(
+                      width: 120,
+                      height:120,
+                      decoration:  BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(image: FileImage(File(images!.path)),fit: BoxFit.fill)
+                      ),
+                      child: SizedBox()):
+                  Container(
                       width: 120,
                       height:120,
                       decoration:  BoxDecoration(
                         shape: BoxShape.circle,
-                          image: p?.data?.logo!=null?DecorationImage(image: NetworkImage(getimages!),fit: BoxFit.fill):DecorationImage(
-                          image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
+                          image: p?.data?.logoPath!=null?
+                          DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill):
+                          DecorationImage(image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
                   )
                       ),
-                      child: imagestatus == false && p?.data?.logo==null?Column(crossAxisAlignment: CrossAxisAlignment.center,
+                      child: imagestatus == false && p?.data?.logoPath==null?Column(crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Center(
@@ -208,14 +218,14 @@ class _logoState extends State<logo> {
       setState(() {
         isLoading = true;
       });
-      var geturi = Uri.parse("https://hungry-duck-zipper.cyclic.app/api/v1/beautician/getBeauticianLogoImg");
+      var gettUri = Uri.parse(ApiUrlList.getBeauticianLogoImage);
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
-      log("get profile url is  : $geturi");
+      log("get profile url is  : $gettUri");
       log("res headers  : $headers");
-      var response = await http.get(geturi,headers: headers);
+      var response = await http.get(gettUri,headers: headers);
       log("getApi response.body ==> ${response.body}");
       log("getAPi status code ==> ${response.statusCode}");
       Map map = jsonDecode(response.body);
@@ -223,8 +233,6 @@ class _logoState extends State<logo> {
         p = Temperatures.fromJson(map);
         getimages = p?.data?.logo!.toString();
         print(getimages);
-
-
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,
@@ -285,22 +293,26 @@ class Data {
   String? id;
   String? uid;
   String? logo;
+  String? logoPath;
 
   Data({
     this.id,
     this.uid,
     this.logo,
+    this.logoPath,
   });
 
   factory Data.fromJson(Map<dynamic, dynamic> json) => Data(
     id: json["_id"],
     uid: json["uid"],
     logo: json["logo"],
+    logoPath: json["logoPath"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
     "uid": uid,
     "logo": logo,
+    "logoPath": logoPath,
   };
 }

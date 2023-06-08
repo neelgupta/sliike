@@ -92,6 +92,105 @@ class _booking_summary_paymentconfirmState
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+      body:isLoading
+          ? const Center(child: CircularProgressIndicator(
+          color: Color(0xffDD6A03),
+        ),)
+          : appointment.isNotEmpty ?  SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: height*0.08,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  InkWell(onTap: () {
+                    Navigator.pop(context);
+                    // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                    //   return homescreen(selectedIndex: 0,);
+                    // },),(route) => false,);
+                  },child: const Icon(Icons.arrow_back_sharp,size: 30,)),
+                  const Spacer(),
+                  Container(
+                    alignment: Alignment.center,
+                    width: width*0.35,
+                    height: height*0.05,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green
+                    ),
+                    child: const Text("confirmed",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "spartan",
+                            color: Colors.white)).tr(),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: height*0.05,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Text("appointment_details",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "spartan",
+                      color: Colors.black)).tr(),
+            ),
+            SizedBox(height: height*0.01,),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Divider(color: Colors.black54,),
+            ),
+            SizedBox(height: height*0.02,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: appointment[0].beauticianDetails.logo,
+                    imageBuilder: (context, imageProvider) => Container(
+                      padding:
+                      const EdgeInsets.all(10),
+                      height: height * 0.15,
+                      width: width * 0.30,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(8),
+                          image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                      ),
+                      margin: const EdgeInsets.all(5),
+                    ),
+                    progressIndicatorBuilder: (context, url, process) => Container(
+                        height: height * 0.15,
+                        width: width * 0.30,
+                        margin: const EdgeInsets.all(5),
+                        child: const Center(child: CircularProgressIndicator())
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                        height: height * 0.15,
+                        width: width * 0.30,
+                        margin: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        child: Center(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error),
+                            SizedBox(height: height*0.02,),
+                            const Text("No Image")
+                          ],
+                        ))
+                    ),
+                  ),
+                  SizedBox(width: width*0.04,),
+                  Expanded(
+=======
+>>>>>>> Stashed changes
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(
@@ -100,6 +199,10 @@ class _booking_summary_paymentconfirmState
               )
             : appointment.isNotEmpty
                 ? SingleChildScrollView(
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -110,6 +213,96 @@ class _booking_summary_paymentconfirmState
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             children: [
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                              SizedBox(height: height * 0.01,),
+                              const Text("stylist",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black54)).tr(),
+                              SizedBox(width: width * 0.02,),
+                              appointment[0].appointmentDetails[index].stylist.isNotEmpty?Row(
+                                children: [
+                                  Image(
+                                    image: const AssetImage("assets/images/Ellipse 150.png"),
+                                    height: height * 0.04,
+                                    width: width * 0.06,),
+                                  SizedBox(width: width * 0.02,),
+                                  Text("${appointment[0].appointmentDetails[index].stylist[0].firstName ?? ""} ${appointment[0].appointmentDetails[index].stylist[0].lastName ?? ""}",
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "spartan",
+                                          color: Colors.black
+                                      )
+                                  ),
+                                ],
+                              ): const Text("No Preference",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black)),
+                            ],
+                          )
+                      ),
+                      SizedBox(height: height * 0.01,),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Divider(color: Colors.black54,),
+                      ),
+                      SizedBox(height: height * 0.01,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Preferred place of service:",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "spartan",
+                                    color: Colors.black54)),
+                            SizedBox(width: width*0.01,),
+                            Text(place,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "spartan",
+                                    color: Colors.black)),
+                          ],
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Divider(color: Colors.black54,),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return manage_appoinment(
+                                category: appointment[0].serviceTypeDetails[0].serviceTypeName,
+                                time: "$startData - $endData",
+                                businessName: appointment[0].beauticianDetails.businessName,
+                                bookingId: appointment[0].appointmentDetails[index].id,
+                                price: "${appointment[0].appointmentDetails[index].price}",
+                                serviceDuration: appointment[0].appointmentDetails[index].serviceDetails.duration,
+                                serviceId: appointment[0].appointmentDetails[index].serviceId,
+                                beauticianId: appointment[0].appointmentDetails[index].beauticianId,
+                              );
+                            },));
+                          },
+                          child: Row(
+                            children: [
+                              const Text("mange_appointment",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: "spartan",
+                                      color: Color(0xffDD6A03))).tr(),
+                              SizedBox(width: width*0.02,),
+                              const Icon(Icons.arrow_forward_ios_sharp,size: 25,color: Color(0xffDD6A03),)
+=======
+>>>>>>> Stashed changes
                               InkWell(
                                   onTap: () {
                                     Navigator.pushAndRemoveUntil(
@@ -143,6 +336,10 @@ class _booking_summary_paymentconfirmState
                                             color: Colors.white))
                                     .tr(),
                               )
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
                             ],
                           ),
                         ),
@@ -678,10 +875,50 @@ class _booking_summary_paymentconfirmState
                         )
                       ],
                     ),
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                    SizedBox(height: height*0.02,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Text("info",
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontFamily: "spartan",
+                              color: Colors.black)).tr(),
+                    ),
+                    SizedBox(height: height*0.02,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Text("late_cancel",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "spartan",
+                              color: Color(0xffDD6A03))).tr(),
+                    ),
+                    SizedBox(height: height*0.02,),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: height*0.05,)
+          ],
+        ),
+      ):
+            const Center(
+        child: Text("No Data Found!!!"),
+      )
+    );
+=======
+>>>>>>> Stashed changes
                   )
                 : const Center(
                     child: Text("No Data Found!!!"),
                   ));
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
   }
 
   appointmentDetails() async {

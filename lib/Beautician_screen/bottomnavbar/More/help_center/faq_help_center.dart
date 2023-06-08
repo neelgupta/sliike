@@ -16,6 +16,7 @@ class faq_beauty extends StatefulWidget {
 class _faq_beautyState extends State<faq_beauty> {
   Header ? faq;
   bool isLoading = true;
+  List<bool> ? isExpand;
 
   @override
   void initState() {
@@ -93,14 +94,30 @@ class _faq_beautyState extends State<faq_beauty> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
+                          InkWell(
+                            onTap: (){
+                              setState(() {
+                                isExpand![index] = !isExpand![index];
+                              });
+                              print(isExpand![index]);
+                            },
+                            child: Row(
+                              children:  [
+                                Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                                Spacer(),
+                                isExpand![index]?
+                                Icon(Icons.keyboard_arrow_up_rounded,size: 30,):
+                                Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
+                              ],),
+                          ),
+                          const SizedBox(height: 05,),
+                          isExpand![index]?SizedBox() : const Divider(color: Colors.black54,),
+                          isExpand![index]?
                           Row(
                             children:  [
-                              Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
-                              Spacer(),
-                              Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
-                            ],),
-                          const SizedBox(height: 05,),
-                          const Divider(color: Colors.black54,)
+                              Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                            ],):SizedBox(),
+                          isExpand![index]?const Divider(color: Colors.black54,) : SizedBox(),
                         ],
                       );
                     },),
@@ -126,6 +143,7 @@ class _faq_beautyState extends State<faq_beauty> {
     if(map['status']==200){
       setState(() {
         faq = Header.fromjson(map);
+        isExpand = List.generate(faq!.data.length, (index) => false);
         isLoading = false;
       });
     }else{

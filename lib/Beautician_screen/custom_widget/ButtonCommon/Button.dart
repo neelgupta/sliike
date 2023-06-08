@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 
 // ignore: non_constant_identifier_names
-Widget CommonButton(BuildContext context,String TextString,double FontSize,FontWeight FontWeight,Color Colors,VoidCallback ontap){
+Widget CommonButton(BuildContext context,String TextString,double FontSize,FontWeight FontWeight,Color Colors,Function()? ontap){
   double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
   double width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.right - MediaQuery.of(context).padding.left;
 

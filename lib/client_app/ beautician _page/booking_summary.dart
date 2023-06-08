@@ -104,6 +104,73 @@ class _booking_summaryState extends State<booking_summary> {
         ), (route) => false);
         return true;
       },
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: height * 0.13, // Set this height
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                color: Color(0xFFFCF0E6),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/bgappbar.png"),
+                    fit: BoxFit.fill)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 20, bottom: 10),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          height: height * 0.06,
+                          child: Container(
+                              padding: const EdgeInsets.all(5),
+                              child: const Image(image: AssetImage(
+                                  "assets/images/Group 55.png"),
+                                color: Colors.black,)),
+                        ),
+                      ),
+                      SizedBox(width: width * 0.10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("appointment_summary",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold)).tr(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: isLoading
+            ? const Center(
+          child: CircularProgressIndicator(
+            color: Color(0xffDD6A03),
+          ),
+        ) : appointmentData.isNotEmpty ? Column(
+          children: [
+            SizedBox(height: height * 0.01,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+=======
+>>>>>>> Stashed changes
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -118,6 +185,10 @@ class _booking_summaryState extends State<booking_summary> {
                       fit: BoxFit.fill)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
                 children: [
                   Padding(
                     padding:
@@ -476,6 +547,75 @@ class _booking_summaryState extends State<booking_summary> {
                               );
                             },
                           ),
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(color: Colors.black54,),
+                        ),
+                      ],
+                    );
+                  },
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return services(beauticianId: "${widget.beauticianId}");
+                  },));
+                },
+                child: Row(
+                  children: [
+                    Image(image: const AssetImage(
+                        "assets/images/Group 12095.png"),
+                      height: height * 0.04,
+                      width: width * 0.06,),
+                    SizedBox(width: width * 0.02,),
+                    const Text("add_another_service",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "spartan",
+                            color: Color(0xffDD6A03))).tr(),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                    return const SelectAddress();
+                  },));
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: width,
+                  height: height * 0.06,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color(0xffDD6A03)),
+                  child: const Text("go_to_payment",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "spartan",
+                          color: Colors.white)).tr(),
+                ),
+              ),
+            ),
+            SizedBox(height: height * 0.02,)
+          ],
+        ): const Center(child: Text('No Data Found'),),
+=======
+>>>>>>> Stashed changes
                                 
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -551,6 +691,10 @@ class _booking_summaryState extends State<booking_summary> {
                       child: Text('No Data Found'),
                     ),
         ),
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
       ),
     );
   }

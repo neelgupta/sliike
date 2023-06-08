@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,10 +14,10 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/add_new_address.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/delete_my_account.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/edit_profile.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/help_center.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/my_favorites.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+
 import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import '../../client_model/get_profile_model.dart';
 import '../../utils/apiurllist.dart';
@@ -570,7 +571,6 @@ class _profileState extends State<profile> {
             //   ),
             // ),
 
-
             // SizedBox(height: height * 0.01),
             // GestureDetector(
             //   onTap: () {
@@ -892,9 +892,7 @@ class _profileState extends State<profile> {
                       fontFamily: "spartan",
                       color: Colors.black54,
                     )),
-                SizedBox(
-                  height: height * 0.01,
-                ),
+                SizedBox(height: height * 0.01),
                 Text("${profileData?.lastName}",
                     style: const TextStyle(
                       fontSize: 18,
@@ -972,7 +970,6 @@ class _profileState extends State<profile> {
                       month = DateFormat.MMMM().format(dateob).toString();
                       year = dateob.year.toString();
                     }
-
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return edit_profile(

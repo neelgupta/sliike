@@ -968,7 +968,7 @@ class _book_appoinmentState extends State<book_appoinment> {
         a = Appointment.fromjson(map);
         Helper.serviceId.add(map['data']['appointmentId']);
         print(Helper.serviceId);
-        Navigator.push(context, MaterialPageRoute(
+        Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) {
             return booking_summary(beauticianId: widget.beauticianId,);
           },

@@ -121,7 +121,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(
-                color: Color(0xffDD6A03),
+                color: Color(0xff01635D),
               ),
             )
           : SingleChildScrollView(
@@ -245,7 +245,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                       ? DecorationImage(
                                           image:
                                               FileImage(File(firstimagestring)))
-                                      : firstNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)):DecorationImage(
+                                      : firstNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)):
+                                  DecorationImage(
                                           image: AssetImage(
                                               "assets/images/Rectangle_greyline.png"),
                                           fit: BoxFit.fill)),
@@ -380,11 +381,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                     Navigator.pop(context);
                                                     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
                                                     if (photo != null) {
-                                                      secoundimage =
+                                                      fristimage =
                                                           File(photo.path);
-                                                      secoundimagestring =
+                                                      firstimagestring =
                                                           photo.path;
-                                                      secoundimagestatus = true;
+                                                      fristimagestatus = true;
                                                       setState(() {});
                                                     }
                                                   }),
@@ -401,9 +402,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                     XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
                                                     if (selectedImages != null) {
                                                       setState(() {
-                                                        secoundimage = File(selectedImages.path);
-                                                        secoundimagestring = selectedImages.path;
-                                                        secoundimagestatus = true;
+                                                        fristimage = File(selectedImages.path);
+                                                        firstimagestring = selectedImages.path;
+                                                        fristimagestatus = true;
                                                         print(fristimagestatus);
                                                       });
                                                     }
@@ -432,14 +433,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                           width: width,
                                           height: 180,
                                           decoration: BoxDecoration(
-                                              image: secoundimagestatus
+                                              image: fristimagestatus
                                                   ? DecorationImage(
                                                       image: FileImage(File(
-                                                          secoundimagestring)))
-                                                  : secondNetworkImage!=null?DecorationImage(image: NetworkImage(secondNetworkImage)):DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/Rectangle_greyline.png"),
-                                                      fit: BoxFit.fill)),
+                                                          firstimagestring)))
+                                                  : firstNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(firstNetworkImage)):
+                                              DecorationImage(
+                                                      image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                                           child: secoundimagestatus
                                               ? Stack(
                                                   children: [
@@ -597,11 +597,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                             source: ImageSource
                                                                 .camera);
                                                     if (photo != null) {
-                                                      threeimage =
+                                                      secoundimage =
                                                           File(photo.path);
-                                                      threeimagestring =
+                                                      secoundimagestring =
                                                           photo.path;
-                                                      threeimagestatus = true;
+                                                      secoundimagestatus = true;
                                                       setState(() {});
                                                     }
                                                   }),
@@ -622,12 +622,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                     if (selectedImages !=
                                                         null) {
                                                       setState(() {
-                                                        threeimage = File(
+                                                        secoundimage = File(
                                                             selectedImages
                                                                 .path);
-                                                        threeimagestring =
+                                                        secoundimagestring =
                                                             selectedImages.path;
-                                                        threeimagestatus = true;
+                                                        secoundimagestatus = true;
                                                         print(fristimagestatus);
                                                       });
                                                     }
@@ -658,13 +658,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                           decoration: BoxDecoration(
                                               image: threeimagestatus
                                                   ? DecorationImage(
-                                                      image: FileImage(File(
-                                                          threeimagestring)))
-                                                  :thirdNetworkImage!=null?DecorationImage(image: NetworkImage(thirdNetworkImage)): DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/Rectangle_greyline.png"),
-                                                      fit: BoxFit.fill)),
-                                          child: threeimagestatus
+                                                      image: FileImage(File(secoundimagestring)))
+                                                  :secondNetworkImage.isNotEmpty?
+                                              DecorationImage(image: NetworkImage(secondNetworkImage)):
+                                              DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                                          child: secoundimagestatus
                                               ? Stack(
                                                   children: [
                                                     Positioned(
@@ -679,16 +677,14 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                           if (selectedImages !=
                                                               null) {
                                                             setState(() {
-                                                              threeimage = File(
+                                                              secoundimage = File(
                                                                   selectedImages
                                                                       .path);
-                                                              threeimagestring =
+                                                              secoundimagestring =
                                                                   selectedImages
                                                                       .path;
-                                                              threeimagestatus =
+                                                              secoundimagestatus =
                                                                   true;
-                                                              print(
-                                                                  fristimagestatus);
                                                             });
                                                           }
                                                         },
@@ -824,11 +820,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                             source: ImageSource
                                                                 .camera);
                                                     if (photo != null) {
-                                                      fourimage =
+                                                      threeimage =
                                                           File(photo.path);
-                                                      fourimagestring =
+                                                      threeimagestring =
                                                           photo.path;
-                                                      fourimagestatus = true;
+                                                      threeimagestatus = true;
                                                       setState(() {});
                                                     }
                                                   }),
@@ -849,12 +845,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                     if (selectedImages !=
                                                         null) {
                                                       setState(() {
-                                                        fourimage = File(
+                                                        threeimage = File(
                                                             selectedImages
                                                                 .path);
-                                                        fourimagestring =
+                                                        threeimagestring =
                                                             selectedImages.path;
-                                                        fourimagestatus = true;
+                                                        threeimagestatus = true;
                                                         print(fristimagestatus);
                                                       });
                                                     }
@@ -886,12 +882,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                               image: fourimagestatus
                                                   ? DecorationImage(
                                                       image: FileImage(File(
-                                                          fourimagestring)))
-                                                  :fourthNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)): DecorationImage(
+                                                          threeimagestring)))
+                                                  :thirdNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(thirdNetworkImage)): DecorationImage(
                                                       image: AssetImage(
                                                           "assets/images/Rectangle_greyline.png"),
                                                       fit: BoxFit.fill)),
-                                          child: fourimagestatus
+                                          child: threeimagestatus
                                               ? Stack(
                                                   children: [
                                                     Positioned(
@@ -904,13 +900,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                           if (selectedImages !=
                                                               null) {
                                                             setState(() {
-                                                              fourimage = File(
+                                                              threeimage = File(
                                                                   selectedImages
                                                                       .path);
-                                                              fourimagestring =
+                                                              threeimagestring =
                                                                   selectedImages
                                                                       .path;
-                                                              fourimagestatus =
+                                                              threeimagestatus =
                                                                   true;
                                                               print(
                                                                   fristimagestatus);
@@ -948,9 +944,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           setState(() {
-                                                            fourimagestring =
+                                                            threeimagestring =
                                                                 "";
-                                                            fourimagestatus =
+                                                            threeimagestatus =
                                                                 false;
                                                           });
                                                         },
@@ -1011,7 +1007,216 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             SizedBox(
                               width: width * 0.02,
                             ),
-                            Expanded(child: Container())
+                            fourimagestatus
+                                ? Container(
+                              width: width * 0.43,
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        alignment: Alignment.bottomCenter,
+                                        insetPadding:
+                                        EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical: 30),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(
+                                                Radius.circular(10))),
+                                        title: Column(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "TAKE A PHOTO",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+                                              final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+                                              if (photo != null) {
+                                                fourimage =
+                                                    File(photo.path);
+                                                fourimagestring =
+                                                    photo.path;
+                                                fourimagestatus = true;
+                                                setState(() {});
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "CHOOSE FROM GALLERY",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+                                              XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
+                                              if (selectedImages != null) {
+                                                setState(() {
+                                                  fourimage = File(selectedImages.path);
+                                                  fourimagestring = selectedImages.path;
+                                                  fourimagestatus = true;
+                                                  print(fristimagestatus);
+                                                });
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            commonButtonborder(
+                                                context,
+                                                "CANCEL",
+                                                12,
+                                                FontWeight.w600,
+                                                Color(0xff01635D), () {
+                                              Navigator.pop(context);
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.03,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                    width: width,
+                                    height: 180,
+                                    decoration: BoxDecoration(
+                                        image: fourimagestatus
+                                            ? DecorationImage(
+                                            image: FileImage(File(
+                                                firstimagestring)))
+                                            : fourthNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(fourthNetworkImage)):
+                                        DecorationImage(
+                                            image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                                    child: fourimagestatus
+                                        ? Stack(
+                                      children: [
+                                        Positioned(
+                                          right: 50,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              XFile?
+                                              selectedImages =
+                                              await _picker.pickImage(
+                                                  source: ImageSource
+                                                      .gallery);
+                                              if (selectedImages !=
+                                                  null) {
+                                                setState(() {
+                                                  fourimage = File(
+                                                      selectedImages
+                                                          .path);
+                                                  firstimagestring =
+                                                      selectedImages
+                                                          .path;
+                                                  fourimagestatus =
+                                                  true;
+                                                  print(
+                                                      fristimagestatus);
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration:
+                                              BoxDecoration(
+                                                color: Color(
+                                                    0xffFFFFFF),
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(
+                                                    5),
+                                                border: Border.all(
+                                                    color: Color(
+                                                        0xffE7E7E7),
+                                                    width: 1),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .all(8.0),
+                                                child: Image.asset(
+                                                    "assets/images/edit_grey.png"),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: 10,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                firstimagestring =
+                                                "";
+                                                fourimagestatus =
+                                                false;
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration:
+                                              BoxDecoration(
+                                                color: Color(
+                                                    0xffFFFFFF),
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(
+                                                    5),
+                                                border: Border.all(
+                                                    color: Color(
+                                                        0xffE7E7E7),
+                                                    width: 1),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .all(8.0),
+                                                child: Image.asset(
+                                                    "assets/images/delete.png"),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                        : Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Image(
+                                            height: 40,
+                                            image: AssetImage(
+                                                "assets/images/camera_grey.png"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        textComoon(
+                                            "Add Logo",
+                                            12,
+                                            Color(0xff414141),
+                                            FontWeight.w500),
+                                      ],
+                                    )),
+                              ),
+                            )
+                                : SizedBox(),
                           ],
                         )
                       ],
@@ -1143,16 +1348,15 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       setState(() {
         isLoading = true;
       });
-      var geturi = Uri.parse(
-          "https://hungry-duck-zipper.cyclic.app/api/v1/beautician/getWorkSpaceImg");
+      var getUri = Uri.parse(ApiUrlList.getBeauticianWorkSpaceImage);
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
             "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
-      log("get profile url is  : $geturi");
+      log("get profile url is  : $getUri");
       log("res headers  : $headers");
-      var response = await http.get(geturi, headers: headers);
+      var response = await http.get(getUri, headers: headers);
       log("getApi response.body ==> ${response.body}");
       log("getAPi status code ==> ${response.statusCode}");
       Map map = jsonDecode(response.body);
@@ -1162,18 +1366,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
           if (p!.data!.first.workSpaceImgs.isNotEmpty) {
             firstNetworkImage = p!.data!.first.workSpaceImgs[0];
           }
-
-          if (p!.data!.first.workSpaceImgs.length > 1) {
             secondNetworkImage = p!.data!.first.workSpaceImgs[1];
-          }
-
-          if (p!.data!.first.workSpaceImgs.length > 2) {
             thirdNetworkImage = p!.data!.first.workSpaceImgs[2];
-          }
-
-          if (p!.data!.first.workSpaceImgs.length > 3) {
-            fourthNetworkImage = p!.data!.first.workSpaceImgs[3];
-          }
+          fourthNetworkImage = p!.data!.first.workSpaceImgs[3];
         }
         log("p!.data!.first.workSpaceImgs.length :: ${p!.data!.first.workSpaceImgs.length}");
         log("firstNetworkImage :: $firstNetworkImage");

@@ -3,7 +3,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class health_detail extends StatefulWidget {
-  const health_detail({Key? key}) : super(key: key);
+  String detailForClient;
+  health_detail(this.detailForClient, {Key? key}) : super(key: key);
 
   @override
   State<health_detail> createState() => _health_detailState();
@@ -12,6 +13,13 @@ class health_detail extends StatefulWidget {
 class _health_detailState extends State<health_detail> {
   TextEditingController Detail=TextEditingController();
   bool Detailstatus=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Detail.text = widget.detailForClient;
+    print(widget.detailForClient);
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -124,9 +132,10 @@ class _health_detailState extends State<health_detail> {
                 Spacer(),
                 CommonButton(
                     context, "OK", 12, FontWeight.w600, Colors.white, () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //   return ();
-                  // },));
+                      Navigator.pop(context,
+                        Detail.text
+                      );
+                      print(Detail.text);
                 }),
               ],
             ),

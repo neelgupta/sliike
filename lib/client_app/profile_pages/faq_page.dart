@@ -17,6 +17,7 @@ class _faq_pageState extends State<faq_page> {
 
   Header ? faq;
   bool isLoading = true;
+  List<bool> ? isExpand;
   @override
   void initState() {
     // TODO: implement initState
@@ -94,14 +95,30 @@ class _faq_pageState extends State<faq_page> {
                   itemBuilder: (context, index) {
                   return Column(
                     children: [
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isExpand![index] = !isExpand![index];
+                          });
+                          print(isExpand![index]);
+                        },
+                        child: Row(
+                          children:  [
+                            Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                            Spacer(),
+                            isExpand![index]?
+                            Icon(Icons.keyboard_arrow_up_rounded,size: 30,):
+                            Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
+                          ],),
+                      ),
+                      const SizedBox(height: 05,),
+                      isExpand![index]?SizedBox() : const Divider(color: Colors.black54,),
+                      isExpand![index]?
                       Row(
                         children:  [
-                          Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
-                          Spacer(),
-                          Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
-                        ],),
-                      const SizedBox(height: 05,),
-                      const Divider(color: Colors.black54,)
+                          Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                        ],):SizedBox(),
+                      isExpand![index]?const Divider(color: Colors.black54,) : SizedBox(),
                     ],
                   );
                 },),
@@ -128,6 +145,7 @@ class _faq_pageState extends State<faq_page> {
       setState(() {
         faq = Header.fromjson(map);
         isLoading = false;
+        isExpand = List.generate(faq!.data.length, (index) => false);
       });
     }else{
       Fluttertoast.showToast(

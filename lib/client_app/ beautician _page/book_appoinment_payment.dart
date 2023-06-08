@@ -60,9 +60,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                          return homescreen(selectedIndex: 0,);
-                        },),(route) => false,);
+                        Navigator.pop(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
@@ -456,7 +454,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
       print(value);
       Loader.hide();
       if(value!=null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return payment_success(bookingId: value);
         },));
       }

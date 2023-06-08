@@ -165,6 +165,7 @@ class _servicesState extends State<services> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -2270,7 +2271,15 @@ class _servicesState extends State<services> {
     );
   }
 
+<<<<<<< Updated upstream
   infoDilog(int index) {
+=======
+<<<<<<< HEAD
+  infoDilog(int index){
+=======
+  infoDilog(int index) {
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
     double height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;

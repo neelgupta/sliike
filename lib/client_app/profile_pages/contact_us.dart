@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class contact_us extends StatefulWidget {
   const contact_us({Key? key}) : super(key: key);
@@ -10,6 +11,16 @@ class contact_us extends StatefulWidget {
 }
 
 class _contact_usState extends State<contact_us> {
+  void _launchDailer(String mobileNumber) async{
+    Uri phoneno = Uri.parse('tel:${mobileNumber}');
+    if (await launchUrl(phoneno)) {
+      print("dailer open");
+      //dialer opened
+    }else{
+      print("dailer is not open");
+      //dailer is not opened
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -100,51 +111,34 @@ class _contact_usState extends State<contact_us> {
               ),
               SizedBox(height: height*0.04,),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: height*0.07,
-                    width: width*0.45,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFDD6A03)),
-                        borderRadius: const BorderRadius.all(Radius.circular(5))
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: const AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,color: const Color(0xFFDD6A03),),
-                        SizedBox(width: width*0.02,),
-                        const Text("Live chat",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "spartan",
-                                color: Color(0xFFDD6A03))),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(alignment: Alignment.center,
-                    height: height*0.07,
-                    width: width*0.45,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFDD6A03)),
-                        color:const Color(0xFFDD6A03) ,
-                        borderRadius: const BorderRadius.all(Radius.circular(5)
-                        )
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: const AssetImage("assets/images/call.png"),height: height*0.03,),
-                        SizedBox(width: width*0.02,),
-                        const Text("Call Us",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: "spartan",
-                                color: Colors.white)),
-                      ],
+                  InkWell(
+                    onTap: (){
+                      _launchDailer("+987654231");
+                    },
+                    child: Container(alignment: Alignment.center,
+                      height: height*0.07,
+                      width: width*0.45,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFDD6A03)),
+                          color:const Color(0xFFDD6A03) ,
+                          borderRadius: const BorderRadius.all(Radius.circular(5)
+                          )
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: const AssetImage("assets/images/call.png"),height: height*0.03,),
+                          SizedBox(width: width*0.02,),
+                          const Text("Call Us",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontFamily: "spartan",
+                                  color: Colors.white)),
+                        ],
+                      ),
                     ),
                   ),
                 ],

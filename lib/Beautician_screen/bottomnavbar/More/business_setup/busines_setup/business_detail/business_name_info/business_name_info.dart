@@ -1,8 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:get/get.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-
+import '../../../../../../../commonClass.dart';
+import '../../../../../../../utils/apiurllist.dart';
+import '../../../../../../../utils/preferences.dart';
 import '../../../../../../custom_widget/ButtonCommon/Button.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class business_Name_Info extends StatefulWidget {
   const business_Name_Info({Key? key}) : super(key: key);
@@ -26,21 +34,31 @@ class _business_Name_InfoState extends State<business_Name_Info> {
   bool Facebookstatus = false;
   bool Websitestatus = false;
   String? timeformatvalue;
-  String languagevalue="English (UK)";
+  String languagevalue = "English (UK)";
 
   var languageitemslist = [
-    "English (UK)","FRENCH","ARABIC","HINDI",];
-
+    "English (UK)",
+    "FRENCH",
+    "ARABIC",
+    "HINDI",
+  ];
 
   String status = "";
   String? mounthvalue;
   var timeformatitems = [
-    "24 hours (e.g. 21.00)"
+    "24 hours",
+    "12 hours",
   ];
+
   var mounthitemslist = [
-    "January","February","March","April","May","June","July","August","September","October","November","December"];
-
-
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +131,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
             left: 20,
             right: 20,
           ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: height * 0.05,
@@ -189,9 +208,10 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                             CountryCodePicker(
                               flagWidth: 25,
                               onChanged: print,
+                              initialSelection: 'Ca',
+                              enabled: true,
+                              favorite: const ['+1', 'Ca'],
                               // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                              initialSelection: 'IT',
-                              favorite: ['+39', 'FR'],
                               textStyle: TextStyle(
                                   fontSize: 10, color: Colors.black87),
                               // optional. Shows only country name and flag
@@ -302,35 +322,45 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                 color: Color(0xffCFCFCF),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.02),
-                child: textComoon("Set Time & Calendar", 16, Colors.black, FontWeight.w700),
+                padding: EdgeInsets.only(top: height * 0.02),
+                child: textComoon(
+                    "Set Time & Calendar", 16, Colors.black, FontWeight.w700),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.01),
-                child: textComoonfade("Update a time format that suit’s you business. These settings will update automatically based on your selected time format.",12, Color(0xff414141), FontWeight.w500),
+                padding: EdgeInsets.only(top: height * 0.01),
+                child: textComoonfade(
+                    "Update a time format that suit’s you business. These settings will update automatically based on your selected time format.",
+                    12,
+                    Color(0xff414141),
+                    FontWeight.w500),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.03,bottom: height*0.01),
-                child: textComoon("Time Format", 12, Color(0xff292929), FontWeight.w700),
+                padding:
+                    EdgeInsets.only(top: height * 0.03, bottom: height * 0.01),
+                child: textComoon(
+                    "Time Format", 12, Color(0xff292929), FontWeight.w700),
               ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(left: 20,right: 20),
+                padding: EdgeInsets.only(left: 20, right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black38)
-                ),
+                    border: Border.all(color: Colors.black38)),
                 child: DropdownButton(
                   hint: Text("Select Time Format"),
-                  style: TextStyle(fontSize: 14,color: Colors.black,fontFamily: 'spartan',fontWeight: FontWeight.w500),
-
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontFamily: 'spartan',
+                      fontWeight: FontWeight.w500),
                   underline: SizedBox(),
                   dropdownColor: Colors.white,
                   iconDisabledColor: Colors.black,
                   iconEnabledColor: Colors.yellow,
                   isExpanded: true,
-                  icon: Icon(Icons.keyboard_arrow_down,color: Color(0xff414141)),
+                  icon:
+                      Icon(Icons.keyboard_arrow_down, color: Color(0xff414141)),
                   value: timeformatvalue,
                   items: timeformatitems.map((String items) {
                     return DropdownMenuItem(
@@ -341,35 +371,38 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   onChanged: (String? newValue) {
                     setState(() {
                       timeformatvalue = newValue!;
-
                     });
                   },
                 ),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.03,bottom: height*0.01),
-                child: textComoon("Start Week", 12, Color(0xff292929), FontWeight.w700),
+                padding:
+                    EdgeInsets.only(top: height * 0.03, bottom: height * 0.01),
+                child: textComoon(
+                    "Start Week", 12, Color(0xff292929), FontWeight.w700),
               ),
               Container(
                 alignment: Alignment.center,
                 width: double.infinity,
-                padding: EdgeInsets.only(left: 20,right: 20),
+                padding: EdgeInsets.only(left: 20, right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black38)
-                ),
+                    border: Border.all(color: Colors.black38)),
                 child: DropdownButton(
-                  hint:
-
-                  Text("Month"),
-                  style: TextStyle(fontSize: 14,color: Colors.black,fontFamily: 'spartan',fontWeight: FontWeight.w500),
+                  hint: Text("Week"),
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontFamily: 'spartan',
+                      fontWeight: FontWeight.w500),
                   underline: SizedBox(),
                   dropdownColor: Colors.white,
                   iconDisabledColor: Colors.black,
                   iconEnabledColor: Colors.yellow,
                   isExpanded: true,
-                  icon: Icon(Icons.keyboard_arrow_down,color: Color(0xff414141)),
+                  icon:
+                      Icon(Icons.keyboard_arrow_down, color: Color(0xff414141)),
                   value: mounthvalue,
                   items: mounthitemslist.map((String items) {
                     return DropdownMenuItem(
@@ -380,7 +413,6 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   onChanged: (String? newValue) {
                     setState(() {
                       mounthvalue = newValue!;
-
                     });
                   },
                 ),
@@ -393,32 +425,42 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                 color: Color(0xffCFCFCF),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.02),
-                child: textComoon("Language setting", 16, Colors.black, FontWeight.w700),
+                padding: EdgeInsets.only(top: height * 0.02),
+                child: textComoon(
+                    "Language setting", 16, Colors.black, FontWeight.w700),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.01),
-                child: textComoonfade("Choose the default language for appointment notification messages sent to your clients. You can also set language for each client depending on their language.",12, Color(0xff414141), FontWeight.w500),
+                padding: EdgeInsets.only(top: height * 0.01),
+                child: textComoonfade(
+                    "Choose the default language for appointment notification messages sent to your clients. You can also set language for each client depending on their language.",
+                    12,
+                    Color(0xff414141),
+                    FontWeight.w500),
               ),
-              SizedBox(height: height*0.025,),
+              SizedBox(
+                height: height * 0.025,
+              ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(left: 20,right: 20),
+                padding: EdgeInsets.only(left: 20, right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black38)
-                ),
+                    border: Border.all(color: Colors.black38)),
                 child: DropdownButton(
                   hint: Text("English (UK)"),
-                  style: TextStyle(fontSize: 14,color: Colors.black,fontFamily: 'spartan',fontWeight: FontWeight.w500),
-
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontFamily: 'spartan',
+                      fontWeight: FontWeight.w500),
                   underline: SizedBox(),
                   dropdownColor: Colors.white,
                   iconDisabledColor: Colors.black,
                   iconEnabledColor: Colors.yellow,
                   isExpanded: true,
-                  icon: Icon(Icons.keyboard_arrow_down,color: Color(0xff414141)),
+                  icon:
+                      Icon(Icons.keyboard_arrow_down, color: Color(0xff414141)),
                   value: languagevalue,
                   items: languageitemslist.map((String items) {
                     return DropdownMenuItem(
@@ -429,7 +471,6 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   onChanged: (String? newValue) {
                     setState(() {
                       languagevalue = newValue!;
-
                     });
                   },
                 ),
@@ -442,14 +483,19 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                 color: Color(0xffCFCFCF),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.02),
-                child: textComoon("Social Media", 16, Colors.black, FontWeight.w700),
+                padding: EdgeInsets.only(top: height * 0.02),
+                child: textComoon(
+                    "Social Media", 16, Colors.black, FontWeight.w700),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: height*0.01,bottom: height*0.03),
-                child: textComoonfade("Add your company website and social media links so you can share with clients.",12, Color(0xff414141), FontWeight.w500),
+                padding:
+                    EdgeInsets.only(top: height * 0.01, bottom: height * 0.03),
+                child: textComoonfade(
+                    "Add your company website and social media links so you can share with clients.",
+                    12,
+                    Color(0xff414141),
+                    FontWeight.w500),
               ),
-
               Container(
                 child: TextField(
                   controller: Instagram,
@@ -460,25 +506,24 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                     contentPadding: EdgeInsets.only(left: 20),
                     hintText: "Instagram",
                     hintStyle: TextStyle(color: Color(0xff707070)),
-
                     prefixIcon: Container(
-
                       width: 80,
                       child: IntrinsicHeight(
                         child: Row(
                           children: [
-                           Padding(
-                             padding: const EdgeInsets.only(left: 20,right: 10),
-                             child: Container(
-                               width: 25,
-                              height: 25,
-
-                               alignment: Alignment.center,
-                               child: Image.asset("assets/images/instgram.png"),
-                             ),
-                           ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 5,bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                alignment: Alignment.center,
+                                child:
+                                    Image.asset("assets/images/instgram.png"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
                               child: VerticalDivider(
                                 color: Color(0xff707070),
                                 thickness: 1,
@@ -488,8 +533,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                         ),
                       ),
                     ),
-                    labelStyle:
-                    TextStyle(fontFamily: 'spartan', color: Color(0xff707070)),
+                    labelStyle: TextStyle(
+                        fontFamily: 'spartan', color: Color(0xff707070)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(color: Colors.black38),
@@ -501,7 +546,9 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   ),
                 ),
               ),
-              SizedBox(height: height*0.03,),
+              SizedBox(
+                height: height * 0.03,
+              ),
               Container(
                 child: TextField(
                   controller: Facebook,
@@ -512,24 +559,25 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                     contentPadding: EdgeInsets.only(left: 20),
                     hintText: "Facebook",
                     hintStyle: TextStyle(color: Color(0xff707070)),
-
                     prefixIcon: Container(
                       width: 80,
                       child: IntrinsicHeight(
                         child: Row(
                           children: [
-                           Padding(
-                             padding: const EdgeInsets.only(left: 20,right: 10),
-                             child: Container(
-                               width: 25,
-                               height: 25,
-                               //padding: EdgeInsets.only(left: 20,right: 10),
-                               alignment: Alignment.center,
-                               child: Image.asset("assets/images/facebook.png",fit: BoxFit.fill),
-                             ),
-                           ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 5,bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                //padding: EdgeInsets.only(left: 20,right: 10),
+                                alignment: Alignment.center,
+                                child: Image.asset("assets/images/facebook.png",
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
                               child: VerticalDivider(
                                 color: Color(0xff707070),
                                 thickness: 1,
@@ -539,8 +587,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                         ),
                       ),
                     ),
-                    labelStyle:
-                    TextStyle(fontFamily: 'spartan', color: Color(0xff707070)),
+                    labelStyle: TextStyle(
+                        fontFamily: 'spartan', color: Color(0xff707070)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(color: Colors.black38),
@@ -552,7 +600,9 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   ),
                 ),
               ),
-              SizedBox(height: height*0.03,),
+              SizedBox(
+                height: height * 0.03,
+              ),
               Container(
                 child: TextField(
                   controller: Website,
@@ -563,24 +613,25 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                     contentPadding: EdgeInsets.only(left: 20),
                     hintText: "Website",
                     hintStyle: TextStyle(color: Color(0xff707070)),
-
                     prefixIcon: Container(
                       width: 80,
                       child: IntrinsicHeight(
                         child: Row(
                           children: [
-                           Padding(
-                             padding: const EdgeInsets.only(left: 20,right: 10),
-                             child: Container(
-                               width: 25,
-                               height: 25,
-                               //padding: EdgeInsets.only(left: 20,right: 10),
-                               alignment: Alignment.center,
-                               child: Image.asset("assets/images/website.png",fit: BoxFit.fill),
-                             ),
-                           ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 5,bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              child: Container(
+                                width: 25,
+                                height: 25,
+                                //padding: EdgeInsets.only(left: 20,right: 10),
+                                alignment: Alignment.center,
+                                child: Image.asset("assets/images/website.png",
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
                               child: VerticalDivider(
                                 color: Color(0xff707070),
                                 thickness: 1,
@@ -590,8 +641,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                         ),
                       ),
                     ),
-                    labelStyle:
-                    TextStyle(fontFamily: 'spartan', color: Color(0xff707070)),
+                    labelStyle: TextStyle(
+                        fontFamily: 'spartan', color: Color(0xff707070)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(color: Colors.black38),
@@ -603,13 +654,75 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   ),
                 ),
               ),
-              SizedBox(height: height*0.04,),
-              CommonButton(context, "SAVE",12, FontWeight.w700, Colors.white, () { }),
-              SizedBox(height: height*0.03,),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              CommonButton(context, "SAVE", 12, FontWeight.w700, Colors.white,
+                  (){updateBusinessDetails();}),
+              SizedBox(
+                height: height * 0.03,
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  updateBusinessDetails() async {
+    Loader.show(context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator: const CircularProgressIndicator(
+            backgroundColor: Color(0xff01635D)),
+        themeData: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color(0xff01635D))));
+    var Body = {
+      'businessName': businessname.text,
+      'businessNumber': phonernumber.text,
+      'email': email.text,
+      'description': Description.text,
+      'hourFormate': int.parse(timeformatvalue!.split(" ").first.toString()),
+      'startDay': mounthvalue,
+      'language': languagevalue,
+      'facebookUrl': Facebook.text,
+      'instagramUrl': Instagram.text,
+      'website': Website.text,
+    };
+    var headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization":
+      "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var responce = await http.put(Uri.parse(ApiUrlList.updateBusinessDetails),
+        body: jsonEncode(Body), headers: headers);
+    log('updateBusinessDetails Code : ${responce.statusCode}');
+    log('updateBusinessDetails Response Body :${responce.body}');
+    log('updateBusinessDetails Payload Body :${Body}');
+    var map = jsonDecode(responce.body);
+    if (responce.statusCode == 200) {
+      Navigator.pop(context);
+      Loader.hide();
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Navigator.pop(context);
+      Loader.hide();
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 }

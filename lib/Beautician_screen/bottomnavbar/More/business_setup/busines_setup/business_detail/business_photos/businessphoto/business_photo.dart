@@ -4,6 +4,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/business_detail/business_photos/businessphoto/workplace_photos/workplace_photostwo.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
+import '../../../../../../../viewscrren/move_to_settings_all/professional_licence/professional_icence_camera.dart';
+
 class business_Photo extends StatefulWidget {
   const business_Photo({Key? key}) : super(key: key);
 
@@ -122,6 +124,29 @@ class _business_PhotoState extends State<business_Photo> {
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textComoon("Workplace Photo",14,Color(0xff414141), FontWeight.w500),
+                    Container(
+                      height: 15,
+                      width: 30,
+                      child: Image.asset("assets/images/righticon.png"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 17,),
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black12))
+              ),
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) {
+                    return professional_Licence_Camera();
+                  },));
+                },
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    textComoon("Licence",14,Color(0xff414141), FontWeight.w500),
                     Container(
                       height: 15,
                       width: 30,

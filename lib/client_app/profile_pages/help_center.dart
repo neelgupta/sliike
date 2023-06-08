@@ -79,27 +79,27 @@ class _help_centerState extends State<help_center> {
                       fontFamily: "spartan",
                       color: Colors.black)),
               SizedBox(height:height*0.02,),
-              Container(
-                  alignment: Alignment.center,
-                  width: width,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color(0xffDD6A03)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(image: const AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,),
-                      SizedBox(width: width*0.02,),
-                      const Text("Start live chat",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              color: Colors.white)),
-                    ],
-                  )
-              ),
+              // Container(
+              //     alignment: Alignment.center,
+              //     width: width,
+              //     height: height * 0.06,
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(5),
+              //         color: const Color(0xffDD6A03)),
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Image(image: const AssetImage("assets/images/message-text.png"),height: height*0.05,width: width*0.05,),
+              //         SizedBox(width: width*0.02,),
+              //         const Text("Start live chat",
+              //             style: TextStyle(
+              //                 fontSize: 14,
+              //                 fontFamily: "spartan",
+              //                 color: Colors.white)),
+              //       ],
+              //     )
+              // ),
               SizedBox(height:height*0.04,),
               GestureDetector(
                 onTap: () {

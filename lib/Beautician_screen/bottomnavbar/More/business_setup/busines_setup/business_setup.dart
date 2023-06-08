@@ -91,42 +91,43 @@ class _business_SetUpState extends State<business_SetUp> {
           padding: const EdgeInsets.only(left: 20,right: 20),
           child: Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20,right: 20),
-              //   child: Container(
-              //     padding: EdgeInsets.symmetric(vertical: 17,),
-              //     decoration: BoxDecoration(
-              //         border: Border(bottom: BorderSide(color: Colors.black12))
-              //     ),
-              //     child: InkWell(
-              //       onTap: (){
-              //         Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //           return business_Detail();
-              //         },));
-              //       },
-              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //
-              //           Expanded(
-              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 textComoon("Beautician Details",14,Color(0xff292929), FontWeight.w700),
-              //                 SizedBox(height: height*0.01,),
-              //                 textComoonfade("Additional info on business name, photo,\nlocation, adding new team members etc.",10,Color(0xff707070), FontWeight.w500),
-              //               ],
-              //             ),
-              //           ),
-              //
-              //           Container(alignment: Alignment.topRight,
-              //             height: 15,
-              //             width: 30,
-              //             child: Image.asset("assets/images/righticon.png"),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              /// Beautician Details ///
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 17,),
+                  decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  ),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return business_Detail();
+                      },));
+                    },
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textComoon("Beautician Details",14,Color(0xff292929), FontWeight.w700),
+                              SizedBox(height: height*0.01,),
+                              textComoonfade("Additional info on business name, photo,\nlocation, adding new team members etc.",10,Color(0xff707070), FontWeight.w500),
+                            ],
+                          ),
+                        ),
+
+                        Container(alignment: Alignment.topRight,
+                          height: 15,
+                          width: 30,
+                          child: Image.asset("assets/images/righticon.png"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               // Padding(
               //   padding: const EdgeInsets.only(left: 20,right: 20),
               //   child: Container(

@@ -261,12 +261,268 @@ class _home_exploreState extends State<home_explore> {
                                                 "selectedService id is  =====> ${serviceName[index].id.toString()}");
                                             Navigator.push(context,
                                                 MaterialPageRoute(
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+                                                  builder: (context) {
+                                                    return const viewpage();
+                                                  },
+                                                )).then((value) {
+                                              getLocation();
+                                              fetchServiceCategories();
+                                              getClientFavoriteList();
+                                              getRecentBeauticians();
+                                              setState(() {});
+                                            });
+                                          },
+                                          child: Container(
+                                            child: const Text("view_all",
+                                                style: TextStyle(
+                                                  color:
+                                                  Color(0xFFDD5103),
+                                                  fontSize: 14,
+                                                  fontFamily: "spartan",
+                                                )).tr(),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: height * 0.18,
+                              child: ListView.builder(
+                                itemCount: serviceName.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  allItemName = serviceName[index].serviceCategoryName;
+                                  return GestureDetector(
+                                    onTap: () {
+                                      print("selectedService id is  =====> ${ serviceName[index].id.toString()}");
+                                      Navigator.push(context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return searchScreen(
+                                                  selectedService: [serviceName[index].id.toString(),],isMultipleSearched: false,serviceName: "",);
+                                            },
+                                          )).then((value) {
+                                        getLocation();
+                                        fetchServiceCategories();
+                                        getClientFavoriteList();
+                                        getRecentBeauticians();
+                                        setState(() {});
+                                      });
+                                    },
+                                    child: Column(
+                                      children: [
+                                        CachedNetworkImage(
+                                          imageUrl: serviceName[index].imgPath ?? '',
+                                          imageBuilder: (context, imageProvider) => Container(
+                                            padding:
+                                            const EdgeInsets.all(10),
+                                            height: height * 0.13,
+                                            width: width * 0.27,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                                image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                            ),
+                                            margin: const EdgeInsets.all(5),
+                                          ),
+                                          progressIndicatorBuilder: (context, url, process) => Container(
+                                              height: height * 0.13,
+                                              width: width * 0.27,
+                                              margin: const EdgeInsets.all(5),
+                                              child: const Center(child: CircularProgressIndicator())
+                                          ),
+                                          errorWidget: (context, url, error) => Container(
+                                              height: height * 0.13,
+                                              width: width * 0.27,
+                                              margin: const EdgeInsets.all(5),
+                                              alignment: Alignment.center,
+                                              child: Center(child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const Icon(Icons.error),
+                                                  SizedBox(height: height*0.02,),
+                                                  const Text("No Image")
+                                                ],
+                                              ))
+                                          ),
+                                        ),
+                                        Text(
+                                            "${serviceName[index].serviceCategoryName}",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontFamily: "spartan",
+                                            )),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const Divider(),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+
+                                          child: const Text(
+                                              "my_favorites",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontFamily:
+                                                  "spartan",
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600))
+                                              .tr(),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                              return const MyFavoritesViewAll();
+                                            },)).then((value) {
+                                              getLocation();
+                                              fetchServiceCategories();
+                                              getClientFavoriteList();
+                                              getRecentBeauticians();
+                                              setState(() {});
+                                            });
+                                          },
+                                          child: Container(
+                                            child: const Text("view_all",
+                                                style: TextStyle(
+                                                  color: Color(0xFFDD5103),
+                                                  fontSize: 14,
+                                                  fontFamily: "spartan",
+                                                )).tr(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: height * 0.31,
+                              child: favoritelist.isEmpty
+                                  ? const Center(
+                                child: Text(
+                                  "No Favorite Products",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: "spartan",
+                                  ),
+                                ),
+                              )
+                                  : ListView.builder(
+                                itemCount: favoritelist.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  favoritesId = favoritelist[index].id!;
+                                  print("listId ======> $favoritesId");
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return services(
+                                            beauticianId: favoritelist[index].id!);
+                                      }),
+                                      ).then((value) {
+                                        getLocation();
+                                        fetchServiceCategories();
+                                        getClientFavoriteList();
+                                        getRecentBeauticians();
+                                        setState(() {});
+                                      });
+                                      print("selectedFavoritesId ======> ${favoritelist[index].id!}");
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        CachedNetworkImage(
+                                          imageUrl: favoritelist[index].country ?? '',
+                                          imageBuilder: (context, imageProvider) => Container(
+                                            padding:
+                                            const EdgeInsets.all(10),
+                                            height: height * 0.18,
+                                            width: width * 0.6,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                                image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                            ),
+                                            margin: const EdgeInsets.all(5),
+                                          ),
+                                          progressIndicatorBuilder: (context, url, process) => Container(
+                                              height: height * 0.18,
+                                              width: width * 0.6,
+                                              margin: const EdgeInsets.all(5),
+                                              child: const Center(child: CircularProgressIndicator())
+                                          ),
+                                          errorWidget: (context, url, error) => Container(
+                                              height: height * 0.18,
+                                              width: width * 0.6,
+                                              margin: const EdgeInsets.all(5),
+                                              alignment: Alignment.center,
+                                              child: Center(child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const Icon(Icons.error),
+                                                  SizedBox(height: height*0.02,),
+                                                  const Text("No Image")
+                                                ],
+                                              ))
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 15,),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Text("${favoritelist[index].businessName}",
+                                                          style: const TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 18,
+                                                              fontFamily: "spartan",
+                                                              fontWeight: FontWeight.w600)),
+                                                    ),
+                                                    const SizedBox(width: 5,),
+                                                    SizedBox(
+                                                      height: height * 0.03,
+                                                      child: const Image(image: AssetImage("assets/images/Subtract (1).png")),
+                                                    )
+=======
+>>>>>>> Stashed changes
                                               builder: (context) {
                                                 return searchScreen(
                                                   selectedService: [
                                                     serviceName[index]
                                                         .id
                                                         .toString(),
+<<<<<<< Updated upstream
+=======
+>>>>>>> e085634eae0e013d6477208019282c52491b566b
+>>>>>>> Stashed changes
                                                   ],
                                                   isMultipleSearched: false,
                                                   serviceName:

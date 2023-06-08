@@ -28,7 +28,6 @@ class _business_DetailState extends State<business_Detail> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(

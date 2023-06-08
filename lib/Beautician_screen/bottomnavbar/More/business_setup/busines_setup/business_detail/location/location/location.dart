@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/business_detail/location/edit_location/edit_location.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/move_to_settings_all/yourprofile/Yourprofile_onescreen.dart';
 
 class location extends StatefulWidget {
   const location({Key? key}) : super(key: key);
@@ -10,8 +15,53 @@ class location extends StatefulWidget {
 }
 
 class _locationState extends State<location> {
+  late BitmapDescriptor myIcon;
+  bool isLoading = true;
+  String address = "";
+  String city = "";
+  String province = "";
+  String postalCode = "";
+  String country = "";
+  String latitude = "38.9647";
+  String longitude = "35.123";
   bool method = false;
   int selectedRadio=1;
+  CameraPosition _initialLocation = CameraPosition(target: showLocation,zoom: 20);
+  late GoogleMapController mapController;
+  static  LatLng showLocation =  LatLng(25.2048493, 55.2707828);
+  void onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+      showLocation =  LatLng(double.parse(latitude), double.parse(longitude));
+      _initialLocation = CameraPosition(target: showLocation,zoom: 10);
+      markers.add(Marker(
+                  markerId: MarkerId(""),
+                  position: LatLng(double.parse(latitude),double.parse(longitude)),
+                  icon: myIcon
+                ));
+    });
+  }
+  void _updateMarker(){
+    var newlatlang = LatLng(double.parse(latitude), double.parse(longitude));
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(48, 48)), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 10)));
+    markers.add(Marker(
+        markerId: MarkerId(""),
+        position: LatLng(double.parse(latitude),double.parse(longitude)),
+        icon: myIcon
+    ));
+    setState(() {});
+  }
+  List<Marker> markers = <Marker>[];
+  late GoogleMapController controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(48, 48)), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -85,20 +135,34 @@ class _locationState extends State<location> {
             SizedBox(height: height*0.025,),
             textComoon("Location", 16,Colors.black, FontWeight.w700),
             SizedBox(height: height*0.02,),
-            GestureDetector(onTap: (){
-
-            },
-
-              child: Container(
-                height: height*0.25,
-                width: width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/mapimg.png"),fit: BoxFit.fill,
-                  )
-                ),
+            ///Google Maps ///
+            SizedBox(height: height * 0.35, width: width,
+              child: GoogleMap  (
+                onMapCreated: onMapCreated,
+                onTap: (latLng) {},
+                mapToolbarEnabled: false,
+                initialCameraPosition: _initialLocation,
+                myLocationButtonEnabled:false,
+                myLocationEnabled: true,
+                mapType: MapType.normal,
+                zoomControlsEnabled:false,
+                zoomGesturesEnabled:true,
+                markers: Set<Marker>.of(markers),
               ),
             ),
+            // GestureDetector(onTap: (){
+            //
+            // },
+            //   child: Container(
+            //     height: height*0.25,
+            //     width: width,
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //         image: AssetImage("assets/images/mapimg.png"),fit: BoxFit.fill,
+            //       )
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: height*0.04,),
             Column(
               children: [
@@ -125,7 +189,7 @@ class _locationState extends State<location> {
                                 children: [
                                   textComoon("Address:",12, Color(0xff000000), FontWeight.w600),
                                   SizedBox(width: 5,),
-                                  textComoon("2543 Tolmie St",12, Color(0xff707070), FontWeight.w600),
+                                  textComoon("$address",12, Color(0xff707070), FontWeight.w600),
                                 ],
                               ),
                               SizedBox(height: 5,),
@@ -133,7 +197,7 @@ class _locationState extends State<location> {
                                 children: [
                                   textComoon("City:",12, Color(0xff000000), FontWeight.w600),
                                   SizedBox(width: 5,),
-                                  textComoon("Vancouver",12, Color(0xff707070), FontWeight.w600),
+                                  textComoon("$city",12, Color(0xff707070), FontWeight.w600),
                                 ],
                               ),
                               SizedBox(height: 5,),
@@ -150,7 +214,7 @@ class _locationState extends State<location> {
                                 children: [
                                   textComoon("Postal Code:",12, Color(0xff000000), FontWeight.w600),
                                   SizedBox(width: 5,),
-                                  textComoon("V6R 4C5",12, Color(0xff707070), FontWeight.w600),
+                                  textComoon("$postalCode",12, Color(0xff707070), FontWeight.w600),
                                 ],
                               ),
                               SizedBox(height: 5,),
@@ -158,7 +222,7 @@ class _locationState extends State<location> {
                                 children: [
                                   textComoon("Country:",12, Color(0xff000000), FontWeight.w600),
                                   SizedBox(width: 5,),
-                                  textComoon("Canada",12, Color(0xff707070), FontWeight.w600),
+                                  textComoon("$country",12, Color(0xff707070), FontWeight.w600),
                                 ],
                               ),
                             ],
@@ -167,9 +231,26 @@ class _locationState extends State<location> {
                          Spacer(),
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) {
-                              return edit_Location();
-                            },));
+                            List data = [latitude,longitude,address,city,province,postalCode,country];
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return edit_Location(data: data,);
+                            },)).then((value) {
+                              print(value);
+                              if(value!=null) {
+                                latitude = value[5];
+                                longitude = value[6];
+                                province = value[2];
+                                address = value[0];
+                                country = value[4];
+                                city = value[1];
+                                postalCode = value[3];
+                                _updateMarker();
+                                setState(() {});
+                              }
+                            });
+                            // Navigator.push(context,MaterialPageRoute(builder: (context) {
+                            //   return edit_Location();
+                            // },));
                           },
                           child: Container(
                             height: 40,
@@ -198,11 +279,12 @@ class _locationState extends State<location> {
             textComoon("What’s your profile?", 14, Colors.black, FontWeight.w700),
             SizedBox(height: height*0.015,),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => yourProfile_One(),));
+              },
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
-
                   borderRadius: BorderRadius.circular(5),
                    border: Border.all(color: Color(0xffA0A0A0), width: 1)
                 ),
@@ -241,4 +323,63 @@ class _locationState extends State<location> {
       ),
     );
   }
+
+  Future<Position> getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Navigator.pop(context);
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Position p = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      await getlatitude(p.latitude, p.longitude);
+    }
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  getlatitude(double lat, double long) async {
+    Loader.show(context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator: const CircularProgressIndicator(
+            backgroundColor: Color(0xffDD6A03)),
+        themeData: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color(0xff01635D))));
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+
+    Placemark places = placemarks[0];
+
+    print(places);
+    latitude = lat.toString();
+    longitude = long.toString();
+    province = "${places.subLocality}";
+    address = "${places.street}";
+    country = "${places.country}";
+    city = "${places.locality}";
+    postalCode = "${places.postalCode}";
+    isLoading = false;
+    setState(() {});
+    Loader.hide();
+  }
+
 }
