@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/profile_page.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import 'package:http/http.dart' as http;
+
 import '../../../viewscrren/signin/signin.dart';
 import '../business_setup/busines_setup/business_setup.dart';
 
@@ -57,30 +58,27 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                 padding: const EdgeInsets.only(left: 0, bottom: 10),
                 child: Column(
                   children: [
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-                     InkWell(
-                       onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                           return profilePage();
-                         },));
-                       },
-                       child:  Padding(
-                         padding: const EdgeInsets.all(20),
-                         child: SizedBox(
-                           height: 65,
-                           width: 65,
-                           child: ClipRRect(
-                             borderRadius:
-                             const BorderRadius.all(Radius.circular(200)),
-                             child: getmodelProfile?.data?.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
-                             Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
-                           ),
-                         ),
-                       ),
-=======
->>>>>>> Stashed changes
+
+                    //  InkWell(
+                      //  onTap: (){
+                      //    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      //      return profilePage();
+                      //    },));
+                      //  },
+                      //  child:  Padding(
+                      //    padding: const EdgeInsets.all(20),
+                      //    child: SizedBox(
+                      //      height: 65,
+                      //      width: 65,
+                      //      child: ClipRRect(
+                      //        borderRadius:
+                      //        const BorderRadius.all(Radius.circular(200)),
+                      //        child: getmodelProfile?.data?.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
+                      //        Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
+                      //      ),
+                      //    ),
+                      //  ),
+
                     isLoading
                         ? SizedBox()
                         : getmodelProfile == null
@@ -113,10 +111,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                     ),
                                   ),
                                 ),
-<<<<<<< Updated upstream
-=======
->>>>>>> e085634eae0e013d6477208019282c52491b566b
->>>>>>> Stashed changes
+
 
                                 // Container(
                                 //   height: 65,

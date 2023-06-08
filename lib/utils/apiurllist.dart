@@ -51,7 +51,14 @@ class ApiUrlList {
   static String postlogoimage = "${logowork}beautician/addBusinessLogo";
   static String addWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
   static String getlogoimage = "${baseUrl}beautician/getBeauticianLogoImg";
+
   static String getTaxSetUpStatus = "${baseUrl}beautician/getTaxSetUpStatus";
+  static String getBeauticianLogoImage =
+      "${baseUrl}beautician/getBeauticianLogoImg";
+  static String getBeauticianWorkSpaceImage =
+      "${baseUrl}beautician/getWorkSpaceImg";
+  static String addBusinessLicense = "${logowork}beautician/addBusinessLicense";
+  static String getLicenseDetails = "${logowork}beautician/getLicenseDetails";
 
   ///Appointments
   static String getUpcomingAppointmentList =
