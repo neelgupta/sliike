@@ -132,4 +132,5 @@ class ApiUrlList {
   static String saveAmenities = "${baseUrl}beautician/saveAmenities";
   static String getHealthSafetyList = "${baseUrl}option/getHealthSafetyList";
   static String saveHealthSafety = "${baseUrl}beautician/saveHealthSafety";
+  static String addMyDemographics = "${baseUrl}beautician/addMyDemographics";
 }

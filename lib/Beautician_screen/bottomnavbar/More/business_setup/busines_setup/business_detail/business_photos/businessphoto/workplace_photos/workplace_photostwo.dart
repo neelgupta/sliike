@@ -44,12 +44,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   String thirdNetworkImage = "";
   String fourthNetworkImage = "";
   List<File> files=[];
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getimages();
+    // getimages();
   }
 
   @override
@@ -118,31 +119,132 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
           ),
         ),
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xff01635D),
-              ),
-            )
-          : SingleChildScrollView(
+      body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //
+                    //   },
+                    //   child: Container(
+                    //       width: width,
+                    //       height: 150,
+                    //       decoration: BoxDecoration(
+                    //           image: fristimagestatus
+                    //               ? DecorationImage(
+                    //               image:
+                    //               FileImage(File(firstimagestring)))
+                    //               : firstNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)):
+                    //           DecorationImage(
+                    //               image: AssetImage(
+                    //                   "assets/images/Rectangle_greyline.png"),
+                    //               fit: BoxFit.fill)),
+                    //       child: fristimagestatus
+                    //           ? Stack(
+                    //         children: [
+                    //           Positioned(
+                    //             right: 50,
+                    //             child: GestureDetector(
+                    //               onTap: () async {
+                    //                 XFile? selectedImages =
+                    //                 await _picker.pickImage(
+                    //                     source:
+                    //                     ImageSource.gallery);
+                    //                 if (selectedImages != null) {
+                    //                   setState(() {
+                    //                     fristimage =
+                    //                         File(selectedImages.path);
+                    //                     firstimagestring =
+                    //                         selectedImages.path;
+                    //                     fristimagestatus = true;
+                    //                     print(fristimagestatus);
+                    //                   });
+                    //                 }
+                    //               },
+                    //               child: Container(
+                    //                 width: 30,
+                    //                 height: 30,
+                    //                 decoration: BoxDecoration(
+                    //                   color: Color(0xffFFFFFF),
+                    //                   borderRadius:
+                    //                   BorderRadius.circular(5),
+                    //                   border: Border.all(
+                    //                       color: Color(0xffE7E7E7),
+                    //                       width: 1),
+                    //                 ),
+                    //                 child: Padding(
+                    //                   padding:
+                    //                   const EdgeInsets.all(8.0),
+                    //                   child: Image.asset(
+                    //                       "assets/images/edit_grey.png"),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Positioned(
+                    //             right: 10,
+                    //             child: GestureDetector(
+                    //               onTap: () {
+                    //                 setState(() {
+                    //                   firstimagestring = "";
+                    //                   fristimagestatus = false;
+                    //                 });
+                    //               },
+                    //               child: Container(
+                    //                 width: 30,
+                    //                 height: 30,
+                    //                 decoration: BoxDecoration(
+                    //                   color: Color(0xffFFFFFF),
+                    //                   borderRadius:
+                    //                   BorderRadius.circular(5),
+                    //                   border: Border.all(
+                    //                       color: Color(0xffE7E7E7),
+                    //                       width: 1),
+                    //                 ),
+                    //                 child: Padding(
+                    //                   padding:
+                    //                   const EdgeInsets.all(8.0),
+                    //                   child: Image.asset(
+                    //                       "assets/images/delete.png"),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           )
+                    //         ],
+                    //       )
+                    //           : Column(
+                    //         crossAxisAlignment:
+                    //         CrossAxisAlignment.center,
+                    //         mainAxisAlignment:
+                    //         MainAxisAlignment.center,
+                    //         children: [
+                    //           Center(
+                    //             child: Image(
+                    //               height: 40,
+                    //               image: AssetImage(
+                    //                   "assets/images/camera_grey.png"),
+                    //             ),
+                    //           ),
+                    //           SizedBox(
+                    //             height: 5,
+                    //           ),
+                    //           textComoon("Add Logo", 12,
+                    //               Color(0xff414141), FontWeight.w500),
+                    //         ],
+                    //       )),
+                    // ),
+                    SizedBox(height: height * 0.03,),
                     textComoonfade(
                         "Show clients what your space looks like before they show up at your door.",
                         12,
                         Color(0xff414141),
                         FontWeight.w500),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Divider(
-                        thickness: 1,
-                        color: Color(0xffCFCFCF),
-                      ),
+                    const SizedBox(height: 10),
+                    Divider(
+                      thickness: 1,
+                      color: Color(0xffCFCFCF),
                     ),
                     SizedBox(
                       height: height * 0.03,
@@ -157,1070 +259,920 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  alignment: Alignment.bottomCenter,
-                                  insetPadding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 30),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  title: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
-                                      CommonButton(
-                                          context,
-                                          "TAKE A PHOTO",
-                                          12,
-                                          FontWeight.w600,
-                                          Colors.white, () async {
-                                        Navigator.pop(context);
-                                        final XFile? photo =
-                                            await _picker.pickImage(
-                                                source: ImageSource.camera);
-                                        if (photo != null) {
-                                          fristimage = File(photo.path);
-                                          firstimagestring = photo.path;
-                                          fristimagestatus = true;
-                                          setState(() {});
-                                        }
-                                      }),
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
-                                      CommonButton(
-                                          context,
-                                          "CHOOSE FROM GALLERY",
-                                          12,
-                                          FontWeight.w600,
-                                          Colors.white, () async {
-                                        Navigator.pop(context);
-                                        XFile? selectedImages =
-                                            await _picker.pickImage(
-                                                source: ImageSource.gallery);
-                                        if (selectedImages != null) {
-                                          setState(() {
-                                            fristimage =
-                                                File(selectedImages.path);
-                                            firstimagestring =
-                                                selectedImages.path;
-                                            fristimagestatus = true;
-                                            print(fristimagestatus);
-                                          });
-                                        }
-                                      }),
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
-                                      commonButtonborder(
-                                          context,
-                                          "CANCEL",
-                                          12,
-                                          FontWeight.w600,
-                                          Color(0xff01635D), () {
-                                        Navigator.pop(context);
-                                      }),
-                                      SizedBox(
-                                        height: height * 0.03,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
+                    /// Photo Widget ///
+                    Container(
+                        width: width,
+                        height: 180,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                        child: InkWell(
+                          onTap: (){
+                            _sheet();
                           },
-                          child: Container(
-                              width: width,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                  image: fristimagestatus
-                                      ? DecorationImage(
-                                          image:
-                                              FileImage(File(firstimagestring)))
-                                      : firstNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)):
-                                  DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/Rectangle_greyline.png"),
-                                          fit: BoxFit.fill)),
-                              child: fristimagestatus
-                                  ? Stack(
-                                      children: [
-                                        Positioned(
-                                          right: 50,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              XFile? selectedImages =
-                                                  await _picker.pickImage(
-                                                      source:
-                                                          ImageSource.gallery);
-                                              if (selectedImages != null) {
-                                                setState(() {
-                                                  fristimage =
-                                                      File(selectedImages.path);
-                                                  firstimagestring =
-                                                      selectedImages.path;
-                                                  fristimagestatus = true;
-                                                  print(fristimagestatus);
-                                                });
-                                              }
-                                            },
-                                            child: Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration: BoxDecoration(
-                                                color: Color(0xffFFFFFF),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                border: Border.all(
-                                                    color: Color(0xffE7E7E7),
-                                                    width: 1),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                    "assets/images/edit_grey.png"),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 10,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                firstimagestring = "";
-                                                fristimagestatus = false;
-                                              });
-                                            },
-                                            child: Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration: BoxDecoration(
-                                                color: Color(0xffFFFFFF),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                border: Border.all(
-                                                    color: Color(0xffE7E7E7),
-                                                    width: 1),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                    "assets/images/delete.png"),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Image(
-                                            height: 40,
-                                            image: AssetImage(
-                                                "assets/images/camera_grey.png"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        textComoon("Add Logo", 12,
-                                            Color(0xff414141), FontWeight.w500),
-                                      ],
-                                    )),
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            fristimagestatus
-                                ? Container(
-                                    width: width * 0.43,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              alignment: Alignment.bottomCenter,
-                                              insetPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 30),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
-                                              title: Column(
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "TAKE A PHOTO",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-                                                    if (photo != null) {
-                                                      fristimage =
-                                                          File(photo.path);
-                                                      firstimagestring =
-                                                          photo.path;
-                                                      fristimagestatus = true;
-                                                      setState(() {});
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "CHOOSE FROM GALLERY",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
-                                                    if (selectedImages != null) {
-                                                      setState(() {
-                                                        fristimage = File(selectedImages.path);
-                                                        firstimagestring = selectedImages.path;
-                                                        fristimagestatus = true;
-                                                        print(fristimagestatus);
-                                                      });
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  commonButtonborder(
-                                                      context,
-                                                      "CANCEL",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Color(0xff01635D), () {
-                                                    Navigator.pop(context);
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.03,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                          width: width,
-                                          height: 180,
-                                          decoration: BoxDecoration(
-                                              image: fristimagestatus
-                                                  ? DecorationImage(
-                                                      image: FileImage(File(
-                                                          firstimagestring)))
-                                                  : firstNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(firstNetworkImage)):
-                                              DecorationImage(
-                                                      image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                                          child: secoundimagestatus
-                                              ? Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      right: 50,
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          XFile?
-                                                              selectedImages =
-                                                              await _picker.pickImage(
-                                                                  source: ImageSource
-                                                                      .gallery);
-                                                          if (selectedImages !=
-                                                              null) {
-                                                            setState(() {
-                                                              secoundimage = File(
-                                                                  selectedImages
-                                                                      .path);
-                                                              secoundimagestring =
-                                                                  selectedImages
-                                                                      .path;
-                                                              secoundimagestatus =
-                                                                  true;
-                                                              print(
-                                                                  fristimagestatus);
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/edit_grey.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      right: 10,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            secoundimagestring =
-                                                                "";
-                                                            secoundimagestatus =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/delete.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              : Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Center(
-                                                      child: Image(
-                                                        height: 40,
-                                                        image: AssetImage(
-                                                            "assets/images/camera_grey.png"),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    textComoon(
-                                                        "Add Logo",
-                                                        12,
-                                                        Color(0xff414141),
-                                                        FontWeight.w500),
-                                                  ],
-                                                )),
-                                    ),
-                                  )
-                                : SizedBox(),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            secoundimagestatus
-                                ? Container(
-                                    width: width * 0.43,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              alignment: Alignment.bottomCenter,
-                                              insetPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 30),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
-                                              title: Column(
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "TAKE A PHOTO",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    final XFile? photo =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .camera);
-                                                    if (photo != null) {
-                                                      secoundimage =
-                                                          File(photo.path);
-                                                      secoundimagestring =
-                                                          photo.path;
-                                                      secoundimagestatus = true;
-                                                      setState(() {});
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "CHOOSE FROM GALLERY",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    XFile? selectedImages =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery);
-                                                    if (selectedImages !=
-                                                        null) {
-                                                      setState(() {
-                                                        secoundimage = File(
-                                                            selectedImages
-                                                                .path);
-                                                        secoundimagestring =
-                                                            selectedImages.path;
-                                                        secoundimagestatus = true;
-                                                        print(fristimagestatus);
-                                                      });
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  commonButtonborder(
-                                                      context,
-                                                      "CANCEL",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Color(0xff01635D), () {
-                                                    Navigator.pop(context);
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.03,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                          width: width,
-                                          height: 180,
-                                          decoration: BoxDecoration(
-                                              image: threeimagestatus
-                                                  ? DecorationImage(
-                                                      image: FileImage(File(secoundimagestring)))
-                                                  :secondNetworkImage.isNotEmpty?
-                                              DecorationImage(image: NetworkImage(secondNetworkImage)):
-                                              DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                                          child: secoundimagestatus
-                                              ? Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      right: 50,
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          XFile?
-                                                              selectedImages =
-                                                              await _picker.pickImage(
-                                                                  source: ImageSource
-                                                                      .gallery);
-                                                          if (selectedImages !=
-                                                              null) {
-                                                            setState(() {
-                                                              secoundimage = File(
-                                                                  selectedImages
-                                                                      .path);
-                                                              secoundimagestring =
-                                                                  selectedImages
-                                                                      .path;
-                                                              secoundimagestatus =
-                                                                  true;
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/edit_grey.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      right: 10,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            secoundimagestring =
-                                                                "";
-                                                            secoundimagestatus =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/delete.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              : Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Center(
-                                                      child: Image(
-                                                        height: 40,
-                                                        image: AssetImage(
-                                                            "assets/images/camera_grey.png"),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    textComoon(
-                                                        "Add Logo",
-                                                        12,
-                                                        Color(0xff414141),
-                                                        FontWeight.w500),
-                                                  ],
-                                                )),
-                                    ),
-                                  )
-                                : SizedBox()
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            threeimagestatus
-                                ? Expanded(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              alignment: Alignment.bottomCenter,
-                                              insetPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 30),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
-                                              title: Column(
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "TAKE A PHOTO",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    final XFile? photo =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .camera);
-                                                    if (photo != null) {
-                                                      threeimage =
-                                                          File(photo.path);
-                                                      threeimagestring =
-                                                          photo.path;
-                                                      threeimagestatus = true;
-                                                      setState(() {});
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  CommonButton(
-                                                      context,
-                                                      "CHOOSE FROM GALLERY",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Colors.white, () async {
-                                                    Navigator.pop(context);
-                                                    XFile? selectedImages =
-                                                        await _picker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery);
-                                                    if (selectedImages !=
-                                                        null) {
-                                                      setState(() {
-                                                        threeimage = File(
-                                                            selectedImages
-                                                                .path);
-                                                        threeimagestring =
-                                                            selectedImages.path;
-                                                        threeimagestatus = true;
-                                                        print(fristimagestatus);
-                                                      });
-                                                    }
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.02,
-                                                  ),
-                                                  commonButtonborder(
-                                                      context,
-                                                      "CANCEL",
-                                                      12,
-                                                      FontWeight.w600,
-                                                      Color(0xff01635D), () {
-                                                    Navigator.pop(context);
-                                                  }),
-                                                  SizedBox(
-                                                    height: height * 0.03,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                          width: width,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              image: fourimagestatus
-                                                  ? DecorationImage(
-                                                      image: FileImage(File(
-                                                          threeimagestring)))
-                                                  :thirdNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(thirdNetworkImage)): DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/Rectangle_greyline.png"),
-                                                      fit: BoxFit.fill)),
-                                          child: threeimagestatus
-                                              ? Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      right: 50,
-                                                      child: GestureDetector(
-                                                        onTap: () async {
-                                                          XFile? selectedImages = await _picker.pickImage(
-                                                                  source: ImageSource
-                                                                      .gallery);
-                                                          if (selectedImages !=
-                                                              null) {
-                                                            setState(() {
-                                                              threeimage = File(
-                                                                  selectedImages
-                                                                      .path);
-                                                              threeimagestring =
-                                                                  selectedImages
-                                                                      .path;
-                                                              threeimagestatus =
-                                                                  true;
-                                                              print(
-                                                                  fristimagestatus);
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/edit_grey.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      right: 10,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            threeimagestring =
-                                                                "";
-                                                            threeimagestatus =
-                                                                false;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xffE7E7E7),
-                                                                width: 1),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Image.asset(
-                                                                "assets/images/delete.png"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )
-                                              : Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Center(
-                                                      child: Image(
-                                                        height: 40,
-                                                        image: AssetImage(
-                                                            "assets/images/camera_grey.png"),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    textComoon(
-                                                        "Add Logo",
-                                                        12,
-                                                        Color(0xff414141),
-                                                        FontWeight.w500),
-                                                  ],
-                                                )),
-                                    ),
-                                  )
-                                : SizedBox(),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            fourimagestatus
-                                ? Container(
-                              width: width * 0.43,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        alignment: Alignment.bottomCenter,
-                                        insetPadding:
-                                        EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 30),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.all(
-                                                Radius.circular(10))),
-                                        title: Column(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            CommonButton(
-                                                context,
-                                                "TAKE A PHOTO",
-                                                12,
-                                                FontWeight.w600,
-                                                Colors.white, () async {
-                                              Navigator.pop(context);
-                                              final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-                                              if (photo != null) {
-                                                fourimage =
-                                                    File(photo.path);
-                                                fourimagestring =
-                                                    photo.path;
-                                                fourimagestatus = true;
-                                                setState(() {});
-                                              }
-                                            }),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            CommonButton(
-                                                context,
-                                                "CHOOSE FROM GALLERY",
-                                                12,
-                                                FontWeight.w600,
-                                                Colors.white, () async {
-                                              Navigator.pop(context);
-                                              XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
-                                              if (selectedImages != null) {
-                                                setState(() {
-                                                  fourimage = File(selectedImages.path);
-                                                  fourimagestring = selectedImages.path;
-                                                  fourimagestatus = true;
-                                                  print(fristimagestatus);
-                                                });
-                                              }
-                                            }),
-                                            SizedBox(
-                                              height: height * 0.02,
-                                            ),
-                                            commonButtonborder(
-                                                context,
-                                                "CANCEL",
-                                                12,
-                                                FontWeight.w600,
-                                                Color(0xff01635D), () {
-                                              Navigator.pop(context);
-                                            }),
-                                            SizedBox(
-                                              height: height * 0.03,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                    width: width,
-                                    height: 180,
-                                    decoration: BoxDecoration(
-                                        image: fourimagestatus
-                                            ? DecorationImage(
-                                            image: FileImage(File(
-                                                firstimagestring)))
-                                            : fourthNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(fourthNetworkImage)):
-                                        DecorationImage(
-                                            image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                                    child: fourimagestatus
-                                        ? Stack(
-                                      children: [
-                                        Positioned(
-                                          right: 50,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              XFile?
-                                              selectedImages =
-                                              await _picker.pickImage(
-                                                  source: ImageSource
-                                                      .gallery);
-                                              if (selectedImages !=
-                                                  null) {
-                                                setState(() {
-                                                  fourimage = File(
-                                                      selectedImages
-                                                          .path);
-                                                  firstimagestring =
-                                                      selectedImages
-                                                          .path;
-                                                  fourimagestatus =
-                                                  true;
-                                                  print(
-                                                      fristimagestatus);
-                                                });
-                                              }
-                                            },
-                                            child: Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration:
-                                              BoxDecoration(
-                                                color: Color(
-                                                    0xffFFFFFF),
-                                                borderRadius:
-                                                BorderRadius
-                                                    .circular(
-                                                    5),
-                                                border: Border.all(
-                                                    color: Color(
-                                                        0xffE7E7E7),
-                                                    width: 1),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .all(8.0),
-                                                child: Image.asset(
-                                                    "assets/images/edit_grey.png"),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 10,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                firstimagestring =
-                                                "";
-                                                fourimagestatus =
-                                                false;
-                                              });
-                                            },
-                                            child: Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration:
-                                              BoxDecoration(
-                                                color: Color(
-                                                    0xffFFFFFF),
-                                                borderRadius:
-                                                BorderRadius
-                                                    .circular(
-                                                    5),
-                                                border: Border.all(
-                                                    color: Color(
-                                                        0xffE7E7E7),
-                                                    width: 1),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .all(8.0),
-                                                child: Image.asset(
-                                                    "assets/images/delete.png"),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                        : Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Image(
-                                            height: 40,
-                                            image: AssetImage(
-                                                "assets/images/camera_grey.png"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        textComoon(
-                                            "Add Logo",
-                                            12,
-                                            Color(0xff414141),
-                                            FontWeight.w500),
-                                      ],
-                                    )),
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Image(
+                                  height: 40,
+                                  image: AssetImage(
+                                      "assets/images/camera_grey.png"),
+                                ),
                               ),
-                            )
-                                : SizedBox(),
-                          ],
+                              SizedBox(
+                                height: 5,
+                              ),
+                              textComoon(
+                                  "Add Logo",
+                                  12,
+                                  Color(0xff414141),
+                                  FontWeight.w500),
+                            ],
+                          ),
                         )
-                      ],
                     ),
+                    // Column(
+                    //   children: [
+                    //     SizedBox(
+                    //       height: height * 0.02,
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         fristimagestatus
+                    //             ? Container(
+                    //                 width: width * 0.43,
+                    //                 child: GestureDetector(
+                    //                   onTap: () {
+                    //                     showDialog(
+                    //                       context: context,
+                    //                       builder: (context) {
+                    //                         return AlertDialog(
+                    //                           alignment: Alignment.bottomCenter,
+                    //                           insetPadding:
+                    //                               EdgeInsets.symmetric(
+                    //                                   horizontal: 20,
+                    //                                   vertical: 30),
+                    //                           shape: RoundedRectangleBorder(
+                    //                               borderRadius:
+                    //                                   BorderRadius.all(
+                    //                                       Radius.circular(10))),
+                    //                           title: Column(
+                    //                             children: <Widget>[
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "TAKE A PHOTO",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+                    //                                 if (photo != null) {
+                    //                                   fristimage =
+                    //                                       File(photo.path);
+                    //                                   firstimagestring =
+                    //                                       photo.path;
+                    //                                   fristimagestatus = true;
+                    //                                   setState(() {});
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "CHOOSE FROM GALLERY",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
+                    //                                 if (selectedImages != null) {
+                    //                                   setState(() {
+                    //                                     fristimage = File(selectedImages.path);
+                    //                                     firstimagestring = selectedImages.path;
+                    //                                     fristimagestatus = true;
+                    //                                     print(fristimagestatus);
+                    //                                   });
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               commonButtonborder(
+                    //                                   context,
+                    //                                   "CANCEL",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Color(0xff01635D), () {
+                    //                                 Navigator.pop(context);
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.03,
+                    //                               ),
+                    //                             ],
+                    //                           ),
+                    //                         );
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                   child: Container(
+                    //                       width: width,
+                    //                       height: 180,
+                    //                       decoration: BoxDecoration(
+                    //                           image: fristimagestatus
+                    //                               ? DecorationImage(
+                    //                                   image: FileImage(File(
+                    //                                       firstimagestring)))
+                    //                               : firstNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(firstNetworkImage)):
+                    //                           DecorationImage(
+                    //                                   image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                    //                       child: fristimagestatus
+                    //                           ? Stack(
+                    //                               children: [
+                    //                                 Positioned(
+                    //                                   right: 50,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () async {
+                    //                                       XFile?
+                    //                                           selectedImages =
+                    //                                           await _picker.pickImage(
+                    //                                               source: ImageSource
+                    //                                                   .gallery);
+                    //                                       if (selectedImages !=
+                    //                                           null) {
+                    //                                         setState(() {
+                    //                                           fristimage = File(
+                    //                                               selectedImages
+                    //                                                   .path);
+                    //                                           firstimagestring =
+                    //                                               selectedImages
+                    //                                                   .path;
+                    //                                           fristimagestatus =
+                    //                                               true;
+                    //                                           print(
+                    //                                               fristimagestatus);
+                    //                                         });
+                    //                                       }
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/edit_grey.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 ),
+                    //                                 Positioned(
+                    //                                   right: 10,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () {
+                    //                                       setState(() {
+                    //                                         firstimagestring =
+                    //                                             "";
+                    //                                         fristimagestatus =
+                    //                                             false;
+                    //                                       });
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/delete.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 )
+                    //                               ],
+                    //                             )
+                    //                           : Column(
+                    //                               crossAxisAlignment:
+                    //                                   CrossAxisAlignment.center,
+                    //                               mainAxisAlignment:
+                    //                                   MainAxisAlignment.center,
+                    //                               children: [
+                    //                                 Center(
+                    //                                   child: Image(
+                    //                                     height: 40,
+                    //                                     image: AssetImage(
+                    //                                         "assets/images/camera_grey.png"),
+                    //                                   ),
+                    //                                 ),
+                    //                                 SizedBox(
+                    //                                   height: 5,
+                    //                                 ),
+                    //                                 textComoon(
+                    //                                     "Add Logo",
+                    //                                     12,
+                    //                                     Color(0xff414141),
+                    //                                     FontWeight.w500),
+                    //                               ],
+                    //                             )),
+                    //                 ),
+                    //               )
+                    //             : SizedBox(),
+                    //         SizedBox(
+                    //           width: width * 0.02,
+                    //         ),
+                    //         secoundimagestatus
+                    //             ? Container(
+                    //                 width: width * 0.43,
+                    //                 child: GestureDetector(
+                    //                   onTap: () {
+                    //                     showDialog(
+                    //                       context: context,
+                    //                       builder: (context) {
+                    //                         return AlertDialog(
+                    //                           alignment: Alignment.bottomCenter,
+                    //                           insetPadding:
+                    //                               EdgeInsets.symmetric(
+                    //                                   horizontal: 20,
+                    //                                   vertical: 30),
+                    //                           shape: RoundedRectangleBorder(
+                    //                               borderRadius:
+                    //                                   BorderRadius.all(
+                    //                                       Radius.circular(10))),
+                    //                           title: Column(
+                    //                             children: <Widget>[
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "TAKE A PHOTO",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 final XFile? photo =
+                    //                                     await _picker.pickImage(
+                    //                                         source: ImageSource
+                    //                                             .camera);
+                    //                                 if (photo != null) {
+                    //                                   secoundimage =
+                    //                                       File(photo.path);
+                    //                                   secoundimagestring =
+                    //                                       photo.path;
+                    //                                   secoundimagestatus = true;
+                    //                                   setState(() {});
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "CHOOSE FROM GALLERY",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 XFile? selectedImages =
+                    //                                     await _picker.pickImage(
+                    //                                         source: ImageSource
+                    //                                             .gallery);
+                    //                                 if (selectedImages !=
+                    //                                     null) {
+                    //                                   setState(() {
+                    //                                     secoundimage = File(
+                    //                                         selectedImages
+                    //                                             .path);
+                    //                                     secoundimagestring =
+                    //                                         selectedImages.path;
+                    //                                     secoundimagestatus = true;
+                    //                                     print(fristimagestatus);
+                    //                                   });
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               commonButtonborder(
+                    //                                   context,
+                    //                                   "CANCEL",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Color(0xff01635D), () {
+                    //                                 Navigator.pop(context);
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.03,
+                    //                               ),
+                    //                             ],
+                    //                           ),
+                    //                         );
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                   child: Container(
+                    //                       width: width,
+                    //                       height: 180,
+                    //                       decoration: BoxDecoration(
+                    //                           image: secoundimagestatus
+                    //                               ? DecorationImage(
+                    //                                   image: FileImage(File(secoundimagestring)))
+                    //                               :secondNetworkImage.isNotEmpty?
+                    //                           DecorationImage(image: NetworkImage(secondNetworkImage)):
+                    //                           DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                    //                       child: secoundimagestatus
+                    //                           ? Stack(
+                    //                               children: [
+                    //                                 Positioned(
+                    //                                   right: 50,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () async {
+                    //                                       XFile?
+                    //                                           selectedImages =
+                    //                                           await _picker.pickImage(
+                    //                                               source: ImageSource
+                    //                                                   .gallery);
+                    //                                       if (selectedImages !=
+                    //                                           null) {
+                    //                                         setState(() {
+                    //                                           secoundimage = File(
+                    //                                               selectedImages
+                    //                                                   .path);
+                    //                                           secoundimagestring =
+                    //                                               selectedImages
+                    //                                                   .path;
+                    //                                           secoundimagestatus =
+                    //                                               true;
+                    //                                         });
+                    //                                       }
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/edit_grey.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 ),
+                    //                                 Positioned(
+                    //                                   right: 10,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () {
+                    //                                       setState(() {
+                    //                                         secoundimagestring =
+                    //                                             "";
+                    //                                         secoundimagestatus =
+                    //                                             false;
+                    //                                       });
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/delete.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 )
+                    //                               ],
+                    //                             )
+                    //                           : Column(
+                    //                               crossAxisAlignment:
+                    //                                   CrossAxisAlignment.center,
+                    //                               mainAxisAlignment:
+                    //                                   MainAxisAlignment.center,
+                    //                               children: [
+                    //                                 Center(
+                    //                                   child: Image(
+                    //                                     height: 40,
+                    //                                     image: AssetImage(
+                    //                                         "assets/images/camera_grey.png"),
+                    //                                   ),
+                    //                                 ),
+                    //                                 SizedBox(
+                    //                                   height: 5,
+                    //                                 ),
+                    //                                 textComoon(
+                    //                                     "Add Logo",
+                    //                                     12,
+                    //                                     Color(0xff414141),
+                    //                                     FontWeight.w500),
+                    //                               ],
+                    //                             )),
+                    //                 ),
+                    //               )
+                    //             : SizedBox()
+                    //       ],
+                    //     ),
+                    //     SizedBox(
+                    //       height: height * 0.02,
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         threeimagestatus
+                    //             ? Expanded(
+                    //                 child: GestureDetector(
+                    //                   onTap: () {
+                    //                     showDialog(
+                    //                       context: context,
+                    //                       builder: (context) {
+                    //                         return AlertDialog(
+                    //                           alignment: Alignment.bottomCenter,
+                    //                           insetPadding:
+                    //                               EdgeInsets.symmetric(
+                    //                                   horizontal: 20,
+                    //                                   vertical: 30),
+                    //                           shape: RoundedRectangleBorder(
+                    //                               borderRadius:
+                    //                                   BorderRadius.all(
+                    //                                       Radius.circular(10))),
+                    //                           title: Column(
+                    //                             children: <Widget>[
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "TAKE A PHOTO",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 final XFile? photo =
+                    //                                     await _picker.pickImage(
+                    //                                         source: ImageSource
+                    //                                             .camera);
+                    //                                 if (photo != null) {
+                    //                                   threeimage =
+                    //                                       File(photo.path);
+                    //                                   threeimagestring =
+                    //                                       photo.path;
+                    //                                   threeimagestatus = true;
+                    //                                   setState(() {});
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               CommonButton(
+                    //                                   context,
+                    //                                   "CHOOSE FROM GALLERY",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Colors.white, () async {
+                    //                                 Navigator.pop(context);
+                    //                                 XFile? selectedImages =
+                    //                                     await _picker.pickImage(
+                    //                                         source: ImageSource
+                    //                                             .gallery);
+                    //                                 if (selectedImages !=
+                    //                                     null) {
+                    //                                   setState(() {
+                    //                                     threeimage = File(
+                    //                                         selectedImages
+                    //                                             .path);
+                    //                                     threeimagestring =
+                    //                                         selectedImages.path;
+                    //                                     threeimagestatus = true;
+                    //                                     print(fristimagestatus);
+                    //                                   });
+                    //                                 }
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.02,
+                    //                               ),
+                    //                               commonButtonborder(
+                    //                                   context,
+                    //                                   "CANCEL",
+                    //                                   12,
+                    //                                   FontWeight.w600,
+                    //                                   Color(0xff01635D), () {
+                    //                                 Navigator.pop(context);
+                    //                               }),
+                    //                               SizedBox(
+                    //                                 height: height * 0.03,
+                    //                               ),
+                    //                             ],
+                    //                           ),
+                    //                         );
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                   child: Container(
+                    //                       width: width,
+                    //                       height: 150,
+                    //                       decoration: BoxDecoration(
+                    //                           image: fourimagestatus
+                    //                               ? DecorationImage(
+                    //                                   image: FileImage(File(
+                    //                                       threeimagestring)))
+                    //                               :thirdNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(thirdNetworkImage)): DecorationImage(
+                    //                                   image: AssetImage(
+                    //                                       "assets/images/Rectangle_greyline.png"),
+                    //                                   fit: BoxFit.fill)),
+                    //                       child: threeimagestatus
+                    //                           ? Stack(
+                    //                               children: [
+                    //                                 Positioned(
+                    //                                   right: 50,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () async {
+                    //                                       XFile? selectedImages = await _picker.pickImage(
+                    //                                               source: ImageSource
+                    //                                                   .gallery);
+                    //                                       if (selectedImages !=
+                    //                                           null) {
+                    //                                         setState(() {
+                    //                                           threeimage = File(
+                    //                                               selectedImages
+                    //                                                   .path);
+                    //                                           threeimagestring =
+                    //                                               selectedImages
+                    //                                                   .path;
+                    //                                           threeimagestatus =
+                    //                                               true;
+                    //                                           print(
+                    //                                               fristimagestatus);
+                    //                                         });
+                    //                                       }
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/edit_grey.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 ),
+                    //                                 Positioned(
+                    //                                   right: 10,
+                    //                                   child: GestureDetector(
+                    //                                     onTap: () {
+                    //                                       setState(() {
+                    //                                         threeimagestring =
+                    //                                             "";
+                    //                                         threeimagestatus =
+                    //                                             false;
+                    //                                       });
+                    //                                     },
+                    //                                     child: Container(
+                    //                                       width: 30,
+                    //                                       height: 30,
+                    //                                       decoration:
+                    //                                           BoxDecoration(
+                    //                                         color: Color(
+                    //                                             0xffFFFFFF),
+                    //                                         borderRadius:
+                    //                                             BorderRadius
+                    //                                                 .circular(
+                    //                                                     5),
+                    //                                         border: Border.all(
+                    //                                             color: Color(
+                    //                                                 0xffE7E7E7),
+                    //                                             width: 1),
+                    //                                       ),
+                    //                                       child: Padding(
+                    //                                         padding:
+                    //                                             const EdgeInsets
+                    //                                                 .all(8.0),
+                    //                                         child: Image.asset(
+                    //                                             "assets/images/delete.png"),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 )
+                    //                               ],
+                    //                             )
+                    //                           : Column(
+                    //                               crossAxisAlignment:
+                    //                                   CrossAxisAlignment.center,
+                    //                               mainAxisAlignment:
+                    //                                   MainAxisAlignment.center,
+                    //                               children: [
+                    //                                 Center(
+                    //                                   child: Image(
+                    //                                     height: 40,
+                    //                                     image: AssetImage(
+                    //                                         "assets/images/camera_grey.png"),
+                    //                                   ),
+                    //                                 ),
+                    //                                 SizedBox(
+                    //                                   height: 5,
+                    //                                 ),
+                    //                                 textComoon(
+                    //                                     "Add Logo",
+                    //                                     12,
+                    //                                     Color(0xff414141),
+                    //                                     FontWeight.w500),
+                    //                               ],
+                    //                             )),
+                    //                 ),
+                    //               )
+                    //             : SizedBox(),
+                    //         SizedBox(
+                    //           width: width * 0.02,
+                    //         ),
+                    //         fourimagestatus
+                    //             ? Container(
+                    //           width: width * 0.43,
+                    //           child: GestureDetector(
+                    //             onTap: () {
+                    //               showDialog(
+                    //                 context: context,
+                    //                 builder: (context) {
+                    //                   return AlertDialog(
+                    //                     alignment: Alignment.bottomCenter,
+                    //                     insetPadding:
+                    //                     EdgeInsets.symmetric(
+                    //                         horizontal: 20,
+                    //                         vertical: 30),
+                    //                     shape: RoundedRectangleBorder(
+                    //                         borderRadius:
+                    //                         BorderRadius.all(
+                    //                             Radius.circular(10))),
+                    //                     title: Column(
+                    //                       children: <Widget>[
+                    //                         SizedBox(
+                    //                           height: height * 0.02,
+                    //                         ),
+                    //                         CommonButton(
+                    //                             context,
+                    //                             "TAKE A PHOTO",
+                    //                             12,
+                    //                             FontWeight.w600,
+                    //                             Colors.white, () async {
+                    //                           Navigator.pop(context);
+                    //                           final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+                    //                           if (photo != null) {
+                    //                             fourimage =
+                    //                                 File(photo.path);
+                    //                             fourimagestring =
+                    //                                 photo.path;
+                    //                             fourimagestatus = true;
+                    //                             setState(() {});
+                    //                           }
+                    //                         }),
+                    //                         SizedBox(
+                    //                           height: height * 0.02,
+                    //                         ),
+                    //                         CommonButton(
+                    //                             context,
+                    //                             "CHOOSE FROM GALLERY",
+                    //                             12,
+                    //                             FontWeight.w600,
+                    //                             Colors.white, () async {
+                    //                           Navigator.pop(context);
+                    //                           XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
+                    //                           if (selectedImages != null) {
+                    //                             setState(() {
+                    //                               fourimage = File(selectedImages.path);
+                    //                               fourimagestring = selectedImages.path;
+                    //                               fourimagestatus = true;
+                    //                               print(fristimagestatus);
+                    //                             });
+                    //                           }
+                    //                         }),
+                    //                         SizedBox(
+                    //                           height: height * 0.02,
+                    //                         ),
+                    //                         commonButtonborder(
+                    //                             context,
+                    //                             "CANCEL",
+                    //                             12,
+                    //                             FontWeight.w600,
+                    //                             Color(0xff01635D), () {
+                    //                           Navigator.pop(context);
+                    //                         }),
+                    //                         SizedBox(
+                    //                           height: height * 0.03,
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               );
+                    //             },
+                    //             child: Container(
+                    //                 width: width,
+                    //                 height: 180,
+                    //                 decoration: BoxDecoration(
+                    //                     image: fourimagestatus
+                    //                         ? DecorationImage(
+                    //                         image: FileImage(File(
+                    //                             fourimagestring)))
+                    //                         : fourthNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(fourthNetworkImage)):
+                    //                     DecorationImage(
+                    //                         image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
+                    //                 child: fourimagestatus
+                    //                     ? Stack(
+                    //                   children: [
+                    //                     Positioned(
+                    //                       right: 50,
+                    //                       child: GestureDetector(
+                    //                         onTap: () async {
+                    //                           XFile?
+                    //                           selectedImages =
+                    //                           await _picker.pickImage(
+                    //                               source: ImageSource
+                    //                                   .gallery);
+                    //                           if (selectedImages !=
+                    //                               null) {
+                    //                             setState(() {
+                    //                               fourimage = File(
+                    //                                   selectedImages
+                    //                                       .path);
+                    //                               fourimagestring =
+                    //                                   selectedImages
+                    //                                       .path;
+                    //                               fourimagestatus =
+                    //                               true;
+                    //                               print(
+                    //                                   fristimagestatus);
+                    //                             });
+                    //                           }
+                    //                         },
+                    //                         child: Container(
+                    //                           width: 30,
+                    //                           height: 30,
+                    //                           decoration:
+                    //                           BoxDecoration(
+                    //                             color: Color(
+                    //                                 0xffFFFFFF),
+                    //                             borderRadius:
+                    //                             BorderRadius
+                    //                                 .circular(
+                    //                                 5),
+                    //                             border: Border.all(
+                    //                                 color: Color(
+                    //                                     0xffE7E7E7),
+                    //                                 width: 1),
+                    //                           ),
+                    //                           child: Padding(
+                    //                             padding:
+                    //                             const EdgeInsets
+                    //                                 .all(8.0),
+                    //                             child: Image.asset(
+                    //                                 "assets/images/edit_grey.png"),
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                     Positioned(
+                    //                       right: 10,
+                    //                       child: GestureDetector(
+                    //                         onTap: () {
+                    //                           setState(() {
+                    //                             fourimagestring =
+                    //                             "";
+                    //                             fourimagestatus =
+                    //                             false;
+                    //                           });
+                    //                         },
+                    //                         child: Container(
+                    //                           width: 30,
+                    //                           height: 30,
+                    //                           decoration:
+                    //                           BoxDecoration(
+                    //                             color: Color(
+                    //                                 0xffFFFFFF),
+                    //                             borderRadius:
+                    //                             BorderRadius
+                    //                                 .circular(
+                    //                                 5),
+                    //                             border: Border.all(
+                    //                                 color: Color(
+                    //                                     0xffE7E7E7),
+                    //                                 width: 1),
+                    //                           ),
+                    //                           child: Padding(
+                    //                             padding:
+                    //                             const EdgeInsets
+                    //                                 .all(8.0),
+                    //                             child: Image.asset(
+                    //                                 "assets/images/delete.png"),
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     )
+                    //                   ],
+                    //                 )
+                    //                     : Column(
+                    //                   crossAxisAlignment:
+                    //                   CrossAxisAlignment.center,
+                    //                   mainAxisAlignment:
+                    //                   MainAxisAlignment.center,
+                    //                   children: [
+                    //                     Center(
+                    //                       child: Image(
+                    //                         height: 40,
+                    //                         image: AssetImage(
+                    //                             "assets/images/camera_grey.png"),
+                    //                       ),
+                    //                     ),
+                    //                     SizedBox(
+                    //                       height: 5,
+                    //                     ),
+                    //                     textComoon(
+                    //                         "Add Logo",
+                    //                         12,
+                    //                         Color(0xff414141),
+                    //                         FontWeight.w500),
+                    //                   ],
+                    //                 )),
+                    //           ),
+                    //         )
+                    //             : SizedBox(),
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -1325,24 +1277,6 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     }
   }
 
-  // pickFiles() async {
-  //   try {
-  //
-  //     // FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true,allowedExtensions: ['jpg', 'png'],);
-  //
-  //     if (result != null) {
-  //       setState(() {
-  //         files = result.paths.map((path) => File(path!)).toList();
-  //       });
-  //     } else {
-  //       // User canceled the picker
-  //     }
-  //   } on PlatformException catch (e) {
-  //     print("Unsupported operation" + e.toString());
-  //   }
-  //   if (!mounted) return;
-  // }
-
   getimages() async {
     try {
       setState(() {
@@ -1402,6 +1336,85 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       });
     }
   }
+
+
+  Future _sheet() => showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        alignment: Alignment.bottomCenter,
+        insetPadding: EdgeInsets.symmetric(
+            horizontal: 20, vertical: 30),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+                Radius.circular(10))),
+        title: Column(
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            CommonButton(
+                context,
+                "TAKE A PHOTO",
+                12,
+                FontWeight.w600,
+                Colors.white, () async {
+              Navigator.pop(context);
+              final XFile? photo =
+              await _picker.pickImage(
+                  source: ImageSource.camera);
+              if (photo != null) {
+                // fristimage = File(photo.path);
+                // firstimagestring = photo.path;
+                // fristimagestatus = true;
+                setState(() {});
+              }
+            }),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            CommonButton(
+                context,
+                "CHOOSE FROM GALLERY",
+                12,
+                FontWeight.w600,
+                Colors.white, () async {
+              Navigator.pop(context);
+              XFile? selectedImages =
+              await _picker.pickImage(
+                  source: ImageSource.gallery);
+              if (selectedImages != null) {
+                setState(() {
+                  fristimage =
+                      File(selectedImages.path);
+                  firstimagestring =
+                      selectedImages.path;
+                  fristimagestatus = true;
+                  print(fristimagestatus);
+                });
+              }
+            }),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            commonButtonborder(
+                context,
+                "CANCEL",
+                12,
+                FontWeight.w600,
+                Color(0xff01635D), () {
+              Navigator.pop(context);
+            }),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
+          ],
+        ),
+      );
+    },
+  );
+
+
 }
 
 class Workplacephotos {
@@ -1436,7 +1449,6 @@ class Workplacephotos {
             : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
-
 class Datum {
   String? id;
   String? uid;

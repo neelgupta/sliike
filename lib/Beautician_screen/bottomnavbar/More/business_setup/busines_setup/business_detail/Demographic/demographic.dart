@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/checkbox.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class demograPhic extends StatefulWidget { 
   const demograPhic({Key? key}) : super(key: key);
@@ -13,14 +20,21 @@ class demograPhic extends StatefulWidget {
 class _demograPhicState extends State<demograPhic> {
   bool checkboxvalue = false;
   int valuecheck=1;
+  bool isLoading = false;
+  getDemographyListData ? getDemography;
+  getDemographySelectedData ? selectedDemography;
+  List demographicsIds = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDemographyList();
+    getDemographySelected();
+  }
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width -
-        MediaQuery.of(context).padding.right -
-        MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.right - MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -83,7 +97,10 @@ class _demograPhicState extends State<demograPhic> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?
+      Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
+      getDemography!=null && getDemography!.data.length!=0?
+      SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -124,256 +141,264 @@ class _demograPhicState extends State<demograPhic> {
               SizedBox(
                 height: height * 0.025,
               ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon(
-                      "Black", 12, Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon("Hispanic/Latino", 12,
-                      Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon("Asian", 12, Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon("Indigenous (North America)", 12, Color(0xff292929),
-                      FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon(
-                      "White or Caucasian ", 12, Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon(
-                      "Mixed Race", 12, Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: Color(0xff01635D),
-                    borderColor: Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  textComoon(
-                      "Others", 12, Color(0xff292929), FontWeight.w500),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: Divider(
-                  thickness: 1,
-                  color: Color(0xffCFCFCF),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
+              Container(
+                // color: Colors.red,
+                height: height * 0.4,
+                child: ListView.builder(
+                  itemCount: getDemography!.data.length,
+                  itemBuilder: (context, index) {
+                    log("getHealthSafetyData!.data[index].isSelected! : ${getDemography!.data[index].isSelected!}");
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Transform.scale(
+                              scale: 1.5,
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                activeColor: Color(0xff01635D),
+                                value: getDemography!.data[index].isSelected!,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    getDemography!.data[index].isSelected = value;
+                                    getDemography!.data[index].isSelected! ? demographicsIds.add(getDemography!.data[index].id) :
+                                    demographicsIds.remove(getDemography!.data[index].id);
+                                  });
+                                },),
+                            ),
 
-              SizedBox(
-                height: height * 0.01,
+                            // Custom_Checkbox(
+                            //   isChecked: amenity!.data[index].isSelected!,
+                            //   onChange: (value) {
+                            //     setState(() {
+                            //       amenity!.data[index].isSelected = value;
+                            //       amenity!.data[index].isSelected! ? amenityIds.add(amenity!.data[index].id) :
+                            //       amenityIds.remove(amenity!.data[index].id);
+                            //     });
+                            //   },
+                            //   backgroundColor: Color(0xff01635D),
+                            //   borderColor: Color(0xff01635D),
+                            //   icon: Icons.check,
+                            //   iconColor: Colors.white,
+                            //   size: 24,
+                            //   iconSize: 20,
+                            // ),
+                            SizedBox(width: 10,),
+                            textComoon("${getDemography!.data[index].name}",14,Color(0xff292929), FontWeight.w500),
+                          ],
+                        ),
+                        Padding(
+                          padding:  EdgeInsets.only(top: height*0.01),
+                          child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
+                        ),
+                        SizedBox(height: height*0.01,),
+                      ],
+                    ) ;
+                  },
+                ),
               ),
-
+              SizedBox(
+                height: height * 0.02,
+              ),
               CommonButton(
-                  context, "SAVE", 12, FontWeight.w600, Colors.white, () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return ();
-                // },));
-              }),
+                  context, "SAVE", 12, FontWeight.w600, Colors.white, () {addMyDemographics();}),
               SizedBox(height: height*0.02,),
-              commonButtonborderreadius(context,"PREFER NOT TO SHARE", 12, FontWeight.w600, Color(0xff01635D), () { }),
+              commonButtonborderreadius(context,"PREFER NOT TO SHARE", 12, FontWeight.w600, Color(0xff01635D), () {Navigator.pop(context);}),
               SizedBox(
                 height: height * 0.03,
               ),
             ],
           ),
         ),
-      ),
+      ):
+      Center(child: Text("No Data Found !!",style: TextStyle(fontWeight: FontWeight.bold),))
     );
+  }
+
+  getDemographyList() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var response = await http.get(
+          Uri.parse("https://sliike-server.onrender.com/api/v1/option/getDemography",)
+      );
+      log("getDemographyList Code ====> ${response.statusCode}");
+      log("getDemographyList Body ====>  ${response.body}");
+      Map map = jsonDecode(response.body);
+      if (map['status'] == 200) {
+        setState(() {
+          getDemography = getDemographyListData.fromjson(map);
+          isLoading = false;
+        });
+      }
+      else if(response.statusCode == 401){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return const signInScreen();
+        },), (route) => false);
+      }else{
+        // amenity = null;
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+
+  addMyDemographics() async {
+    setState(() {
+      isLoading = true;
+    });
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    print(Headers);
+    var Body = {
+      "demographicsIds" : demographicsIds,
+    };
+    var response = await http.post(
+      Uri.parse(ApiUrlList.addMyDemographics),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("addMyDemographics Code : ${response.statusCode}");
+    log("addMyDemographics Body : ${response.body}");
+    log("addMyDemographics PayLoad : ${Body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  getDemographySelected() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var Headers = {
+        "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      var getUri = Uri.parse(ApiUrlList.getAmenity);
+      var response = await http.get(
+          Uri.parse("https://sliike-server.onrender.com/api/v1/beautician/getMyDemographics",),
+          headers: Headers
+      );
+      log("getDemographySelected Code ====> ${response.statusCode}");
+      log("getDemographySelected Body ====>  ${response.body}");
+      Map map = jsonDecode(response.body);
+      if(map['status'] == 200) {
+        setState(() {
+          selectedDemography = getDemographySelectedData.fromjson(map);
+          isLoading = false;
+          for(int i = 0; i < getDemography!.data.length; i++){
+            for(int j = 0; j < selectedDemography!.data.length; j++){
+              if(selectedDemography!.data[i].id.toLowerCase() == getDemography!.data[i].id.toLowerCase()){
+                setState(() {
+                  getDemography!.data[i].isSelected = true;
+                });
+                log("getHealthSafetyData!.data[i].isSelected : ${getDemography!.data[i].isSelected}");
+              }
+            }
+          }
+        });
+      }
+      else if(response.statusCode == 401){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return const signInScreen();
+        },), (route) => false);
+      }else{
+        selectedDemography = null;
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+
+}
+
+class getDemographyListData{
+  int status;
+  String message;
+  List<Data>  data;
+  getDemographyListData(this.status, this.message,this.data);
+
+  factory getDemographyListData.fromjson(Map<dynamic,dynamic>map){
+    List list = map["data"];
+    List<Data> d = list.map((e) => Data.fromjson(e)).toList();
+    return getDemographyListData(map['status'], map['message'],d);
+  }
+}
+class Data{
+  String id;
+  String name;
+  int status;
+  bool? isSelected;
+  Data(this.id, this.name, this.status, {
+    this.isSelected = false,
+  });
+
+  factory Data.fromjson(Map<dynamic,dynamic>map){
+    return Data(map["_id"], map["demographyName"], map["status"]);
+  }
+}
+
+
+class getDemographySelectedData{
+  int status;
+  String message;
+  List<Data>  data;
+  getDemographySelectedData(this.status, this.message,this.data);
+
+  factory getDemographySelectedData.fromjson(Map<dynamic,dynamic>map){
+    List list = map["data"];
+    List<Data> d = list.map((e) => Data.fromjson(e)).toList();
+    return getDemographySelectedData(map['status'], map['message'],d);
+  }
+}
+class getData{
+  String id;
+  String name;
+  getData(this.id, this.name,);
+
+  factory getData.fromjson(Map<dynamic,dynamic>map){
+    return getData(map["_id"], map["name"],);
   }
 }

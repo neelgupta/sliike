@@ -35,6 +35,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
     super.initState();
     getHealthSafetyList();
     getHealthSafetySelected();
+    print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
 
   @override

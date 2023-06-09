@@ -4,6 +4,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:get/get.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import '../../../../../../../commonClass.dart';
 import '../../../../../../../utils/apiurllist.dart';
@@ -35,6 +36,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
   bool Websitestatus = false;
   String? timeformatvalue;
   String languagevalue = "English (UK)";
+  bool isLoading = false;
+  GetData? getmodelProfile;
 
   var languageitemslist = [
     "English (UK)",
@@ -59,6 +62,13 @@ class _business_Name_InfoState extends State<business_Name_Info> {
     "Friday",
     "Saturday"
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getBeauticianProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +134,10 @@ class _business_Name_InfoState extends State<business_Name_Info> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?
+      Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
+      getmodelProfile!=null?
+      SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.only(
@@ -665,7 +678,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
             ],
           ),
         ),
-      ),
+      ):
+      Center(child: Text("SomeThing Went Wrong !!",style: TextStyle(fontWeight: FontWeight.bold),))
     );
   }
 
@@ -725,4 +739,382 @@ class _business_Name_InfoState extends State<business_Name_Info> {
           fontSize: 16.0);
     }
   }
+
+  getBeauticianProfile() async {
+    var geturi = Uri.parse(ApiUrlList.getBeauticianProfile);
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      log("get profile url is  : $geturi");
+      log("res headers  : $headers");
+      var response = await http.get(
+        geturi,
+        headers: headers,
+      );
+      log("getApi response.body ==> ${response.body}");
+      log("getAPi status code ==> ${response.statusCode}");
+      Map map = jsonDecode(response.body);
+      if(map["status"] == 200){
+        getmodelProfile = GetData.fromJson(jsonDecode(response.body));
+        businessname.text = getmodelProfile!.data!.businessName!;
+        phonernumber.text = getmodelProfile!.data!.userId!.phoneNumber.toString();
+        email.text = getmodelProfile!.data!.userId!.email!;
+        Description.text = getmodelProfile!.data!.description!;
+        mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
+        languagevalue = getmodelProfile!.data!.language!;
+        Instagram.text = getmodelProfile!.data!.instagramUrl!;
+        Facebook.text = getmodelProfile!.data!.facebookUrl!;
+        Website.text = getmodelProfile!.data!.website!;
+        getmodelProfile!.data!.calenderSetting!.formate=="12"?
+        timeformatvalue = timeformatitems[0]:
+        timeformatvalue = timeformatitems[1];
+        isLoading = false;
+        setState(() {});
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+      // Loader.hide();
+    }
+  }
+
 }
+
+GetData getDataFromJson(String str) => GetData.fromJson(json.decode(str));
+
+String getDataToJson(GetData data) => json.encode(data.toJson());
+
+class GetData {
+  int? status;
+  bool? success;
+  Data? data;
+
+  GetData({
+    this.status,
+    this.success,
+    this.data,
+  });
+
+  factory GetData.fromJson(Map<String, dynamic> json) => GetData(
+    status: json["status"],
+    success: json["success"],
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "success": success,
+    "data": data?.toJson(),
+  };
+}
+
+class Data {
+  String? id;
+  UserId? userId;
+  String? uid;
+  String? firstName;
+  String? lastName;
+  List<String>? workSpaceImgs;
+  String? country;
+  String? countryCode;
+  List<String>? beauticianServiceId;
+  int? isProvideService;
+  int? isProvideProduct;
+  int? isRecommended;
+  int? totalEmployee;
+  List<String>? demographicIds;
+  List<String>? amenityIds;
+  HealthSafety? healthSafety;
+  int? hasShop;
+  int? isLicensed;
+  int? isServeAtClient;
+  int? isServeAtOwnPlace;
+  int? screenStatus;
+  int? isDeleted;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
+  Address? address;
+  String? businessName;
+  int? businessNumber;
+  Location? location;
+  CalenderSetting? calenderSetting;
+  String? description;
+  String? facebookUrl;
+  String? instagramUrl;
+  String? language;
+  String? website;
+  String? logo;
+  String? licenseImage;
+  int? cancelProtection;
+  int? noShowProtection;
+  dynamic profileImage;
+  bool? isStripeSetUp;
+
+  Data({
+    this.id,
+    this.userId,
+    this.uid,
+    this.firstName,
+    this.lastName,
+    this.workSpaceImgs,
+    this.country,
+    this.countryCode,
+    this.beauticianServiceId,
+    this.isProvideService,
+    this.isProvideProduct,
+    this.isRecommended,
+    this.totalEmployee,
+    this.demographicIds,
+    this.amenityIds,
+    this.healthSafety,
+    this.hasShop,
+    this.isLicensed,
+    this.isServeAtClient,
+    this.isServeAtOwnPlace,
+    this.screenStatus,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+    this.address,
+    this.businessName,
+    this.businessNumber,
+    this.location,
+    this.calenderSetting,
+    this.description,
+    this.facebookUrl,
+    this.instagramUrl,
+    this.language,
+    this.website,
+    this.logo,
+    this.licenseImage,
+    this.cancelProtection,
+    this.noShowProtection,
+    this.profileImage,
+    this.isStripeSetUp,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    id: json["_id"],
+    userId: json["userId"] == null ? null : UserId.fromJson(json["userId"]),
+    uid: json["uid"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
+    workSpaceImgs: json["workSpaceImgs"] == null ? [] : List<String>.from(json["workSpaceImgs"]!.map((x) => x)),
+    country: json["country"],
+    countryCode: json["country_code"],
+    beauticianServiceId: json["beauticianServiceId"] == null ? [] : List<String>.from(json["beauticianServiceId"]!.map((x) => x)),
+    isProvideService: json["isProvideService"],
+    isProvideProduct: json["isProvideProduct"],
+    isRecommended: json["isRecommended"],
+    totalEmployee: json["totalEmployee"],
+    demographicIds: json["demographicIds"] == null ? [] : List<String>.from(json["demographicIds"]!.map((x) => x)),
+    amenityIds: json["amenityIds"] == null ? [] : List<String>.from(json["amenityIds"]!.map((x) => x)),
+    healthSafety: json["healthSafety"] == null ? null : HealthSafety.fromJson(json["healthSafety"]),
+    hasShop: json["hasShop"],
+    isLicensed: json["isLicensed"],
+    isServeAtClient: json["IsServeAtClient"],
+    isServeAtOwnPlace: json["IsServeAtOwnPlace"],
+    screenStatus: json["screenStatus"],
+    isDeleted: json["isDeleted"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    v: json["__v"],
+    address: json["address"] == null ? null : Address.fromJson(json["address"]),
+    businessName: json["businessName"],
+    businessNumber: json["businessNumber"],
+    location: json["location"] == null ? null : Location.fromJson(json["location"]),
+    calenderSetting: json["calenderSetting"] == null ? null : CalenderSetting.fromJson(json["calenderSetting"]),
+    description: json["description"],
+    facebookUrl: json["facebookUrl"],
+    instagramUrl: json["instagramUrl"],
+    language: json["language"],
+    website: json["website"],
+    logo: json["logo"],
+    licenseImage: json["licenseImage"],
+    cancelProtection: json["cancelProtection"],
+    noShowProtection: json["noShowProtection"],
+    profileImage: json["profileImage"],
+    isStripeSetUp: json["isStripeSetUp"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "userId": userId?.toJson(),
+    "uid": uid,
+    "firstName": firstName,
+    "lastName": lastName,
+    "workSpaceImgs": workSpaceImgs == null ? [] : List<dynamic>.from(workSpaceImgs!.map((x) => x)),
+    "country": country,
+    "country_code": countryCode,
+    "beauticianServiceId": beauticianServiceId == null ? [] : List<dynamic>.from(beauticianServiceId!.map((x) => x)),
+    "isProvideService": isProvideService,
+    "isProvideProduct": isProvideProduct,
+    "isRecommended": isRecommended,
+    "totalEmployee": totalEmployee,
+    "demographicIds": demographicIds == null ? [] : List<dynamic>.from(demographicIds!.map((x) => x)),
+    "amenityIds": amenityIds == null ? [] : List<dynamic>.from(amenityIds!.map((x) => x)),
+    "healthSafety": healthSafety?.toJson(),
+    "hasShop": hasShop,
+    "isLicensed": isLicensed,
+    "IsServeAtClient": isServeAtClient,
+    "IsServeAtOwnPlace": isServeAtOwnPlace,
+    "screenStatus": screenStatus,
+    "isDeleted": isDeleted,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "__v": v,
+    "address": address?.toJson(),
+    "businessName": businessName,
+    "businessNumber": businessNumber,
+    "location": location?.toJson(),
+    "calenderSetting": calenderSetting?.toJson(),
+    "description": description,
+    "facebookUrl": facebookUrl,
+    "instagramUrl": instagramUrl,
+    "language": language,
+    "website": website,
+    "logo": logo,
+    "licenseImage": licenseImage,
+    "cancelProtection": cancelProtection,
+    "noShowProtection": noShowProtection,
+    "profileImage": profileImage,
+    "isStripeSetUp": isStripeSetUp,
+  };
+}
+
+class Address {
+  String? id;
+  String? address;
+  String? province;
+  String? apartment;
+  String? city;
+  String? zipCode;
+
+  Address({
+    this.id,
+    this.address,
+    this.province,
+    this.apartment,
+    this.city,
+    this.zipCode,
+  });
+
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
+    id: json["_id"],
+    address: json["address"],
+    province: json["province"],
+    apartment: json["apartment"],
+    city: json["city"],
+    zipCode: json["zipCode"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "address": address,
+    "province": province,
+    "apartment": apartment,
+    "city": city,
+    "zipCode": zipCode,
+  };
+}
+
+class CalenderSetting {
+  int? formate;
+  String? startDay;
+
+  CalenderSetting({
+    this.formate,
+    this.startDay,
+  });
+
+  factory CalenderSetting.fromJson(Map<String, dynamic> json) => CalenderSetting(
+    formate: json["formate"],
+    startDay: json["startDay"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "formate": formate,
+    "startDay": startDay,
+  };
+}
+
+class HealthSafety {
+  String? detailForClient;
+  List<dynamic>? healthId;
+
+  HealthSafety({
+    this.detailForClient,
+    this.healthId,
+  });
+
+  factory HealthSafety.fromJson(Map<String, dynamic> json) => HealthSafety(
+    detailForClient: json["detailForClient"],
+    healthId: json["healthId"] == null ? [] : List<dynamic>.from(json["healthId"]!.map((x) => x)),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "detailForClient": detailForClient,
+    "healthId": healthId == null ? [] : List<dynamic>.from(healthId!.map((x) => x)),
+  };
+}
+
+class Location {
+  String? type;
+  List<double>? coordinates;
+
+  Location({
+    this.type,
+    this.coordinates,
+  });
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+    type: json["type"],
+    coordinates: json["coordinates"] == null ? [] : List<double>.from(json["coordinates"]!.map((x) => x?.toDouble())),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "type": type,
+    "coordinates": coordinates == null ? [] : List<dynamic>.from(coordinates!.map((x) => x)),
+  };
+}
+
+class UserId {
+  String? id;
+  String? email;
+  int? phoneNumber;
+  int? isVerified;
+
+  UserId({
+    this.id,
+    this.email,
+    this.phoneNumber,
+    this.isVerified,
+  });
+
+  factory UserId.fromJson(Map<String, dynamic> json) => UserId(
+    id: json["_id"],
+    email: json["email"],
+    phoneNumber: json["phoneNumber"],
+    isVerified: json["isVerified"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "email": email,
+    "phoneNumber": phoneNumber,
+    "isVerified": isVerified,
+  };
+}
+
