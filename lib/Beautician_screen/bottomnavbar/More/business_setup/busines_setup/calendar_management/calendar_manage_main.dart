@@ -33,7 +33,6 @@ class _calendar_Mang_MainState extends State<calendar_Mang_Main> {
                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 10),
                 child: Container(
                   child: Row(
-
                     children: [
                       GestureDetector(
                         onTap: () {

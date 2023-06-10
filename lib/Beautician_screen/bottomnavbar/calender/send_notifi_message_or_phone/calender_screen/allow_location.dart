@@ -148,7 +148,6 @@ class _allow_locationState extends State<allow_location> {
                   selectionDecoration: const BoxDecoration(
                     // color: Color(0xff01635D),
                     shape: BoxShape.circle,
-
                     // border: Border.all(
                     //   color: const Color(0xFFDD6A03),
                     // ),
@@ -196,7 +195,7 @@ class _allow_locationState extends State<allow_location> {
                   cellBorderColor: Colors.transparent,
                   view: CalendarView.month,
                   backgroundColor: Colors.white,
-                  todayHighlightColor: const Color(0xff01635D),
+                  // todayHighlightColor: const Color(0xff01635D),
                   monthViewSettings: const MonthViewSettings(
                     monthCellStyle: MonthCellStyle(
                       textStyle: TextStyle(

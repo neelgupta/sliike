@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
-
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import '../../../../../custom_widget/textcommon/textcommon.dart';
 
 class calendar_Adjustment extends StatefulWidget {
@@ -11,8 +12,15 @@ class calendar_Adjustment extends StatefulWidget {
   @override
   State<calendar_Adjustment> createState() => _calendar_AdjustmentState();
 }
-
 class _calendar_AdjustmentState extends State<calendar_Adjustment> {
+  final CalendarController _calendarController = CalendarController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -25,7 +33,6 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -35,10 +42,10 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 10),
                 child: Container(
                   child: Row(
-
                     children: [
                       GestureDetector(
                         onTap: () {
+                          print(Helper.prefs!.getString(UserPrefs.keyutoken));
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -53,7 +60,6 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                                 child: Image(
                                   image:
                                   AssetImage("assets/images/cancel.png"),
-
                                 )),
                           ),
                         ),
@@ -81,18 +87,22 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           SfCalendar(
-              headerHeight: 70,
+              viewHeaderHeight: 50,
+              headerHeight: 50,
               headerStyle: CalendarHeaderStyle(
                   textAlign: TextAlign.center,
                   textStyle: TextStyle(fontFamily: 'spartan',fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20,)
               ),
-              todayTextStyle: TextStyle(fontFamily: 'spartan'),
+              todayTextStyle: TextStyle(fontFamily: 'spartan',color: Colors.white),
               cellBorderColor: Colors.transparent,
               view: CalendarView.month,
+              controller: _calendarController,
+              onTap: (calendarTapDetails) => Navigator.push(context, MaterialPageRoute(builder: (context) => add_Your_Work_Hours(secondflow: false,),)),
               selectionDecoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff01635D))
+                // color: Color(0xff01635D),
+                shape: BoxShape.circle,
+                border: Border.all(width: 2,color: Color(0xff01635D)),
               ),
               todayHighlightColor: Color(0xff01635D),
               monthViewSettings: MonthViewSettings(

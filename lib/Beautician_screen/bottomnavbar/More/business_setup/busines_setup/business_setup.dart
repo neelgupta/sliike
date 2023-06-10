@@ -165,43 +165,43 @@ class _business_SetUpState extends State<business_SetUp> {
               //     ),
               //   ),
               // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20,right: 20),
-              //   child: InkWell(
-              //     onTap: (){
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //         return calendar_Mang_Main();
-              //       },));
-              //
-              //     },
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(vertical: 17,),
-              //       decoration: BoxDecoration(
-              //           border: Border(bottom: BorderSide(color: Colors.black12))
-              //       ),
-              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //
-              //           Expanded(
-              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 textComoon("Calendar Management",14,Color(0xff292929), FontWeight.w700),
-              //                 SizedBox(height: height*0.01,),
-              //                 textComoonfade("Here is where you can update your availability for clients to see and book your services.",10,Color(0xff707070), FontWeight.w500),
-              //               ],
-              //             ),
-              //           ),
-              //
-              //           Container(alignment: Alignment.topRight,
-              //             height: 15,
-              //             width: 30,
-              //             child: Image.asset("assets/images/righticon.png"),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return calendar_Mang_Main();
+                    },));
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 17,),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.black12))
+                    ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textComoon("Calendar Management",14,Color(0xff292929), FontWeight.w700),
+                              SizedBox(height: height*0.01,),
+                              textComoonfade("Here is where you can update your availability for clients to see and book your services.",10,Color(0xff707070), FontWeight.w500),
+                            ],
+                          ),
+                        ),
+
+                        Container(alignment: Alignment.topRight,
+                          height: 15,
+                          width: 30,
+                          child: Image.asset("assets/images/righticon.png"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {

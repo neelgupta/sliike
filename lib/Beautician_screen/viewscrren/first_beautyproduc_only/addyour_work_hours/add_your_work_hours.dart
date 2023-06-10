@@ -8,15 +8,16 @@ import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/addwork_hours_save_or_thanks_page.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/breaktime_select_page.dart';
+import '../../../bottomnavbar/More/business_setup/busines_setup/calendar_management/busines_hours.dart';
 import '../../../custom_widget/checkbox.dart';
 
 // ignore: camel_case_types
 class add_Your_Work_Hours extends StatefulWidget {
-  const add_Your_Work_Hours({
-    Key? key,
-    required this.secondflow,
-  }) : super(key: key);
+  add_Your_Work_Hours({Key? key,required this.secondflow,this.Day,this.startTime,this.endTime}) : super(key: key);
   final bool secondflow;
+  String ? Day;
+  String  ? startTime;
+  String  ? endTime;
 
   @override
   State<add_Your_Work_Hours> createState() => _add_Your_Work_HoursState();
@@ -32,6 +33,10 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
 
   int startTimeIndex = 0;
   int endTimeIndex = 0;
+
+   late FixedExtentScrollController _scrollControllerStartTime;
+   late FixedExtentScrollController _scrollControllerEndTime;
+
   List<DayDetails> dayDetailsList = [
     DayDetails(
       day: "Monday",
@@ -718,6 +723,24 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    selectedValue = widget.Day!;
+    startTime = widget.startTime!;
+    endTime = widget.endTime!;
+
+    for(int i = 0; i < time.length; i++){
+      if(startTime == time[i]){
+        startTimeIndex = time[i];
+        print("object");
+      }
+    }
+    onDayStartTimeChanged(startTime : widget.startTime!);
+    print(startTime);
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
@@ -820,7 +843,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                 SizedBox(
                   height: height * 0.02,
                 ),
-                Padding(
+                !widget.secondflow?SizedBox():Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: widget.secondflow == true
                       ? Row(
@@ -1497,6 +1520,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
             width: 100,
             child: CupertinoPicker(
               itemExtent: 60,
+              scrollController: _scrollControllerStartTime,
               onSelectedItemChanged: (index) {
                 setState(() {
                   // startTime = time[index];
@@ -1505,8 +1529,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                   print("startTime$startTime");
                 });
               },
-              children: time
-                  .map((text) => Center(
+              children: time.map((text) => Center(
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(text,
@@ -1528,7 +1551,6 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
             width: 100,
             child: CupertinoPicker(
               //scrollController: ,
-
               itemExtent: 60,
               onSelectedItemChanged: (index) {
                 setState(() {
