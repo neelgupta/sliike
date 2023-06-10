@@ -1,17 +1,30 @@
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/services/business_setup_services.dart';
 
 class cancellation_Policy extends StatefulWidget {
   const cancellation_Policy({Key? key}) : super(key: key);
 
   @override
-  State<cancellation_Policy> createState() => _no_show_ProtectionState();
+  State<cancellation_Policy> createState() => cancellation_PolicyState();
 }
 
-class _no_show_ProtectionState extends State<cancellation_Policy> {
-  int? _radioSelected=1;
+class cancellation_PolicyState extends State<cancellation_Policy> {
+  int cancellationStatus=1;
+  bool isLoad = true;
+  BusinessSetupService businessSetupService = BusinessSetupService();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStatus();
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -78,7 +91,9 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoad?Center(
+        child: CircularProgressIndicator(),
+      ):SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 20,right: 20),
           child: Column(
@@ -132,15 +147,15 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
 
                         Radio(
                           value: 1,
-                          groupValue: _radioSelected,
+                          groupValue: cancellationStatus,
 
                           activeColor: Color(0xff01635D),
                           fillColor: MaterialStateColor.resolveWith(
                                   (states) => Color(0xff01635D)),
                           onChanged: (value) {
                             setState(() {
-                              _radioSelected = value as int;
-                              print(_radioSelected);
+                              cancellationStatus = value as int;
+                              print(cancellationStatus);
 
                             });
                           },
@@ -166,15 +181,15 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
 
                         Radio(
                           value: 2,
-                          groupValue: _radioSelected,
+                          groupValue: cancellationStatus,
 
                           activeColor: Color(0xff01635D),
                           fillColor: MaterialStateColor.resolveWith(
                                   (states) => Color(0xff01635D)),
                           onChanged: (value) {
                             setState(() {
-                              _radioSelected = value as int;
-                              print(_radioSelected);
+                              cancellationStatus = value as int;
+                              print(cancellationStatus);
 
                             });
                           },
@@ -200,15 +215,15 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
 
                         Radio(
                           value: 3,
-                          groupValue: _radioSelected,
+                          groupValue: cancellationStatus,
 
                           activeColor: Color(0xff01635D),
                           fillColor: MaterialStateColor.resolveWith(
                                   (states) => Color(0xff01635D)),
                           onChanged: (value) {
                             setState(() {
-                              _radioSelected = value as int;
-                              print(_radioSelected);
+                              cancellationStatus = value as int;
+                              print(cancellationStatus);
 
                             });
                           },
@@ -236,15 +251,15 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
 
                         Radio(
                           value: 4,
-                          groupValue: _radioSelected,
+                          groupValue: cancellationStatus,
 
                           activeColor: Color(0xff01635D),
                           fillColor: MaterialStateColor.resolveWith(
                                   (states) => Color(0xff01635D)),
                           onChanged: (value) {
                             setState(() {
-                              _radioSelected = value as int;
-                              print(_radioSelected);
+                              cancellationStatus = value as int;
+                              print(cancellationStatus);
 
                             });
                           },
@@ -258,12 +273,46 @@ class _no_show_ProtectionState extends State<cancellation_Policy> {
                 ),
               ),
               SizedBox(height: height*0.03,),
-              CommonButton(context,"SAVE",12, FontWeight.w600, Colors.white, () { }),
+              CommonButton(context,"SAVE",12, FontWeight.w600, Colors.white, () {
+                saveStatus();
+              }),
               SizedBox(height: height*0.03,),
             ],
           ),
         ),
       ),
     );
+  }
+
+  getStatus() async {
+    Response response = await businessSetupService.getCancellationProtectionStatus();
+    if(response.statusCode==200) {
+      cancellationStatus = jsonDecode(response.body)['data']['cancelProtection'] ?? 1;
+    } else {
+      cancellationStatus = 1;
+    }
+    isLoad = false;
+    setState(() {});
+  }
+
+  saveStatus() async {
+    Loader.show(context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator: const CircularProgressIndicator(
+            backgroundColor: Color(0xffDD6A03)),
+        themeData: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color(0xff01635D))));
+    Response response = await businessSetupService.updateCancellationProtectionStatus(cancellationStatus, isCancellation: true);
+    Fluttertoast.showToast(
+        msg: "${jsonDecode(response.body)['message']}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    Loader.hide();
   }
 }

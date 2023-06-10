@@ -87,52 +87,28 @@ class _signInScreenState extends State<signInScreen> {
   }
 
   void _handleRememberMe(bool value) {
-    isChecked = value;
-    SharedPreferences.getInstance().then(
-      (prefs) {
-        prefs.setBool("remember_me", value);
-        prefs.setString('email', temail.text);
-        // prefs.setString('password', tpassword.text);
-      },
-    );
     setState(() {
       isChecked = value;
     });
     if (value) {
-      SharedPreferences.getInstance().then(
-        (prefs) {
-          prefs.setBool("remember_me", true);
-          prefs.setString('email', temail.text);
-          prefs.setString('password', tpassword.text);
-        },
-      );
+          Helper.prefs!.setBool("remember_me", true);
+          Helper.prefs!.setString('email', temail.text);
+          Helper.prefs!.setString('password', tpassword.text);
     } else {
-      SharedPreferences.getInstance().then(
-        (prefs) {
-          prefs.setBool("remember_me", false);
-          prefs.setString('email', "");
-          prefs.setString('password', "");
-        },
-      );
+          Helper.prefs!.setBool("remember_me", false);
+          Helper.prefs!.setString('email', "");
+          Helper.prefs!.setString('password', "");
     }
   }
 
   void _loadUserEmailPassword() async {
-    try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _email = _prefs.getString("email") ?? "";
-      // var _password = _prefs.getString("password") ?? "";
-      var _remeberMe = _prefs.getBool("remember_me") ?? false;
-      if (_remeberMe) {
+      var rememberMe = Helper.prefs!.getBool("remember_me") ?? false;
+      if (rememberMe) {
         setState(() {
           isChecked = true;
         });
-
-        temail.text = _email;
+        temail.text = Helper.prefs!.getString("email") ?? "";
       }
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override
