@@ -133,4 +133,11 @@ class ApiUrlList {
   static String getHealthSafetyList = "${baseUrl}option/getHealthSafetyList";
   static String saveHealthSafety = "${baseUrl}beautician/saveHealthSafety";
   static String addMyDemographics = "${baseUrl}beautician/addMyDemographics";
+
+  ///Business Setup
+  static String getCancellationStatus = "${baseUrl}beautician/getNOShow&CancellationProtection";
+  static String updateProtectionStatus = "${baseUrl}beautician/saveNoShowProtection";
+  static String updateCancellationStatus = "${baseUrl}beautician/saveCancelProtection";
+  static String getBookingSetting = "${baseUrl}beautician/getBookingSettings";
+  static String saveBookingSetting = "${baseUrl}beautician/saveBookingSettings";
 }

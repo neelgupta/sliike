@@ -43,7 +43,7 @@ class _new_cardState extends State<new_card> {
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  labelText: "province".tr(),
+                  labelText: "card_name".tr(),
                 ),
               ),
               SizedBox(height: height*0.03,),
@@ -90,10 +90,11 @@ class _new_cardState extends State<new_card> {
                       SizedBox(height: height*0.02,),
                       SizedBox(
                         width: width*0.43,
-                        child: const TextField(
+                        child: TextField(
                           style: TextStyle(fontFamily: "spartan",fontSize: 12),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
+                            labelText: "cvv".tr(),
                           ),
                         ),
                       ),

@@ -44,34 +44,34 @@ class _booking_summary_paymentconfirmState
         formatedTime = "90 min";
         break;
       case "02:00":
-        formatedTime = "110 min";
+        formatedTime = "120 min";
         break;
       case "02:30":
-        formatedTime = "140 min";
+        formatedTime = "150 min";
         break;
       case "03:00":
-        formatedTime = "170 min";
+        formatedTime = "180 min";
         break;
       case "03:30":
-        formatedTime = "200 min";
+        formatedTime = "210 min";
         break;
       case "04:00":
-        formatedTime = "230 min";
+        formatedTime = "240 min";
         break;
       case "04:30":
-        formatedTime = "260 min";
+        formatedTime = "270 min";
         break;
       case "05:00":
-        formatedTime = "290 min";
+        formatedTime = "300 min";
         break;
       case "05:30":
-        formatedTime = "310 min";
+        formatedTime = "330 min";
         break;
       case "06:00":
-        formatedTime = "340 min";
+        formatedTime = "360 min";
         break;
       case "06:30":
-        formatedTime = "360 min";
+        formatedTime = "390 min";
         break;
     }
     return formatedTime;

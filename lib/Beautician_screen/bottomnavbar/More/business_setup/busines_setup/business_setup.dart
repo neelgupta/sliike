@@ -238,118 +238,118 @@ class _business_SetUpState extends State<business_SetUp> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20,right: 20),
-              //   child: InkWell(
-              //     onTap: (){
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //       return no_show_Protection();
-              //     },));
-              //
-              //
-              //     },
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(vertical: 17,),
-              //       decoration: BoxDecoration(
-              //           border: Border(bottom: BorderSide(color: Colors.black12))
-              //       ),
-              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //
-              //           Expanded(
-              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 textComoon("No-Show Protection",14,Color(0xff292929), FontWeight.w700),
-              //                 SizedBox(height: height*0.01,),
-              //                 textComoonfade("This section is used to set payment reimbursement rules when a client doesn’t show up for a service that was reserved and confirmed.",10,Color(0xff707070), FontWeight.w500),
-              //               ],
-              //             ),
-              //           ),
-              //
-              //           Container(alignment: Alignment.topRight,
-              //             height: 15,
-              //             width: 30,
-              //             child: Image.asset("assets/images/righticon.png"),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20,right: 20),
-              //   child: InkWell(
-              //     onTap: (){
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //         return cancellation_Policy();
-              //       },));
-              //
-              //     },
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(vertical: 17,),
-              //       decoration: BoxDecoration(
-              //           border: Border(bottom: BorderSide(color: Colors.black12))
-              //       ),
-              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //
-              //           Expanded(
-              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 textComoon("Cancellation Policy",14,Color(0xff292929), FontWeight.w700),
-              //                 SizedBox(height: height*0.01,),
-              //                 textComoonfade("This policy allows you to set guidelines around appointment cancellations.",10,Color(0xff707070), FontWeight.w500),
-              //               ],
-              //             ),
-              //           ),
-              //
-              //           Container(alignment: Alignment.topRight,
-              //             height: 15,
-              //             width: 30,
-              //             child: Image.asset("assets/images/righticon.png"),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20,right: 20),
-              //   child: InkWell(
-              //     onTap: (){
-              //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //         return booking_Setting();
-              //       },));
-              //
-              //     },
-              //     child: Container(
-              //       padding: EdgeInsets.symmetric(vertical: 17,),
-              //       decoration: BoxDecoration(
-              //           border: Border(bottom: BorderSide(color: Colors.black12))
-              //       ),
-              //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //
-              //           Expanded(
-              //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 textComoon("Booking Settings",14,Color(0xff292929), FontWeight.w700),
-              //                 SizedBox(height: height*0.01,),
-              //                 textComoonfade("Set up when present and future bookings can be made, and the time limit when confirmed appointments can be rescheduled.",10,Color(0xff707070), FontWeight.w500),
-              //               ],
-              //             ),
-              //           ),
-              //
-              //           Container(alignment: Alignment.topRight,
-              //             height: 15,
-              //             width: 30,
-              //             child: Image.asset("assets/images/righticon.png"),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return no_show_Protection();
+                  },));
+
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 17,),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.black12))
+                    ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textComoon("No-Show Protection",14,Color(0xff292929), FontWeight.w700),
+                              SizedBox(height: height*0.01,),
+                              textComoonfade("This section is used to set payment reimbursement rules when a client doesn’t show up for a service that was reserved and confirmed.",10,Color(0xff707070), FontWeight.w500),
+                            ],
+                          ),
+                        ),
+
+                        Container(alignment: Alignment.topRight,
+                          height: 15,
+                          width: 30,
+                          child: Image.asset("assets/images/righticon.png"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return cancellation_Policy();
+                    },));
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 17,),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.black12))
+                    ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textComoon("Cancellation Policy",14,Color(0xff292929), FontWeight.w700),
+                              SizedBox(height: height*0.01,),
+                              textComoonfade("This policy allows you to set guidelines around appointment cancellations.",10,Color(0xff707070), FontWeight.w500),
+                            ],
+                          ),
+                        ),
+
+                        Container(alignment: Alignment.topRight,
+                          height: 15,
+                          width: 30,
+                          child: Image.asset("assets/images/righticon.png"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return booking_Setting();
+                    },));
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 17,),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.black12))
+                    ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              textComoon("Booking Settings",14,Color(0xff292929), FontWeight.w700),
+                              SizedBox(height: height*0.01,),
+                              textComoonfade("Set up when present and future bookings can be made, and the time limit when confirmed appointments can be rescheduled.",10,Color(0xff707070), FontWeight.w500),
+                            ],
+                          ),
+                        ),
+
+                        Container(alignment: Alignment.topRight,
+                          height: 15,
+                          width: 30,
+                          child: Image.asset("assets/images/righticon.png"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               // Padding(
               //   padding: const EdgeInsets.only(left: 20,right: 20),
               //   child: GestureDetector(
