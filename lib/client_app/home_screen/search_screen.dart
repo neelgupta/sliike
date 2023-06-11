@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -458,33 +459,41 @@ class _searchScreenState extends State<searchScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
+                                                  CachedNetworkImage(
+                                                    imageUrl: datum[index]
+                                                        .logoPath,
+                                                    imageBuilder: (context, imageProvider) => Container(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      alignment:
-                                                          Alignment.center,
+                                                      const EdgeInsets.all(10),
                                                       height: height * 0.25,
                                                       width: width,
                                                       decoration: BoxDecoration(
-                                                          // image: const DecorationImage(
-                                                          //     image: AssetImage(
-                                                          //         "assets/images/Rectangle 863.png"),
-                                                          //     fit: BoxFit.fill),
-                                                          // color: Colors.yellow,
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      margin:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      child: const Text(
-                                                          "No Image Found!!!"),
+                                                          BorderRadius.circular(8),
+                                                          image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                                      ),
+                                                      margin: const EdgeInsets.all(5),
+                                                    ),
+                                                    progressIndicatorBuilder: (context, url, process) => Container(
+                                                        height: height * 0.25,
+                                                        width: width,
+                                                        margin: const EdgeInsets.all(5),
+                                                        child: const Center(child: CircularProgressIndicator())
+                                                    ),
+                                                    errorWidget: (context, url, error) => Container(
+                                                        height: height * 0.25,
+                                                        width: width,
+                                                        margin: const EdgeInsets.all(5),
+                                                        alignment: Alignment.center,
+                                                        child: Center(child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            const Icon(Icons.error),
+                                                            SizedBox(height: height*0.02,),
+                                                            const Text("No Image")
+                                                          ],
+                                                        ))
                                                     ),
                                                   ),
                                                   Padding(
@@ -522,19 +531,21 @@ class _searchScreenState extends State<searchScreen> {
                                                               SizedBox(
                                                                   width: width *
                                                                       0.01),
-                                                              // SizedBox(
-                                                              //   height: height *
-                                                              //       0.03,
-                                                              //   child: const Image(
-                                                              //       image: AssetImage(
-                                                              //           "assets/images/Subtract (1).png")),
-                                                              // ),
+                                                              if(datum[index].isLicensed=="1")
+                                                              SizedBox(
+                                                                height: height *
+                                                                    0.03,
+                                                                child: const Image(
+                                                                    image: AssetImage(
+                                                                        "assets/images/Subtract (1).png")),
+                                                              ),
                                                               const Spacer(),
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  if (like!) {
+                                                                  if (datum[index].isFav!) {
                                                                     setState(
                                                                         () {
+                                                                          datum[index].isFav = !datum[index].isFav!;
                                                                       removeFromMyFavorites(
                                                                           datum[index]
                                                                               .id);
@@ -542,14 +553,16 @@ class _searchScreenState extends State<searchScreen> {
                                                                   } else {
                                                                     setState(
                                                                         () {
+                                                                          datum[index].isFav = !datum[index].isFav!;
                                                                       addToMyFavorites(
                                                                           datum[index]
                                                                               .id);
                                                                     });
                                                                   }
+
                                                                 },
                                                                 child: Icon(
-                                                                    like!
+                                                                    datum[index].isFav!
                                                                         ? Icons
                                                                             .favorite
                                                                         : Icons
@@ -582,46 +595,47 @@ class _searchScreenState extends State<searchScreen> {
                                                           const SizedBox(
                                                             height: 5,
                                                           ),
-                                                          // Row(
-                                                          //   children: [
-                                                          //     SizedBox(
-                                                          //       height: height * 0.02,
-                                                          //       child: const Image(
-                                                          //           image: AssetImage(
-                                                          //               "assets/images/Star 1.png")),
-                                                          //     ),
-                                                          //     const SizedBox(
-                                                          //       width: 5,
-                                                          //     ),
-                                                          //     Container(
-                                                          //       alignment:
-                                                          //           Alignment.topLeft,
-                                                          //       child: const Text(
-                                                          //           "4.0 Ratings",
-                                                          //           style: TextStyle(
-                                                          //               color: Colors
-                                                          //                   .black,
-                                                          //               fontSize: 14,
-                                                          //               fontFamily:
-                                                          //                   "spartan")),
-                                                          //     ),
-                                                          //     const SizedBox(
-                                                          //       width: 5,
-                                                          //     ),
-                                                          //     Container(
-                                                          //       alignment:
-                                                          //           Alignment.topLeft,
-                                                          //       child: const Text(
-                                                          //           "120reviews",
-                                                          //           style: TextStyle(
-                                                          //               color: Colors
-                                                          //                   .grey,
-                                                          //               fontSize: 14,
-                                                          //               fontFamily:
-                                                          //                   "spartan")),
-                                                          //     ),
-                                                          //   ],
-                                                          // ),
+                                                          if(datum[index].rating!="0" && datum[index].noOfReviews!="0")
+                                                          Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                height: height * 0.02,
+                                                                child: const Image(
+                                                                    image: AssetImage(
+                                                                        "assets/images/Star 1.png")),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment.topLeft,
+                                                                child: Text(
+                                                                    "${datum[index].rating} Ratings",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize: 14,
+                                                                        fontFamily:
+                                                                            "spartan")),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment.topLeft,
+                                                                child: Text(
+                                                                    "${datum[index].noOfReviews} reviews",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontSize: 14,
+                                                                        fontFamily:
+                                                                            "spartan")),
+                                                              ),
+                                                            ],
+                                                          ),
                                                           const SizedBox(
                                                             height: 10,
                                                           ),
@@ -682,10 +696,6 @@ class _searchScreenState extends State<searchScreen> {
 
   addToMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.addToMyFavorites);
-    try {
-      setState(() {
-        isLoading = true;
-      });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
@@ -717,7 +727,6 @@ class _searchScreenState extends State<searchScreen> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-          findServices();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -729,21 +738,10 @@ class _searchScreenState extends State<searchScreen> {
               fontSize: 16.0);
         }
       }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
   }
 
   removeFromMyFavorites(beauticianId) async {
     var posturi = Uri.parse(ApiUrlList.removeFromMyFavorites);
-    try {
-      setState(() {
-        isLoading = true;
-      });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
@@ -775,7 +773,6 @@ class _searchScreenState extends State<searchScreen> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-          findServices();
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -787,13 +784,6 @@ class _searchScreenState extends State<searchScreen> {
               fontSize: 16.0);
         }
       }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
   }
 
   findServices() async {
@@ -968,7 +958,11 @@ class Datum {
   DateTime updatedAt;
   int v;
   String businessName;
+  String isLicensed;
   int businessNumber;
+  String noOfReviews;
+  String rating;
+  String logoPath;
   Location? location;
   List<BeauticianServiceDetail> beauticianServiceDetails;
   List<Address> address;
@@ -997,7 +991,11 @@ class Datum {
     required this.updatedAt,
     required this.v,
     required this.businessName,
+    required this.isLicensed,
     required this.businessNumber,
+    required this.noOfReviews,
+    required this.rating,
+    required this.logoPath,
     this.location,
     required this.beauticianServiceDetails,
     required this.address,
@@ -1030,7 +1028,11 @@ class Datum {
       updatedAt: DateTime.parse(json["updatedAt"] ?? ""),
       v: json["__v"] ?? 0,
       businessName: json["businessName"] ?? "",
+      isLicensed: (json["isLicensed"] ?? 0).toString(),
       businessNumber: json["businessNumber"] ?? 0,
+      noOfReviews: (json['noOfReviews'] ?? 0).toString(),
+      rating: (json['rating'] ?? 0).toString(),
+      logoPath: json['logoPath'] ?? "",
       location:
           json["location"] != null ? Location.fromJson(json["location"]) : null,
       beauticianServiceDetails: List<BeauticianServiceDetail>.from(
@@ -1064,6 +1066,7 @@ class Datum {
         "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
         "businessName": businessName,
+        "isLicensed": isLicensed,
         "businessNumber": businessNumber,
         "location": location?.toJson(),
         "beauticianServiceDetails":

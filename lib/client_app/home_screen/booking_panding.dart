@@ -15,7 +15,8 @@ import '../ beautician _page/manage_appoinment.dart';
 
 class booking_panding extends StatefulWidget {
   String? id;
-  booking_panding({Key? key,this.id}) : super(key: key);
+  bool isPast = false;
+  booking_panding({Key? key,this.id, this.isPast = false}) : super(key: key);
 
   @override
   State<booking_panding> createState() => _booking_pandingState();
@@ -342,7 +343,7 @@ class _booking_pandingState extends State<booking_panding> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Divider(color: Colors.black54,),
                   ),
-                  GestureDetector(
+                  if(!widget.isPast)GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return  manage_appoinment(
@@ -413,10 +414,11 @@ class _booking_pandingState extends State<booking_panding> {
                 ),
               ),
               SizedBox(height: height*0.05,),
-              Padding(
+              if(!widget.isPast)Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                     onTap: () {
+                      Helper.serviceId.clear();
                       Helper.serviceId.add(widget.id);
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return const SelectAddress();

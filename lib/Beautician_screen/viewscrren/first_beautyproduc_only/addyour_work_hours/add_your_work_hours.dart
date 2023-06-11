@@ -34,8 +34,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   int startTimeIndex = 0;
   int endTimeIndex = 0;
 
-   late FixedExtentScrollController _scrollControllerStartTime;
-   late FixedExtentScrollController _scrollControllerEndTime;
+   // late FixedExtentScrollController _scrollControllerStartTime;
+   // late FixedExtentScrollController _scrollControllerEndTime;
 
   List<DayDetails> dayDetailsList = [
     DayDetails(
@@ -726,18 +726,20 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    selectedValue = widget.Day!;
-    startTime = widget.startTime!;
-    endTime = widget.endTime!;
+    if(!widget.secondflow){
+      selectedValue = widget.Day!;
+      startTime = widget.startTime!;
+      endTime = widget.endTime!;
 
-    for(int i = 0; i < time.length; i++){
-      if(startTime == time[i]){
-        startTimeIndex = time[i];
-        print("object");
+      for(int i = 0; i < time.length; i++){
+        if(startTime == time[i]){
+          startTimeIndex = time[i];
+          print("object");
+        }
       }
+      onDayStartTimeChanged(startTime : widget.startTime!);
+      print(startTime);
     }
-    onDayStartTimeChanged(startTime : widget.startTime!);
-    print(startTime);
   }
 
   @override
@@ -1520,7 +1522,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
             width: 100,
             child: CupertinoPicker(
               itemExtent: 60,
-              scrollController: _scrollControllerStartTime,
+              // scrollController: _scrollControllerStartTime,
               onSelectedItemChanged: (index) {
                 setState(() {
                   // startTime = time[index];

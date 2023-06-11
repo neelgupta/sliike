@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/cancel_appoinment.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
 
 class manage_appoinment extends StatefulWidget {
   String? time;
@@ -106,6 +107,7 @@ class _manage_appoinmentState extends State<manage_appoinment> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: InkWell(
               onTap: () {
+                Helper.serviceId.clear();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return book_appoinment(
                       bookingId: widget.bookingId,
@@ -113,6 +115,7 @@ class _manage_appoinmentState extends State<manage_appoinment> {
                     serviceId: widget.serviceId,
                     beauticianId: widget.beauticianId,
                     price: widget.price,
+                    isManage: true,
                   );
                 },));
               },

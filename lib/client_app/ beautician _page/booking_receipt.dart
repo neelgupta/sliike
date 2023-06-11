@@ -15,9 +15,8 @@ import '../../commonClass.dart';
 
 class booking_receipt extends StatefulWidget {
   final String bookingId;
-  final String? serviceId;
 
-  booking_receipt({Key? key, required this.bookingId,this.serviceId}) : super(key: key);
+  booking_receipt({Key? key, required this.bookingId}) : super(key: key);
 
   @override
   State<booking_receipt> createState() => _booking_receiptState();
@@ -315,7 +314,7 @@ class _booking_receiptState extends State<booking_receipt> {
                             SizedBox(
                               width: width * 0.03,
                             ),
-                            Text("${appointment[0].cardDetails.cardBrand}",
+                            Text(appointment[0].cardDetails!=null?"${appointment[0].cardDetails!.cardBrand}":"",
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "spartan",
@@ -600,7 +599,7 @@ class _booking_receiptState extends State<booking_receipt> {
       };
       var bodydata = {
         "bookingId": widget.bookingId,
-        "appointmentIds": Helper.serviceId.isNotEmpty ? Helper.serviceId : [widget.serviceId],
+        "appointmentIds": Helper.serviceId,
       };
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");

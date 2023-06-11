@@ -32,6 +32,9 @@ class _searchservicesState extends State<searchservices> {
   double width = 0;
   bool searchbyservice = false;
   String ShowServiceName = "";
+  String latitude = "";
+  String longitude = "";
+  String address = "";
 
   @override
   void initState() {
@@ -140,54 +143,126 @@ class _searchservicesState extends State<searchservices> {
   Widget search() {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return const NearYou();
                       },
-                    ));
-              },
-              child: Container(
-                padding: const EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(color: Colors.grey)
-                  ),
-                  height: height*0.07,
-                  width: width*0.45,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(image: const AssetImage("assets/images/Group 71.png",),color: const Color(0xFFDD5103),height: width*0.05),
-                      SizedBox(width: width*0.02,),
-                      SizedBox(width: width*0.32,child: const Text("Near You",maxLines: 1,style: TextStyle(fontSize: 14),))
-                    ],
-                  )
-              ),
-            ),
-            const Spacer(),
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(color: Colors.grey)
+                    )).then((value) {
+                      if (value != null) {
+                        latitude = value[0];
+                        longitude = value[1];
+                        address = value[2];
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                              Radius.circular(10)),
+                          border:
+                          Border.all(color: Colors.grey)),
+                      height: height * 0.06,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                            const EdgeInsets.only(left: 10),
+                            child: Image(
+                                image: const AssetImage(
+                                  "assets/images/Group 71.png",
+                                ),
+                                color: const Color(0xFFDD5103),
+                                height: height * 0.03),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: Text(
+                              address.isEmpty
+                                  ? "Near You"
+                                  : address,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                              const TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          address.isEmpty
+                              ? Container()
+                              : InkWell(
+                              onTap: () {
+                                setState(() {
+                                  address = "";
+                                  latitude = "";
+                                  longitude = "";
+                                });
+                              },
+                              child: const Icon(
+                                Icons.close,
+                                size: 20,
+                                color: Colors.black12,
+                              )),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      )),
                 ),
-                height: height*0.07,
-                width: width*0.45,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image(image: const AssetImage("assets/images/note.png",),color: const Color(0xFFDD5103),height: width*0.05),
-                    SizedBox(width: width*0.02,),
-                    SizedBox(width: width*0.32,child: const Text("When?",style: TextStyle(fontSize: 14),))
-                  ],
-                )
-            ),
-          ],
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(10)),
+                        border: Border.all(color: Colors.grey)),
+                    height: height * 0.06,
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(left: 5),
+                          child: Image(
+                              image: const AssetImage(
+                                "assets/images/note.png",
+                              ),
+                              color: const Color(0xFFDD5103),
+                              height: height * 0.03),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          "When?",
+                          style: TextStyle(fontSize: 12),
+                        )
+                      ],
+                    )),
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 20,
@@ -245,6 +320,8 @@ class _searchservicesState extends State<searchservices> {
               return searchScreen(
                 selectedService: selectedService,
                   serviceName: ShowServiceName,
+                latitude: latitude,
+                longitude: longitude,
                 isMultipleSearched: selectedService.length == 1 ?false : true,
               );
             },));

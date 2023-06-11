@@ -116,7 +116,7 @@ class _faq_pageState extends State<faq_page> {
                       isExpand![index]?
                       Row(
                         children:  [
-                          Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                          SizedBox(width: width*0.9,child: Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black))),
                         ],):SizedBox(),
                       isExpand![index]?const Divider(color: Colors.black54,) : SizedBox(),
                     ],

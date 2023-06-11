@@ -115,7 +115,7 @@ class _faq_beautyState extends State<faq_beauty> {
                           isExpand![index]?
                           Row(
                             children:  [
-                              Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
+                              SizedBox(width: width*0.9,child: Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black))),
                             ],):SizedBox(),
                           isExpand![index]?const Divider(color: Colors.black54,) : SizedBox(),
                         ],

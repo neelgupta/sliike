@@ -102,163 +102,168 @@ class _MyFavoritesViewAllState extends State<MyFavoritesViewAll> {
                       );
                       print("selectedFavoritesId ======> ${favoritelist[index].id!}");
                     },
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: width,
-                          alignment: Alignment.center,
-                          child: CachedNetworkImage(
-                            imageUrl: favoritelist[index].country ?? '',
-                            imageBuilder: (context, imageProvider) => Container(
-                              padding:
-                              const EdgeInsets.all(10),
-                              height: height * 0.18,
-                              width: width * 0.6,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(8),
-                                  image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: width,
+                            alignment: Alignment.center,
+                            child: CachedNetworkImage(
+                              imageUrl: favoritelist[index].logoPath ?? '',
+                              imageBuilder: (context, imageProvider) => Container(
+                                padding:
+                                const EdgeInsets.all(10),
+                                height: height * 0.18,
+                                width: width * 0.6,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(8),
+                                    image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                ),
+                                margin: const EdgeInsets.all(5),
                               ),
-                              margin: const EdgeInsets.all(5),
-                            ),
-                            progressIndicatorBuilder: (context, url, process) => Container(
-                                height: height * 0.18,
-                                width: width * 0.6,
-                                margin: const EdgeInsets.all(5),
-                                child: const Center(child: CircularProgressIndicator())
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                                height: height * 0.18,
-                                width: width * 0.6,
-                                margin: const EdgeInsets.all(5),
-                                alignment: Alignment.center,
-                                child: Center(child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.error),
-                                    SizedBox(height: height*0.02,),
-                                    const Text("No Image")
-                                  ],
-                                ))
+                              progressIndicatorBuilder: (context, url, process) => Container(
+                                  height: height * 0.18,
+                                  width: width * 0.6,
+                                  margin: const EdgeInsets.all(5),
+                                  child: const Center(child: CircularProgressIndicator())
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                  height: height * 0.18,
+                                  width: width * 0.6,
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.center,
+                                  child: Center(child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.error),
+                                      SizedBox(height: height*0.02,),
+                                      const Text("No Image")
+                                    ],
+                                  ))
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                            padding:
-                            const EdgeInsets
-                                .only(
-                              left: 15,
-                            ),
-                            child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment:
-                                      Alignment
-                                          .topLeft,
-                                      child: Text(
-                                          "${favoritelist[index].businessName}",
-                                          style: const TextStyle(
-                                              color: Colors
-                                                  .black,
-                                              fontSize:
-                                              18,
-                                              fontFamily:
-                                              "spartan",
-                                              fontWeight:
-                                              FontWeight.w600)),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    SizedBox(
-                                      height:
-                                      height *
-                                          0.03,
-                                      child: const Image(
-                                          image: AssetImage(
-                                              "assets/images/Subtract (1).png")),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                favoritelist[index]
-                                    .address ==
-                                    null
-                                    ? const SizedBox()
-                                    : Text(
-                                    "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
-                                    style: const TextStyle(
-                                        color: Colors
-                                            .black,
-                                        fontSize:
-                                        12,
-                                        fontFamily:
-                                        "spartan")),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                // Row(
-                                //   children: [
-                                //     SizedBox(
-                                //       height:
-                                //           height *
-                                //               0.02,
-                                //       child: const Image(
-                                //           image: AssetImage(
-                                //               "assets/images/Star 1.png")),
-                                //     ),
-                                //     const SizedBox(
-                                //       width: 5,
-                                //     ),
-                                //     Container(
-                                //       alignment:
-                                //           Alignment
-                                //               .topLeft,
-                                //       child: const Text(
-                                //           "4.0 Ratings",
-                                //           style: TextStyle(
-                                //               color: Colors
-                                //                   .black,
-                                //               fontSize:
-                                //                   14,
-                                //               fontFamily:
-                                //                   "spartan")),
-                                //     ),
-                                //     const SizedBox(
-                                //       width: 5,
-                                //     ),
-                                //     Container(
-                                //       alignment:
-                                //           Alignment
-                                //               .topLeft,
-                                //       child: const Text(
-                                //           "120reviews",
-                                //           style: TextStyle(
-                                //               color: Colors
-                                //                   .grey,
-                                //               fontSize:
-                                //                   14,
-                                //               fontFamily:
-                                //                   "spartan")),
-                                //     ),
-                                //   ],
-                                // ),
-                              ],
-                            ))
-                      ],
+                          Padding(
+                              padding:
+                              const EdgeInsets
+                                  .only(
+                                left: 15,
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment
+                                    .start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        alignment:
+                                        Alignment
+                                            .topLeft,
+                                        child: Text(
+                                            "${favoritelist[index].businessName}",
+                                            style: const TextStyle(
+                                                color: Colors
+                                                    .black,
+                                                fontSize:
+                                                18,
+                                                fontFamily:
+                                                "spartan",
+                                                fontWeight:
+                                                FontWeight.w600)),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      if(favoritelist[index].isLicensed=="1")
+                                      SizedBox(
+                                        height:
+                                        height *
+                                            0.03,
+                                        child: const Image(
+                                            image: AssetImage(
+                                                "assets/images/Subtract (1).png")),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  favoritelist[index]
+                                      .address ==
+                                      null
+                                      ? const SizedBox()
+                                      : Text(
+                                      "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
+                                      style: const TextStyle(
+                                          color: Colors
+                                              .black,
+                                          fontSize:
+                                          12,
+                                          fontFamily:
+                                          "spartan")),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  if(favoritelist[index].rating!="0" && favoritelist[index].noOfReviews!="0")
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            height *
+                                                0.02,
+                                        child: const Image(
+                                            image: AssetImage(
+                                                "assets/images/Star 1.png")),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        alignment:
+                                            Alignment
+                                                .topLeft,
+                                        child: Text(
+                                            "${favoritelist[index].rating} Ratings",
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .black,
+                                                fontSize:
+                                                    14,
+                                                fontFamily:
+                                                    "spartan")),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        alignment:
+                                            Alignment
+                                                .topLeft,
+                                        child: Text(
+                                            "${favoritelist[index].noOfReviews} reviews",
+                                            style: TextStyle(
+                                                color: Colors
+                                                    .grey,
+                                                fontSize:
+                                                    14,
+                                                fontFamily:
+                                                    "spartan")),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ))
+                        ],
+                      ),
                     ),
                   );
                 },

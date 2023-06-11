@@ -316,7 +316,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                         width: width,
                         height: 180,
                         decoration: BoxDecoration(
-                            image: p!.data!.first.workSpaceImgs[0].isNotEmpty?
+                            image:  p!.data!.first.workSpaceImgs.isNotEmpty?
                             DecorationImage(image: NetworkImage( p!.data!.first.workSpaceImgs[0]), fit: BoxFit.fill):
                             DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                         child: InkWell(
@@ -355,7 +355,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             width: 120,
                             height: 120,
                             decoration: BoxDecoration(
-                                image:  p!.data!.first.workSpaceImgs[1].isNotEmpty?
+                                image:  p!.data!.first.workSpaceImgs.isNotEmpty?
                                 DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[1]), fit: BoxFit.fill):
                                 DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                             child: InkWell(
@@ -434,7 +434,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             width: 120,
                             height: 120,
                             decoration: BoxDecoration(
-                                image: p!.data!.first.workSpaceImgs[2].isNotEmpty?
+                                image: p!.data!.first.workSpaceImgs.isNotEmpty?
                                 DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[2]), fit: BoxFit.fill):
                                 DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                             child: InkWell(
@@ -513,8 +513,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             width: 120,
                             height: 120,
                             decoration: BoxDecoration(
-                                image: p!.data!.first.workSpaceImgs[3].isNotEmpty?
-                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[3]), fit: BoxFit.fill):
+                                image: p!.data!.first.workSpaceImgs.isNotEmpty?
+                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[2]), fit: BoxFit.fill):
                                 DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                             child: InkWell(
                               onTap: (){
@@ -1658,13 +1658,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
               Navigator.pop(context);
               XFile? selectedImages =
               await _picker.pickImage(
-                  source: ImageSource.gallery);
+                  source: ImageSource.gallery,);
               if (selectedImages != null) {
                 setState(() {
                   firstImage = File(selectedImages.path);
                   firstImagePath = selectedImages.path;
                   firstImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs[0].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.isEmpty){
                     if(two || three || four){
                       one = false;
                     }else{
@@ -1748,7 +1748,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   secondImage = File(selectedImages.path);
                   secondImagePath = selectedImages.path;
                   secondImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs[1].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.isEmpty){
                     two = true;
                   }
                 });
@@ -1830,7 +1830,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   thirdImageStatus = true;
                   one = false;
                   two = false;
-                  if(p!.data!.first.workSpaceImgs[2].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.isEmpty){
                     three = true;
                   }
                 });
@@ -1913,7 +1913,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   one = false;
                   two = false;
                   three = false;
-                  if(p!.data!.first.workSpaceImgs[3].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.isEmpty){
                   }
                 });
               }

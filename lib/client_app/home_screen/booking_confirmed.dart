@@ -14,7 +14,8 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class BookingConfirmed extends StatefulWidget {
   String? id;
-  BookingConfirmed({Key? key,this.id}) : super(key: key);
+  bool isPast = false;
+  BookingConfirmed({Key? key,this.id,this.isPast = false}) : super(key: key);
 
   @override
   State<BookingConfirmed> createState() => _BookingConfirmedState();
@@ -321,7 +322,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                 ),
               ],
             ),
-            Padding(
+            if(!widget.isPast)Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {
@@ -403,9 +404,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                   Helper.serviceId.clear();
                   Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString(),
-                      serviceId: onlyonemodal!.data!.serviceId!.id,
-                    );
+                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString());
                   },));
                 },
                 child: Container(

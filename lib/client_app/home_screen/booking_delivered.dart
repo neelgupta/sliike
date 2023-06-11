@@ -17,7 +17,8 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class booking_delivered extends StatefulWidget {
   String? id;
-  booking_delivered({Key? key,this.id}) : super(key: key);
+  bool isPast = false;
+  booking_delivered({Key? key,this.id,this.isPast = false}) : super(key: key);
 
   @override
   State<booking_delivered> createState() => _booking_deliveredState();
@@ -328,6 +329,7 @@ class _booking_deliveredState extends State<booking_delivered> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                     onTap: () {
+                      Helper.serviceId.clear();
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return book_appoinment(
                             bookingId: widget.id,
@@ -410,6 +412,8 @@ class _booking_deliveredState extends State<booking_delivered> {
               SizedBox(height: height*0.05,),
               InkWell(
                 onTap: () {
+                  Helper.serviceId.clear();
+                  Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString());
                   },));
@@ -433,108 +437,108 @@ class _booking_deliveredState extends State<booking_delivered> {
                 ),
               ),
               SizedBox(height: height*0.05,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  height: height*0.58,
-                  width: width,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFFE7E7E7),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black12)
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: height*0.03,),
-                      const Text("rate",
-                          style: TextStyle(
-                              fontSize: 22,
-                              fontFamily: "spartan",
-                              color: Colors.black)).tr(),
-                      SizedBox(height: height*0.04,),
-                      const Text("rate_info",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: "spartan",
-                              color: Colors.black)).tr(),
-                      const Text("you",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: "spartan",
-                              color: Colors.black)).tr(),
-                      SizedBox(height: height*0.04,),
-                      RatingBar.builder(
-                        direction: Axis.horizontal,
-                        allowHalfRating: false,
-                        itemCount: 5,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      ),
-                      SizedBox(height: height*0.04,),
-                      rating == true?Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: TextField(
-                          style: const TextStyle(fontFamily: "spartan",fontSize: 12),
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            hintText: 'describe'.tr(),
-                          ),
-                        ),
-                      ):Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("My Review:",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54
-                                )
-                            ),
-                            SizedBox(height: height*0.02,),
-                            const Text("Rita delivered quality service",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    color: Colors.black
-                                )
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: height*0.04,),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            rating = false;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              Container(alignment: Alignment.center,
-                                height: height*0.07,
-                                width: width*0.3,
-                                decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
-                                child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 20),
+              //   child: Container(
+              //     height: height*0.58,
+              //     width: width,
+              //     decoration: BoxDecoration(
+              //         color: const Color(0xFFE7E7E7),
+              //         borderRadius: BorderRadius.circular(10),
+              //         border: Border.all(color: Colors.black12)
+              //     ),
+              //     child: Column(
+              //       children: [
+              //         SizedBox(height: height*0.03,),
+              //         const Text("rate",
+              //             style: TextStyle(
+              //                 fontSize: 22,
+              //                 fontFamily: "spartan",
+              //                 color: Colors.black)).tr(),
+              //         SizedBox(height: height*0.04,),
+              //         const Text("rate_info",
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: "spartan",
+              //                 color: Colors.black)).tr(),
+              //         const Text("you",
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: "spartan",
+              //                 color: Colors.black)).tr(),
+              //         SizedBox(height: height*0.04,),
+              //         RatingBar.builder(
+              //           direction: Axis.horizontal,
+              //           allowHalfRating: false,
+              //           itemCount: 5,
+              //           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              //           itemBuilder: (context, _) => const Icon(
+              //             Icons.star,
+              //             color: Colors.amber,
+              //           ),
+              //           onRatingUpdate: (rating) {
+              //             print(rating);
+              //           },
+              //         ),
+              //         SizedBox(height: height*0.04,),
+              //         rating == true?Padding(
+              //           padding: const EdgeInsets.symmetric(horizontal: 20),
+              //           child: TextField(
+              //             style: const TextStyle(fontFamily: "spartan",fontSize: 12),
+              //             maxLines: 3,
+              //             decoration: InputDecoration(
+              //               border: const OutlineInputBorder(),
+              //               hintText: 'describe'.tr(),
+              //             ),
+              //           ),
+              //         ):Padding(
+              //           padding: const EdgeInsets.symmetric(horizontal: 20),
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               const Text("My Review:",
+              //                   style: TextStyle(
+              //                       fontSize: 16,
+              //                       fontFamily: "spartan",
+              //                       color: Colors.black54
+              //                   )
+              //               ),
+              //               SizedBox(height: height*0.02,),
+              //               const Text("Rita delivered quality service",
+              //                   style: TextStyle(
+              //                       fontSize: 18,
+              //                       fontFamily: "spartan",
+              //                       color: Colors.black
+              //                   )
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //         SizedBox(height: height*0.04,),
+              //         GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               rating = false;
+              //             });
+              //           },
+              //           child: Padding(
+              //             padding: const EdgeInsets.symmetric(horizontal: 20),
+              //             child: Row(
+              //               children: [
+              //                 const Spacer(),
+              //                 Container(alignment: Alignment.center,
+              //                   height: height*0.07,
+              //                   width: width*0.3,
+              //                   decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
+              //                   child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
+              //               ],
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: height*0.05,)
             ],
           )

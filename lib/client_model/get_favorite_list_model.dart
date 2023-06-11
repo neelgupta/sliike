@@ -31,6 +31,10 @@ class Data {
 
 class FavoritesData {
   String? id;
+  String? logoPath;
+  String? isLicensed;
+  String? noOfReviews;
+  String? rating;
   String? firstName;
   String? lastName;
   String? country;
@@ -55,6 +59,10 @@ class FavoritesData {
 
   FavoritesData(
       {this.id,
+      this.logoPath,
+      this.isLicensed,
+      this.noOfReviews,
+      this.rating,
       this.firstName,
       this.lastName,
       this.country,
@@ -79,9 +87,13 @@ class FavoritesData {
 
   factory FavoritesData.fromjson(Map<dynamic, dynamic> map2) {
     List<String> beauticianServiceId = List<String>.from(map2['beauticianServiceId'] ?? [].map((e) => e));
-    List<dynamic> demographicIds = List<dynamic>.from(map2['beauticianServiceId'] ?? [].map((e) => e));
+    List<dynamic> demographicIds = List<dynamic>.from(map2['demographicIds'] ?? [].map((e) => e));
     return FavoritesData(
         id: map2['_id'] ?? "",
+        logoPath: map2['logoPath'] ?? "",
+        isLicensed: (map2['isLicensed'] ?? 0).toString(),
+        noOfReviews: (map2['noOfReviews'] ?? 0).toString(),
+        rating: (map2['rating'] ?? 0).toString(),
         firstName: map2['firstName'] ?? "",
         lastName: map2['lastName'] ?? "",
         country: map2['country'] ?? "",

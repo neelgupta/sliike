@@ -118,6 +118,7 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
                     SizedBox(width: width*0.01,),
                     InkWell(
                       onTap: () {
+                        Helper.serviceId.clear();
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return book_appoinment(
                             bookingId: widget.bookingId,

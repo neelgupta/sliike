@@ -770,7 +770,7 @@ class Datum {
   int total;
   String bookingId;
   int paymentStatus;
-  CardDetails cardDetails;
+  CardDetails? cardDetails;
   List<AppointmentDetail> appointmentDetails;
   BeauticianDetails beauticianDetails;
   List<ServiceTypeDetail> serviceTypeDetails;
@@ -805,7 +805,7 @@ class Datum {
         total: json["total"],
         bookingId: json["BookingId"],
         paymentStatus: json["paymentStatus"],
-        cardDetails: CardDetails.fromMap(json["cardDetails"]),
+        cardDetails: json["cardDetails"]==null ? null : CardDetails.fromMap(json["cardDetails"]),
         appointmentDetails: List<AppointmentDetail>.from(
             json["appointmentDetails"]
                     .map((x) => AppointmentDetail.fromMap(x)) ??
@@ -829,7 +829,7 @@ class Datum {
         "total": total,
         "BookingId": bookingId,
         "paymentStatus": paymentStatus,
-        "cardDetails": cardDetails.toMap(),
+        "cardDetails": cardDetails!.toMap(),
         "appointmentDetails":
             List<dynamic>.from(appointmentDetails.map((x) => x.toMap())),
         "beauticianDetails": beauticianDetails.toMap(),

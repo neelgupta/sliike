@@ -24,6 +24,7 @@ class book_appoinment extends StatefulWidget {
   String? serviceId;
   String? serviceDuration;
   String? bookingId;
+  bool isManage = false;
 
   book_appoinment({Key? key,
     this.serviceTypeName,
@@ -32,7 +33,7 @@ class book_appoinment extends StatefulWidget {
     this.beauticianId,
     this.serviceId,
     this.serviceDuration,
-    this.bookingId}) : super(key: key);
+    this.bookingId, this.isManage = false}) : super(key: key);
 
   @override
   State<book_appoinment> createState() => _book_appoinmentState();
@@ -619,7 +620,7 @@ class _book_appoinmentState extends State<book_appoinment> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {
-                  if(widget.bookingId != null){
+                  if(widget.isManage && widget.bookingId != null){
                     updateAppointment(widget.bookingId);
                   } else if (pickedtime.isEmpty && _text.isEmpty) {
                     setState(() {
@@ -875,6 +876,13 @@ class _book_appoinmentState extends State<book_appoinment> {
         _text = startData;
         var endData = DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}'));
         calenderTime = endData;
+        if (onlyonemodal!.data!.place == 0) {
+          placeid = 0;
+          _selectedPlace = "Beautician’s place";
+        } else {
+          placeid = 1;
+          _selectedPlace = "At my place";
+        }
         setState(() {});
       }
       setState(() {
@@ -1039,14 +1047,7 @@ class _book_appoinmentState extends State<book_appoinment> {
           Helper.serviceId.add(map['data']['appointmentId']);
           Navigator.pop(context);
           Navigator.pop(context);
-        }else if(onlyonemodal!.data!.status == 2){
-          Helper.serviceId.add(map['data']['appointmentId']);
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return booking_summary(beauticianId: widget.beauticianId,);
-            },
-          ));
-        }else if(onlyonemodal!.data!.status == 3){
+        }else if(onlyonemodal!.data!.status == 2 && onlyonemodal!.data!.status == 3){
           Helper.serviceId.add(map['data']['appointmentId']);
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {

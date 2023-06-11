@@ -79,7 +79,7 @@ class _booking_SettingState extends State<booking_Setting> {
         MediaQuery.of(context).padding.left;
     return  Scaffold(
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         toolbarHeight: height * 0.14, //
         flexibleSpace: Container(
           color: Color(0xffF5F7F7),

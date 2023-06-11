@@ -158,11 +158,10 @@ class _home_appointmentsState extends State<home_appointments> {
                       ],
                     ),
                   ),
-                  upcoming == true
+                  upcoming
                       ? datalist.isNotEmpty
                           ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -246,7 +245,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 color: Colors.black54),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: EdgeInsets.symmetric(vertical: 8,horizontal: width * 0.02),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -255,6 +254,11 @@ class _home_appointmentsState extends State<home_appointments> {
                                                   child: Image.network(
                                                     "${datalist[index].beauticianId!.profileImage}",
                                                     fit: BoxFit.fill,
+                                                    loadingBuilder: (context, loading, imageChunkEvent) {
+                                                      return Center(
+                                                        child: CircularProgressIndicator(),
+                                                      );
+                                                    },
                                                     errorBuilder: (context,
                                                         error, stackTrace) {
                                                       return const Center(
@@ -279,7 +283,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                             color: Colors
                                                                 .black54)),
                                                     SizedBox(
-                                                      width: width - 140,
+                                                      width: width * 0.6,
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -412,8 +416,7 @@ class _home_appointmentsState extends State<home_appointments> {
                             )
                       : data.isNotEmpty
                           ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -449,7 +452,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_panding(
-                                                    id: data[index].id);
+                                                    id: data[index].id,isPast: true,);
                                               },
                                             ));
                                           } else if (data[index].status == 1) {
@@ -457,7 +460,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return BookingConfirmed(
-                                                    id: data[index].id);
+                                                    id: data[index].id,
+                                                  isPast: true,
+                                                );
                                               },
                                             ));
                                           } else if (data[index].status == 2) {
@@ -465,7 +470,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_delivered(
-                                                    id: data[index].id);
+                                                    id: data[index].id,isPast: true,);
                                               },
                                             ));
                                           } else if (data[index].status == 3) {
@@ -473,7 +478,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_cancel(
-                                                    id: data[index].id);
+                                                    id: data[index].id,isPast: true,);
                                               },
                                             ));
                                           } else {
@@ -481,7 +486,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_noshow(
-                                                    id: data[index].id);
+                                                    id: data[index].id,
+                                                  isPast: true,
+                                                );
                                               },
                                             ));
                                           }
@@ -494,7 +501,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 color: Colors.black54),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: EdgeInsets.symmetric(vertical: 8,horizontal: width * 0.02),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -503,6 +510,11 @@ class _home_appointmentsState extends State<home_appointments> {
                                                   child: Image.network(
                                                     "${data[index].beauticianId!.profileImage}",
                                                     fit: BoxFit.fill,
+                                                    loadingBuilder: (context, loading, imageChunkEvent) {
+                                                      return Center(
+                                                        child: CircularProgressIndicator(),
+                                                      );
+                                                    },
                                                     errorBuilder: (context,
                                                         error, stackTrace) {
                                                       return const Center(
@@ -524,7 +536,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                             color: Colors
                                                                 .black54)),
                                                     SizedBox(
-                                                      width: width - 140,
+                                                      width: width * 0.6,
                                                       child: Row(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment

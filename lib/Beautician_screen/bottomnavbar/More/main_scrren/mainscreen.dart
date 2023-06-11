@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/profile_page.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -402,39 +403,39 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       ),
 
                       ////help center
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20, right: 20),
-                      //   child: Container(
-                      //     padding: EdgeInsets.symmetric(
-                      //       vertical: 17,
-                      //     ),
-                      //     decoration: BoxDecoration(
-                      //         border: Border(
-                      //             bottom: BorderSide(color: Colors.black12))),
-                      //     child: InkWell(
-                      //       onTap: () {
-                      //         Navigator.push(context, MaterialPageRoute(
-                      //           builder: (context) {
-                      //             return help_center_beauti();
-                      //           },
-                      //         ));
-                      //       },
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           textComoon("Help Center", 14, Color(0xff414141),
-                      //               FontWeight.w500),
-                      //           Container(
-                      //             height: 15,
-                      //             width: 30,
-                      //             child: Image.asset(
-                      //                 "assets/images/righticon.png"),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 17,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(color: Colors.black12))),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return help_center_beauti();
+                                },
+                              ));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textComoon("Help Center", 14, Color(0xff414141),
+                                    FontWeight.w500),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       // InkWell(
                       //   onTap: () {
                       //     // Navigator.push(context, MaterialPageRoute(builder: (context) {

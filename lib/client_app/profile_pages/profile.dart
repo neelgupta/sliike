@@ -14,6 +14,7 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/add_new_address.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/delete_my_account.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/edit_profile.dart';
+import 'package:new_sliikeapps_apps/client_app/profile_pages/help_center.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/my_favorites.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/payments.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -532,45 +533,45 @@ class _profileState extends State<profile> {
             SizedBox(height: height * 0.01),
 
             ///help center
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.push(context, MaterialPageRoute(
-            //       builder: (context) {
-            //         return const help_center();
-            //       },
-            //     ));
-            //   },
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 15),
-            //     child: Container(
-            //       padding: const EdgeInsets.symmetric(
-            //         vertical: 17,
-            //       ),
-            //       decoration: const BoxDecoration(
-            //           border:
-            //               Border(bottom: BorderSide(color: Colors.black12))),
-            //       child: Row(
-            //         children: [
-            //           SizedBox(
-            //             height: 30,
-            //             child: Image.asset("assets/images/question.png"),
-            //           ),
-            //           const SizedBox(
-            //             width: 15,
-            //           ),
-            //           textComoon("help_center", 14, const Color(0xff414141),
-            //               FontWeight.w500),
-            //           const Spacer(),
-            //           SizedBox(
-            //             height: 15,
-            //             width: 30,
-            //             child: Image.asset("assets/images/righticon.png"),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const help_center();
+                  },
+                ));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
+                  ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Image.asset("assets/images/question.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      textComoon("help_center", 14, const Color(0xff414141),
+                          FontWeight.w500),
+                      const Spacer(),
+                      SizedBox(
+                        height: 15,
+                        width: 30,
+                        child: Image.asset("assets/images/righticon.png"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
 
             // SizedBox(height: height * 0.01),
             // GestureDetector(

@@ -16,7 +16,8 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class booking_cancel extends StatefulWidget {
   String? id;
-  booking_cancel({Key? key,this.id}) : super(key: key);
+  bool isPast = false;
+  booking_cancel({Key? key,this.id,this.isPast = false}) : super(key: key);
 
   @override
   State<booking_cancel> createState() => _booking_cancelState();
@@ -417,9 +418,7 @@ class _booking_cancelState extends State<booking_cancel> {
                   Helper.serviceId.clear();
                   Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString(),
-                      serviceId: onlyonemodal!.data!.serviceId!.id,
-                    );
+                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString(),);
                   },));
                 },
                 child: Padding(

@@ -18,7 +18,8 @@ import 'booking_panding.dart';
 
 class booking_noshow extends StatefulWidget {
   String? id;
-  booking_noshow({Key? key,this.id}) : super(key: key);
+  bool isPast = false;
+  booking_noshow({Key? key,this.id,this.isPast = false}) : super(key: key);
 
   @override
   State<booking_noshow> createState() => _booking_noshowState();
@@ -417,6 +418,8 @@ class _booking_noshowState extends State<booking_noshow> {
               SizedBox(height: height*0.05,),
               InkWell(
                 onTap: () {
+                  Helper.serviceId.clear();
+                  Helper.serviceId.add(widget.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString(),);
                   },));
@@ -432,7 +435,7 @@ class _booking_noshowState extends State<booking_noshow> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: "spartan",
-                                color: Color(0xffDD6A03))),
+                                color: Color(0xffDD6A03))).tr(),
                         Spacer(),
                         Icon(Icons.arrow_forward_ios_sharp,size: 25,color: Color(0xffDD6A03),)
                       ],
