@@ -802,7 +802,7 @@ class _addServiceState extends State<addService> {
       setState(() {
         isLoading = false;
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
       Fluttertoast.showToast(
           msg: map["message"],
           toastLength: Toast.LENGTH_SHORT,
@@ -815,7 +815,7 @@ class _addServiceState extends State<addService> {
       setState(() {
         isLoading = false;
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
       Fluttertoast.showToast(
           msg: map["message"],
           toastLength: Toast.LENGTH_SHORT,

@@ -155,7 +155,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
           Padding(
             padding: const EdgeInsets.only(left: 20,right: 20),
             child:
-            getScheduledData!.data!.startTime != "" && getScheduledData!.data!.endTime != ""?
+            getScheduledData!.data!.startTime != "" && getScheduledData!.data!.endTime != "" && getScheduledData!.data!.isOpen!?
             InkWell(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
@@ -171,7 +171,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                   print("value : ${value}");
                   print("value.runtimeType : ${value.runtimeType}");
                   print("value : ${value}");
-
+                  var displayDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
                   Map<String,dynamic> valuesMap = value;
                   if(value!=null) {
                     getScheduledData!.data = getData(
@@ -181,11 +181,13 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                       day: valuesMap["day"],
                       endTime: valuesMap["endTime"],
                       startTime: valuesMap["startTime"],
-                      date: pickedDate!.toString()
+                      date: displayDate
                     );
                     // value;
                     setState(() {});
                     print("getScheduledData ${getScheduledData!.data!}");
+                    print("valuesMap ${valuesMap["isOpen"]}");
+                    print("valuesMap ${displayDate}");
                   }
                 });
               },
@@ -266,7 +268,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                   print("value : ${value}");
                   print("value.runtimeType : ${value.runtimeType}");
                   print("value : ${value}");
-
+                  var displayDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
                   Map<String,dynamic> valuesMap = value;
                   if(value!=null) {
                     getScheduledData!.data = getData(
@@ -276,11 +278,13 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                           day: valuesMap["day"],
                           endTime: valuesMap["endTime"],
                           startTime: valuesMap["startTime"],
-                          date: pickedDate!.toString()
+                          date: displayDate
                         );
                     // value;
                     setState(() {});
                     print("getScheduledData ${getScheduledData!.data!}");
+                    print("valuesMap ${valuesMap["isOpen"]}");
+                    print("valuesMap ${displayDate}");
                   }
                 });
                 // Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
@@ -435,6 +439,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
     };
     var Body = getScheduledData!.data;
     log("Body => ${Body}");
+    log("Body => ${getScheduledData!.data!.date}");
     var response = await http.post(
       Uri.parse(ApiUrlList.saveCalenderAdjustment),
       body: jsonEncode(Body),

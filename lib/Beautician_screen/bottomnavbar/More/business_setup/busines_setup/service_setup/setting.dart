@@ -4,7 +4,10 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class setting extends StatefulWidget {
-  const setting({Key? key}) : super(key: key);
+  bool ? isBookOnline;
+  bool ? isHomeService;
+  String ? intervalTime;
+  setting({Key? key,this.isBookOnline,this.isHomeService,this.intervalTime}) : super(key: key);
 
   @override
   State<setting> createState() => _settingState();
@@ -12,11 +15,10 @@ class setting extends StatefulWidget {
 
 class _settingState extends State<setting> {
   List<String> mindropdownlist = <String>[
-    "30 min",
-    "25 min",
-    "20 min",
     "15 min",
-    "10 min"
+    "30 min",
+    "45 min",
+    "60 min",
   ];
   List<String> timelist = <String>[
     "0",
@@ -31,6 +33,15 @@ class _settingState extends State<setting> {
   bool homeswitch=false;
 
   TextEditingController txtPClients = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    clentswitch = widget.isBookOnline ?? false;
+    homeswitch = widget.isHomeService ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -323,7 +334,9 @@ class _settingState extends State<setting> {
                   ),
                   Spacer(),
                   CommonButton(context,"OK", 12, FontWeight.w600, Colors.white, () {
-                    Navigator.pop(context,[txtPClients,homeswitch,clentswitch]);
+                    print(homeswitch,);
+                    print(clentswitch,);
+                    Navigator.pop(context,[txtPClients.text,homeswitch,clentswitch]);
                   }),
                   SizedBox(height: height*0.025,),
                 ],

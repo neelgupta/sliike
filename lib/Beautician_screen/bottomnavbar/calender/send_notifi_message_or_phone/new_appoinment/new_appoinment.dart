@@ -141,7 +141,7 @@ class _newAppointmentState extends State<newAppointment> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return add_Srevice();
+                        return addService();
                       },));
                     },
                     child: Container(

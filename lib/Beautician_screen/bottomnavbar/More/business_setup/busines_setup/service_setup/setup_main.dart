@@ -20,9 +20,11 @@ class service_Setup_Main extends StatefulWidget {
 
 class _service_Setup_MainState extends State<service_Setup_Main> {
 
-  List categorytitle=['Men’s Cut','Women’s Cut','Beard Trim'];
   bool isLoading = false;
   GetServiceDetailsData ? getServiceDetailsData;
+
+  List<Datum> localSearchData = [];
+  bool isSearch = false;
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
     super.initState();
     GetServiceDetails();
   }
+
+  TextEditingController txtSearch = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -113,20 +117,23 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
               SizedBox(height: height * 0.03,),
               InkWell(
                 onTap: () {
-
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: width*0.03),
                   width: width,
-                  height: height*0.065,
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Image.asset("assets/images/search.png",height: height*0.03),
-                      ),
-                      SizedBox(width: width*0.03),
-                      Text("Search for services...",style: TextStyle(fontSize: 14,fontFamily: "spartan"),)
-                    ],
+                  height: height*0.055,
+                  child: TextField(
+                    onChanged: (value) {
+                      searchService(value);
+                      setState(() {});
+                    },
+                    controller: txtSearch,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 12),
+                        prefixIcon : Icon(Icons.search,color: Colors.black45),
+                        border: InputBorder.none,
+                      hintText: "Search for services"
+                    ),
                   ),
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -139,13 +146,15 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: getServiceDetailsData!.data!.length,
+                  itemCount: txtSearch.text.isEmpty ? getServiceDetailsData!.data!.length : localSearchData.length,
                   itemBuilder: (context, index) {
                     return Container(
                       child: InkWell(
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return Profile_Images(getServiceDetailsData!.data![index].id!);
+                            return Profile_Images(
+                                txtSearch.text.isEmpty ? getServiceDetailsData!.data![index].id! : localSearchData[index].id!
+                            );
                           },));
                         },
                         child: Column(
@@ -153,9 +162,14 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                             SizedBox(height: height*0.01,),
                             Row(
                               children: [
-                                Container(
-                                  child: Image.asset("assets/images/delete.png",height: 30,
-                                      fit: BoxFit.fill),
+                                InkWell(
+                                  onTap: (){
+                                    deleteServiceDetails( txtSearch.text.isEmpty ? getServiceDetailsData!.data![index].id! : localSearchData[index].id!);
+                                  },
+                                  child: Container(
+                                    child: Image.asset("assets/images/delete.png",height: 30,
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 20,
@@ -164,7 +178,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${getServiceDetailsData!.data![index].serviceCategory!.serviceCategoryName ?? ""}",
+                                      txtSearch.text.isEmpty ?
+                                      "${getServiceDetailsData!.data![index].serviceCategory!.serviceCategoryName ?? ""}":
+                                      "${localSearchData[index].serviceCategory!.serviceCategoryName ?? ""}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: 14,
@@ -177,7 +193,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                       height: height * 0.01,
                                     ),
                                     Text(
-                                      "\$${getServiceDetailsData!.data![index].price ?? ""} for ${getServiceDetailsData!.data![index].duration ?? ""} ",
+                                      txtSearch.text.isEmpty ?
+                                      "\$${getServiceDetailsData!.data![index].price ?? ""} for ${getServiceDetailsData!.data![index].duration ?? ""}":
+                                      "\$${localSearchData[index].price ?? ""} for ${localSearchData[index].duration ?? ""}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: 12,
@@ -237,10 +255,8 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
             child: Padding(
               padding: const EdgeInsets.only(left: 5,right: 5),
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   textComoon("ADD SERVICE",12, Colors.white, FontWeight.w600),
-
                   Icon(Icons.add,size: 40,color: Colors.white,),
 
                 ],
@@ -271,6 +287,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
       Map map = jsonDecode(response.body);
       if (map["status"] == 200) {
         getServiceDetailsData = GetServiceDetailsData.fromJson(jsonDecode(response.body));
+        for(int i = 0; i < getServiceDetailsData!.data!.length; i++){
+          localSearchData.add(getServiceDetailsData!.data![i]);
+        }
         setState(() {});
       }else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -283,6 +302,55 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+
+  deleteServiceDetails(String Id) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var getUri = Uri.parse("${ApiUrlList.deleteServiceDetails}$Id");
+      var Headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      var response = await http.delete(
+        getUri,
+        headers: Headers,
+      );
+      log("deleteServiceDetails Body ==> ${response.body}");
+      log("deleteServiceDetails Code ==> ${response.statusCode}");
+      Map map = jsonDecode(response.body);
+      if (map["status"] == 202) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {return const service_Setup_Main();},));
+        setState(() {});
+      }else if(response.statusCode == 401){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        // isLoading = false;
+      });
+    }
+  }
+
+
+  searchService(String value) {
+    if (txtSearch.text.isNotEmpty) {
+      localSearchData.clear();
+      for (int i = 0; i < getServiceDetailsData!.data!.length; i++) {
+        if (getServiceDetailsData!.data![i].serviceCategory!.serviceCategoryName!.toLowerCase().contains(txtSearch.text.toLowerCase())) {
+          print("data : ${getServiceDetailsData!.data![i].serviceCategory!.serviceCategoryName!}");
+          localSearchData.add(getServiceDetailsData!.data![i]);
+          setState(() {});
+        }
+      }
     }
   }
 

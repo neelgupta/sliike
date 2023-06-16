@@ -110,7 +110,6 @@ class _add_promotionState extends State<add_promotion> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -524,7 +523,6 @@ class _add_promotionState extends State<add_promotion> {
                             SizedBox(
                               height: height*0.02,
                             ),
-
                             Container(child: textComoon("Set Promo Discount", 16, Color(0xff292929), FontWeight.w700)),
                             SizedBox(height: height * 0.02,),
                             Container(
@@ -561,7 +559,6 @@ class _add_promotionState extends State<add_promotion> {
                                             Radio(
                                               value: 0,
                                               groupValue: _radioSelected,
-
                                               activeColor: Color(0xff01635D),
                                               fillColor: MaterialStateColor.resolveWith(
                                                       (states) => Color(0xff01635D)),
@@ -569,7 +566,6 @@ class _add_promotionState extends State<add_promotion> {
                                                 setState(() {
                                                   _radioSelected = value as int;
                                                   print(_radioSelected);
-
                                                 });
                                               },
                                             ),
@@ -782,7 +778,6 @@ class _add_promotionState extends State<add_promotion> {
                                               child: Image.asset(
                                                   "assets/images/calenderblack.png"),
                                             ),
-
                                             VerticalDivider(
                                               color: Color(0xff707070),
                                               thickness: 1,
@@ -1159,7 +1154,6 @@ class _add_promotionState extends State<add_promotion> {
                       SizedBox(
                         height: height*0.02,
                       ),
-
                       Container(child: textComoon("Set Promo Discount", 16, Color(0xff292929), FontWeight.w700)),
                       SizedBox(height: height * 0.02,),
                       Container(
@@ -1170,8 +1164,7 @@ class _add_promotionState extends State<add_promotion> {
                           padding: const EdgeInsets.only(top: 15,bottom: 15,left: 10,right: 10),
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              textComoon(
-                                  "Set discount by :", 14, Color(0xff292929), FontWeight.w600),
+                              textComoon("Set discount by :", 14, Color(0xff292929), FontWeight.w600),
                               SizedBox(height: height*0.02,),
                               IntrinsicHeight(
                                 child: SingleChildScrollView(
@@ -1277,7 +1270,6 @@ class _add_promotionState extends State<add_promotion> {
                         ),
                       ),
                       SizedBox(height: height*0.01,),
-
                       dividerCommon(),
                       SizedBox(height: height*0.02,),
                       Container(child: textComoon("Set Promo Dates", 16, Color(0xff292929), FontWeight.w700)),
@@ -1293,8 +1285,32 @@ class _add_promotionState extends State<add_promotion> {
                             hintText: "17 April, 2022",
                             hintStyle: TextStyle(color: Color(0xff000000)),
                             prefixIcon: InkWell(
-                              onTap: () {
-
+                              onTap: () async{
+                                final DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: selectedDate,
+                                    builder: ( context,  child) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.fromSwatch(
+                                            primarySwatch: Colors.teal,
+                                            primaryColorDark: Colors.teal,
+                                            accentColor: Colors.teal,
+                                          ),
+                                          dialogBackgroundColor: Colors.white,
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                    firstDate: DateTime(2015, 8),
+                                    lastDate: DateTime(2101));
+                                if (picked != null && picked != selectedDate) {
+                                  StartDate = DateFormat('yyyy-MM-dd').format(picked);
+                                  Startdate2.text = DateFormat('E, MMM d').format(picked);
+                                  // Enddate.text = selectedDate.toString();
+                                      ;
+                                  print(EndDate);
+                                }
                               },
                               child: Container(
                                 width: width * 0.38,
@@ -1354,8 +1370,32 @@ class _add_promotionState extends State<add_promotion> {
                             hintText: "22 April, 2022",
                             hintStyle: TextStyle(color: Color(0xff000000)),
                             prefixIcon: InkWell(
-                              onTap: () {
-
+                              onTap: () async{
+                                final DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: selectedDate,
+                                    builder: ( context,  child) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.fromSwatch(
+                                            primarySwatch: Colors.teal,
+                                            primaryColorDark: Colors.teal,
+                                            accentColor: Colors.teal,
+                                          ),
+                                          dialogBackgroundColor: Colors.white,
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                    firstDate: DateTime(2015, 8),
+                                    lastDate: DateTime(2101));
+                                if (picked != null && picked != selectedDate) {
+                                  EndDate = DateFormat('yyyy-MM-dd').format(picked);
+                                  Enddate2.text = DateFormat('E, MMM d').format(picked);
+                                  // Enddate.text = selectedDate.toString();
+                                      ;
+                                  print(EndDate);
+                                }
                               },
                               child: Container(
                                 width: width * 0.36,
@@ -1378,7 +1418,6 @@ class _add_promotionState extends State<add_promotion> {
                                         child: Image.asset(
                                             "assets/images/calenderblack.png"),
                                       ),
-
                                       VerticalDivider(
                                         color: Color(0xff707070),
                                         thickness: 1,
@@ -1405,9 +1444,34 @@ class _add_promotionState extends State<add_promotion> {
                         height: height * 0.04,
                       ),
                       CommonButton(context, "CONTINUE",12, FontWeight.w600, Colors.white, () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return promotion_Publish(body: {},);
-                        },));
+                        if(promotionFor.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill promotion category");
+                        }else if(prpromotiontitle.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill promotion title");
+                        }else if(product!.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill service name");
+                        }else if(description2.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill description");
+                        }else if(Startdate2.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill start date");
+                        }else if(Enddate2.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill end date");
+                        }else{
+                          var Body = {
+                            "promotionFor": promotionFor,
+                            "promotionTitle": prpromotiontitle.text,
+                            "serviceName": product, //send productName
+                            "description": description2.text,
+                            "isDiscPercentage": _radioSelected.toString(),
+                            "discount": Productprice2.text,
+                            "startDate": StartDate,
+                            "endDate": EndDate,
+                            "subTypeId": productId, //send productId
+                          };
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
+                          },));
+                        }
                       }),
                       SizedBox(
                         height: height * 0.05,

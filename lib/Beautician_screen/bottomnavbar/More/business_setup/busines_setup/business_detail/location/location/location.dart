@@ -65,7 +65,6 @@ class _locationState extends State<location> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     getLocationData();
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
     BitmapDescriptor.fromAssetImage(
@@ -248,7 +247,9 @@ class _locationState extends State<location> {
                                 pin: getLocationDetailsData!.data![0].address![0].zipCode!,
                                 province: getLocationDetailsData!.data![0].address![0].province!.id!,
                               );
-                            },));
+                            },)).then((value){
+                              getLocationData();
+                            });
                           },
                           child: Container(
                             height: 40,
@@ -303,7 +304,7 @@ class _locationState extends State<location> {
                         selectedRadio=value as int;
                       },),
                       Text(
-                        "I own a salon",
+                        getLocationDetailsData!.data![0].hasShop == 0 ? "I am independent" :  "I own a salon",
                         style: TextStyle(
                             fontSize: 14,
                             color: Color(0xff292929),
@@ -336,10 +337,12 @@ class _locationState extends State<location> {
     province = getLocationDetailsData!.data![0].address![0].province!.name!;
     postalCode = getLocationDetailsData!.data![0].address![0].zipCode!;
     country = getLocationDetailsData!.data![0].country!;
-    latitude = getLocationDetailsData!.data![0].location!.coordinates![0].toString();
-    longitude = getLocationDetailsData!.data![0].location!.coordinates![1].toString();
-    _updateMarker();
+    longitude = getLocationDetailsData!.data![0].location!.coordinates![0].toString();
+    latitude = getLocationDetailsData!.data![0].location!.coordinates![1].toString();
+    print(latitude);
+    print(longitude);
     setState(() {});
+    _updateMarker();
   }
 
   Future<Position> getLocation() async {

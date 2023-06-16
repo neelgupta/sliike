@@ -36,17 +36,98 @@ class _Profile_ImagesState extends State<Profile_Images> {
 
 
   bool isLoading = false;
+
+  String? selectedvaluemin = "30 min";
+  String? selectedvalueminnewformat = "00:30";
+
+  convertIntoTimeFormat(selectedValue) {
+    selectedvaluemin = selectedValue;
+    if ("30 min" == selectedValue) {
+      selectedvalueminnewformat = "00:30";
+    } else if ("60 min" == selectedValue) {
+      selectedvalueminnewformat = "01:00";
+    } else if ("90 min" == selectedValue) {
+      selectedvalueminnewformat = "01:30";
+    } else if ("120 min" == selectedValue) {
+      selectedvalueminnewformat = "02:00";
+    } else if ("150 min" == selectedValue) {
+      selectedvalueminnewformat = "02:30";
+    } else if ("180 min" == selectedValue) {
+      selectedvalueminnewformat = "03:00";
+    } else if ("210 min" == selectedValue) {
+      selectedvalueminnewformat = "03:30";
+    } else if ("240 min" == selectedValue) {
+      selectedvalueminnewformat = "04:00";
+    } else if ("270 min" == selectedValue) {
+      selectedvalueminnewformat = "04:30";
+    } else if ("300 min" == selectedValue) {
+      selectedvalueminnewformat = "05:00";
+    } else if ("330 min" == selectedValue) {
+      selectedvalueminnewformat = "05:30";
+    } else if ("360 min" == selectedValue) {
+      selectedvalueminnewformat = "06:00";
+    } else if ("390 min" == selectedValue) {
+      selectedvalueminnewformat = "06:30";
+    }
+
+    setState(() {});
+  }
+
+  convertIntoTimeFormatForPriceDuration(selectedValue) {
+    setState(() {
+    selectedvalueminnewformat = selectedValue;
+    if (selectedValue == "00:30") {
+      selectedvaluemin = "30 min";
+    } else if (selectedValue == "01:00") {
+      selectedvaluemin = "60 min";
+    } else if (selectedValue == "01:30") {
+      selectedvaluemin = "90 min";
+    } else if (selectedValue == "02:00") {
+      selectedvaluemin = "120 min";
+    } else if (selectedValue == "02:30") {
+      selectedvaluemin = "150 min";
+    } else if (selectedValue == "03:00") {
+      selectedvaluemin = "180 min";
+    } else if (selectedValue == "03:30") {
+      selectedvaluemin = "210 min";
+    } else if (selectedValue == "04:00") {
+      selectedvaluemin = "240 min";
+    } else if (selectedValue == "04:30") {
+      selectedvaluemin = "270 min";
+    } else if (selectedValue == "05:00") {
+      selectedvaluemin = "300 min";
+    } else if (selectedValue == "05:30") {
+      selectedvaluemin = "330 min";
+    } else if (selectedValue == "06:00") {
+      selectedvaluemin = "360 min";
+    } else if (selectedValue == "06:30") {
+      selectedvaluemin = "390 min";
+    }
+    });
+  }
+
   List<String> mindropdownlist = <String>[
     "30 min",
-    "25 min",
-    "20 min",
-    "15 min",
-    "10 min",
+    "60 min",
+    "90 min",
+    "120 min",
+    "150 min",
+    "180 min",
+    "210 min",
+    "240 min",
+    "270 min",
+    "300 min",
+    "330 min",
+    "360 min",
+    "390 min",
   ];
 
-  List<String> pricelist = <String>[];
-  String? selectedprice = "Hair Care";
-  String? selectedvaluemin = "30 min";
+  List<String> pricelist = <String>[
+    "Fixed",
+    "Seasonal"
+  ];
+  String? selectedprice = "";
+  String? selectedpriceStatus = "Fixed";
   final ImagePicker _picker = ImagePicker();
   bool imagestatus = false;
   String imagepath = "";
@@ -63,9 +144,9 @@ class _Profile_ImagesState extends State<Profile_Images> {
     // TODO: implement initState
     super.initState();
     getSingleServiceDetails(widget.id);
+    print(widget.id);
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery
@@ -328,12 +409,14 @@ class _Profile_ImagesState extends State<Profile_Images> {
                 child: Container(
                     width: width,
                     height: 150,
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                         color: Color(0xffF3F3F3),
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/Rectangle_greyline.png"),
-                            fit: BoxFit.fill)),
+                        image:
+                        getSingleServiceDetailsData?.data?.imageUrl !=null?
+                        DecorationImage(image: NetworkImage(getSingleServiceDetailsData!.data!.imageUrl!),fit: BoxFit.fill):
+                        DecorationImage(image: AssetImage(
+                                "assets/images/Rectangle_greyline.png"),fit: BoxFit.fill)
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -367,6 +450,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: TextField(
+                readOnly: true,
                 controller: servicetype,
                 style: const TextStyle(
                     fontSize: 14,
@@ -418,6 +502,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Container(
                 child: TextField(
+                  readOnly: true,
                   controller: servicecategory,
                   style: const TextStyle(
                       fontSize: 14,
@@ -484,8 +569,8 @@ class _Profile_ImagesState extends State<Profile_Images> {
             SizedBox(
               height: height * 0.025,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButtonFormField(
                 enableFeedback: true,
                 isDense: true,
@@ -496,46 +581,86 @@ class _Profile_ImagesState extends State<Profile_Images> {
                 items: mindropdownlist.map((String items) {
                   return DropdownMenuItem(
                     value: items,
-                    child: Text(
-                      items,
-                      style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                    child: Text(items,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   );
                 }).toList(),
-                onChanged: (String? newValue) {
+                onChanged: (String?selectedvalue) {
                   setState(() {
-                    selectedvaluemin = newValue!;
+                    convertIntoTimeFormat(selectedvalue);
+                    print("selectedvalue==${selectedvalue}");
+                    print("selectedvaluemin==${selectedvaluemin}");
                   });
                 },
-                icon: const Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 30, color: Color(0xff969696)
-                  ),
-                ),
+                icon: const Icon(Icons.keyboard_arrow_down, size: 30,),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  hintText: "Service Category",
-                  hintStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'spartan',
-                      color: Color(0xff292929),
-                      fontWeight: FontWeight.w500),
-                  labelText: "Service Category",
-                  labelStyle:
-                  const TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Color(0xff292929)),
-                  ),
+                  //labelText: "Duration",
+                  label: const Text("Duration", style: TextStyle(color: Color(0xff292929))),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Color(0xff292929)),
+                    borderSide: const BorderSide(
+                        color: Colors.black38),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(color: Colors.black38),
                   ),
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20, right: 20),
+            //   child: DropdownButtonFormField(
+            //     enableFeedback: true,
+            //     isDense: true,
+            //     isExpanded: true,
+            //     alignment: Alignment.center,
+            //     elevation: 2,
+            //     value: selectedvaluemin,
+            //     items: mindropdownlist.map((String items) {
+            //       return DropdownMenuItem(
+            //         value: items,
+            //         child: Text(
+            //           items,
+            //           style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+            //         ),
+            //       );
+            //     }).toList(),
+            //     onChanged: (String? newValue) {
+            //       setState(() {
+            //         selectedvaluemin = newValue!;
+            //       });
+            //     },
+            //     icon: const Padding(
+            //       padding: EdgeInsets.only(right: 10),
+            //       child: Icon(
+            //           Icons.keyboard_arrow_down,
+            //           size: 30, color: Color(0xff969696)
+            //       ),
+            //     ),
+            //     decoration: InputDecoration(
+            //       contentPadding: const EdgeInsets.only(left: 20),
+            //       hintText: "Service Category",
+            //       hintStyle: const TextStyle(
+            //           fontSize: 14,
+            //           fontFamily: 'spartan',
+            //           color: Color(0xff292929),
+            //           fontWeight: FontWeight.w500),
+            //       labelText: "Service Category",
+            //       labelStyle:
+            //       const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(5),
+            //         borderSide: const BorderSide(color: Color(0xff292929)),
+            //       ),
+            //       border: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(5),
+            //         borderSide: const BorderSide(color: Color(0xff292929)),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: height * 0.03,
             ),
@@ -550,7 +675,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                       isExpanded: true,
                       alignment: Alignment.center,
                       elevation: 2,
-                      value: selectedprice,
+                      value: selectedpriceStatus,
                       items: pricelist.map((String items) {
                         return DropdownMenuItem(
                           value: items,
@@ -563,7 +688,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          selectedprice = newValue!;
+                          selectedpriceStatus = newValue!;
                         });
                       },
                       icon: const Padding(
@@ -575,13 +700,13 @@ class _Profile_ImagesState extends State<Profile_Images> {
                       ),
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.only(left: 20),
-                        hintText: "Service Category",
+                        hintText: "Price Status",
                         hintStyle: const TextStyle(
                             fontSize: 14,
                             fontFamily: 'spartan',
                             color: Color(0xff292929),
                             fontWeight: FontWeight.w500),
-                        labelText: "Service Category",
+                        labelText: "Price Status",
                         labelStyle: const TextStyle(
                             fontFamily: 'spartan', color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
@@ -725,7 +850,11 @@ class _Profile_ImagesState extends State<Profile_Images> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const setting();
+                    return setting(
+                        isBookOnline: getSingleServiceDetailsData!.data!.isBookOnline,
+                        isHomeService: getSingleServiceDetailsData!.data!.isHomeService,
+                        intervalTime: getSingleServiceDetailsData!.data!.inBetweenInterval,
+                    );
                   },)).then((value)  {
                     parallelClients = value[0];
                     homeService = value[1];
@@ -817,13 +946,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: const Color(0xff01635D)),
-                          child: const Text(
-                            "SAVE",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "spartan",
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal),
+                          child: const Text("SAVE", style: TextStyle(color: Colors.white, fontFamily: "spartan", fontSize: 14, fontWeight: FontWeight.normal),
                           )),
                     ),
                   ),
@@ -860,12 +983,14 @@ class _Profile_ImagesState extends State<Profile_Images> {
         fetchServiceCategories();
         getSingleServiceDetailsData = GetSingleServiceDetailsData.fromJson(jsonDecode(response.body));
         // mindropdownlist.add("${getSingleServiceDetailsData!.data!.duration}");
+        var time = await convertIntoTimeFormatForPriceDuration(getSingleServiceDetailsData!.data!.duration);
         servicetype.text = getSingleServiceDetailsData!.data!.serviceType!.serviceTypeName!;
         servicecategory.text = getSingleServiceDetailsData!.data!.serviceCategory!.serviceCategoryName!;
-        // selectedvaluemin = getSingleServiceDetailsData!.data!.duration;
         description.text = getSingleServiceDetailsData!.data!.description!;
         selectedprice = getSingleServiceDetailsData!.data!.serviceCategory!.serviceCategoryName!;
-        txtPrice.text = getSingleServiceDetailsData!.data!.price!.toString();
+        txtPrice.text = "\$ ${getSingleServiceDetailsData!.data!.price!.toString()}";
+        print("converted Time : ${selectedvaluemin}");
+        print(getSingleServiceDetailsData!.data!.duration);
         setState(() {});
       }else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -887,18 +1012,17 @@ class _Profile_ImagesState extends State<Profile_Images> {
         isLoading = true;
       });
       var postUri = Uri.parse("${ApiUrlList.updateServiceDetails + Id}");
-      var request =     http.MultipartRequest("PUT", postUri);
+      var request = http.MultipartRequest("PUT", postUri);
       request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
       request.headers['Content-Type'] = 'application/json';
       request.headers['Content-Type'] = "multipart/form-data";
-      request.fields['duration'] = selectedvaluemin!;
-      request.fields['price'] = txtPrice.text;
+      request.fields['duration'] = selectedvalueminnewformat!;
+      request.fields['price'] = txtPrice.text.split("\$").last;
       request.fields['description'] = description.text;
       request.fields['isBookOnline'] = Clients.toString();
       request.fields['isHomeService'] = homeService.toString();
       request.fields['noOfParallelClient '] = parallelClients;
       request.fields['showCancelPolicy '] = "false";
-
       if(imagestatus){
         http.MultipartFile multipartFile = await http.MultipartFile.fromPath('serviceImg', file!.path);
         request.files.add(multipartFile);
@@ -913,7 +1037,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
       Map map = jsonDecode(res.body);
       if(res.statusCode == 200){
         isLoading = false;
-        Navigator.push(context, MaterialPageRoute(builder: (context) {return const service_Setup_Main();},));
+        Navigator.pop(context);
         setState(() {});
         Fluttertoast.showToast(
             msg: "${map['message']}",
@@ -947,7 +1071,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
     try {
       setState(() {
         isLoading = true;
-        pricelist.clear();
+        // pricelist.clear();
       });
       var getUri = Uri.parse(ApiUrlList.fetchServiceCategories);
       var response = await http.get(getUri);
@@ -957,10 +1081,10 @@ class _Profile_ImagesState extends State<Profile_Images> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           serviceCategories = ServiceCategories.fromjson(map);
-          for(var i in serviceCategories!.data!){
-            pricelist.add(i.serviceCategoryName!);
-            print(pricelist);
-          }
+          // for(var i in serviceCategories!.data!){
+          //   pricelist.add(i.serviceCategoryName!);
+          //   print(pricelist);
+          // }
           setState(() {});
         }
       }
@@ -1008,6 +1132,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
 
 
 }
+
 GetSingleServiceDetailsData getSingleServiceDetailsDataFromJson(String str) => GetSingleServiceDetailsData.fromJson(json.decode(str));
 
 String getSingleServiceDetailsDataToJson(GetSingleServiceDetailsData data) => json.encode(data.toJson());
@@ -1050,7 +1175,11 @@ class Data {
   String? description;
   int? isDelete;
   bool? showCancelPolicy;
-  dynamic imageUrl;
+  String? inBetweenInterval;
+  bool? isBookOnline;
+  bool? isHomeService;
+  String? imgName;
+  String? imageUrl;
   String? dataId;
 
   Data({
@@ -1063,6 +1192,10 @@ class Data {
     this.description,
     this.isDelete,
     this.showCancelPolicy,
+    this.inBetweenInterval,
+    this.isBookOnline,
+    this.isHomeService,
+    this.imgName,
     this.imageUrl,
     this.dataId,
   });
@@ -1077,6 +1210,10 @@ class Data {
     description: json["description"],
     isDelete: json["isDelete"],
     showCancelPolicy: json["showCancelPolicy"],
+    inBetweenInterval: json["inBetweenInterval"],
+    isBookOnline: json["isBookOnline"],
+    isHomeService: json["isHomeService"],
+    imgName: json["imgName"],
     imageUrl: json["imageUrl"],
     dataId: json["id"],
   );
@@ -1091,6 +1228,10 @@ class Data {
     "description": description,
     "isDelete": isDelete,
     "showCancelPolicy": showCancelPolicy,
+    "inBetweenInterval": inBetweenInterval,
+    "isBookOnline": isBookOnline,
+    "isHomeService": isHomeService,
+    "imgName": imgName,
     "imageUrl": imageUrl,
     "id": dataId,
   };
@@ -1135,6 +1276,7 @@ class ServiceType {
     "serviceTypeName": serviceTypeName,
   };
 }
+
 
 class ServiceCategories {
   int? status;

@@ -43,7 +43,6 @@ class _addServiceState extends State<addServicetype> {
   List add_price = [];
   List addcategory = [];
   List addtype = [];
-
   List Myallservicedata = [];
   addServiceDetailsModel? ServiceDetailsModel;
 
