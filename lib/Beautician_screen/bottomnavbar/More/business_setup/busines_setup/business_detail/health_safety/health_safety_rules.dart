@@ -34,7 +34,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
     // TODO: implement initState
     super.initState();
     getHealthSafetyList();
-    getHealthSafetySelected();
+    // getHealthSafetySelected();
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
 
@@ -154,7 +154,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
                 ),
 
                 // ListView Builder //
-                Container(
+                if(selectedData?.data != null)Container(
                   // color: Colors.red,
                   height: height * 0.4,
                   child: ListView.builder(
@@ -285,6 +285,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
         setState(() {
+          getHealthSafetySelected();
           getHealthSafetyData = getHealthSafety.fromjson(map);
           isLoading = false;
         });
@@ -380,6 +381,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
             for(int j = 0; j < selectedData!.data!.healthID!.length; j++){
               if(selectedData!.data!.healthID![j].id.toLowerCase() == getHealthSafetyData!.data[i].id.toLowerCase()){
                 setState(() {
+                  healthId.add(selectedData!.data!.healthID![j].id);
                   getHealthSafetyData!.data[i].isSelected = true;
                 });
                 log("getHealthSafetyData!.data[i].isSelected : ${getHealthSafetyData!.data[i].isSelected}");

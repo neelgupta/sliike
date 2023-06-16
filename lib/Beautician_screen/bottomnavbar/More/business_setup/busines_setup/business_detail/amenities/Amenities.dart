@@ -31,7 +31,7 @@ class _AmenitiesState extends State<Amenities> {
     // TODO: implement initState
     super.initState();
     getAmenityList();
-    getAmenitySelected();
+    // getAmenitySelected();
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
 
@@ -113,13 +113,12 @@ class _AmenitiesState extends State<Amenities> {
             SizedBox(height: height*0.025,),
             textComoon("Choose from the list", 14, Color(0xff292929),FontWeight.w700),
             SizedBox(height: height*0.025,),
-            Container(
+            if(selectedAmenties?.data != null)Container(
               // color: Colors.red,
               height: height * 0.55,
               child: ListView.builder(
                 itemCount: amenity!.data.length,
                 itemBuilder: (context, index) {
-                  log("amenity!.data[index].isSelected! : ${amenity!.data[index].isSelected!}");
                   return Column(
                     children: [
                       Row(
@@ -135,10 +134,10 @@ class _AmenitiesState extends State<Amenities> {
                                   amenity!.data[index].isSelected = value;
                                   amenity!.data[index].isSelected! ? amenityIds.add(amenity!.data[index].id) :
                                   amenityIds.remove(amenity!.data[index].id);
+                                  // if(amenity!.data[index].isSelected!)amenityIds.remove(selectedAmenties!.data[index].id);
                                 });
                               },),
                           ),
-
                           // Custom_Checkbox(
                           //   isChecked: amenity!.data[index].isSelected!,
                           //   onChange: (value) {
@@ -195,6 +194,7 @@ class _AmenitiesState extends State<Amenities> {
         setState(() {
           amenity = getAmenity.fromjson(map);
           isCheck = List.generate(amenity!.data.length, (index) => false);
+          getAmenitySelected();
           // isLoading = false;
         });
       }
@@ -287,6 +287,7 @@ class _AmenitiesState extends State<Amenities> {
               for(int j = 0; j < selectedAmenties!.data.length; j++){
                   if(selectedAmenties!.data[j].id.toLowerCase() == amenity!.data[i].id.toLowerCase()){
                     setState(() {
+                      amenityIds.add(selectedAmenties!.data[j].id);
                       amenity!.data[i].isSelected = true;
                     });
                   log("amenity!.data[i].isSelected : ${amenity!.data[i].isSelected}");
@@ -321,7 +322,7 @@ class _AmenitiesState extends State<Amenities> {
 class getAmenity{
   int status;
   String message;
-  List<Data>  data;
+  List<Data>   data;
   getAmenity(this.status, this.message,this.data);
 
   factory getAmenity.fromjson(Map<dynamic,dynamic>map){
@@ -335,9 +336,7 @@ class Data{
   String name;
   int status;
   bool? isSelected;
-  Data(this.id, this.name, this.status, {
-    this.isSelected = false,
-  });
+  Data(this.id, this.name, this.status,{this.isSelected = false});
 
   factory Data.fromjson(Map<dynamic,dynamic>map){
     return Data(map["_id"], map["name"], map["status"]);

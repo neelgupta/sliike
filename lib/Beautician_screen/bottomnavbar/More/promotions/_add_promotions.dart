@@ -1,7 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion_publish.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/getProductListModel.dart';
+import 'package:new_sliikeapps_apps/models/getServicesListModel.dart';
+import 'package:new_sliikeapps_apps/services/promotion_services.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class add_promotion extends StatefulWidget {
   const add_promotion({Key? key}) : super(key: key);
@@ -14,6 +22,7 @@ class _add_promotionState extends State<add_promotion> {
 
   ///service
     int? _radioSelected=1;
+
   TextEditingController svpromotiontitle = TextEditingController();
   TextEditingController ServiceName = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -26,17 +35,21 @@ class _add_promotionState extends State<add_promotion> {
     bool productNamestatus = false;
 
     String status = "";
+    DateTime selectedDate = DateTime.now();
+
+    var StartDate;
+    var EndDate;
   /// product
     int? _radioSelected2=1;
-  TextEditingController prpromotiontitle = TextEditingController();
-  TextEditingController productName2 = TextEditingController();
+
+    TextEditingController prpromotiontitle = TextEditingController();
+    TextEditingController productName2 = TextEditingController();
     TextEditingController description2 = TextEditingController();
     TextEditingController Startdate2= TextEditingController();
     TextEditingController Enddate2= TextEditingController();
     TextEditingController Productprice2= TextEditingController();
-
     bool prpromotiontitleststatus = false;
-  bool descriptionstatus2 = false;
+    bool descriptionstatus2 = false;
     String? selectedvaluemin2;
     bool productNamestatus2 = false;
 
@@ -45,19 +58,45 @@ class _add_promotionState extends State<add_promotion> {
   bool Product = false;
   bool Service = true;
   String? selectedvaluemin;
+  String? service;
+  String? product;
+  List<String> mindropdownlist = <String>[];
 
-  List<String> mindropdownlist = <String>[
-    "Barber",
-    "Alberta",
-    "British Columbia",
-  ];
+  List<String> serviceList  = <String>[];
+  List<String> productList  = <String>[];
 
-  List<String> mindropdownlist2 = <String>[
-    "Barber",
-    "Alberta",
-    "British Columbia",
-  ];
+  List<String> mindropdownlist2 = <String>[];
+
   String type = "1";
+
+  PromotionServices _promotionServices = PromotionServices();
+  Util _util = Util();
+
+  GetServicesListData ? getServicesListData;
+
+  GetProductListData ? getProductListData;
+
+  String serviceId = "";
+  String productId = "";
+  String promotionFor = "service";
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+     getServicesListData = await _promotionServices.getServicesList(context);
+     getProductListData = await _promotionServices.getProductList(context);
+     for(var i in getServicesListData!.data!.category!){
+       mindropdownlist.add(i.serviceCategoryName!);
+     }
+     for(var i in getProductListData!.data!.category!){
+       mindropdownlist2.add(i.productCategoryName!);
+     }
+     setState(() {});
+     print(Helper.prefs!.getString(UserPrefs.keyutoken));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +185,8 @@ class _add_promotionState extends State<add_promotion> {
                         setState(() {
                           Service = true;
                           Product = false;
-
                           type = "1";
+                          promotionFor = "service";
                           print(type);
                         });
                       },
@@ -177,8 +216,8 @@ class _add_promotionState extends State<add_promotion> {
                         setState(() {
                           Service = false;
                           Product = true;
-
                           type = "2";
+                          promotionFor = "product";
                           print(type);
                         });
                       },
@@ -207,10 +246,6 @@ class _add_promotionState extends State<add_promotion> {
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: height * 0.02,
-            // ),
-
             ///1 service
             Service == true
                 ? Expanded(
@@ -267,7 +302,7 @@ class _add_promotionState extends State<add_promotion> {
                                 : Container(
                                     height: 25,
                                   ),
-                            DropdownButtonFormField(
+                            if(getServicesListData?.data?.category!=null)DropdownButtonFormField(
                               hint: Text(
                                   textAlign: TextAlign.left,
                                   "Select your service category",
@@ -292,8 +327,22 @@ class _add_promotionState extends State<add_promotion> {
                                 );
                               }).toList(),
                               onChanged: (String? newValue) {
+                                serviceList.clear();
+                                selectedvaluemin = newValue!;
                                 setState(() {
-                                  selectedvaluemin = newValue!;
+                                  for(int i = 0; i<getServicesListData!.data!.category!.length; i++){
+                                      for(int j = 0; j<getServicesListData!.data!.category![i].serviceType!.length; j++){
+                                         if(selectedvaluemin == getServicesListData!.data!.category![i].serviceCategoryName){
+                                           serviceList.add(getServicesListData!.data!.category![i].serviceType![j].serviceTypeName!);
+                                           service = getServicesListData!.data!.category![i].serviceType![j].serviceTypeName!;
+                                           serviceId = getServicesListData!.data!.category![i].serviceType![j].bServiceId!;
+                                           setState(() {});
+                                         }
+                                        // serviceId = getServicesListData!.data!.category![i].serviceType![j].bServiceId!;
+                                      }
+                                  }
+                                  print(serviceList);
+                                  print(serviceId);
                                 });
                               },
                               icon: Padding(
@@ -331,36 +380,73 @@ class _add_promotionState extends State<add_promotion> {
                             SizedBox(
                               height: 25,
                             ),
-                            Container(
-                              child: TextField(
-                                controller: ServiceName,
-                                style: TextStyle(
+                            DropdownButtonFormField(
+                              hint: Text(
+                                  textAlign: TextAlign.left,
+                                  "Select your service",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff292929))),
+                              enableFeedback: true,
+                              isDense: true,
+                              isExpanded: true,
+                              alignment: Alignment.topLeft,
+                              elevation: 2,
+                              value: service,
+                              items: serviceList.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(
+                                    items,
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff292929)),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  service = newValue!;
+                                  for(int i = 0; i<getServicesListData!.data!.category!.length; i++){
+                                      for(int j = 0; j<getServicesListData!.data!.category![i].serviceType!.length; j++){
+                                        if(service == getServicesListData!.data!.category![i].serviceType![j].serviceTypeName){
+                                        serviceId = getServicesListData!.data!.category![i].serviceType![j].bServiceId!;
+                                        setState(() {});
+                                        }
+                                      }
+                                  }
+                                  print(serviceId);
+                                });
+                              },
+                              icon: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color(0xff292929),
+                                  size: 30,
+                                ),
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 20),
+                                hintText: "Service Name",
+                                hintStyle: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'spartan',
-                                    color: Color(0xff292929)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    ServiceNamestatus = false;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(left: 20),
-                                  hintText: "Service Name",
-                                  labelText: "Service Name",
-                                  labelStyle: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'spartan',
-                                      color: Color(0xff414141)),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff707070)),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide:
-                                        BorderSide(color: Color(0xffA0A0A0)),
-                                  ),
+                                    color: Color(0xff292929),
+                                    fontWeight: FontWeight.w500),
+                                labelText: "Service Name",
+                                labelStyle: TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Color(0xff414141)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                  BorderSide(color: Color(0xff292929)),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                  BorderSide(color: Color(0xff292929)),
                                 ),
                               ),
                             ),
@@ -458,15 +544,12 @@ class _add_promotionState extends State<add_promotion> {
                                             Radio(
                                               value: 1,
                                               groupValue: _radioSelected,
-
                                               activeColor: Color(0xff01635D),
-                                              fillColor: MaterialStateColor.resolveWith(
-                                                      (states) => Color(0xff01635D)),
+                                              fillColor: MaterialStateColor.resolveWith((states) => Color(0xff01635D)),
                                               onChanged: (value) {
                                                 setState(() {
                                                   _radioSelected = value as int;
                                                   print(_radioSelected);
-
                                                 });
                                               },
                                             ),
@@ -476,7 +559,7 @@ class _add_promotionState extends State<add_promotion> {
                                               child: VerticalDivider(thickness: 1,color: Color(0xff707070),),
                                             ),
                                             Radio(
-                                              value: 2,
+                                              value: 0,
                                               groupValue: _radioSelected,
 
                                               activeColor: Color(0xff01635D),
@@ -525,8 +608,6 @@ class _add_promotionState extends State<add_promotion> {
                                                   children: [
                                                     textComoon("Discount (%)", 12, Color(0xff707070),
                                                         FontWeight.w600),
-
-
                                                     VerticalDivider(
                                                       color: Color(0xff707070),
                                                       thickness: 1,
@@ -553,7 +634,7 @@ class _add_promotionState extends State<add_promotion> {
                                 ),
                               ),
                             ),
-                              SizedBox(height: height*0.01,),
+                            SizedBox(height: height*0.01,),
 
                             dividerCommon(),
                             SizedBox(height: height*0.02,),
@@ -570,8 +651,30 @@ class _add_promotionState extends State<add_promotion> {
                                   hintText: "17 April, 2022",
                                   hintStyle: TextStyle(color: Color(0xff000000)),
                                   prefixIcon: InkWell(
-                                    onTap: () {
-
+                                    onTap: () async{
+                                        final DateTime? picked = await showDatePicker(
+                                            context: context,
+                                            initialDate: selectedDate,
+                                            builder: ( context,  child) {
+                                              return Theme(
+                                                data: ThemeData.light().copyWith(
+                                                  colorScheme: ColorScheme.fromSwatch(
+                                                    primarySwatch: Colors.teal,
+                                                    primaryColorDark: Colors.teal,
+                                                    accentColor: Colors.teal,
+                                                  ),
+                                                  dialogBackgroundColor: Colors.white,
+                                                ),
+                                                child: child!,
+                                              );
+                                            },
+                                            firstDate: DateTime(2015, 8),
+                                            lastDate: DateTime(2101));
+                                        if (picked != null && picked != selectedDate) {
+                                          StartDate = DateFormat('yyyy-MM-dd').format(picked);
+                                          Startdate.text = DateFormat('E, MMM d').format(picked);
+                                          print(selectedDate);
+                                        }
                                     },
                                     child: Container(
                                       width: width * 0.38,
@@ -631,8 +734,32 @@ class _add_promotionState extends State<add_promotion> {
                                   hintText: "22 April, 2022",
                                   hintStyle: TextStyle(color: Color(0xff000000)),
                                   prefixIcon: InkWell(
-                                    onTap: () {
-
+                                    onTap: () async{
+                                      final DateTime? picked = await showDatePicker(
+                                          context: context,
+                                          initialDate: selectedDate,
+                                          builder: ( context,  child) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith(
+                                                colorScheme: ColorScheme.fromSwatch(
+                                                  primarySwatch: Colors.teal,
+                                                  primaryColorDark: Colors.teal,
+                                                  accentColor: Colors.teal,
+                                                ),
+                                                dialogBackgroundColor: Colors.white,
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
+                                          firstDate: DateTime(2015, 8),
+                                          lastDate: DateTime(2101));
+                                      if (picked != null && picked != selectedDate) {
+                                        EndDate = DateFormat('yyyy-MM-dd').format(picked);
+                                        Enddate.text = DateFormat('E, MMM d').format(picked);
+                                        // Enddate.text = selectedDate.toString();
+                                        ;
+                                        print(EndDate);
+                                      }
                                     },
                                     child: Container(
                                       width: width * 0.36,
@@ -682,9 +809,34 @@ class _add_promotionState extends State<add_promotion> {
                               height: height * 0.04,
                             ),
                             CommonButton(context, "CONTINUE",12, FontWeight.w600, Colors.white, () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return promotion_Publish();
-                              },));
+                                if(promotionFor.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill promotion category");
+                                }else if(svpromotiontitle.text.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill promotion title");
+                                }else if(service!.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill service name");
+                                }else if(description.text.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill description");
+                                }else if(Startdate.text.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill start date");
+                                }else if(Enddate.text.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill end date");
+                                }else{
+                                  var Body = {
+                                    "promotionFor": promotionFor,
+                                    "promotionTitle": svpromotiontitle.text,
+                                    "serviceName": service, //send productName
+                                    "description": description.text,
+                                    "isDiscPercentage": _radioSelected.toString(),
+                                    "discount": Productprice.text,
+                                    "startDate": StartDate,
+                                    "endDate": EndDate,
+                                    "subTypeId": serviceId, //send productId
+                                  };
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
+                                  },));
+                                }
                             }),
                             SizedBox(
                               height: height * 0.05,
@@ -700,7 +852,6 @@ class _add_promotionState extends State<add_promotion> {
             Product== true
                 ? Expanded(
               child: Container(
-
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
@@ -753,7 +904,7 @@ class _add_promotionState extends State<add_promotion> {
                           : Container(
                         height: 25,
                       ),
-                      DropdownButtonFormField(
+                      if(getProductListData?.data?.category!=null)DropdownButtonFormField(
                         hint: Text(
                             textAlign: TextAlign.left,
                             "Select product category",
@@ -778,8 +929,22 @@ class _add_promotionState extends State<add_promotion> {
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
+                          productList.clear();
+                          selectedvaluemin2 = newValue!;
                           setState(() {
-                            selectedvaluemin2 = newValue!;
+                            for(int i = 0; i<getProductListData!.data!.category!.length; i++){
+                              for(int j = 0; j<getProductListData!.data!.category![i].productList!.length; j++){
+                                if(selectedvaluemin2 == getProductListData!.data!.category![i].productCategoryName){
+                                  productList.add(getProductListData!.data!.category![i].productList![j].productName!);
+                                  product = getProductListData!.data!.category![i].productList![j].productName!;
+                                  productId = getProductListData!.data!.category![i].productList![j].productId!;
+                                  setState(() {});
+                                }
+                                // serviceId = getServicesListData!.data!.category![i].serviceType![j].bServiceId!;
+                              }
+                            }
+                            print(serviceList);
+                            print(serviceId);
                           });
                         },
                         icon: Padding(
@@ -817,39 +982,109 @@ class _add_promotionState extends State<add_promotion> {
                       SizedBox(
                         height: 25,
                       ),
-                      Container(
-                        child: TextField(
-                          controller: productName2,
-                          style: TextStyle(
+                      DropdownButtonFormField(
+                        hint: Text(
+                            textAlign: TextAlign.left,
+                            "Select product Name",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff292929))),
+                        enableFeedback: true,
+                        isDense: true,
+                        isExpanded: true,
+                        alignment: Alignment.topLeft,
+                        elevation: 2,
+                        value: product,
+                        items: productList.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(
+                              items,
+                              style: TextStyle(
+                                  fontSize: 14, color: Color(0xff292929)),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            product = newValue;
+                            for(int i = 0; i<getProductListData!.data!.category!.length; i++){
+                              for(int j = 0; j<getProductListData!.data!.category![i].productList!.length; j++){
+                                if(product == getProductListData!.data!.category![i].productList![j].productName){
+                                  productId = getProductListData!.data!.category![i].productList![j].productId!;
+                                  setState(() {});
+                                }
+                              }
+                            }
+                            print(serviceId);
+                          });
+                        },
+                        icon: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Color(0xff292929),
+                            size: 30,
+                          ),
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 20),
+                          hintText: "Select product category",
+                          hintStyle: TextStyle(
                               fontSize: 14,
                               fontFamily: 'spartan',
-                              color: Color(0xff292929)),
-                          onChanged: (value) {
-                            setState(() {
-                              productNamestatus2 = false;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 20),
-                            hintText: "Product Name",
-                            labelText: "Product Name",
-                            labelStyle: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'spartan',
-                                color: Color(0xff414141)),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                              BorderSide(color: Color(0xff707070)),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                              BorderSide(color: Color(0xffA0A0A0)),
-                            ),
+                              color: Color(0xff292929),
+                              fontWeight: FontWeight.w500),
+                          labelText: "Product Category",
+                          labelStyle: TextStyle(
+                              fontFamily: 'spartan',
+                              color: Color(0xff414141)),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                            BorderSide(color: Color(0xff292929)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                            BorderSide(color: Color(0xff292929)),
                           ),
                         ),
                       ),
+                      // Container(
+                      //   child: TextField(
+                      //     controller: productName2,
+                      //     style: TextStyle(
+                      //         fontSize: 14,
+                      //         fontFamily: 'spartan',
+                      //         color: Color(0xff292929)),
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         productNamestatus2 = false;
+                      //       });
+                      //     },
+                      //     decoration: InputDecoration(
+                      //       contentPadding: EdgeInsets.only(left: 20),
+                      //       hintText: "Product Name",
+                      //       labelText: "Product Name",
+                      //       labelStyle: TextStyle(
+                      //           fontSize: 14,
+                      //           fontFamily: 'spartan',
+                      //           color: Color(0xff414141)),
+                      //       focusedBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide:
+                      //         BorderSide(color: Color(0xff707070)),
+                      //       ),
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide:
+                      //         BorderSide(color: Color(0xffA0A0A0)),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       productNamestatus2
                           ? Container(
                         height: 30,
@@ -1171,7 +1406,7 @@ class _add_promotionState extends State<add_promotion> {
                       ),
                       CommonButton(context, "CONTINUE",12, FontWeight.w600, Colors.white, () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return promotion_Publish();
+                          return promotion_Publish(body: {},);
                         },));
                       }),
                       SizedBox(

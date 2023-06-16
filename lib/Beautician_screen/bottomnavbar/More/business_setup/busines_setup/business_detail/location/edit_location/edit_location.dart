@@ -1,22 +1,31 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/business_detail/location/location/location.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
-import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
+import 'package:new_sliikeapps_apps/services/address_service.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
+
 
 const kGoogleApiKey = "AIzaSyCziqe1Q-d4HMC3D9ZyYDFkBtx8ZHrzGzM";
 
 class edit_Location extends StatefulWidget {
-  final List<dynamic> data;
-  const edit_Location({Key? key, required this.data}) : super(key: key);
+  final String ? address;
+  final String ? city;
+  final String ? province;
+  final String ? pin;
+  final String ? country;
+  const edit_Location({Key? key,this.address,this.city,this.province,this.pin,this.country}) : super(key: key);
 
   @override
   State<edit_Location> createState() => _edit_LocationState();
@@ -28,6 +37,7 @@ class _edit_LocationState extends State<edit_Location> {
   TextEditingController Province = TextEditingController();
   TextEditingController PostalCode = TextEditingController();
   TextEditingController Country = TextEditingController();
+  AddressService addressService = AddressService();
   bool method = false;
   bool Addressstatus = false;
   bool Citystatus = false;
@@ -37,17 +47,20 @@ class _edit_LocationState extends State<edit_Location> {
   String status = "";
   String latitude = "";
   String longitude = "";
+  bool isLoading = false;
+  GetProvince? getProvince;
+  String? province;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Province.text = widget.data[4];
-    Address.text = widget.data[2];
-    Country.text = widget.data[6];
-    City.text = widget.data[3];
-    PostalCode.text = widget.data[5];
-    latitude = widget.data[0];
-    longitude = widget.data[1];
+    getProvinceData();
+    if(widget.address != null && widget.city!=null && widget.pin !=null && widget.country!=null){
+      Address.text = widget.address!;
+      City.text = widget.city!;
+      PostalCode.text = widget.pin!;
+      Country.text = widget.country!;
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -61,7 +74,6 @@ class _edit_LocationState extends State<edit_Location> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -115,7 +127,10 @@ class _edit_LocationState extends State<edit_Location> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body:
+      isLoading ?
+      Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
+      SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
           height: height*0.8,
@@ -186,27 +201,49 @@ class _edit_LocationState extends State<edit_Location> {
                   height: 30,
                   child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
                 ):Container(height: 25,),
-                Container(
-                  child: TextField(
-                    controller: Province,
-                    style: TextStyle(color: Color(0xff292929),fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w500),
-                    onChanged: (value) {
-                      Provincestatus=false;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Province",
-                      labelText: "Province",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
+                if(getProvince?.data != null)DropdownButtonHideUnderline(
+                  child: Container(
+                    height: 48,
+                    width: width,
+                    padding: const EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
+                        border: Border.all(color: const Color(0xff707070), width: 1)),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      hint: const Padding(
+                        padding: EdgeInsets.only(left: 0),
+                        child: Text(
+                          'Province',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: "spartan",
+                            color: Color(0xff707070),
+                          ),
+                        ),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
+                      items: getProvince==null?[]:(getProvince!.data ?? []).map((items) {
+                        return DropdownMenuItem(
+                          value: items.id,
+                          child: Text(
+                            items.name ?? "",
+                            style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                          ),
+                        );
+                      }).toList(),
+                      value: province,
+                      onChanged: (value) {
+                        province = "";
+                        setState(() {
+                          province = value.toString();
+                          log(province!);
+                        });
+                      },
+                      icon: (const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 30,
+                        color: Color(0xff707070),
+                      )),
                     ),
                   ),
                 ),
@@ -272,42 +309,8 @@ class _edit_LocationState extends State<edit_Location> {
                 ):Container(height: 25,),
                 Spacer(),
                 CommonButton(context,"SAVE",12, FontWeight.w600, Colors.white, () {
-                  Navigator.pop(context,[Address.text,City.text,Province.text,PostalCode.text,Country.text,latitude,longitude]);
-                    // Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    //   return location();
-                    // },));
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (context) {
-                    //     return AlertDialog(
-                    //       alignment: Alignment.center,
-                    //       insetPadding: EdgeInsets.symmetric(
-                    //         horizontal: 30,),
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius:
-                    //           BorderRadius.all(Radius.circular(20))),
-                    //       title: StatefulBuilder(
-                    //         builder: (context, setState) {
-                    //           return Padding(
-                    //             padding: const EdgeInsets.only(top: 50,bottom: 50),
-                    //             child: Column(
-                    //               children: <Widget>[
-                    //                 Container(
-                    //                   height: height*0.1,
-                    //                   // width: tw*0.2,
-                    //                   child: Image(image: AssetImage("assets/images/Group 12079.png")),
-                    //                 ),
-                    //                 SizedBox(height: 20,),
-                    //                 textComoon("Location Successfully Updated", 12,Colors.black, FontWeight.w700),
-                    //
-                    //               ],
-                    //             ),
-                    //           );
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    // );
+                  updateSalonLocation();
+                  print(Helper.prefs!.getString(UserPrefs.keyutoken));
                 })
               ],
             ),
@@ -316,6 +319,80 @@ class _edit_LocationState extends State<edit_Location> {
       ),
     );
   }
+
+  updateSalonLocation() async   {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var Body = {
+        "latitude" : latitude,
+        "longitude" : longitude,
+        "address" : Address.text,
+        "city" : City.text,
+        "provinceId" : province.toString(),
+        "zipCode" : PostalCode.text,
+        "country" : Country.text,
+      };
+      var Headers = {
+        "Authorization" : "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        // "Content-Type" : "application/json",
+      };
+      var postUri = Uri.parse("${ApiUrlList.updateSalonLocation}");
+      var res = await http.put(
+        postUri,
+        body: Body,
+        headers: Headers
+      );
+      log('updateSalonLocation code: ${res.statusCode}');
+      log('updateSalonLocation body: ${res.body}');
+      Map map = jsonDecode(res.body);
+      if(res.statusCode == 200){
+        isLoading = false;
+        Navigator.pop(context);
+        setState(() {});
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }else {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  getProvinceData() async {
+    getProvince = await addressService.getProvince();
+     if(widget.province!=null){
+       for(int i = 0; i < getProvince!.data!.length; i++){
+         if(widget.province == getProvince!.data![i].id){
+           province = getProvince!.data![i].id;
+           setState(() {});
+         }
+       }
+     }
+    isLoading = false;
+    setState(() {});
+  }
+
   Future<void> _handlePressButton() async {
     Prediction? p = await PlacesAutocomplete.show(
       context: context,

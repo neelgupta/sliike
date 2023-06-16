@@ -283,7 +283,13 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
+
+                      if(isLicensed == 1 && !imageStatus){
+                        Fluttertoast.showToast(msg: "Please upload licence photo");
+                      }else{
                       addBusinessLicense();
+                      }
+
                       // print("${Helper.prefs!.getString(UserPrefs.keyutoken)}");
                       // if (selected == "No") {
                       //   Navigator.push(context, MaterialPageRoute(
@@ -324,11 +330,13 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
       var postUri = Uri.parse(ApiUrlList.addBusinessLicense);
       var request = http.MultipartRequest("POST", postUri);
       request.fields["isLicensed"] = isLicensed.toString();
-      request.headers['Authorization'] =
-          "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-      http.MultipartFile multipartFile =
-          await http.MultipartFile.fromPath('licenseImage', images!.path);
-      request.files.add(multipartFile);
+      request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+      log("Fileds :: ${request.fields}");
+      if(imagePath != "" && isLicensed == 1){
+        http.MultipartFile multipartFile =
+        await http.MultipartFile.fromPath('licenseImage', images!.path);
+        request.files.add(multipartFile);
+      }
       http.StreamedResponse response = await request.send();
       print('code: ${response.statusCode}');
       final res = await http.Response.fromStream(response);
@@ -386,6 +394,10 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
         data = getLicenseDetailsC.fromJson(map);
+        if(data!.data!.licenseImagePath!=null){
+          isLicensed = 1;
+          setState(() {});
+        }
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

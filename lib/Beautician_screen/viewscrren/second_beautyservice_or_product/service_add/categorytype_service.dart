@@ -71,16 +71,16 @@ class _addServiceState extends State<addServicetype> {
     "30 min",
     "60 min",
     "90 min",
-    "110 min",
-    "140 min",
-    "170 min",
-    "200 min",
-    "230 min",
-    "260 min",
-    "290 min",
-    "310 min",
-    "340 min",
-    "370 min",
+    "120 min",
+    "150 min",
+    "180 min",
+    "210 min",
+    "240 min",
+    "270 min",
+    "300 min",
+    "330 min",
+    "360 min",
+    "390 min",
   ];
   List<String> minApilist = <String>[
     "00:30",
@@ -116,25 +116,25 @@ class _addServiceState extends State<addServicetype> {
       selectedvalueminnewformat = "01:00";
     } else if ("90 min" == selectedvalue) {
       selectedvalueminnewformat = "01:30";
-    } else if ("110 min" == selectedvalue) {
+    } else if ("120 min" == selectedvalue) {
       selectedvalueminnewformat = "02:00";
-    } else if ("140 min" == selectedvalue) {
+    } else if ("150 min" == selectedvalue) {
       selectedvalueminnewformat = "02:30";
-    } else if ("170 min" == selectedvalue) {
+    } else if ("180 min" == selectedvalue) {
       selectedvalueminnewformat = "03:00";
-    } else if ("200 min" == selectedvalue) {
+    } else if ("210 min" == selectedvalue) {
       selectedvalueminnewformat = "03:30";
-    } else if ("230 min" == selectedvalue) {
+    } else if ("240 min" == selectedvalue) {
       selectedvalueminnewformat = "04:00";
-    } else if ("260 min" == selectedvalue) {
+    } else if ("270 min" == selectedvalue) {
       selectedvalueminnewformat = "04:30";
-    } else if ("290 min" == selectedvalue) {
+    } else if ("300 min" == selectedvalue) {
       selectedvalueminnewformat = "05:00";
-    } else if ("310 min" == selectedvalue) {
+    } else if ("330 min" == selectedvalue) {
       selectedvalueminnewformat = "05:30";
-    } else if ("340 min" == selectedvalue) {
+    } else if ("360 min" == selectedvalue) {
       selectedvalueminnewformat = "06:00";
-    } else if ("370 min" == selectedvalue) {
+    } else if ("390 min" == selectedvalue) {
       selectedvalueminnewformat = "06:30";
     }
 

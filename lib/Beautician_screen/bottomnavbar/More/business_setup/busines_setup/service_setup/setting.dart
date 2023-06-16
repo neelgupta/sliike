@@ -29,6 +29,8 @@ class _settingState extends State<setting> {
   String? selectedchosstime = "0";
   bool clentswitch=false;
   bool homeswitch=false;
+
+  TextEditingController txtPClients = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -229,61 +231,100 @@ class _settingState extends State<setting> {
                   textComoonfade("Maximum number of clients able to book a service in the same time.", 12, Color(0xff414141),
                       FontWeight.w500),
                   SizedBox(height: height*0.03,),
-                  DropdownButtonFormField(
-                    enableFeedback: true,
-                    isDense: true,
-                    isExpanded: true,
-                    alignment: Alignment.center,
-                    elevation: 2,
-                    value: selectedchosstime,
-                    items: timelist.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(
-                          items,
-                          style: TextStyle(fontSize: 14, color: Color(0xff707070)),
+                  Expanded(
+                    child: Container(
+                      child: TextField(
+                        controller: txtPClients,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff292929),
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "spartan"),
+                        onChanged: (value) {
+                          setState(() {
+                            // servicecategorystatus = false;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: 20),
+                          hintText: "Parallel Clients",
+                          hintStyle: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'spartan',
+                              color: Color(0xff292929),
+                              fontWeight: FontWeight.w500),
+                          labelText: "Parallel Clients",
+                          labelStyle: const TextStyle(
+                              fontFamily: 'spartan', color: Colors.black54),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Color(0xff292929)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Color(0xff292929)),
+                          ),
                         ),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedchosstime = newValue!;
-                      });
-                    },
-                    icon: Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 30,color: Color(0xff969696),
-                      ),
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Service Category",
-                      hintStyle: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'spartan',
-                          color: Color(0xff292929),
-                          fontWeight: FontWeight.w500),
-                      labelText: "Choose Time",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Color(0xff292929)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Color(0xff292929)),
                       ),
                     ),
                   ),
+                  // DropdownButtonFormField(
+                  //   enableFeedback: true,
+                  //   isDense: true,
+                  //   isExpanded: true,
+                  //   alignment: Alignment.center,
+                  //   elevation: 2,
+                  //   value: selectedchosstime,
+                  //   items: timelist.map((String items) {
+                  //     return DropdownMenuItem(
+                  //       value: items,
+                  //       child: Text(
+                  //         items,
+                  //         style: TextStyle(fontSize: 14, color: Color(0xff707070)),
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (String? newValue) {
+                  //     setState(() {
+                  //       selectedchosstime = newValue!;
+                  //     });
+                  //   },
+                  //   icon: Padding(
+                  //     padding: const EdgeInsets.only(right: 10),
+                  //     child: Icon(
+                  //       Icons.keyboard_arrow_down,
+                  //       size: 30,color: Color(0xff969696),
+                  //     ),
+                  //   ),
+                  //   decoration: InputDecoration(
+                  //     contentPadding: EdgeInsets.only(left: 20),
+                  //     hintText: "Service Category",
+                  //     hintStyle: TextStyle(
+                  //         fontSize: 14,
+                  //         fontFamily: 'spartan',
+                  //         color: Color(0xff292929),
+                  //         fontWeight: FontWeight.w500),
+                  //     labelText: "Choose Time",
+                  //     labelStyle:
+                  //     TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //       borderSide: BorderSide(color: Color(0xff292929)),
+                  //     ),
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //       borderSide: BorderSide(color: Color(0xff292929)),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding:  EdgeInsets.only(top: height*0.015),
                     child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
                   ),
                   Spacer(),
-                  CommonButton(context,"OK", 12, FontWeight.w600, Colors.white, () { }),
+                  CommonButton(context,"OK", 12, FontWeight.w600, Colors.white, () {
+                    Navigator.pop(context,[txtPClients,homeswitch,clentswitch]);
+                  }),
                   SizedBox(height: height*0.025,),
                 ],
               ),

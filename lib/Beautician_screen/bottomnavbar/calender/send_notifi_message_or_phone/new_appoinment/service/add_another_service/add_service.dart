@@ -1,52 +1,124 @@
- import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/service_setup/setup_main.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../../../../../../custom_widget/textcommon/textcommon.dart';
-
-class add_Srevice extends StatefulWidget {
-  const add_Srevice({Key? key}) : super(key: key);
+class addService extends StatefulWidget {
+  const addService({Key? key}) : super(key: key);
 
   @override
-  State<add_Srevice> createState() => _add_SreviceState();
+  State<addService> createState() => _addServiceState();
 }
 
-class _add_SreviceState extends State<add_Srevice> {
-  TextEditingController search = TextEditingController();
-  String? selectdradioValue = "";
+class _addServiceState extends State<addService> {
+  TextEditingController description = TextEditingController();
+  TextEditingController servicePrice = TextEditingController();
 
-  List findserviceradioList = [
-    'Men’s Cut',
-    'Women’s Cut',
-    'Beard Trim',
-  ];
-  List DurationTimeradioList = [
-    "30 min",
+  bool servicePriceStatus = false;
+
+  bool descriptionstatus = false;
+
+  String serviceCategoryId = "";
+
+  String status = "";
+
+  ServiceCategories ? serviceCategories;
+  Types ? serviceTypes;
+
+  bool clientStatus =false;
+
+  bool arrow = false;
+  String? Duration = "30 min";
+
+  List<String> durationtimelist = <String>[
+    "1hr 30 min",
     "25 min",
     "20 min",
     "15 min",
-    "10 min",
-    "5 min"
+    "10 min"
   ];
-  String? selecttimedradioValue = "";
+  List categoryradioList = [
+    'Barber',
+    'Hair Care',
+    'Make-up',
+    'Nails',
+    'SPA',
+    'Massage',
+    'Facial/Skin Care',
+    'Tattoo Art',
+    'Photography',
+    'Beauty Consultant'
+  ];
+  String? selectedchosstime = "1hr 30 min";
+  String? selectdradioValue = "";
+  final List<String> items = [];
+  String? selectedValuetype = "";
+  String? serviceTypeId = "";
 
-  List recurringOptionsList = [
-    "Doesn’t recur",
-    "Daily",
-    "Weekly",
-    "Every 2 weeks",
-    "Every 3 weeks",
-    "Every month",
-    "Every 2 months",
-    "Every 3 months",
-    "Every 4 months",
-    "Every 5 months",
-    "Every 6 months",
-    "Every year",
-  ];
-  String? recurringOptionsRadio = "";
+  bool isLoading = false;
+
+  List<DropdownMenuItem<String>> _addDividersAfterItems(List<String> items) {
+    List<DropdownMenuItem<String>> _menuItems = [];
+    for (var item in items) {
+      _menuItems.addAll(
+        [
+          DropdownMenuItem<String>(
+            value: item,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "spartan",
+                    ),
+                  ),
+                ),
+                //Icon(Icons.chevron_right),
+              ],
+            ),
+          ),
+          if (item != items.last)
+            DropdownMenuItem<String>(
+              enabled: false,
+              child: Divider(),
+            ),
+        ],
+      );
+    }
+    return _menuItems;
+  }
+
+  List<double> _getCustomItemsHeights() {
+    List<double> _itemsHeights = [];
+    for (var i = 0; i < (items.length * 2) - 1; i++) {
+      if (i.isEven) {
+        _itemsHeights.add(40);
+      }
+      //Dividers indexes will be the odd indexes
+      if (i.isOdd) {
+        _itemsHeights.add(4);
+      }
+    }
+    return _itemsHeights;
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchServiceCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +157,8 @@ class _add_SreviceState extends State<add_Srevice> {
                               child: Container(
                                   padding: EdgeInsets.all(5),
                                   child: Image(
-                                    image:
-                                        AssetImage("assets/images/cancel.png"),
+                                    image: AssetImage(
+                                        "assets/images/Group 55.png"),
                                     color: Color(0xff414141),
                                   )),
                             ),
@@ -96,12 +168,10 @@ class _add_SreviceState extends State<add_Srevice> {
                           width: width * 0.2,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              alignment: Alignment.center,
                               child: Text("Add Service",
-                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
@@ -120,210 +190,148 @@ class _add_SreviceState extends State<add_Srevice> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          width: width,
-          height: height * 0.8,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height * 0.04,
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text("Set Service",
-                      style: TextStyle(
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          color: Color(0xff111111),
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.w500)),
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-
-                ///find service
-                InkWell(
-                  onTap: () {
-                   findservice();
-                  },
-                  child: Container(
-                    width: width,
-                    height: height * 0.06,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color(0xff01635D)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage(
-                              "assets/images/search-whitenormal.png"),
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text("Find Service",
-                            style: TextStyle(
-                                fontSize: 12,
-                                overflow: TextOverflow.ellipsis,
-                                color: Colors.white,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w500)),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: width * 0.5,
-                      child: Text("Set Date & Time",
-                          style: TextStyle(
-                              fontSize: 14,
-                              overflow: TextOverflow.ellipsis,
-                              color: Color(0xff111111),
-                              fontFamily: "spartan",
-                              fontWeight: FontWeight.w500)),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text("Duration",
-                        style: TextStyle(
-                            fontSize: 14,
-                            overflow: TextOverflow.ellipsis,
-                            color: Color(0xff111111),
-                            fontFamily: "spartan",
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Row(
-                  children: [
-
-                    InkWell(
-                      onTap: (){
-                        datewtimeDialog();
-                      },
-                      child: Container(
-                        height: 48,
-                        width: width * 0.5,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xff707070), width: 1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Mar 16 | 11:00 AM",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Color(0xff292929),
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.w500)),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                size: 30,
-                                color: Color(0xff707070),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            Durationdialog();
-
-                          });
-                        },
-                        child: Container(
-                          height: 48,
-                          width: width * 0.5,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xff707070), width: 1),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("${selecttimedradioValue}",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Color(0xff292929),
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w500)),
-                                Icon(
-                                  Icons.keyboard_arrow_right,
-                                  size: 30,
-                                  color: Color(0xff707070),
-                                )
-                              ],
+      body:
+      isLoading ?
+      Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
+      serviceCategories!.data!=null?
+      SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text("Choose service category",
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff292929),
+                        fontFamily: "spartan",
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: Container(
+                            height: height * 0.7,
+                            width: width - 40,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: ListView.builder(
+                                // physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: serviceCategories!.data!.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectdradioValue = serviceCategories!.data![index].serviceCategoryName;
+                                        serviceCategoryId = serviceCategories!.data![index].id!;
+                                        fetchServicesType(serviceCategoryId);
+                                        print(serviceCategoryId);
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.white,
+                                              width: 1)),
+                                      child: Column(
+                                        children: [
+                                          Theme(data: ThemeData(unselectedWidgetColor: Color(0xff01635D),),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "${serviceCategories!.data![index].serviceCategoryName}",
+                                                    style: TextStyle(fontSize: 12, color: Color(0xff292929),
+                                                        fontFamily: "spartan",
+                                                        fontWeight: FontWeight.normal),
+                                                  ),
+                                                  Radio<String>(
+                                                    value:
+                                                    serviceCategories!.data![index].serviceCategoryName!,
+                                                    activeColor: Color(0xff01635D),
+                                                    groupValue: selectdradioValue,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectdradioValue = value.toString();
+                                                        serviceCategoryId = serviceCategories!.data![index].id!;
+                                                        fetchServicesType(serviceCategoryId);
+                                                        print(serviceCategoryId);
+                                                        Navigator.pop(context);
+                                                      });
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            width: width,
+                                            color: Color(0xffE7E7E7),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text("Staff",
-                      style: TextStyle(
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          color: Color(0xff111111),
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.w500)),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Container(
+                        );
+                      },
+                    );
+                  });
+                },
+                child: Container(
                   height: 48,
-                  width: width,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff707070), width: 1),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Color(0xff707070), width: 1)),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    padding: const EdgeInsets.only(left: 15, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Select option",
-                            style: TextStyle(
-                                fontSize: 12,
-                                overflow: TextOverflow.ellipsis,
-                                color: Color(0xff707070),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w500)),
+                        selectdradioValue == ""
+                            ? Text(
+                          "Service category",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff707070),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.normal),
+                        )
+                            : Text(
+                          "$selectdradioValue",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff292929),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.normal),
+                        ),
                         Icon(
                           Icons.keyboard_arrow_right,
                           size: 30,
@@ -333,545 +341,644 @@ class _add_SreviceState extends State<add_Srevice> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text("Recurring options",
-                      style: TextStyle(
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          color: Color(0xff111111),
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.w500)),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                InkWell(
-                  onTap: (){
-                    recurringoption();
-                  },
-                  child: Container(
-                    height: 48,
-                    width: width,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xff707070), width: 1),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("$recurringOptionsRadio",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Color(0xff707070),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.w500)),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            size: 30,
-                            color: Color(0xff707070),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                Spacer(),
-                CommonButton(
-                    context, "SAVE", 12, FontWeight.w600, Colors.white, () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return newAppoinment_Viwe_Add();
-                      },));
-                }),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-
-
-   findservice() {
-     double height = MediaQuery.of(context).size.height -
-         MediaQuery.of(context).padding.top -
-         MediaQuery.of(context).padding.bottom;
-     double width = MediaQuery.of(context).size.width -
-         MediaQuery.of(context).padding.right -
-         MediaQuery.of(context).padding.left;
-    return  showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          insetPadding: EdgeInsets.all(10),
-          child: StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                height: height - 60,
-                width: width - 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15, right: 15, top: 20),
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Text("Set Service",
-                            style: TextStyle(
-                                fontSize: 16,
-                                overflow: TextOverflow.ellipsis,
-                                color: Color(0xff292929),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w700)),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Container(
-                        child: TextField(
-                          controller: search,
-                          onChanged: (value) {},
-                          decoration: InputDecoration(
-                            contentPadding:
-                            EdgeInsets.only(left: 20),
-                            hintText: "Search service",
-                            hintStyle:
-                            TextStyle(color: Color(0xff707070)),
-                            suffixIcon: Container(
-                              width: width * 0.2,
-                              color: Color(0xff01635D),
-                              height: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Image.asset(
-                                    "assets/images/search-whitenormal.png"),
-                              ),
-                            ),
-                            labelStyle: TextStyle(
-                                fontFamily: 'spartan',
-                                color: Colors.black54),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.circular(5),
-                              borderSide:
-                              BorderSide(color: Colors.black38),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.circular(5),
-                              borderSide:
-                              BorderSide(color: Colors.black38),
-                            ),
-                          ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Divider(
+                color: Color(0xffCFCFCF),
+                thickness: 1,
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text("Choose service type",
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff292929),
+                        fontFamily: "spartan",
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            selectedValuetype==""?Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: DropdownButtonHideUnderline(
+                child: Container(
+                  height: 48,
+                  width: width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Color(0xff707070), width: 1)),
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    hint: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        'Service type',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: "spartan",
+                          color: Color(0xff707070),
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: findserviceradioList.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
+                    ),
+                    items: _addDividersAfterItems(items),
+                    customItemsHeights: _getCustomItemsHeights(),
+                    value: selectedValuetype == ""?null:selectedValuetype,
+                    onChanged: (value) {
+                      setState(() {
+                        serviceTypeId = "";
+                        selectedValuetype = value as String;
+                        for(var i in serviceTypes!.td){
+                          if(i.serviceTypeName == selectedValuetype){
+                            serviceTypeId = i.id;
+                          }
+                        }
+                        print(serviceTypeId);
+                      });
+                    },
+                    buttonHeight: 60,
+                    buttonPadding: EdgeInsets.only(right: 10),
+                    icon: (Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 30,
+                      color: Color(0xff707070),
+                    )),
+                    dropdownMaxHeight: 200,
+                    buttonWidth: 140,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                ),
+              ),
+            ):
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  width: width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Color(0xffE7E7E7), width: 1)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 15, top: 10, bottom: 10),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            setState(() {
+                              arrow = !arrow;
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("$selectedValuetype",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff292929),
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.bold)),
+                              arrow == false
+                                  ? Icon(Icons.keyboard_arrow_up,
+                                  size: 30, color: Color(0xff707070))
+                                  : Icon(Icons.keyboard_arrow_down,
+                                  size: 30, color: Color(0xff707070)),
+                            ],
+                          ),
+                        ),
+                        arrow == true
+                            ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                          children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Color(0xffCFCFCF),
+                              ),
+                              SizedBox(height: 5),
+                              Container(alignment: Alignment.topLeft,
+                                child: Text(
+                                    "You can edit this title to your choice.",
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: Color(0xff2F80ED),
+                                        fontFamily: "spartan",
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              DropdownButtonFormField(
+                                enableFeedback: true,
+                                isDense: true,
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                elevation: 2,
+                                value: selectedchosstime,
+                                items: durationtimelist.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style: TextStyle(fontSize: 14, color: Color(0xff292929)),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
                                   setState(() {
-                                    selectdradioValue =
-                                        findserviceradioList[index]
-                                            .toString();
-                                    Navigator.pop(context);
+                                    selectedchosstime = newValue!;
                                   });
                                 },
-                                child: Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .center,
-                                        children: [
-                                          Container(
-                                            height: 60,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .center,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                              children: [
-                                                Text(
-                                                  "${findserviceradioList[index]}",
-                                                  style: TextStyle(
-                                                      fontFamily:
-                                                      'spartan',
-                                                      color: Color(
-                                                          0xff292929),
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w700,
-                                                      fontSize: 16),
-                                                ),
-                                                Text(
-                                                  "\$20 for 30 min",
-                                                  style: TextStyle(
-                                                      fontFamily:
-                                                      'spartan',
-                                                      color: Color(
-                                                          0xff414141),
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w500,
-                                                      fontSize: 10),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Radio<String>(
-                                            value:
-                                            findserviceradioList[
-                                            index],
-                                            activeColor:
-                                            Color(0xff01635D),
-                                            groupValue:
-                                            selectdradioValue,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectdradioValue =
-                                                    value
-                                                        .toString();
-
-                                                Navigator.pop(
-                                                    context);
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Color(0xffCFCFCF),
-                                      ),
-                                    ],
+                                icon: Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 30,color: Color(0xff969696),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(left: 20),
+                                  hintText: "Duration",
+                                  hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'spartan',
+                                      color: Color(0xff292929),
+                                      fontWeight: FontWeight.w500),
+                                  labelText: "Duration",
+                                  labelStyle:
+                                  TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(color: Color(0xff292929)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(color: Color(0xff292929)),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                              Container(
+                                child: TextField(
+                                  controller: servicePrice,
+                                  style:
+                                  TextStyle(color: Color(0xff292929)),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      servicePriceStatus = false;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.only(left: 20),
+                                    hintText: "Service Price",
+                                    hintStyle: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xff292929)),
+
+                                    labelText: "Service Price",
+                                    labelStyle: TextStyle(
+                                        fontFamily: 'spartan',
+                                        color: Color(0xff292929)),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                      borderSide:
+                                      BorderSide(color: Color(0xff707070)),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                      borderSide:
+                                      BorderSide(color: Color(0xff707070)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              servicePriceStatus
+                                  ? Container(
+                                height: 30,
+                                child: Text(
+                                  "$status",
+                                  style: TextStyle(
+                                      fontFamily: 'spartan',
+                                      fontSize: 12,
+                                      color: Colors.red),
+                                ),
+                              )
+                                  : Container(
+                                height: 20,
+                              ),
+                          ],
                         ),
-                      ),
-                    ],
+                            )
+                            : Column(
+                          children: [],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              );
-            },
+              ),
+            ),
 
-          ),
-        );
-      },
-    );
-   }
-  Durationdialog() {
-    double height = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width -
-        MediaQuery.of(context).padding.right -
-        MediaQuery.of(context).padding.left;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          insetPadding: EdgeInsets.all(10),
-          child: StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                height: height - 60,
-                width: width - 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
+            SizedBox(
+              height: height * 0.04,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                children: [
+                  textComoon("Service Description", 14, Color(0xff292929),
+                      FontWeight.w700),
+                  textComoon(" (optional)", 14, Color(0xff707070),
+                      FontWeight.w700),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: height * 0.025,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Container(
+                child: TextField(
+                  controller: description,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Color(
+                        0xff414141,
+                      )),
+                  onChanged: (value) {
+                    descriptionstatus = false;
+                  },
+                  decoration: InputDecoration(
+                    //contentPadding: EdgeInsets.only(left: 20, top: 5, bottom: 12),
+                    hintText: "Description",
+                    labelText: "Description",
+                    labelStyle:
+                    TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(color: Color(0xff707070)),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(color: Color(0xff707070)),
+                    ),
+                  ),
                 ),
+              ),
+            ),
+            descriptionstatus
+                ? Container(
+              height: 30,
+              child: Text(
+                "$status",
+                style: TextStyle(
+                    fontFamily: 'spartan',
+                    fontSize: 12,
+                    color: Color(0xff2F80ED)),
+              ),
+            )
+                : Container(
+              height: 20,
+            ),
+            SizedBox(
+              height: height * 0.06,
+            ),
+            // Container(
+            //
+            //   width: width,
+            //   color: Color(0xffF3F3F3),
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(top: 20,bottom: 30,left: 20,right: 20),
+            //     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         textComoon("Cancellation policy", 16,Color(0xff292929), FontWeight.w600),
+            //         SizedBox(
+            //           height: height * 0.015,
+            //         ),
+            //         textComoonfade("Avoid been taken unaware on last minute appointment cancellation by clients. Choose when appointments can be cancelled by clients.", 14,Color(0xff414141), FontWeight.w500),
+            //         SizedBox(
+            //           height: height * 0.04,
+            //         ),
+            //         Container(
+            //           padding: EdgeInsets.symmetric(
+            //             vertical: 17,
+            //           ),
+            //           decoration: BoxDecoration(
+            //             color: Colors.white,
+            //               borderRadius: BorderRadius.circular(5),
+            //               border: Border.all(width: 1,color: Color(0xffE7E7E7))),
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+            //             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 textComoon("Show to clients", 14, Color(0xff292929),FontWeight.w500),
+            //                 SizedBox(width: 20,),
+            //                 FlutterSwitch(
+            //                   width: 55.0,
+            //                   height: 25.0,
+            //                   valueFontSize: 12.0,
+            //                   toggleSize: 18.0,
+            //                   activeColor: Color(0xff01635D),
+            //                   value: clientStatus,
+            //                   onToggle: (value) {
+            //                     setState(() {
+            //                       clientStatus = value;
+            //                     });
+            //                   },
+            //                 ),
+            //
+            //               ],
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            SizedBox(
+              height: height*0.08,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Container(
                 child: Column(
                   children: [
-                    Expanded(
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: DurationTimeradioList.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                selecttimedradioValue =
-                                    DurationTimeradioList[index].toString();
-                                Navigator.pop(context);
-                              });
-                            },
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(left: 20),
-                                              child: Text(
-                                                "${DurationTimeradioList[index]}",
-                                                style: TextStyle(
-                                                    fontFamily: 'spartan',
-                                                    color: Color(0xff292929),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Radio<String>(
-                                          value: DurationTimeradioList[index],
-                                          activeColor: Color(0xff01635D),
-                                          groupValue: selecttimedradioValue,
-                                          fillColor: MaterialStateColor.resolveWith(
-                                                  (states) => Color(0xff01635D)),
-                                          onChanged: (value) {
-                                            setState(
-                                                  () {
-                                                selecttimedradioValue =
-                                                    value.toString();
-                                              print("===${selecttimedradioValue}");
-                                                Navigator.pop(context);
-                                              },
-                                            );
-                                          })
-                                    ],
-                                  ),
-
-                                  Divider(
-                                    thickness: 1,
-                                    color: Color(0xffCFCFCF),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                    InkWell(
+                      onTap: () {
+                        addSingleServiceDetails();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width,
+                        height: height * 0.06,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(0xff01635D)),
+                        child: Text("SAVE",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: "spartan",
+                                color: Colors.white)),
                       ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: Text(
+                        "These services will be added to your Sliike profile as your available services. You can add more as needed.",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff414141),
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
                     ),
                   ],
                 ),
-              );
-            },
-
-          ),
-        );
-      },
+              ),
+            ),
+          ],
+        ),
+      ):
+      Center(child: Text("Something Went Wrong",style: TextStyle(fontWeight: FontWeight.w500),))
     );
   }
-   recurringoption() {
-     double height = MediaQuery.of(context).size.height -
-         MediaQuery.of(context).padding.top -
-         MediaQuery.of(context).padding.bottom;
-     double width = MediaQuery.of(context).size.width -
-         MediaQuery.of(context).padding.right -
-         MediaQuery.of(context).padding.left;
-     showDialog(
-       context: context,
-       builder: (context) {
-         return StatefulBuilder(
-           builder: (context, setState) {
 
-             return  Dialog(
-               insetPadding: EdgeInsets.all(10),
-               child: Container(
-                 height: height - 60,
-                 width: width - 40,
-                 decoration: BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: BorderRadius.circular(5),
-                 ),
-                 child: Column(
-                   children: [
-                     Expanded(
-                       child: ListView.builder(
-                         physics: BouncingScrollPhysics(),
-                         shrinkWrap: true,
-                         itemCount: recurringOptionsList.length,
-                         itemBuilder: (context, index) {
+  addSingleServiceDetails() async {
+    setState(() {
+      isLoading = true;
+    });
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    print(Headers);
+    var Body = {
+      "duration" : Duration!,
+      "price" : servicePrice.text,
+      "description" : description.text,
+      "serviceCategory" : serviceCategoryId,
+      "serviceType" : serviceTypeId,
+    };
+    var response = await http.post(
+      Uri.parse(ApiUrlList.addSingleServiceDetails),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("addSingleServiceDetails Code : ${response.statusCode}");
+    log("addSingleServiceDetails Body : ${response.body}");
+    log("addSingleServiceDetails PayLoad : ${Body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => service_Setup_Main(),));
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
 
-                           return InkWell(
-                             onTap: () {
+  fetchServiceCategories() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var getUri = Uri.parse(ApiUrlList.fetchServiceCategories);
+      var response = await http.get(getUri);
+      log("fetchServiceCategories Code ==> ${response.statusCode}");
+      log("fetchServiceCategories Body :  ${response.body}");
+      if (response.statusCode == 200) {
+        Map map = jsonDecode(response.body);
+        if (map['status'] == 200) {
+          serviceCategories = ServiceCategories.fromjson(map);
+          fetchServicesType(serviceCategories!.data![0].id!);
+          setState(() {});
+        }
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      isLoading = false;
+    }
+  }
 
-                                 recurringOptionsRadio =
-                                     recurringOptionsList[index];
-                                 print("------$recurringOptionsRadio");
-                                 Navigator.pop(context);
+  fetchServicesType(String serviceId) async {
+    try {
+      setState(() {
+        isLoading = true;
+        items.clear();
+        selectedValuetype = "";
+        // selectedServiceIdValue = "";
+        // selectedServiceNameValue = "";
+      });
+      var getUri = Uri.parse("${ApiUrlList.fetchServiceTypes}/$serviceId");
+      var response = await http.get(
+        getUri,
+      );
+      print("getUri : $getUri");
+      log("fetchServiceTypes Code ==> ${response.statusCode}");
+      log("fetchServiceTypes Body :  ${response.body}");
+      if (response.statusCode == 200) {
+        Map map = jsonDecode(response.body);
+        if (map['status'] == 200) {
+          serviceTypes = Types.fromJson(jsonDecode(response.body));
+          for(var i in serviceTypes!.td){
+            items.add(i.serviceTypeName);
+          }
+          setState(() {});
+        }
+      }else if(response.statusCode == 401){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
-                             },
-                             child: Container(
-                               child: Column(
-                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                 children: [
-                                   Row(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: [
-                                       Container(
-                                         height: 50,
-                                         child: Column(
-                                           mainAxisAlignment: MainAxisAlignment.center,
-                                           crossAxisAlignment:
-                                           CrossAxisAlignment.start,
-                                           children: [
-                                             Padding(
-                                               padding:
-                                               const EdgeInsets.only(left: 20),
-                                               child: Text(
-                                                 "${recurringOptionsList[index]}",
-                                                 style: TextStyle(
-                                                     fontFamily: 'spartan',
-                                                     color: Color(0xff292929),
-                                                     fontWeight: FontWeight.w500,
-                                                     fontSize: 14),
-                                               ),
-                                             ),
-                                           ],
-                                         ),
-                                       ),
-                                       Spacer(),
-                                       Radio<String>(
-                                           value: recurringOptionsList[index],
-                                           activeColor: Color(0xff01635D),
-                                           groupValue: recurringOptionsRadio,
-                                           fillColor: MaterialStateColor.resolveWith(
-                                                   (states) => Color(0xff01635D)),
-                                           onChanged: (newvalue) {
+}
+class ServiceCategories {
+  int? status;
+  bool? success;
+  List<ServiceCategoriesData>? data;
+  String? message;
 
-                                                 recurringOptionsRadio =
-                                                     newvalue.toString();
-                                                    print("======${recurringOptionsRadio}");
-                                                 Navigator.pop(context);
+  ServiceCategories({this.status, this.success, this.data, this.message});
 
-                                           })
-                                     ],
-                                   ),
+  factory ServiceCategories.fromjson(Map<dynamic, dynamic> map) {
+    List list = map['data'] ?? "";
+    List<ServiceCategoriesData> data =
+    list.map((e) => ServiceCategoriesData.fromjson(e)).toList();
+    return ServiceCategories(
+      status: map['status'] ?? 0,
+      success: map['success'] ?? false,
+      data: data,
+      message: map['message'] ?? "",
+    );
+  }
+}
 
-                                   Divider(
-                                     thickness: 1,
-                                     color: Color(0xffCFCFCF),
-                                   ),
-                                 ],
-                               ),
-                             ),
-                           );
-                         },
-                       ),
-                     ),
-                   ],
-                 ),
-               ),
-             );
-           },
+class ServiceCategoriesData {
+  String? id;
+  String? serviceCategoryName;
+  String? imgPath;
+  bool? isSelected;
 
-         );
-       },
-     );
-   }
-   datewtimeDialog() {
-     double height = MediaQuery.of(context).size.height -
-         MediaQuery.of(context).padding.top -
-         MediaQuery.of(context).padding.bottom;
-     double width = MediaQuery.of(context).size.width -
-         MediaQuery.of(context).padding.right -
-         MediaQuery.of(context).padding.left;
-     showDialog(
-       context: context,
-       builder: (context) {
-         return Dialog(
-           insetPadding: EdgeInsets.all(10),
-           child: StatefulBuilder(
-             builder: (context, setState) {
-               return Container(
-                 height: height - 60,
-                 width: width - 40,
-                 decoration: BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: BorderRadius.circular(5),
-                 ),
-                 child: Padding(
-                   padding: const EdgeInsets.only(left: 20,right: 20),
-                   child: Column(
-                     children: [
-                       SizedBox(height: height*0.02,),
-                       textComoon("Select Appointment Date", 12, Color(0xff111111),
-                           FontWeight.w600),
-                       SizedBox(height: height*0.01,),
-                       Container(
-                         height: height*0.35,
-                         child: SfCalendar(
-                          //   headerHeight: 60,
-                             headerStyle: CalendarHeaderStyle(
-                                 textAlign: TextAlign.center,
-                                 textStyle: TextStyle(fontFamily: 'spartan',fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20,)
-                             ),
-                             todayTextStyle: TextStyle(fontFamily: 'spartan'),
-                             cellBorderColor: Colors.transparent,
-                             view: CalendarView.month,viewHeaderStyle: ViewHeaderStyle(dayTextStyle: TextStyle(color: Color(0xff01635D))),
-                             selectionDecoration: BoxDecoration(
-                                 border: Border.all(color: Color(0xff01635D))
-                             ),
-                             todayHighlightColor: Color(0xff01635D),
-                             monthViewSettings: MonthViewSettings(
-                               monthCellStyle: MonthCellStyle(
-                                   textStyle: TextStyle(fontFamily: 'spartan',color: Colors.black)
-                               ),
-                               appointmentDisplayMode: MonthAppointmentDisplayMode.none,
-                               showTrailingAndLeadingDates: false,
-                             )
-                         ),
-                       ),
-                       Divider(thickness: 1,color: Color(0xffCFCFCF),),
-                       SizedBox(height: height*0.02,),
-                       textComoon("Select Appointment Start Time", 12, Color(0xff111111),
-                           FontWeight.w600),
-                       SizedBox(height: height*0.01,),
-                       Spacer(),
-                       CommonButton(context, "Done",12, FontWeight.w600, Colors.white, () { }),
-                       SizedBox(height: height*0.03,),
-                     ],
-                   ),
-                 ),
-               );
-             },
+  ServiceCategoriesData(
+      {this.id,
+        this.serviceCategoryName,
+        this.imgPath,
+        this.isSelected = false});
 
-           ),
-         );
-       },
-     );
-   }
+  factory ServiceCategoriesData.fromjson(Map<dynamic, dynamic> map1) {
+    return ServiceCategoriesData(
+      id: map1['_id'] ?? "",
+      serviceCategoryName: map1['serviceCategoryName'] ?? "",
+      imgPath: map1['imgPath'] ?? "",
+    );
+  }
+}
+
+
+class Types {
+  int status;
+  bool success;
+  List<TypesData> td;
+  String message;
+
+  Types({
+    required this.status,
+    required this.success,
+    required this.td,
+    required this.message,
+  });
+
+  factory Types.fromJson(Map<String, dynamic> json) => Types(
+    status: json["status"],
+    success: json["success"],
+    td: List<TypesData>.from(
+        json["data"].map((x) => TypesData.fromJson(x))),
+    message: json["message"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "success": success,
+    "td": List<dynamic>.from(td.map((x) => x.toJson())),
+    "message": message,
+  };
+}
+
+class TypesData {
+  String id;
+  String serviceTypeName;
+
+  TypesData({
+    required this.id,
+    required this.serviceTypeName,
+  });
+
+  factory TypesData.fromJson(Map<String, dynamic> json) => TypesData(
+    id: json["_id"],
+    serviceTypeName: json["serviceTypeName"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "serviceTypeName": serviceTypeName,
+  };
 }

@@ -29,7 +29,6 @@ class _demograPhicState extends State<demograPhic> {
     // TODO: implement initState
     super.initState();
     getDemographyList();
-    getDemographySelected();
   }
   @override
   Widget build(BuildContext context) {
@@ -141,7 +140,7 @@ class _demograPhicState extends State<demograPhic> {
               SizedBox(
                 height: height * 0.025,
               ),
-              Container(
+              if(selectedDemography?.data != null)Container(
                 // color: Colors.red,
                 height: height * 0.4,
                 child: ListView.builder(
@@ -228,6 +227,7 @@ class _demograPhicState extends State<demograPhic> {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
         setState(() {
+          getDemographySelected();
           getDemography = getDemographyListData.fromjson(map);
           isLoading = false;
         });
@@ -322,8 +322,9 @@ class _demograPhicState extends State<demograPhic> {
           isLoading = false;
           for(int i = 0; i < getDemography!.data.length; i++){
             for(int j = 0; j < selectedDemography!.data.length; j++){
-              if(selectedDemography!.data[i].id.toLowerCase() == getDemography!.data[i].id.toLowerCase()){
+              if(selectedDemography!.data[j].id.toLowerCase() == getDemography!.data[i].id.toLowerCase()){
                 setState(() {
+                  demographicsIds.add(selectedDemography!.data[j].id);
                   getDemography!.data[i].isSelected = true;
                 });
                 log("getHealthSafetyData!.data[i].isSelected : ${getDemography!.data[i].isSelected}");

@@ -187,31 +187,31 @@ class _business_DetailState extends State<business_Detail> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
-                  ),
-                  child: InkWell(
-                    onTap: (){  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return Employees();
-                    },));
-
-                    },
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        textComoon("Employees",14,Color(0xff414141), FontWeight.w500),
-
-                        Container(
-                          height: 15,
-                          width: 30,
-                          child: Image.asset("assets/images/righticon.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(vertical: 17,),
+                //   decoration: BoxDecoration(
+                //       border: Border(bottom: BorderSide(color: Colors.black12))
+                //   ),
+                //   child: InkWell(
+                //     onTap: (){  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //       return Employees();
+                //     },));
+                //
+                //     },
+                //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //
+                //         textComoon("Employees",14,Color(0xff414141), FontWeight.w500),
+                //
+                //         Container(
+                //           height: 15,
+                //           width: 30,
+                //           child: Image.asset("assets/images/righticon.png"),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 17,),
                   decoration: BoxDecoration(

@@ -132,9 +132,7 @@ class _health_detailState extends State<health_detail> {
                 Spacer(),
                 CommonButton(
                     context, "OK", 12, FontWeight.w600, Colors.white, () {
-                      Navigator.pop(context,
-                        Detail.text
-                      );
+                      Navigator.pop(context, Detail.text);
                       print(Detail.text);
                 }),
               ],

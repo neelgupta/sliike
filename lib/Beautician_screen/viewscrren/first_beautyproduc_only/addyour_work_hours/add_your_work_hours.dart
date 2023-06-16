@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,16 +9,23 @@ import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/addwork_hours_save_or_thanks_page.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/breaktime_select_page.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import '../../../bottomnavbar/More/business_setup/busines_setup/calendar_management/busines_hours.dart';
+import 'package:http/http.dart' as http;
 import '../../../custom_widget/checkbox.dart';
 
 // ignore: camel_case_types
 class add_Your_Work_Hours extends StatefulWidget {
-  add_Your_Work_Hours({Key? key,required this.secondflow,this.Day,this.startTime,this.endTime}) : super(key: key);
+  add_Your_Work_Hours({Key? key,required this.secondflow,this.Day,this.startTime,this.endTime,this.isOpen,this.breakendTime,this.breakstartTime}) : super(key: key);
   final bool secondflow;
   String ? Day;
   String  ? startTime;
   String  ? endTime;
+  bool  ? isOpen;
+  String  ? breakstartTime;
+  String  ? breakendTime;
 
   @override
   State<add_Your_Work_Hours> createState() => _add_Your_Work_HoursState();
@@ -25,6 +33,7 @@ class add_Your_Work_Hours extends StatefulWidget {
 
 // ignore: camel_case_types
 class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
+  bool isLoading = false;
   Duration initialTimer = const Duration();
   bool backworkhours = true;
   bool status = true;
@@ -34,8 +43,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   int startTimeIndex = 0;
   int endTimeIndex = 0;
 
-   // late FixedExtentScrollController _scrollControllerStartTime;
-   // late FixedExtentScrollController _scrollControllerEndTime;
+  FixedExtentScrollController? _scrollWheelController;
+    FixedExtentScrollController ?_scrollControllerEndTime;
 
   List<DayDetails> dayDetailsList = [
     DayDetails(
@@ -726,19 +735,36 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(!widget.secondflow){
-      selectedValue = widget.Day!;
-      startTime = widget.startTime!;
-      endTime = widget.endTime!;
+    selectedValue = widget.Day!;
+    startTime = widget.startTime!;
+    endTime = widget.endTime!;
+    Onoff = widget.isOpen!;
+    for(var i in dayDetailsList){
+      i.isOpen = widget.isOpen;
+      setState(() {});
+    }
 
-      for(int i = 0; i < time.length; i++){
-        if(startTime == time[i]){
-          startTimeIndex = time[i];
-          print("object");
-        }
+    for(int i = 0; i < time.length; i++){
+      if(startTime == time[i]){
+        startTimeIndex = i;
+
+        _scrollWheelController = FixedExtentScrollController(
+          initialItem: startTimeIndex,
+        );
+        print(startTimeIndex);
+
       }
-      onDayStartTimeChanged(startTime : widget.startTime!);
-      print(startTime);
+    }
+    for(int i = 0; i < timeend.length; i++){
+      if(endTime == timeend[i]){
+        endTimeIndex = i;
+
+        _scrollControllerEndTime = FixedExtentScrollController(
+          initialItem: endTimeIndex,
+        );
+        print(startTimeIndex);
+
+      }
     }
   }
 
@@ -1090,263 +1116,275 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
 
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    //     return add_Your_Work_Hours();
-                    //   },));
-                    // });
-                    if (Onoff == false) {
-                      Fluttertoast.showToast(
-                          msg: "Enter Your Switch Open",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      print("onofffalse=$Onoff");
-                    }
-                    else if (startTimeIndex == endTimeIndex) {
-                      Fluttertoast.showToast(msg: "Time cannot be same");
-                    } else if (startTimeIndex > endTimeIndex) {
-                      Fluttertoast.showToast(msg: "Invaild selected time !");
-                    }
-                    // else {
-                    //   onDayendtimeChanged(endTime: endTime);
-                    // }
-                    // else if (!emptystartendtime()) {
-                    //   Fluttertoast.showToast(
-                    //       msg: "Enter Your Start End Time",
-                    //       toastLength: Toast.LENGTH_SHORT,
-                    //       gravity: ToastGravity.BOTTOM,
-                    //       timeInSecForIosWeb: 1,
-                    //       backgroundColor: Colors.black,
-                    //       textColor: Colors.white,
-                    //       fontSize: 16.0);
-                    //   print("startendtime=====");
-                    // }
-                    else {
-                      onDayendtimeChanged(endTime: endTime);
-                      if (isbottomSheet == true) {
-                        showModalBottomSheet<void>(
-                          isScrollControlled: true,
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          )),
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: height - height * 0.12,
-                              width: width,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
+                    if(!widget.secondflow){
+                      Navigator.pop(context, {
+                        "day": selectedValue,
+                        "startTime": startTime,
+                        "endTime": endTime,
+                        "breakStartTime": breakstartTime,
+                        "breakEndTime": breakendTime,
+                        "isOpen": Onoff,
+                      });
+                      print("POp Data :  ${{
+                        "day": selectedValue,
+                        "startTime": startTime,
+                        "endTime": endTime,
+                        "breakStartTime": breakstartTime,
+                        "breakEndTime": breakendTime,
+                        "isOpen": Onoff,
+                      }}");
+                    }else{
+                      if (Onoff == false) {
+                        Fluttertoast.showToast(
+                            msg: "Enter Your Switch Open",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        print("onofffalse=$Onoff");
+                      }
+                      else if (startTimeIndex == endTimeIndex) {
+                        Fluttertoast.showToast(msg: "Time cannot be same");
+                      } else if (startTimeIndex > endTimeIndex) {
+                        Fluttertoast.showToast(msg: "Invaild selected time !");
+                      }
+                      // else {
+                      //   onDayendtimeChanged(endTime: endTime);
+                      // }
+                      // else if (!emptystartendtime()) {
+                      //   Fluttertoast.showToast(
+                      //       msg: "Enter Your Start End Time",
+                      //       toastLength: Toast.LENGTH_SHORT,
+                      //       gravity: ToastGravity.BOTTOM,
+                      //       timeInSecForIosWeb: 1,
+                      //       backgroundColor: Colors.black,
+                      //       textColor: Colors.white,
+                      //       fontSize: 16.0);
+                      //   print("startendtime=====");
+                      // }
+                      else {
+                        onDayendtimeChanged(endTime: endTime);
+                        if (isbottomSheet == true) {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                )),
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: height - height * 0.12,
+                                width: width,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
                                 ),
-                              ),
-                              child: SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                child: StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return Column(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            child: const Text(
-                                              "Want To Copy Work Hours To\nOther Days?",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Color(0xff292929),
-                                                  fontFamily: "spartan",
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                child: SingleChildScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  child: StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: height * 0.02,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.01,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            child: const Text(
-                                              "Would you like to apply the already setup working\n"
-                                              "hours to other days? If so, select days from the list.",
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Color(0xff414141),
-                                                  fontFamily: "spartan",
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.01,
-                                        ),
-                                        const Divider(
-                                          thickness: 1,
-                                          color: Color(0xffCFCFCF),
-                                        ),
-                                        ListView.separated(
-                                          separatorBuilder: (context, index) =>
-                                              const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Divider(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: dayDetailsList.length,
-                                          itemBuilder: (context, index) {
-                                            return Commoncheckbox(context,
-                                                dayDetailsList[index].isOpen,
-                                                (value) {
-                                              if (value) {
-                                                openOtherDaySelectChanged(
-                                                  selectedDay:
-                                                      dayDetailsList[index]
-                                                          .day!,
-                                                  index: index,
-                                                  value: value,
-                                                );
-                                                setState(() {
-                                                  dayDetailsList[index].isOpen =
-                                                      value;
-                                                });
-                                              } else {
-                                                for (var item
-                                                    in dayDetailsList) {
-                                                  if (item.day ==
-                                                      dayDetailsList[index]
-                                                          .day!) {
-                                                    item.startTime = "";
-                                                    item.endTime = "";
-                                                  }
-                                                }
-                                                setState(() {
-                                                  dayDetailsList[index].isOpen =
-                                                      value;
-                                                });
-                                              }
-                                            },
-                                                dayDetailsList[index]
-                                                    .day
-                                                    .toString(),
-                                                dayDetailsList[index]
-                                                    .startTime
-                                                    .toString(),
-                                                dayDetailsList[index].isOpen!
-                                                    ? "to"
-                                                    : "",
-                                                dayDetailsList[index]
-                                                    .endTime
-                                                    .toString());
-                                          },
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.06,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: InkWell(
-                                            onTap: () async {
-                                              Navigator.pop(context);
-                                              await navigtorbackshowdialodhide(
-                                                  context);
-                                              // Navigator.push(context,
-                                              //     MaterialPageRoute(
-                                              //   builder: (context) {
-                                              //     return addWork_Save_or_NoThanks_Page(
-                                              //         widget.secondflow,
-                                              //         dayDetailsList);
-                                              //   },
-                                              // ));
-                                            },
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
                                             child: Container(
-                                              alignment: Alignment.center,
-                                              width: width,
-                                              height: height * 0.06,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color:
-                                                      const Color(0xff01635D)),
-                                              child: const Text("SAVE",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: "spartan",
-                                                      color: Colors.white)),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, right: 20),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                              // Navigator.push(context,
-                                              //     MaterialPageRoute(
-                                              //   builder: (context) {
-                                              //     return addWork_Save_or_NoThanks_Page(
-                                              //         widget.secondflow);
-                                              //   },
-                                              // ));
-                                            },
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              width: width,
-                                              height: height * 0.06,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                border: Border.all(
-                                                    color:
-                                                        const Color(0xff01635D),
-                                                    width: 1),
-                                              ),
+                                              alignment: Alignment.topLeft,
                                               child: const Text(
-                                                "No, Thanks",
+                                                "Want To Copy Work Hours To\nOther Days?",
                                                 style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: "spartan",
-                                                  color: Color(0xff01635D),
+                                                    fontSize: 16,
+                                                    color: Color(0xff292929),
+                                                    fontFamily: "spartan",
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: Container(
+                                              alignment: Alignment.topLeft,
+                                              child: const Text(
+                                                "Would you like to apply the already setup working\n"
+                                                    "hours to other days? If so, select days from the list.",
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Color(0xff414141),
+                                                    fontFamily: "spartan",
+                                                    fontWeight:
+                                                    FontWeight.normal),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          ),
+                                          const Divider(
+                                            thickness: 1,
+                                            color: Color(0xffCFCFCF),
+                                          ),
+                                          ListView.separated(
+                                            separatorBuilder: (context, index) =>
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              child: Divider(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            physics:
+                                            const BouncingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: dayDetailsList.length,
+                                            itemBuilder: (context, index) {
+                                              return Commoncheckbox(context,
+                                                  dayDetailsList[index].isOpen,
+                                                      (value) {
+                                                    if (value) {
+                                                      openOtherDaySelectChanged(
+                                                        selectedDay:
+                                                        dayDetailsList[index]
+                                                            .day!,
+                                                        index: index,
+                                                        value: value,
+                                                      );
+                                                      setState(() {
+                                                        dayDetailsList[index].isOpen =
+                                                            value;
+                                                      });
+                                                    } else {
+                                                      for (var item
+                                                      in dayDetailsList) {
+                                                        if (item.day ==
+                                                            dayDetailsList[index]
+                                                                .day!) {
+                                                          item.startTime = "";
+                                                          item.endTime = "";
+                                                        }
+                                                      }
+                                                      setState(() {
+                                                        dayDetailsList[index].isOpen =
+                                                            value;
+                                                      });
+                                                    }
+                                                  },
+                                                  dayDetailsList[index]
+                                                      .day
+                                                      .toString(),
+                                                  dayDetailsList[index]
+                                                      .startTime
+                                                      .toString(),
+                                                  dayDetailsList[index].isOpen!
+                                                      ? "to"
+                                                      : "",
+                                                  dayDetailsList[index]
+                                                      .endTime
+                                                      .toString());
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.06,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                Navigator.pop(context);
+                                                await navigtorbackshowdialodhide(context);
+                                                // if(!widget.secondflow){
+                                                //   Navigator.pop(context);
+                                                //   Navigator.pop(context,dayDetailsList);
+                                                // }else{
+                                                // Navigator.pop(context);
+                                                // await navigtorbackshowdialodhide(context);
+                                                // }
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: width,
+                                                height: height * 0.06,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(5),
+                                                    color:
+                                                    const Color(0xff01635D)),
+                                                child: const Text("SAVE",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontFamily: "spartan",
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.02,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                // Navigator.push(context,
+                                                //     MaterialPageRoute(
+                                                //   builder: (context) {
+                                                //     return addWork_Save_or_NoThanks_Page(
+                                                //         widget.secondflow);
+                                                //   },
+                                                // ));
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: width,
+                                                height: height * 0.06,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color:
+                                                      const Color(0xff01635D),
+                                                      width: 1),
+                                                ),
+                                                child: const Text(
+                                                  "No, Thanks",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: "spartan",
+                                                    color: Color(0xff01635D),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.05,
-                                        ),
-                                      ],
-                                    );
-                                  },
+                                          SizedBox(
+                                            height: height * 0.05,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        navigtorbackshowdialodhide(context);
+                              );
+                            },
+                          );
+                        } else {
+                          navigtorbackshowdialodhide(context);
+                        }
+                        print("onoffftrue=$Onoff");
                       }
-                      print("onoffftrue=$Onoff");
                     }
                   },
                   child: Padding(
@@ -1376,6 +1414,8 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
       ),
     );
   }
+
+
 
   // ignore: non_constant_identifier_names
   Widget AddButtonbreak() {
@@ -1522,10 +1562,10 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
             width: 100,
             child: CupertinoPicker(
               itemExtent: 60,
-              // scrollController: _scrollControllerStartTime,
+              scrollController: _scrollWheelController,
               onSelectedItemChanged: (index) {
                 setState(() {
-                  // startTime = time[index];
+                  startTime = time[index];
                   startTimeIndex = index;
                   onDayStartTimeChanged(startTime: time[index]);
                   print("startTime$startTime");
@@ -1552,13 +1592,12 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
           SizedBox(
             width: 100,
             child: CupertinoPicker(
-              //scrollController: ,
+              scrollController: _scrollControllerEndTime,
               itemExtent: 60,
               onSelectedItemChanged: (index) {
                 setState(() {
                   endTimeIndex = index;
                   endTime = time[index];
-
 //               var now =DateTime.now()
 // ;              var sTim = DateTime(now.year,);
 //               var eTime = DateTime(now.year,);

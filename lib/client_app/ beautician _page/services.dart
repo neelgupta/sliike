@@ -102,34 +102,34 @@ class _servicesState extends State<services> {
         formatedTime = "90 min";
         break;
       case "02:00":
-        formatedTime = "110 min";
+        formatedTime = "120 min";
         break;
       case "02:30":
-        formatedTime = "140 min";
+        formatedTime = "150 min";
         break;
       case "03:00":
-        formatedTime = "170 min";
+        formatedTime = "180 min";
         break;
       case "03:30":
-        formatedTime = "200 min";
+        formatedTime = "210 min";
         break;
       case "04:00":
-        formatedTime = "230 min";
+        formatedTime = "240 min";
         break;
       case "04:30":
-        formatedTime = "260 min";
+        formatedTime = "270 min";
         break;
       case "05:00":
-        formatedTime = "290 min";
+        formatedTime = "300 min";
         break;
       case "05:30":
-        formatedTime = "310 min";
+        formatedTime = "330 min";
         break;
       case "06:00":
-        formatedTime = "340 min";
+        formatedTime = "360 min";
         break;
       case "06:30":
-        formatedTime = "360 min";
+        formatedTime = "390 min";
         break;
     }
     return formatedTime;
@@ -278,36 +278,38 @@ class _servicesState extends State<services> {
                         ),
                       ),
                       Positioned(
-                          top: 40,
-                          right: 55,
-                          child: Image.asset(
-                            "assets/images/share.png",
-                            height: 20,
-                            width: 20,
-                          )),
-                      Positioned(
                         top: 15,
                         right: 15,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (Beauticiandata[0].isFav!) {
-                              setState(() {
-                                removeFromMyFavorites(
-                                    widget.beauticianId);
-                              });
-                            } else {
-                              setState(() {
-                                addToMyFavorites(widget.beauticianId);
-                              });
-                            }
-                            Beauticiandata[0].isFav = !Beauticiandata[0].isFav!;
-                          },
-                          child: Icon(
-                              Beauticiandata[0].isFav!
-                                  ? Icons.favorite
-                                  : Icons.favorite_border_outlined,
-                              color: const Color(0xFFDD5103),
-                              size: 30),
+                        child: Row(
+                          children: [
+                            // Image.asset(
+                            //   "assets/images/share.png",
+                            //   height: 20,
+                            //   width: 20,
+                            // ),
+                            SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () {
+                                if (Beauticiandata[0].isFav!) {
+                                  setState(() {
+                                    removeFromMyFavorites(
+                                        widget.beauticianId);
+                                  });
+                                } else {
+                                  setState(() {
+                                    addToMyFavorites(widget.beauticianId);
+                                  });
+                                }
+                                Beauticiandata[0].isFav = !Beauticiandata[0].isFav!;
+                              },
+                              child: Icon(
+                                  Beauticiandata[0].isFav!
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: const Color(0xFFDD5103),
+                                  size: 30),
+                            ),
+                          ],
                         ),
                       ),
                     ],

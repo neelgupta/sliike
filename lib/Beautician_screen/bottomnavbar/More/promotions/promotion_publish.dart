@@ -2,15 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/services/promotion_services.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
+// ignore: must_be_immutable
 class promotion_Publish extends StatefulWidget {
-  const promotion_Publish({Key? key}) : super(key: key);
+  final Map<String ,dynamic> body;
+  var StartDate;
+  var EndDate;
+  promotion_Publish({Key? key,required this.body,this.StartDate,this.EndDate}) : super(key: key);
 
   @override
   State<promotion_Publish> createState() => _promotion_PublishState();
 }
 
 class _promotion_PublishState extends State<promotion_Publish> {
+  PromotionServices _promotionServices = PromotionServices();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.body);
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -23,7 +37,6 @@ class _promotion_PublishState extends State<promotion_Publish> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -85,9 +98,9 @@ class _promotion_PublishState extends State<promotion_Publish> {
                 SizedBox(
                   height: height * 0.04,
                 ),
-                textComoon("Save Big on Beard Trim", 18, Color(0xff292929), FontWeight.w700),
+                textComoon("Save Big on ${widget.body["serviceName"]}", 18, Color(0xff292929), FontWeight.w700),
                 SizedBox(height: height*0.01,),
-                textComoonfade("Save big from on beard trim  17 April to 22 April. Get 50% off on this service.", 14, Color(0xff414141), FontWeight.w500),
+                textComoonfade("Save big from on ${widget.StartDate} ${widget.EndDate} to ${widget.body["serviceName"]}. Get ${widget.body["discount"]} off on this service.", 14, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.05,),
                 Container(
                   height: height*0.1,
@@ -96,16 +109,16 @@ class _promotion_PublishState extends State<promotion_Publish> {
                     color: Color(0xff78D6F5),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child:Center(child: textComoon("50% OFF", 18, Color(0xff292929), FontWeight.w700)),
+                  child:Center(child: textComoon("${widget.body["discount"]} %", 18, Color(0xff292929), FontWeight.w700)),
                 ),
                 SizedBox(height: height*0.04,),
                 textComoon("Service", 12, Color(0xff292929), FontWeight.w700),
                 SizedBox(height: height*0.01,),
-                textComoon("Beard Trim", 14, Color(0xff414141), FontWeight.w500),
+                textComoon("${widget.body["serviceName"]}", 14, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.02),
                 textComoon("Promo Period", 12, Color(0xff292929), FontWeight.w700),
                 SizedBox(height: height*0.01,),
-                textComoon("17 April,2022 - 22 April,2022", 14, Color(0xff414141), FontWeight.w500),
+                textComoon("${widget.StartDate}  - ${widget.EndDate}", 14, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.01,),
                 dividerCommon(),
                 Spacer(),
@@ -114,9 +127,8 @@ class _promotion_PublishState extends State<promotion_Publish> {
                 textComooncenter("This promo can not be deleted\nonce posted.", 12, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.02,),
                 CommonButton(context, "PUBLISH", 12, FontWeight.w600, Colors.white, () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return promotion();
-                },));
+                  print(Helper.prefs!.getString(UserPrefs.keyutoken));
+                  _promotionServices.addPromotion(context, widget.body);
                 }),
                // SizedBox(height: height*0.04,),
               ],

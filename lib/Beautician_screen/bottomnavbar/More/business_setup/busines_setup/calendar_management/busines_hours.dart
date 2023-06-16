@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
@@ -9,6 +9,12 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/utils/userdetail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../../../utils/constants.dart';
+import '../../../../../b_model/addworkhours_model.dart';
 
 class busines_Hours extends StatefulWidget {
   const busines_Hours({Key? key}) : super(key: key);
@@ -21,6 +27,9 @@ class _busines_HoursState extends State<busines_Hours> {
 
   bool isLoading = false;
   GetWorkHoursData ? getWorkHoursData;
+
+  List addTimeMap = [];
+  List<DayDetails> ? dayDetailsList1;
   @override
   void initState() {
     // TODO: implement initState
@@ -117,14 +126,40 @@ class _busines_HoursState extends State<busines_Hours> {
                       return Column(
                         children: [
                           SizedBox(height: 12,),
+                          getWorkHoursData!.data![0].dayDetails![index].startTime!="" && getWorkHoursData!.data![0].dayDetails![index].endTime!="" ?
                           InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => add_Your_Work_Hours(
-                                  secondflow: false,
-                                  Day: getWorkHoursData!.data![0].dayDetails![index].day!,
-                                  startTime: getWorkHoursData!.data![0].dayDetails![index].startTime!,
-                                  endTime: getWorkHoursData!.data![0].dayDetails![index].endTime!,
-                              ),));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
+                                secondflow: false,
+                                Day: getWorkHoursData!.data![0].dayDetails![index].day!,
+                                startTime: getWorkHoursData!.data![0].dayDetails![index].startTime!,
+                                endTime: getWorkHoursData!.data![0].dayDetails![index].endTime!,
+                                isOpen: getWorkHoursData!.data![0].dayDetails![index].isOpen!,
+                                 breakendTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!,
+                                  breakstartTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!
+
+                              );},)).then((value) {
+                                print("value : ${value}");
+                                print("value.runtimeType : ${value.runtimeType}");
+                                print("value : ${value}");
+
+                                Map<String,dynamic> valuesMap = value;
+                                if(value!=null) {
+                                  getWorkHoursData!.data![0].dayDetails![index] =
+                                      DayDetail(
+                                        id: getWorkHoursData!.data![0].dayDetails![index].id,
+                                        isOpen:valuesMap["isOpen"],
+                                        breakEndTime: valuesMap["breakEndTime"],
+                                        breakStartTime: valuesMap["breakStartTime"],
+                                        day: valuesMap["day"],
+                                        endTime: valuesMap["endTime"],
+                                        startTime: valuesMap["startTime"],
+                                      );
+                                      // value;
+                                  setState(() {});
+                                  print("getWorkHoursData ${getWorkHoursData!.data![0].dayDetails![index]}");
+                                }
+                              });
                             },
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,8 +209,111 @@ class _busines_HoursState extends State<busines_Hours> {
                                           ),
                                         ],
                                       ),
+                                      SizedBox(width: width * 0.08,),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        height: 15,
+                                        width: 15,
+                                        child: Image.asset("assets/images/righticon.png"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ):
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
+                                  secondflow: false,
+                                  Day: getWorkHoursData!.data![0].dayDetails![index].day!,
+                                  startTime: getWorkHoursData!.data![0].dayDetails![index].startTime!,
+                                  endTime: getWorkHoursData!.data![0].dayDetails![index].endTime!,
+                                  isOpen: getWorkHoursData!.data![0].dayDetails![index].isOpen!,
+                                  breakendTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!,
+                                  breakstartTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!
+
+                              );},)).then((value) {
+                                print("value : ${value}");
+                                print("value.runtimeType : ${value.runtimeType}");
+                                print("value : ${value}");
+
+                                Map<String,dynamic> valuesMap = value;
+                                if(value!=null) {
+                                  getWorkHoursData!.data![0].dayDetails![index] =
+                                      DayDetail(
+                                        id: getWorkHoursData!.data![0].dayDetails![index].id,
+                                        isOpen:valuesMap["isOpen"],
+                                        breakEndTime: valuesMap["breakEndTime"],
+                                        breakStartTime: valuesMap["breakStartTime"],
+                                        day: valuesMap["day"],
+                                        endTime: valuesMap["endTime"],
+                                        startTime: valuesMap["startTime"],
+                                      );
+                                  // value;
+                                  setState(() {});
+                                  print("getWorkHoursData ${getWorkHoursData!.data![0].dayDetails![index]}");
+                                }
+                              });
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: width * 0.4,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "${getWorkHoursData!.data![0].dayDetails![index].day}",
+                                          style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: Color(0xff292929),
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: "spartan",
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // Text(
+                                          //   "${getWorkHoursData!.data![0].dayDetails![index].startTime} - ${getWorkHoursData!.data![0].dayDetails![index].endTime} ",
+                                          //   style: TextStyle(
+                                          //       color: Color(0xff292929),
+                                          //       fontWeight: FontWeight.w300,
+                                          //       fontFamily: "spartan",
+                                          //       fontSize: 12),
+                                          // ),
+                                          // SizedBox(height: 5,),
+                                          // Text(
+                                          //   "Break: ${getWorkHoursData!.data![0].dayDetails![index].breakStartTime} - ${getWorkHoursData!.data![0].dayDetails![index].breakEndTime}",
+                                          //   style: TextStyle(
+                                          //       color: Color(0xff292D32),
+                                          //       fontWeight: FontWeight.normal,
+                                          //       fontFamily: "spartan",
+                                          //       fontSize: 10),
+                                          // ),
+                                          Text(
+                                            "Closed",
+                                            style: TextStyle(
+                                                color: Color(0xff292929),
+                                                fontWeight: FontWeight.w300,
+                                                fontFamily: "spartan",
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
                                       SizedBox(
-                                        width: width * 0.08,
+                                        width: width * 0.35,
                                       ),
                                       Container(
                                         alignment: Alignment.center,
@@ -196,7 +334,7 @@ class _busines_HoursState extends State<busines_Hours> {
                   ),
                 ),
                 Spacer(),
-                CommonButton(context, "SAVE",12, FontWeight.w600, Colors.white, () { }),
+                CommonButton(context, "SAVE",12, FontWeight.w600, Colors.white, () {addWorkHours(context);}),
                // SizedBox(height: height*0.03,),
               ],
             ),
@@ -236,6 +374,73 @@ class _busines_HoursState extends State<busines_Hours> {
       rethrow;
     } finally {
       isLoading = false;
+    }
+  }
+
+  Future<void> addWorkHours(BuildContext context) async {
+    try {
+      var prefs = await SharedPreferences.getInstance();
+      Userdetail.userToken = prefs.getString(UserPrefs.keyutoken) ?? "";
+      Loader.show(context,
+          isSafeAreaOverlay: false,
+          overlayColor: Colors.black26,
+          progressIndicator:
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          themeData: Theme.of(context).copyWith(colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D))));
+      Map reqBody = {};
+      List dayDetailsList = [];
+      for (var item in getWorkHoursData!.data![0].dayDetails!) {
+        var singleDayData = {
+          "day": item.day,
+          "startTime": item.startTime,
+          "endTime": item.endTime,
+          "breakStartTime": item.breakStartTime,
+          "breakEndTime": item.breakEndTime,
+          "isOpen": item.isOpen,
+        };
+        dayDetailsList.add(singleDayData);
+      }
+
+      reqBody = {
+        "dayDetails": dayDetailsList,
+      };
+      print("ApiHeader.headers ${ApiHeader.headers}");
+      print("loginApi url : ${ApiUrlList.updateWorkHours}${getWorkHoursData!.data![0].id}");
+      print("passing reqBody  : $reqBody");
+      var response = await http.put(
+        Uri.parse("${ApiUrlList.updateWorkHours}${getWorkHoursData!.data![0].id}"),
+        body: jsonEncode(reqBody),
+        headers: ApiHeader.headers,
+      );
+      var map = jsonDecode(response.body.toString());
+      print("statuscode : ${response.statusCode}");
+      print("res  body :: ${response.body}");
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        getWorkHours();
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+      else {
+        Fluttertoast.showToast(
+            msg: "${map['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        print("else failed");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      Loader.hide();
     }
   }
 

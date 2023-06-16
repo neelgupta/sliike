@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -71,7 +72,6 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -316,7 +316,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                         width: width,
                         height: 180,
                         decoration: BoxDecoration(
-                            image:  p!.data!.first.workSpaceImgs.isNotEmpty?
+                            image: p!.data!.first.workSpaceImgs.isNotEmpty?
                             DecorationImage(image: NetworkImage( p!.data!.first.workSpaceImgs[0]), fit: BoxFit.fill):
                             DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                         child: InkWell(
@@ -329,6 +329,36 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             mainAxisAlignment:
                             MainAxisAlignment.center,
                             children: [
+                              p!.data!.first.workSpaceImgs.isNotEmpty?
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      _sheet();
+                                    },
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Image.asset("assets/images/edit-2.png",height: 30,color: Colors.grey),
+                                    ),
+                                  ),
+                                  const SizedBox(width:  10,),
+                                  InkWell(
+                                    onTap: (){
+                                      deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
+                                      firstImageStatus = false;
+                                      // one = false;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Image.asset("assets/images/delete.png",height: 30),
+                                    ),
+                                  ),
+                                  const SizedBox(width:  10,),
+                                ],
+                              ):
+                                  SizedBox(),
                               Center(
                                 child: Image(
                                   height: 40,
@@ -368,6 +398,36 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: [
+                                  p!.data!.first.workSpaceImgs.isNotEmpty?
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: (){
+                                          _sheet2();
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                      InkWell(
+                                        onTap: (){
+                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[1]);
+                                          secondImageStatus = false;
+                                          // one = true;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/delete.png",height: 20),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                    ],
+                                  ):
+                                      SizedBox(),
                                   Center(
                                     child: Image(
                                       height: 40,
@@ -447,6 +507,36 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: [
+                                  p!.data!.first.workSpaceImgs.isNotEmpty?
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: (){
+                                          _sheet3();
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                      InkWell(
+                                        onTap: (){
+                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[2]);
+                                          thirdImageStatus = false;
+                                          // two = true;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/delete.png",height: 20),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                    ],
+                                  ):
+                                      SizedBox(),
                                   Center(
                                     child: Image(
                                       height: 40,
@@ -526,6 +616,36 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: [
+                                  p!.data!.first.workSpaceImgs.isNotEmpty?
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: (){
+                                          _sheet4();
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                      InkWell(
+                                        onTap: (){
+                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[3]);
+                                          fourthImageStatus = false;
+                                          // three = true;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset("assets/images/delete.png",height: 20),
+                                        ),
+                                      ),
+                                      const SizedBox(width:  10,),
+                                    ],
+                                  ):
+                                      SizedBox(),
                                   Center(
                                     child: Image(
                                       height: 40,
@@ -1607,6 +1727,45 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   }
 
 
+  deleteWorkSpaceImg(String imgPath) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var getUri = Uri.parse("${ApiUrlList.deleteWorkSpaceImg}");
+      var Headers = {
+        // 'Content-Type': "application/json; charset=utf-8",
+        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      var Body = {
+        "imgPath" : imgPath
+      };
+      var response = await http.delete(
+        body: Body,
+        getUri,
+        headers: Headers,
+      );
+      log("deleteWorkSpaceImg Body ==> ${response.body}");
+      log("deleteWorkSpaceImg Code ==> ${response.statusCode}");
+      Map map = jsonDecode(response.body);
+      if (map["status"] == 200) {
+        isLoading = false;
+        setState(() {});
+      }else if(response.statusCode == 401){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+          return signInScreen();
+        },), (route) => false);
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setState(() {
+        // isLoading = false;
+      });
+    }
+  }
+
+
   Future _sheet() => showDialog(
     context: context,
     builder: (context) {
@@ -1658,13 +1817,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
               Navigator.pop(context);
               XFile? selectedImages =
               await _picker.pickImage(
-                  source: ImageSource.gallery,);
+                  source: ImageSource.gallery);
               if (selectedImages != null) {
                 setState(() {
                   firstImage = File(selectedImages.path);
                   firstImagePath = selectedImages.path;
                   firstImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs.isEmpty){
+                  if(p!.data!.first.workSpaceImgs[0].isEmpty){
                     if(two || three || four){
                       one = false;
                     }else{
@@ -1748,7 +1907,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   secondImage = File(selectedImages.path);
                   secondImagePath = selectedImages.path;
                   secondImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs.isEmpty){
+                  if(p!.data!.first.workSpaceImgs[1].isEmpty){
                     two = true;
                   }
                 });
@@ -1830,7 +1989,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   thirdImageStatus = true;
                   one = false;
                   two = false;
-                  if(p!.data!.first.workSpaceImgs.isEmpty){
+                  if(p!.data!.first.workSpaceImgs[2].isEmpty){
                     three = true;
                   }
                 });
@@ -1913,7 +2072,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   one = false;
                   two = false;
                   three = false;
-                  if(p!.data!.first.workSpaceImgs.isEmpty){
+                  if(p!.data!.first.workSpaceImgs[3].isEmpty){
                   }
                 });
               }

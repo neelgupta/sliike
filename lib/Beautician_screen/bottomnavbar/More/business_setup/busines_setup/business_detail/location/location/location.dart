@@ -6,6 +6,10 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/move_to_settings_all/yourprofile/Yourprofile_onescreen.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/getLoactionDetailsModel.dart';
+import 'package:new_sliikeapps_apps/services/address_service.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class location extends StatefulWidget {
   const location({Key? key}) : super(key: key);
@@ -26,7 +30,8 @@ class _locationState extends State<location> {
   String longitude = "35.123";
   bool method = false;
   int selectedRadio=1;
-  CameraPosition _initialLocation = CameraPosition(target: showLocation,zoom: 20);
+  AddressService addressService = AddressService();
+  CameraPosition _initialLocation = CameraPosition(target: showLocation,zoom: 10);
   late GoogleMapController mapController;
   static  LatLng showLocation =  LatLng(25.2048493, 55.2707828);
   void onMapCreated(GoogleMapController controller) {
@@ -55,10 +60,14 @@ class _locationState extends State<location> {
   }
   List<Marker> markers = <Marker>[];
   late GoogleMapController controller;
+  GetLocationDetailsData ? getLocationDetailsData;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    getLocationData();
+    print(Helper.prefs!.getString(UserPrefs.keyutoken));
     BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(48, 48)), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
   }
@@ -164,7 +173,7 @@ class _locationState extends State<location> {
             //   ),
             // ),
             SizedBox(height: height*0.04,),
-            Column(
+            if(getLocationDetailsData?.data != null)Column(
               children: [
                 Container(
                  // height: height*0.17,
@@ -231,26 +240,15 @@ class _locationState extends State<location> {
                          Spacer(),
                         GestureDetector(
                           onTap: (){
-                            List data = [latitude,longitude,address,city,province,postalCode,country];
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return edit_Location(data: data,);
-                            },)).then((value) {
-                              print(value);
-                              if(value!=null) {
-                                latitude = value[5];
-                                longitude = value[6];
-                                province = value[2];
-                                address = value[0];
-                                country = value[4];
-                                city = value[1];
-                                postalCode = value[3];
-                                _updateMarker();
-                                setState(() {});
-                              }
-                            });
-                            // Navigator.push(context,MaterialPageRoute(builder: (context) {
-                            //   return edit_Location();
-                            // },));
+                              return edit_Location(
+                                  address: getLocationDetailsData!.data![0].address![0].address!,
+                                  city: getLocationDetailsData!.data![0].address![0].city!,
+                                country: getLocationDetailsData!.data![0].country!,
+                                pin: getLocationDetailsData!.data![0].address![0].zipCode!,
+                                province: getLocationDetailsData!.data![0].address![0].province!.id!,
+                              );
+                            },));
                           },
                           child: Container(
                             height: 40,
@@ -278,9 +276,15 @@ class _locationState extends State<location> {
             SizedBox(height: height*0.02,),
             textComoon("What’s your profile?", 14, Colors.black, FontWeight.w700),
             SizedBox(height: height*0.015,),
-            InkWell(
+            if(getLocationDetailsData?.data != null)InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => yourProfile_One(),));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => yourProfile_One(
+                    hasShop: getLocationDetailsData!.data![0].hasShop,
+                    isServe: getLocationDetailsData!.data![0].isServeAtClient,
+                    isOwn: getLocationDetailsData!.data![0].isServeAtOwnPlace,
+                ),)).then((value){
+                  getLocationData();
+                });
               },
               child: Container(
                 height: 60,
@@ -322,6 +326,20 @@ class _locationState extends State<location> {
         ),
       ),
     );
+  }
+
+  getLocationData() async {
+    getLocationDetailsData = await addressService.getLocationDetails();
+    isLoading = false;
+    address = getLocationDetailsData!.data![0].address![0].address!;
+    city = getLocationDetailsData!.data![0].address![0].city!;
+    province = getLocationDetailsData!.data![0].address![0].province!.name!;
+    postalCode = getLocationDetailsData!.data![0].address![0].zipCode!;
+    country = getLocationDetailsData!.data![0].country!;
+    latitude = getLocationDetailsData!.data![0].location!.coordinates![0].toString();
+    longitude = getLocationDetailsData!.data![0].location!.coordinates![1].toString();
+    _updateMarker();
+    setState(() {});
   }
 
   Future<Position> getLocation() async {

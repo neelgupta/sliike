@@ -12,7 +12,10 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class yourProfile_One extends StatefulWidget {
-  const yourProfile_One({Key? key}) : super(key: key);
+  int ? hasShop;
+  int ? isServe;
+  int ? isOwn;
+  yourProfile_One({Key? key,this.hasShop,this.isServe,this.isOwn}) : super(key: key);
 
   @override
   State<yourProfile_One> createState() => _yourProfile_OneState();
@@ -27,6 +30,25 @@ class _yourProfile_OneState extends State<yourProfile_One> {
   bool atMySalon = false;
   bool clientsLocation = false;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selected = widget.hasShop.toString();
+    IsServeAtClient = widget.isServe.toString();
+    IsServeAtOwnPlace = widget.isOwn.toString();
+    if(IsServeAtClient=="1"){
+      clientsLocation = true;
+      // atMySalon = true;
+      setState(() {});
+    }
+    if(IsServeAtOwnPlace=="1"){
+      atMySalon = true;
+      // atMySalon = true;
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +149,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                   Salon = !Salon;
                   atMySalon = true;
                   IsServeAtOwnPlace = "1";
+                  IsServeAtClient = "0";
                   setState(() {});
                 }
               },
@@ -153,6 +176,9 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                 setState(() {
                                   print(value);
                                   _selected = value as String;
+                                  atMySalon = true;
+                                  IsServeAtOwnPlace = "1";
+                                  IsServeAtClient = "0";
                                 });
                               }),
                           const Text(
@@ -165,8 +191,15 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                           Spacer(),
                           InkWell(
                             onTap: () {
-                              Salon = !Salon;
-                              setState(() {});
+                              if(_selected == "1"){
+                                Salon = !Salon;
+                                atMySalon = true;
+                                IsServeAtOwnPlace = "1";
+                                IsServeAtClient = "0";
+                                setState(() {});
+                              }
+                              // Salon = !Salon;
+                              // setState(() {});
                             },
                             child: Salon
                                 ? const Icon(
@@ -235,10 +268,16 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                         child: Custom_Checkbox(
                                           isChecked: atMySalon,
                                           onChange: (value){
-
+                                            if(_selected == "1"){
+                                              Salon = !Salon;
+                                              atMySalon = true;
+                                              IsServeAtOwnPlace = "1";
+                                              IsServeAtClient = "0";
+                                              setState(() {});
+                                            }
                                           },
-                                          backgroundColor: Color(0xff01635D),
-                                          borderColor: Color(0xff01635D),
+                                          backgroundColor: Colors.grey,
+                                          borderColor: Colors.grey,
                                           icon: Icons.check,
                                           iconColor: Colors.white,
                                           size: 22,
@@ -288,7 +327,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                           onChange: (value) {
                                             setState(() {
                                               clientsLocation = value;
-                                              if(value == true){
+                                              if(value){
                                                 IsServeAtClient = "1";
                                               }else{
                                                 IsServeAtClient = "0";
@@ -345,17 +384,16 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20,),
             InkWell(
               onTap: () {
-                if(_selected == "0"){
-                  Independent = !Independent;
-                  atMySalon = true;
-                  IsServeAtClient = "1";
-                  setState(() {});
-                }
+                  if(_selected == "0"){
+                    Independent = !Independent;
+                       clientsLocation = true;
+                       IsServeAtClient = "1";
+                       IsServeAtOwnPlace = "0";
+                      setState(() {});
+                  }
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -379,6 +417,13 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                               onChanged: (value) {
                                 setState(() {
                                   _selected = value as String;
+                                  if(_selected == "0"){
+                                    Independent = !Independent;
+                                    clientsLocation = true;
+                                    IsServeAtClient = "1";
+                                    IsServeAtOwnPlace = "0";
+                                    setState(() {});
+                                  }
                                 });
                               }),
                           const Text(
@@ -391,8 +436,15 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                           Spacer(),
                           InkWell(
                             onTap: () {
-                              Independent = !Independent;
-                              setState(() {});
+                              if(_selected == "0"){
+                                Independent = !Independent;
+                                clientsLocation = true;
+                                IsServeAtClient = "1";
+                                IsServeAtOwnPlace = "0";
+                                setState(() {});
+                              }
+                              // Independent = !Independent;
+                              // setState(() {});
                             },
                             child: Independent
                                 ? const Icon(
@@ -459,14 +511,14 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                               children: [
                                 Padding(padding: EdgeInsets.only(top: 05),
                                   child: Custom_Checkbox(
-                                    isChecked: atMySalon,
+                                    isChecked: clientsLocation,
                                     onChange: (value) {
                                       setState(() {
-                                        // atMySalon = value;
+
                                       });
                                     },
-                                    backgroundColor: Color(0xff01635D),
-                                    borderColor: Color(0xff01635D),
+                                    backgroundColor: Colors.grey,
+                                    borderColor: Colors.grey,
                                     icon: Icons.check,
                                     iconColor: Colors.white,
                                     size: 22,
@@ -511,11 +563,11 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                               children: [
                                 Padding(padding: EdgeInsets.only(top: 05),
                                   child: Custom_Checkbox(
-                                    isChecked: clientsLocation,
+                                    isChecked: atMySalon,
                                     onChange: (value) {
                                       setState(() {
-                                        clientsLocation = value;
-                                         if(value == true){
+                                        atMySalon = value;
+                                         if(value){
                                            IsServeAtOwnPlace = "1";
                                          }else{
                                            IsServeAtOwnPlace = "0";
@@ -575,8 +627,19 @@ class _yourProfile_OneState extends State<yourProfile_One> {
             const Spacer(),
             InkWell(
               onTap: () {
-                addBeauticianServiceMethod();
-
+                if(_selected.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select any one option");
+                }else if(_selected == 1 && IsServeAtOwnPlace.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select options from I own a salon");
+                  Salon = true;
+                  setState(() {});
+                }else if(_selected == 0 && IsServeAtClient.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select options from I am independent");
+                  Independent = true;
+                  setState(() {});
+                }else{
+                  addBeauticianServiceMethod();
+                }
               },
               child: Container(
                 alignment: Alignment.center,
@@ -616,12 +679,6 @@ class _yourProfile_OneState extends State<yourProfile_One> {
         "IsServeAtClient":int.parse(IsServeAtClient),
         "IsServeAtOwnPlace":int.parse(IsServeAtOwnPlace),
       };
-      // var Body = {
-      //   "hasShop": 0,
-      //   "IsServeAtClient":1,
-      //   "IsServeAtOwnPlace": 1,
-      // };
-      // log("addBeauticianServiceMethod PayLoad ====> $Headers");
       log("addBeauticianServiceMethod PayLoad ====> $Body");
       var response = await http.post(
         getUri,

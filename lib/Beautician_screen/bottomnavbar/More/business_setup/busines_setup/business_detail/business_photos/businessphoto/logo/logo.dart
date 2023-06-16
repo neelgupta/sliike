@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -133,17 +134,59 @@ class _logoState extends State<logo> {
                           image: DecorationImage(image: FileImage(File(images!.path)),fit: BoxFit.fill)
                       ),
                       child: SizedBox()):
+                  p?.data?.logoPath!=null?
+                  CachedNetworkImage(
+                    imageUrl:  p!.data!.logoPath!,
+                    imageBuilder: (context, imageProvider) =>
+                        Container(
+                          width: 120,
+                          height:120,
+                          decoration:  BoxDecoration(
+                              border: Border.all(color: Colors.black12),
+                              shape: BoxShape.circle,
+                              // image: p?.data?.logoPath!=null?
+                              // DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill):
+                              image : DecorationImage(image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
+                              )
+                          ),),
+                    progressIndicatorBuilder:
+                        (context, url, process) => Container(
+                        height: height * 0.15,
+                        width: width * 0.30,
+                        margin: const EdgeInsets.all(5),
+                        child: const Center(
+                            child: CircularProgressIndicator())),
+                    errorWidget: (context, url, error) => Container(
+                        height: height * 0.15,
+                        width: width * 0.30,
+                        margin: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        child: Center(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.error),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                const Text("No Image")
+                              ],
+                            ))),
+                  ):
                   Container(
                       width: 120,
                       height:120,
                       decoration:  BoxDecoration(
+                        border: Border.all(color: Colors.black12),
                         shape: BoxShape.circle,
-                          image: p?.data?.logoPath!=null?
-                          DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill):
-                          DecorationImage(image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
+                          // image: p?.data?.logoPath!=null?
+                          // DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill):
+                          image : DecorationImage(image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
                   )
                       ),
-                      child: imagestatus == false && p?.data?.logoPath==null?Column(crossAxisAlignment: CrossAxisAlignment.center,
+                      child: !imagestatus && p?.data?.logoPath==null?Column(crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Center(

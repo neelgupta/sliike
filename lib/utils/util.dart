@@ -1,10 +1,40 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:new_sliikeapps_apps/theme/theme_configration.dart';
 
+
+class CardExpirationFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final newValueString = newValue.text;
+    String valueToReturn = '';
+
+    for (int i = 0; i < newValueString.length; i++) {
+      if (newValueString[i] != '/') valueToReturn += newValueString[i];
+      var nonZeroIndex = i + 1;
+      final contains = valueToReturn.contains(RegExp(r'\/'));
+      if (nonZeroIndex % 2 == 0 &&
+          nonZeroIndex != newValueString.length &&
+          !(contains)) {
+        valueToReturn += '/';
+      }
+    }
+    return newValue.copyWith(
+      text: valueToReturn,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: valueToReturn.length),
+      ),
+    );
+  }
+}
+
+
 class Util {
+
   final DateFormat formatter = DateFormat('dd-mm-yyyy');
   final DateFormat eMMMdformatter = DateFormat('E, MMM d');
   final DateFormat hhmmaformatter = DateFormat('hh:mm a');
@@ -22,6 +52,32 @@ class Util {
       ),
     );
   }
+
+
+  Future<void> selectDate(BuildContext context,selectedDate,Color) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        builder: ( context,  child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Color ?? Colors.teal,
+                primaryColorDark: Color ?? Colors.teal,
+                accentColor: Color ?? Colors.teal,
+              ),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        },
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+        selectedDate = picked;
+    }
+  }
+
 
   formatMinuteDuration({
     required String hour,
