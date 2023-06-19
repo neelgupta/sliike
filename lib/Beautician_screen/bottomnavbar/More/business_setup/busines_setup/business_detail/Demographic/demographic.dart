@@ -215,7 +215,6 @@ class _demograPhicState extends State<demograPhic> {
   }
 
   getDemographyList() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -226,29 +225,23 @@ class _demograPhicState extends State<demograPhic> {
       log("getDemographyList Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        setState(() {
-          getDemographySelected();
           getDemography = getDemographyListData.fromjson(map);
+          await getDemographySelected();
           isLoading = false;
-        });
+          setState(() {});
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
           return const signInScreen();
         },), (route) => false);
       }else{
-        // amenity = null;
         setState(() {
           isLoading = false;
         });
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
 
@@ -301,7 +294,6 @@ class _demograPhicState extends State<demograPhic> {
   }
 
   getDemographySelected() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -319,7 +311,6 @@ class _demograPhicState extends State<demograPhic> {
       if(map['status'] == 200) {
         setState(() {
           selectedDemography = getDemographySelectedData.fromjson(map);
-          isLoading = false;
           for(int i = 0; i < getDemography!.data.length; i++){
             for(int j = 0; j < selectedDemography!.data.length; j++){
               if(selectedDemography!.data[j].id.toLowerCase() == getDemography!.data[i].id.toLowerCase()){
@@ -331,6 +322,7 @@ class _demograPhicState extends State<demograPhic> {
               }
             }
           }
+          isLoading = false;
         });
       }
       else if(response.statusCode == 401){
@@ -343,16 +335,10 @@ class _demograPhicState extends State<demograPhic> {
           isLoading = false;
         });
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
-
-
 }
 
 class getDemographyListData{

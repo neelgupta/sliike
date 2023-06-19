@@ -296,8 +296,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                   const SizedBox(width:  10,),
                                   InkWell(
                                     onTap: (){
+                                      // deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
                                       firstImageStatus = false;
-                                      one = false;
+                                      // one = false;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -416,7 +417,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         onTap: (){
                                           deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[1]);
                                           secondImageStatus = false;
-                                          // one = true;
+                                          one = true;
                                           setState(() {});
                                         },
                                         child: Container(
@@ -525,7 +526,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         onTap: (){
                                           deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[2]);
                                           thirdImageStatus = false;
-                                          // two = true;
+                                          two = true;
                                           setState(() {});
                                         },
                                         child: Container(
@@ -604,7 +605,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             height: 120,
                             decoration: BoxDecoration(
                                 image: p!.data!.first.workSpaceImgs.isNotEmpty?
-                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[2]), fit: BoxFit.fill):
+                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[3]), fit: BoxFit.fill):
                                 DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
                             child: InkWell(
                               onTap: (){
@@ -634,7 +635,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         onTap: (){
                                           deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[3]);
                                           fourthImageStatus = false;
-                                          // three = true;
+                                          three = true;
                                           setState(() {});
                                         },
                                         child: Container(
@@ -1615,7 +1616,6 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   }
 
   postImage() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -1623,26 +1623,27 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       var request = http.MultipartRequest("POST", postUri);
       request.headers['Authorization'] =
           "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-      if (firstImageStatus) {
-        http.MultipartFile multipartFile =
-            await http.MultipartFile.fromPath('workspace', firstImage!.path);
-        request.files.add(multipartFile);
+
+      for(var i in files){
+          http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('workspace', i.path);
+          request.files.add(multipartFile);
       }
-      if (secondImageStatus) {
-        http.MultipartFile multipartFile =
-            await http.MultipartFile.fromPath('workspace', secondImage!.path);
-        request.files.add(multipartFile);
-      }
-      if (thirdImageStatus) {
-        http.MultipartFile multipartFile =
-            await http.MultipartFile.fromPath('workspace', thirdImage!.path);
-        request.files.add(multipartFile);
-      }
-      if (fourthImageStatus) {
-        http.MultipartFile multipartFile =
-            await http.MultipartFile.fromPath('workspace', fourthImage!.path);
-        request.files.add(multipartFile);
-      }
+      // if (secondImageStatus) {
+      //   http.MultipartFile multipartFile =
+      //       await http.MultipartFile.fromPath('workspace', secondImage!.path);
+      //   request.files.add(multipartFile);
+      // }
+      // if (thirdImageStatus) {
+      //   http.MultipartFile multipartFile =
+      //       await http.MultipartFile.fromPath('workspace', thirdImage!.path);
+      //   request.files.add(multipartFile);
+      // }
+      // if (fourthImageStatus) {
+      //   http.MultipartFile multipartFile =
+      //       await http.MultipartFile.fromPath('workspace', fourthImage!.path);
+      //   request.files.add(multipartFile);
+      // }
       http.StreamedResponse response = await request.send();
       print('code: ${response.statusCode}');
       final res = await http.Response.fromStream(response);
@@ -1667,17 +1668,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
             textColor: Colors.white,
             fontSize: 16.0);
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
   getImages() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -1695,35 +1691,25 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
         p = Workplacephotos.fromJson(map);
-        p!.data!.first.workSpaceImgs[1].isNotEmpty? one=true:false;
-        p!.data!.first.workSpaceImgs[2].isNotEmpty? two=true:false;
-        p!.data!.first.workSpaceImgs[1].isNotEmpty? three=true:false;
-        setState(() {});
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        if(p!.data!.first.workSpaceImgs.isNotEmpty){
+           for(int i = 0; i < p!.data!.first.workSpaceImgs.length; i++){
+             // i == 0 ? firstImageStatus=true:false;
+             i == 1 ? one=true:false;
+             i == 2 ? two=true:false;
+             i == 3 ? three=true:false;
+             print(one);
+             print(two);
+             print(three);
+             print(four);
+           }
+          setState(() {});
+        }
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        p = null;
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
 
@@ -1792,11 +1778,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
               await _picker.pickImage(
                   source: ImageSource.camera);
               if (photo != null) {
-                // one = true;
+                one = true;
                 firstImage = File(photo.path);
                 firstImagePath = photo.path;
+                files.add(firstImage!);
                 firstImageStatus = true;
-                if(p!.data!.first.workSpaceImgs[0].isEmpty){
+                if(p!.data!.first.workSpaceImgs.length==1){
                   if(two || three || four){
                     one = false;
                   }else{
@@ -1820,10 +1807,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   source: ImageSource.gallery);
               if (selectedImages != null) {
                 setState(() {
+                  one = true;
                   firstImage = File(selectedImages.path);
                   firstImagePath = selectedImages.path;
                   firstImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs[0].isEmpty){
+                  files.add(firstImage!);
+                  if(p!.data!.first.workSpaceImgs.length==1){
                     if(two || three || four){
                       one = false;
                     }else{
@@ -1880,10 +1869,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   source: ImageSource.camera);
               if (photo != null) {
                 secondImage = File(photo.path);
+                files.add(secondImage!);
                 secondImagePath = photo.path;
                 secondImageStatus = true;
+                two = true;
                 one = false;
-                if(p!.data!.first.workSpaceImgs[1].isEmpty){
+                if(p!.data!.first.workSpaceImgs.length==2){
                   two = true;
                 }
               }
@@ -1904,10 +1895,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
               if (selectedImages != null) {
                 setState(() {
                   one = false;
+                  two = true;
                   secondImage = File(selectedImages.path);
+                  files.add(secondImage!);
                   secondImagePath = selectedImages.path;
                   secondImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs[1].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.length==2){
                     two = true;
                   }
                 });
@@ -1960,11 +1953,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   source: ImageSource.camera);
               if (photo != null) {
                 thirdImage = File(photo.path);
+                files.add(thirdImage!);
                 thirdImagePath = photo.path;
                 thirdImageStatus = true;
                 one = false;
                 two = false;
-                if(p!.data!.first.workSpaceImgs[2].isEmpty){
+                three = true;
+                if(p!.data!.first.workSpaceImgs.length==3){
                   three = true;
                 }
               }
@@ -1987,9 +1982,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   thirdImage = File(selectedImages.path);
                   thirdImagePath = selectedImages.path;
                   thirdImageStatus = true;
+                  files.add(thirdImage!);
                   one = false;
                   two = false;
-                  if(p!.data!.first.workSpaceImgs[2].isEmpty){
+                  three = true;
+                  if(p!.data!.first.workSpaceImgs.length==3){
                     three = true;
                   }
                 });
@@ -2047,7 +2044,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 one = false;
                 two = false;
                 three = false;
-                if(p!.data!.first.workSpaceImgs[3].isEmpty){
+                files.add(fourthImage!);
+                if(p!.data!.first.workSpaceImgs.length==4){
                 }
               }
             }),
@@ -2068,11 +2066,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 setState(() {
                   fourthImage = File(selectedImages.path);
                   fourthImagePath = selectedImages.path;
+                  files.add(fourthImage!);
                   fourthImageStatus = true;
                   one = false;
                   two = false;
                   three = false;
-                  if(p!.data!.first.workSpaceImgs[3].isEmpty){
+                  if(p!.data!.first.workSpaceImgs.length==4){
                   }
                 });
               }

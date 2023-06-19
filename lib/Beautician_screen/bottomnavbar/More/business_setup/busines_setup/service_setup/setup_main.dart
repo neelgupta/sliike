@@ -108,8 +108,8 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
         ),
         body:
         isLoading ?
-            Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
-        getServiceDetailsData!=null && getServiceDetailsData!.data!.length!=0?
+            Center(child: CircularProgressIndicator(color: Color(0xff01635D))):
+        (getServiceDetailsData!=null && getServiceDetailsData!.data!.length!=0)?
         Padding(
           padding: const EdgeInsets.only(left: 20,right: 20),
           child: Column(
@@ -124,8 +124,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                   height: height*0.055,
                   child: TextField(
                     onChanged: (value) {
-                      searchService(value);
-                      setState(() {});
+                      setState(() {
+                        searchService(value);
+                      });
                     },
                     controller: txtSearch,
                     decoration: InputDecoration(
@@ -164,7 +165,7 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    deleteServiceDetails( txtSearch.text.isEmpty ? getServiceDetailsData!.data![index].id! : localSearchData[index].id!);
+                                    deleteServiceDetails(txtSearch.text.isEmpty ? getServiceDetailsData!.data![index].id! : localSearchData[index].id!, index);
                                   },
                                   child: Container(
                                     child: Image.asset("assets/images/delete.png",height: 30,
@@ -243,24 +244,22 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return addService();
-            },));
+            },)).then((value) => GetServiceDetails());
           },
           child: Container(
-            width: width*0.45,
             height: 50,
+            padding: EdgeInsets.only(left: width*0.05,right: width*0.02),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Color(0xff01635D),
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 5,right: 5),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textComoon("ADD SERVICE",12, Colors.white, FontWeight.w600),
-                  Icon(Icons.add,size: 40,color: Colors.white,),
-
-                ],
-              ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                textComoon("ADD SERVICE",12, Colors.white, FontWeight.w600),
+                SizedBox(width: width*0.02,),
+                Icon(Icons.add,size: 30,color: Colors.white,),
+              ],
             ),
           ),
         )
@@ -268,7 +267,6 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
   }
 
   GetServiceDetails() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -287,30 +285,22 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
       Map map = jsonDecode(response.body);
       if (map["status"] == 200) {
         getServiceDetailsData = GetServiceDetailsData.fromJson(jsonDecode(response.body));
-        for(int i = 0; i < getServiceDetailsData!.data!.length; i++){
-          localSearchData.add(getServiceDetailsData!.data![i]);
-        }
         setState(() {});
       }else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
           return signInScreen();
         },), (route) => false);
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
 
-  deleteServiceDetails(String Id) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
+  deleteServiceDetails(String Id, int index) async {
+    setState(() {
+      isLoading = true;
+    });
       var getUri = Uri.parse("${ApiUrlList.deleteServiceDetails}$Id");
       var Headers = {
         'Content-Type': "application/json; charset=utf-8",
@@ -323,21 +313,26 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
       log("deleteServiceDetails Body ==> ${response.body}");
       log("deleteServiceDetails Code ==> ${response.statusCode}");
       Map map = jsonDecode(response.body);
+    setState(() {
+      isLoading = false;
+    });
       if (map["status"] == 202) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {return const service_Setup_Main();},));
+        if(txtSearch.text.isEmpty) {
+          getServiceDetailsData!.data!.removeAt(index);
+        }else {
+          for( int i = 0; i < getServiceDetailsData!.data!.length ; i++) {
+            if (localSearchData[index] == getServiceDetailsData!.data![i]) {
+            getServiceDetailsData!.data!.removeAt(i);
+            localSearchData.removeAt(index);
+            }
+          }
+        }
         setState(() {});
       }else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
           return signInScreen();
         },), (route) => false);
       }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
-        // isLoading = false;
-      });
-    }
   }
 
 
@@ -346,7 +341,6 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
       localSearchData.clear();
       for (int i = 0; i < getServiceDetailsData!.data!.length; i++) {
         if (getServiceDetailsData!.data![i].serviceCategory!.serviceCategoryName!.toLowerCase().contains(txtSearch.text.toLowerCase())) {
-          print("data : ${getServiceDetailsData!.data![i].serviceCategory!.serviceCategoryName!}");
           localSearchData.add(getServiceDetailsData!.data![i]);
           setState(() {});
         }

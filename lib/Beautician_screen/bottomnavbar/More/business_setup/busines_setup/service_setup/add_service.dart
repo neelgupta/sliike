@@ -35,7 +35,7 @@ class _addServiceState extends State<addService> {
   String typesToJson(Types td) => json.encode(td.toJson());
   Category? c;
   Types? t;
-  List<CategoryData>? categoryDataList;
+  List<CategoryData> categoryDataList = [];
   List<TypesData> typesDataList = [];
   List add_data = [];
   List add_time = [];
@@ -263,10 +263,10 @@ class _addServiceState extends State<addService> {
                                     ),
                                     child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: categoryDataList!.length,
+                                      itemCount: categoryDataList.length,
                                       itemBuilder:
                                           (context, index) {
-                                        var singleItem = categoryDataList![index];
+                                        var singleItem = categoryDataList[index];
                                         return Container(
                                           decoration: BoxDecoration(
                                               border: Border.all(
@@ -885,8 +885,7 @@ class _addServiceState extends State<addService> {
                               datachanghe = true;
                               serviceStatus = true;
                             }
-                            else
-                            if (servicePrice.text.isEmpty ) {
+                            else if (servicePrice.text.isEmpty ) {
                               status = "Please Enter Price";
                               datachanghe = true;
                               servicePriceStatus = true;
@@ -952,7 +951,6 @@ class _addServiceState extends State<addService> {
   addServices() async {
     var geturi = Uri.parse(ApiUrlList.fetchServiceCategories);
 
-    try {
       setState(() {
         isLoading = true;
         selectedService = null;
@@ -970,7 +968,7 @@ class _addServiceState extends State<addService> {
         if (map['status'] == 200) {
           c = Category.fromJson(jsonDecode(response.body));
           if (c!.data!.isNotEmpty) {
-            categoryDataList = c!.data;
+            categoryDataList = c!.data ?? [];
             setState(() {});
           }
         }
@@ -980,13 +978,10 @@ class _addServiceState extends State<addService> {
           return signInScreen();
         },), (route) => false);
       }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    setState(() {
+      isLoading = false;
+    });
+
   }
 
   Future<void> addServiceDetails() async {

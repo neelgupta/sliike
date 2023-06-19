@@ -155,7 +155,6 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
           Padding(
             padding: const EdgeInsets.only(left: 20,right: 20),
             child:
-            getScheduledData!.data!.startTime != "" && getScheduledData!.data!.endTime != "" && getScheduledData!.data!.isOpen!?
             InkWell(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
@@ -165,7 +164,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                     endTime: getScheduledData!.data!.endTime,
                     isOpen: getScheduledData!.data!.isOpen,
                     breakendTime: getScheduledData!.data!.breakEndTime,
-                    breakstartTime: getScheduledData!.data!.breakStartTime
+                    breakstartTime: getScheduledData!.data!.breakStartTime,
 
                 );},)).then((value) {
                   print("value : ${value}");
@@ -174,15 +173,17 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                   var displayDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
                   Map<String,dynamic> valuesMap = value;
                   if(value!=null) {
-                    getScheduledData!.data = getData(
+                    var data = getData(
                       isOpen:valuesMap["isOpen"],
-                      breakEndTime: valuesMap["breakEndTime"],
-                      breakStartTime: valuesMap["breakStartTime"],
+                      breakEndTime: valuesMap["breakEndTime"] ?? null,
+                      breakStartTime: valuesMap["breakStartTime"] ?? null,
                       day: valuesMap["day"],
                       endTime: valuesMap["endTime"],
                       startTime: valuesMap["startTime"],
-                      date: displayDate
+                      date: displayDate,
                     );
+
+                    getScheduledData!.data = data;
                     // value;
                     setState(() {});
                     print("getScheduledData ${getScheduledData!.data!}");
@@ -220,7 +221,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                   ),
 
                   Container(
-                    child: Column(
+                    child: getScheduledData!.data!.isOpen! ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -240,96 +241,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                               fontSize: 10),
                         ),
                       ],
-                    ),
-                  ),
-
-                    Spacer(),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 15,
-                    width: 15,
-                    child: Image.asset("assets/images/righticon.png"),
-                  ),
-                ],
-              ),
-            ):
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
-                    secondflow: false,
-                    Day: getScheduledData!.data!.day,
-                    startTime: getScheduledData!.data!.startTime,
-                    endTime: getScheduledData!.data!.endTime,
-                    isOpen: getScheduledData!.data!.isOpen,
-                    breakendTime: getScheduledData!.data!.breakEndTime,
-                    breakstartTime: getScheduledData!.data!.breakStartTime
-
-                );},)).then((value) {
-                  print("value : ${value}");
-                  print("value.runtimeType : ${value.runtimeType}");
-                  print("value : ${value}");
-                  var displayDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
-                  Map<String,dynamic> valuesMap = value;
-                  if(value!=null) {
-                    getScheduledData!.data = getData(
-                          isOpen:valuesMap["isOpen"],
-                          breakEndTime: valuesMap["breakEndTime"],
-                          breakStartTime: valuesMap["breakStartTime"],
-                          day: valuesMap["day"],
-                          endTime: valuesMap["endTime"],
-                          startTime: valuesMap["startTime"],
-                          date: displayDate
-                        );
-                    // value;
-                    setState(() {});
-                    print("getScheduledData ${getScheduledData!.data!}");
-                    print("valuesMap ${valuesMap["isOpen"]}");
-                    print("valuesMap ${displayDate}");
-                  }
-                });
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(
-                //     secondflow: false,
-                //     Day: getScheduledData!.data!.day,
-                //     startTime: getScheduledData!.data!.startTime,
-                //     endTime: getScheduledData!.data!.endTime,
-                //     isOpen: getScheduledData!.data!.isOpen,
-                //     breakendTime: getScheduledData!.data!.breakEndTime,
-                //     breakstartTime: getScheduledData!.data!.startTime
-                //
-                // );},)).then((value) => {
-                //   Data = value
-                // });
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: width * 0.4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${getScheduledData!.data!.day}",
-                          style: TextStyle(
-                              color: Color(0xff292929),
-                              fontWeight: FontWeight.w300,
-                              fontFamily: "spartan",
-                              fontSize: 14),
-                        ),
-                        // Text(
-                        //   "Today",
-                        //   style: TextStyle(
-                        //       color: Color(0xff292D32),
-                        //       fontWeight: FontWeight.normal,
-                        //       fontFamily: "spartan",
-                        //       fontSize: 10),
-                        // ),
-                      ],
-                    ),
-                  ),
-
-                  Container(
-                    child: Column(
+                    ) : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -340,19 +252,11 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                               fontFamily: "spartan",
                               fontSize: 12),
                         ),
-                        // Text(
-                        //   "Break: ${getScheduledData!.data!.breakStartTime} - ${getScheduledData!.data!.breakEndTime}",
-                        //   style: TextStyle(
-                        //       color: Color(0xff292D32),
-                        //       fontWeight: FontWeight.normal,
-                        //       fontFamily: "spartan",
-                        //       fontSize: 10),
-                        // ),
                       ],
                     ),
                   ),
 
-                  Spacer(),
+                    Spacer(),
                   Container(
                     alignment: Alignment.center,
                     height: 15,
@@ -438,8 +342,7 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
     var Body = getScheduledData!.data;
-    log("Body => ${Body}");
-    log("Body => ${getScheduledData!.data!.date}");
+    log("Body => ${jsonEncode(Body)}");
     var response = await http.post(
       Uri.parse(ApiUrlList.saveCalenderAdjustment),
       body: jsonEncode(Body),

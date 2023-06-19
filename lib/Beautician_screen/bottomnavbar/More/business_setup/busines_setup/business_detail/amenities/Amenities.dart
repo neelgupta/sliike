@@ -101,7 +101,7 @@ class _AmenitiesState extends State<Amenities> {
         ),
       ),
       body: isLoading ? Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
-      amenity!.data.isNotEmpty?
+      amenity!=null && (amenity!.data).isNotEmpty?
       Padding(
         padding: const EdgeInsets.only(left: 20,right: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +113,7 @@ class _AmenitiesState extends State<Amenities> {
             SizedBox(height: height*0.025,),
             textComoon("Choose from the list", 14, Color(0xff292929),FontWeight.w700),
             SizedBox(height: height*0.025,),
-            if(selectedAmenties?.data != null)Container(
+            Container(
               // color: Colors.red,
               height: height * 0.55,
               child: ListView.builder(
@@ -180,7 +180,6 @@ class _AmenitiesState extends State<Amenities> {
 
   getAmenityList() async {
     var getUri = Uri.parse(ApiUrlList.getAmenityList);
-    try {
       setState(() {
         isLoading = true;
       });
@@ -191,12 +190,11 @@ class _AmenitiesState extends State<Amenities> {
       log("getAmenitiesList Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        setState(() {
           amenity = getAmenity.fromjson(map);
           isCheck = List.generate(amenity!.data.length, (index) => false);
-          getAmenitySelected();
-          // isLoading = false;
-        });
+          await getAmenitySelected();
+          isLoading = false;
+          setState(() {});
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -204,17 +202,9 @@ class _AmenitiesState extends State<Amenities> {
         },), (route) => false);
       }else{
         amenity = null;
-        setState(() {
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
         isLoading = false;
-      });
-    }
+        setState(() {});
+      }
   }
 
   saveAmenities() async {
@@ -237,9 +227,6 @@ class _AmenitiesState extends State<Amenities> {
     log("saveAmenities Body : ${response.body}");
     Map map = jsonDecode(response.body);
     if(response.statusCode == 200) {
-      setState(() {
-        isLoading = false;
-      });
       Fluttertoast.showToast(
           msg: map["message"],
           toastLength: Toast.LENGTH_SHORT,
@@ -249,9 +236,6 @@ class _AmenitiesState extends State<Amenities> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
-      setState(() {
-        isLoading = false;
-      });
       Fluttertoast.showToast(
           msg: map["message"],
           toastLength: Toast.LENGTH_SHORT,
@@ -261,10 +245,12 @@ class _AmenitiesState extends State<Amenities> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   getAmenitySelected() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -273,7 +259,9 @@ class _AmenitiesState extends State<Amenities> {
       };
       var getUri = Uri.parse(ApiUrlList.getAmenity);
       var response = await http.get(
-        Uri.parse("https://sliike-server.onrender.com/api/v1/beautician/getAmenities",),
+          Uri.parse("https://sliike-server.onrender.com/api/v1/beautician/getAmenities",),
+        //   Uri.parse("https://sliike-server.onrender.com/api/v1/beautician/getAmenities",),
+        // getUri,
         headers: Headers
       );
       log("getAmenities Code ====> ${response.statusCode}");
@@ -302,21 +290,11 @@ class _AmenitiesState extends State<Amenities> {
           return const signInScreen();
         },), (route) => false);
       }else{
-        amenity = null;
-        setState(() {
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
+        selectedAmenties = null;
         isLoading = false;
-      });
-    }
+        setState(() {});
+      }
   }
-
-
 }
 
 class getAmenity{

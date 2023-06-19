@@ -284,10 +284,12 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                   InkWell(
                     onTap: () {
 
-                      if(isLicensed == 1 && !imageStatus){
+                      if(isLicensed == 1 && data?.data?.licenseImagePath!=null){
+                         Navigator.pop(context);
+                      }else if(isLicensed == 1 && imagePath==""){
                         Fluttertoast.showToast(msg: "Please upload licence photo");
                       }else{
-                      addBusinessLicense();
+                        addBusinessLicense();
                       }
 
                       // print("${Helper.prefs!.getString(UserPrefs.keyutoken)}");
@@ -356,7 +358,6 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        Navigator.pop(context);
         setState(() {
           isLoading = false;
         });
@@ -379,7 +380,6 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
   }
 
   getLicenseDetails() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -416,13 +416,9 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
             textColor: Colors.white,
             fontSize: 16.0);
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
 }

@@ -150,6 +150,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                   atMySalon = true;
                   IsServeAtOwnPlace = "1";
                   IsServeAtClient = "0";
+                  Independent = false;
                   setState(() {});
                 }
               },
@@ -176,6 +177,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                 setState(() {
                                   print(value);
                                   _selected = value as String;
+                                  Independent = false;
                                   atMySalon = true;
                                   IsServeAtOwnPlace = "1";
                                   IsServeAtClient = "0";
@@ -193,6 +195,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                             onTap: () {
                               if(_selected == "1"){
                                 Salon = !Salon;
+                                Independent = false;
                                 atMySalon = true;
                                 IsServeAtOwnPlace = "1";
                                 IsServeAtClient = "0";
@@ -270,6 +273,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                           onChange: (value){
                                             if(_selected == "1"){
                                               Salon = !Salon;
+                                              Independent = false;
                                               atMySalon = true;
                                               IsServeAtOwnPlace = "1";
                                               IsServeAtClient = "0";
@@ -392,6 +396,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                        clientsLocation = true;
                        IsServeAtClient = "1";
                        IsServeAtOwnPlace = "0";
+                       Salon = false;
                       setState(() {});
                   }
               },
@@ -422,6 +427,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                     clientsLocation = true;
                                     IsServeAtClient = "1";
                                     IsServeAtOwnPlace = "0";
+                                    Salon = false;
                                     setState(() {});
                                   }
                                 });
@@ -441,6 +447,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                 clientsLocation = true;
                                 IsServeAtClient = "1";
                                 IsServeAtOwnPlace = "0";
+                                Salon = false;
                                 setState(() {});
                               }
                               // Independent = !Independent;

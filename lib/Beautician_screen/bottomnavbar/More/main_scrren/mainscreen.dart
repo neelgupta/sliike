@@ -364,43 +364,43 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //     ),
                       //   ),
                       // ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20),
-                        child: Container(
-                          padding: EdgeInsets.only(top: 10,bottom: 60),
-                          decoration: BoxDecoration(
-                              border: Border(bottom: BorderSide(color: Colors.black12))
-                          ),
-                          child: InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return promotion();
-                              },));
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 30,
-                                child: Image.asset("assets/images/receiptdisscount.png"),
-                                ),
-                                SizedBox(width: 15,),
-                                textComoon("Promotions",14,Color(0xff414141), FontWeight.w500),
-                                Spacer(),
-                                Container(
-                                  height: 15,
-                                  width: 30,
-                                  child: Image.asset("assets/images/righticon.png"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: height * 0.05,
-                        width: width,
-                        color: Color(0xffF3F3F3),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20,right: 20),
+                      //   child: Container(
+                      //     padding: EdgeInsets.only(top: 10,bottom: 60),
+                      //     decoration: BoxDecoration(
+                      //         border: Border(bottom: BorderSide(color: Colors.black12))
+                      //     ),
+                      //     child: InkWell(
+                      //       onTap: (){
+                      //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      //           return promotion();
+                      //         },));
+                      //       },
+                      //       child: Row(
+                      //         children: [
+                      //           Container(
+                      //             height: 30,
+                      //           child: Image.asset("assets/images/receiptdisscount.png"),
+                      //           ),
+                      //           SizedBox(width: 15,),
+                      //           textComoon("Promotions",14,Color(0xff414141), FontWeight.w500),
+                      //           Spacer(),
+                      //           Container(
+                      //             height: 15,
+                      //             width: 30,
+                      //             child: Image.asset("assets/images/righticon.png"),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Container(
+                      //   height: height * 0.05,
+                      //   width: width,
+                      //   color: Color(0xffF3F3F3),
+                      // ),
 
                       ////help center
                       // Padding(

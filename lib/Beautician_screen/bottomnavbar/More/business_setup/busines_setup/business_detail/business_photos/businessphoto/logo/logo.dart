@@ -27,7 +27,6 @@ class _logoState extends State<logo> {
   final ImagePicker _picker = ImagePicker();
   bool imagestatus = false;
   String imagepath = "";
-  String? getimages;
   File? images;
   bool isLoading = false;
   Temperatures? p;
@@ -134,7 +133,7 @@ class _logoState extends State<logo> {
                           image: DecorationImage(image: FileImage(File(images!.path)),fit: BoxFit.fill)
                       ),
                       child: SizedBox()):
-                  p?.data?.logoPath!=null?
+                  p!.data!.logoPath!.isNotEmpty?
                   CachedNetworkImage(
                     imageUrl:  p!.data!.logoPath!,
                     imageBuilder: (context, imageProvider) =>
@@ -144,9 +143,7 @@ class _logoState extends State<logo> {
                           decoration:  BoxDecoration(
                               border: Border.all(color: Colors.black12),
                               shape: BoxShape.circle,
-                              // image: p?.data?.logoPath!=null?
-                              // DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill):
-                              image : DecorationImage(image: AssetImage("assets/images/circle_line.png"),fit: BoxFit.fill
+                              image : DecorationImage(image: NetworkImage(p!.data!.logoPath!),fit: BoxFit.fill
                               )
                           ),),
                     progressIndicatorBuilder:
@@ -202,7 +199,13 @@ class _logoState extends State<logo> {
                       ):const SizedBox()),
                 ),
                 const Spacer(),
-                CommonButton(context, "OK", 12, FontWeight.w600, Colors.white, () {postimage();})
+                CommonButton(context, "OK", 12, FontWeight.w600, Colors.white, () {
+                  if (imagepath.isNotEmpty) {
+                    postimage();
+                  } else {
+                    Navigator.pop(context);
+                  }
+                })
               ],
             ),
           ),
@@ -220,9 +223,11 @@ class _logoState extends State<logo> {
       var request = http.MultipartRequest("POST", postUri);
       request.headers['Authorization'] =
       "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-      http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-          'logo', images!.path);
-      request.files.add(multipartFile);
+      if(imagepath != ""){
+        http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+            'logo', images!.path);
+        request.files.add(multipartFile);
+      }
       http.StreamedResponse response = await request.send();
       print('code: ${response.statusCode}');
       final res = await http.Response.fromStream(response);
@@ -257,7 +262,6 @@ class _logoState extends State<logo> {
   }
 
   getimage() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -274,33 +278,12 @@ class _logoState extends State<logo> {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
         p = Temperatures.fromJson(map);
-        getimages = p?.data?.logo!.toString();
-        print(getimages);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        p = null;
       }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
+      isLoading = false;
+      setState(() {});
+
   }
 }
 
@@ -349,7 +332,7 @@ class Data {
     id: json["_id"],
     uid: json["uid"],
     logo: json["logo"],
-    logoPath: json["logoPath"],
+    logoPath: json["logoPath"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {

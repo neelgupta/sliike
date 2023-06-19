@@ -219,7 +219,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
                   child: InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return health_detail(selectedData!.data!.detailForClient);
+                        return health_detail(detailForClient);
                       },)).then((value) {
                         print(value);
                         if(value!=null) {
@@ -273,7 +273,6 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetyList() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -284,29 +283,23 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       log("getHealthSafetyList Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        setState(() {
-          getHealthSafetySelected();
           getHealthSafetyData = getHealthSafety.fromjson(map);
+          await getHealthSafetySelected();
           isLoading = false;
-        });
+          setState(() {});
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
           return const signInScreen();
         },), (route) => false);
       }else{
-        // amenity = null;
         setState(() {
           isLoading = false;
         });
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
   saveHealthSafety() async {
@@ -358,7 +351,6 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetySelected() async {
-    try {
       setState(() {
         isLoading = true;
       });
@@ -376,7 +368,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       if(map['status'] == 200) {
         setState(() {
           selectedData = getHealthSafetySelectedData.fromjson(map);
-          isLoading = false;
+          detailForClient = selectedData!.data!.detailForClient;
           for(int i = 0; i < getHealthSafetyData!.data.length; i++){
             for(int j = 0; j < selectedData!.data!.healthID!.length; j++){
               if(selectedData!.data!.healthID![j].id.toLowerCase() == getHealthSafetyData!.data[i].id.toLowerCase()){
@@ -388,6 +380,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
               }
             }
           }
+          isLoading = false;
         });
       }
       else if(response.statusCode == 401){
@@ -400,13 +393,9 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
           isLoading = false;
         });
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-    }
   }
 
 }

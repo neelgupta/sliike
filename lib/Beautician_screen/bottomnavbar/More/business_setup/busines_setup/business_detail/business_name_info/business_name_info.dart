@@ -671,7 +671,32 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                 height: height * 0.04,
               ),
               CommonButton(context, "SAVE", 12, FontWeight.w700, Colors.white,
-                  (){updateBusinessDetails();}),
+                  (){
+
+                if(businessname.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please enter business name !");
+                }else if(phonernumber.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please enter phone number !");
+                }else if(email.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please enter email address !");
+                }else if(!email.text.contains("@")){
+                  Fluttertoast.showToast(msg: "Please enter valid email address !");
+                }else if(timeformatvalue!.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select time format !");
+                }else if(mounthvalue!.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select start week !");
+                }else if(languagevalue.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select any language !");
+                }else if(Instagram.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please enter your instagram link !");
+                }else if(Facebook.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select your facebook link !");
+                }else if(Website.text.isEmpty){
+                  Fluttertoast.showToast(msg: "Please select your website link !");
+                }else{
+                updateBusinessDetails();
+                }
+              }),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -727,7 +752,6 @@ class _business_Name_InfoState extends State<business_Name_Info> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
-      Navigator.pop(context);
       Loader.hide();
       Fluttertoast.showToast(
           msg: "${map['message']}",
@@ -742,7 +766,6 @@ class _business_Name_InfoState extends State<business_Name_Info> {
 
   getBeauticianProfile() async {
     var geturi = Uri.parse(ApiUrlList.getBeauticianProfile);
-    try {
       setState(() {
         isLoading = true;
       });
@@ -773,19 +796,15 @@ class _business_Name_InfoState extends State<business_Name_Info> {
         Facebook.text = getmodelProfile!.data!.facebookUrl!;
         Website.text = getmodelProfile!.data!.website!;
         getmodelProfile!.data!.calenderSetting!.formate=="12"?
-        timeformatvalue = timeformatitems[0]:
-        timeformatvalue = timeformatitems[1];
+        timeformatvalue = timeformatitems[1]:
+        timeformatvalue = timeformatitems[0];
         isLoading = false;
         setState(() {});
       }
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
       });
-      // Loader.hide();
-    }
+
   }
 
 }

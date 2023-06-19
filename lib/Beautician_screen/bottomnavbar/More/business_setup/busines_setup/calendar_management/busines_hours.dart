@@ -136,7 +136,7 @@ class _busines_HoursState extends State<busines_Hours> {
                                 endTime: getWorkHoursData!.data![0].dayDetails![index].endTime!,
                                 isOpen: getWorkHoursData!.data![0].dayDetails![index].isOpen!,
                                  breakendTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!,
-                                  breakstartTime: getWorkHoursData!.data![0].dayDetails![index].breakEndTime!
+                                  breakstartTime: getWorkHoursData!.data![0].dayDetails![index].breakStartTime!
 
                               );},)).then((value) {
                                 print("value : ${value}");

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/business_detail/location/edit_location/edit_location.dart';
@@ -42,19 +45,20 @@ class _locationState extends State<location> {
       markers.add(Marker(
                   markerId: MarkerId(""),
                   position: LatLng(double.parse(latitude),double.parse(longitude)),
-                  icon: myIcon
+                  icon: myIcon,
                 ));
     });
   }
   void _updateMarker(){
     var newlatlang = LatLng(double.parse(latitude), double.parse(longitude));
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
+        ImageConfiguration(size: Size(10.0, 20.0),devicePixelRatio: 2,), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 10)));
     markers.add(Marker(
         markerId: MarkerId(""),
         position: LatLng(double.parse(latitude),double.parse(longitude)),
-        icon: myIcon
+        icon: myIcon,
+
     ));
     setState(() {});
   }
@@ -62,14 +66,32 @@ class _locationState extends State<location> {
   late GoogleMapController controller;
   GetLocationDetailsData ? getLocationDetailsData;
   @override
-  void initState() {
+  initState(){
     // TODO: implement initState
     super.initState();
     getLocationData();
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'assets/images/map_pin.png').then((onValue) {myIcon = onValue;});
+        ImageConfiguration(
+          size: Size(10, 20),devicePixelRatio: 1,),
+        'assets/images/map_pin.png').then((onValue) {myIcon = onValue;},
+    );
+    // BitmapDescriptor.fromAssetImage(
+    //   ImageConfiguration(size: Size.fromHeight(10),devicePixelRatio: 2), markerIcon,).then((onValue) {myIcon = onValue;});
   }
+
+  // Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  //   ByteData data = await rootBundle.load(path);
+  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  //   ui.FrameInfo fi = await codec.getNextFrame();
+  //   return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  // }
+  //
+  // markerFromBytes() async{
+  //   final Uint8List markerIcon = await getBytesFromAsset('assets/images/map_pin.png', 50);
+  //   BitmapDescriptor.fromBytes(markerIcon,size: Size(20.0, 20.0));
+  // }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -246,6 +268,8 @@ class _locationState extends State<location> {
                                 country: getLocationDetailsData!.data![0].country!,
                                 pin: getLocationDetailsData!.data![0].address![0].zipCode!,
                                 province: getLocationDetailsData!.data![0].address![0].province!.id!,
+                                lat: getLocationDetailsData!.data![0].location!.coordinates![1].toString(),
+                                long: getLocationDetailsData!.data![0].location!.coordinates![0].toString(),
                               );
                             },)).then((value){
                               getLocationData();

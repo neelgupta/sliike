@@ -25,7 +25,9 @@ class edit_Location extends StatefulWidget {
   final String ? province;
   final String ? pin;
   final String ? country;
-  const edit_Location({Key? key,this.address,this.city,this.province,this.pin,this.country}) : super(key: key);
+  final String ? lat;
+  final String ? long;
+  const edit_Location({Key? key,this.address,this.city,this.province,this.pin,this.country,this.lat,this.long}) : super(key: key);
 
   @override
   State<edit_Location> createState() => _edit_LocationState();
@@ -60,6 +62,8 @@ class _edit_LocationState extends State<edit_Location> {
       City.text = widget.city!;
       PostalCode.text = widget.pin!;
       Country.text = widget.country!;
+      latitude = widget.lat!;
+      longitude = widget.long!;
     }
   }
   @override

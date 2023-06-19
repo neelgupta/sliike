@@ -103,6 +103,8 @@ class _health_detailState extends State<health_detail> {
                 Container(
                   child: TextField(
                     controller: Detail,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
                     maxLines: 3,
                     style: TextStyle(
                         fontSize: 14,
