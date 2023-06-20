@@ -251,6 +251,7 @@ class _AmenitiesState extends State<Amenities> {
 
   getAmenitySelected() async {
       var Headers = {
+        "Content-Type": "application/json; charset=utf-8",
         "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var getUri = Uri.parse(ApiUrlList.getAmenity);

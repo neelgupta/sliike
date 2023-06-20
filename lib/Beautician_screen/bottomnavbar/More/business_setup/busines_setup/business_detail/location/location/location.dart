@@ -76,21 +76,7 @@ class _locationState extends State<location> {
           size: Size(10, 20),devicePixelRatio: 1,),
         'assets/images/map_pin.png').then((onValue) {myIcon = onValue;},
     );
-    // BitmapDescriptor.fromAssetImage(
-    //   ImageConfiguration(size: Size.fromHeight(10),devicePixelRatio: 2), markerIcon,).then((onValue) {myIcon = onValue;});
   }
-
-  // Future<Uint8List> getBytesFromAsset(String path, int width) async {
-  //   ByteData data = await rootBundle.load(path);
-  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-  //   ui.FrameInfo fi = await codec.getNextFrame();
-  //   return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
-  // }
-  //
-  // markerFromBytes() async{
-  //   final Uint8List markerIcon = await getBytesFromAsset('assets/images/map_pin.png', 50);
-  //   BitmapDescriptor.fromBytes(markerIcon,size: Size(20.0, 20.0));
-  // }
 
   @override
   Widget build(BuildContext context) {

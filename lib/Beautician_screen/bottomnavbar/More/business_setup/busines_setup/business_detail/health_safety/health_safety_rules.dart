@@ -34,8 +34,6 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
     // TODO: implement initState
     super.initState();
     getHealthSafetyList();
-    // getHealthSafetySelected();
-    print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
 
   @override
@@ -160,7 +158,7 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
                   child: ListView.builder(
                     itemCount: getHealthSafetyData!.data.length,
                     itemBuilder: (context, index) {
-                      log("getHealthSafetyData!.data[index].isSelected! : ${getHealthSafetyData!.data[index].isSelected!}");
+                      log("getHealthSafetyData!.data[index].isSelected! : ${getHealthSafetyData!.data[index].isSelected}");
                       return Column(
                         children: [
                           Row(
@@ -170,11 +168,11 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
                                 child: Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Color(0xff01635D),
-                                  value: getHealthSafetyData!.data[index].isSelected!,
+                                  value: getHealthSafetyData!.data[index].isSelected,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      getHealthSafetyData!.data[index].isSelected = value;
-                                      getHealthSafetyData!.data[index].isSelected! ? healthId.add(getHealthSafetyData!.data[index].id) :
+                                      getHealthSafetyData!.data[index].isSelected = value!;
+                                      getHealthSafetyData!.data[index].isSelected ? healthId.add(getHealthSafetyData!.data[index].id) :
                                       healthId.remove(getHealthSafetyData!.data[index].id);
                                     });
                                   },),
@@ -273,21 +271,17 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetyList() async {
-      setState(() {
-        isLoading = true;
-      });
-      var response = await http.get(
-          Uri.parse("https://sliike-server.onrender.com/api/v1/option/getHealthSafetyList",)
-      );
+    Fluttertoast.showToast(msg: "getHealthSafetyListStart");
+    var getUri = Uri.parse(ApiUrlList.getHealthSafetyList);
+    Fluttertoast.showToast(msg: "getHealthSafetyListCall");
+      var response = await http.get(getUri);
       log("getHealthSafetyList Code ====> ${response.statusCode}");
       log("getHealthSafetyList Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
+        Fluttertoast.showToast(msg: "getHealthSafetyListDone");
           getHealthSafetyData = getHealthSafety.fromjson(map);
           await getHealthSafetySelected();
-          setState(() {
-          isLoading = false;
-          });
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -352,29 +346,31 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetySelected() async {
+    Fluttertoast.showToast(msg: "getHealthSafetySelectedStart");
       var Headers = {
-        "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Content-Type": "application/json; charset=utf-8",
+        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
-      var getUri = Uri.parse(ApiUrlList.getAmenity);
+      var getUri = Uri.parse(ApiUrlList.getHealthSafety);
+    Fluttertoast.showToast(msg: "getHealthSafetySelectedCall");
       var response = await http.get(
-          Uri.parse("https://sliike-server.onrender.com/api/v1/beautician/getHealthSafety",),
+          getUri,
           headers: Headers
       );
-      log("getAmenities Code ====> ${response.statusCode}");
-      log("getAmenities Body ====>  ${response.body}");
+      log("getHealthSafetySelected Code ====> ${response.statusCode}");
+      log("getHealthSafetySelected Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if(map['status'] == 200) {
+        Fluttertoast.showToast(msg: "getHealthSafetySelectedDone");
         setState(() {
           selectedData = getHealthSafetySelectedData.fromjson(map);
           detailForClient = selectedData!.data!.detailForClient;
           for(int i = 0; i < getHealthSafetyData!.data.length; i++){
             for(int j = 0; j < selectedData!.data!.healthID!.length; j++){
-              if(selectedData!.data!.healthID![j].id.toLowerCase() == getHealthSafetyData!.data[i].id.toLowerCase()){
-                setState(() {
+              if(selectedData!.data!.healthID![j].id == getHealthSafetyData!.data[i].id){
                   healthId.add(selectedData!.data!.healthID![j].id);
                   getHealthSafetyData!.data[i].isSelected = true;
-                });
-                log("getHealthSafetyData!.data[i].isSelected : ${getHealthSafetyData!.data[i].isSelected}");
+                  setState(() {});
               }
             }
           }
@@ -413,14 +409,11 @@ class getHealthSafety{
 class getHealthSafetyData{
   String id;
   String name;
-  int status;
-  bool? isSelected;
-  getHealthSafetyData(this.id, this.name, this.status, {
-    this.isSelected = false,
-  });
+  bool isSelected;
+  getHealthSafetyData(this.id, this.name,this.isSelected);
 
   factory getHealthSafetyData.fromjson(Map<dynamic,dynamic>map){
-    return getHealthSafetyData(map["_id"], map["name"], map["status"]);
+    return getHealthSafetyData(map["_id"], map["name"], false);
   }
 }
 
