@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/profile_page.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -86,11 +88,12 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                             ? SizedBox()
                             : InkWell(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) {
-                                      return profilePage();
-                                    },
-                                  ));
+                                  // Navigator.push(context, MaterialPageRoute(
+                                  //   builder: (context) {
+                                  //     return profilePage();
+                                  //   },
+                                  // ));
+                                  print(getmodelProfile!.data!.profileImage);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
@@ -100,15 +103,10 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(200)),
-                                      child: getmodelProfile!
-                                                  .data!.profileImage!.isNotEmpty
-                                          ? Image.network(
-                                              getmodelProfile!
-                                                  .data!.profileImage!,
-                                              fit: BoxFit.fill)
-                                          : Image.asset(
-                                              "assets/images/Ellipse 202.png",
-                                              fit: BoxFit.fill),
+                                      child:
+                                      getmodelProfile!.data!.profileImage!.isNotEmpty && getmodelProfile!.data!.profileImage!= null && getmodelProfile!.data!.profileImage!=""
+                                          ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill)
+                                          : Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
                                     ),
                                   ),
                                 ),
@@ -401,8 +399,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //   width: width,
                       //   color: Color(0xffF3F3F3),
                       // ),
-
-                      ////help center
+                      //
+                      // //help center
                       // Padding(
                       //   padding: const EdgeInsets.only(left: 20, right: 20),
                       //   child: Container(
@@ -436,33 +434,33 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //     ),
                       //   ),
                       // ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //     //   return homescreen();
-                      //     // },));
-                      //   },
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.only(left: 20,right: 20),
-                      //     child: Container(
-                      //       padding: EdgeInsets.symmetric(vertical: 17,),
-                      //       decoration: BoxDecoration(
-                      //           border: Border(bottom: BorderSide(color: Colors.black12))
-                      //       ),
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           textComoon("Become User",14,Color(0xff414141), FontWeight.w500),
-                      //           Container(
-                      //             height: 15,
-                      //             width: 30,
-                      //             child: Image.asset("assets/images/righticon.png"),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          //   return homescreen();
+                          // },));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20,right: 20),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 17,),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.black12))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textComoon("Become Client",14,Color(0xff414141), FontWeight.w500),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset("assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: InkWell(
@@ -623,4 +621,5 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       });
     }
   }
+
 }

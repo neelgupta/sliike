@@ -511,6 +511,7 @@ class _addServiceState extends State<addServicetype> {
                                                         onChanged: (value) {
                                                           setState(() {
                                                                 print("000");
+                                                                servicePrice.clear();
                                                                 selectedServiceCategoryIdValue = singleItem.id!;
                                                                 selectedServiceCategoryNameValue = singleItem.serviceCategoryName!;
                                                                 fetchServicesType(selectedServiceCategoryIdValue);
@@ -690,8 +691,7 @@ class _addServiceState extends State<addServicetype> {
                                 selectedServiceIdValue =
                                     value.id;
                                 print('======>$selectedServiceIdValue');
-                                selectedServiceNameValue =
-                                    value.serviceTypeName;
+                                selectedServiceNameValue = value.serviceTypeName;
                               });
                             },
                             buttonHeight: 60,
@@ -1232,7 +1232,8 @@ class _addServiceState extends State<addServicetype> {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
+            Container(
+              // color: Colors.blueAccent,
               height: height * 0.53,
               child: ListView.builder(
                 shrinkWrap: true,
@@ -1293,12 +1294,26 @@ class _addServiceState extends State<addServicetype> {
                               ),
                             ),
                             const Spacer(),
-                            SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15,
+                            InkWell(
+                              onTap: (){
+                                setState(() {
+                                  datachanghe = true;
+                                  // selectedvaluemin = add_time[index];
+                                  servicePrice.text = add_price[index];
+                                  selectedServiceCategoryNameValue = addtype[index];
+                                  selectedServiceNameValue = typesDataList[index].toString();
+                                });
+                                print(selectedServiceCategoryNameValue);
+                                print(selectedvaluemin);
+                                print(selectedvaluemin);
+                              },
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 15,
+                                ),
                               ),
                             ),
                           ],

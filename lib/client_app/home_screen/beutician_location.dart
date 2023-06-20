@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,9 +21,12 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
   Position? p;
   String lat = "";
   String long = "";
+
   double? lati, longi;
   GoogleMapController? mapController;
   Iterable markers = [];
+
+  List updatedList = [];
 
   late CameraPosition _initialLocation;
 
@@ -41,6 +46,16 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
       print("type ===> ${widget.locationData[index].location.type}");
       if(widget.locationData[index].location!=null && widget.locationData[index].location.coordinates!=null && widget.locationData[index].location.coordinates[0]!=null && widget.locationData[index].location.coordinates[1]!=null) {
         marker.add(Marker(
+          onTap: (){
+            updatedList.clear();
+            lati = widget.locationData[index].location.coordinates[1];
+            longi = widget.locationData[index].location.coordinates[0];
+            if(lati == widget.locationData[index].location.coordinates[1] && longi== widget.locationData[index].location.coordinates[0]){
+              updatedList.add(widget.locationData[index]);
+              print(updatedList);
+            }
+            setState(() {});
+          },
           // onTap: () {
           //   Navigator.push(context, MaterialPageRoute(builder: (context) {
           //     return services(
@@ -74,6 +89,7 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
 
   @override
   void initState() {
+    log("Data :: ${widget.locationData}");
       _initialLocation = CameraPosition(target: LatLng(widget.lat, widget.long),zoom: 20);
       locationLatLng();
     super.initState();
@@ -98,6 +114,8 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                 onTap: (latLng) {
                   lat = latLng.latitude.toString();
                   long = latLng.longitude.toString();
+                  print(lat);
+                  print(long);
                 },
                 mapToolbarEnabled: false,
                 initialCameraPosition: _initialLocation,
@@ -126,15 +144,15 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
               height: height * 0.33,
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                itemCount: widget.locationData.length,
+                itemCount: updatedList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return services(
-                          beauticianId: widget.locationData[index].id,
-                          businessName: widget.locationData[index].businessName,
+                          beauticianId: updatedList[index].id,
+                          businessName: updatedList[index].businessName,
                         );
                       },));
                     },
@@ -155,13 +173,13 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                               height: height * 0.18,
                               width: width * 0.6,
                               decoration: BoxDecoration(
-                                  // image: const DecorationImage(
-                                  //     image: AssetImage("assets/images/Rectangle 865.png"),
-                                  //     fit: BoxFit.fill
-                                  // ),
+                                  image:  DecorationImage(
+                                      image: NetworkImage(updatedList[index].logoPath != null ?updatedList[index].logoPath:""),
+                                      fit: BoxFit.fill
+                                  ),
                                   borderRadius: BorderRadius.circular(8)),
                               margin: const EdgeInsets.all(5),
-                              child: const Text("No Image Found"),
+                              child: updatedList[index].logoPath != null ? Text("") : Text("No Image Found"),
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(
@@ -179,7 +197,7 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                                           alignment:
                                               Alignment.topLeft,
                                           child: Text(
-                                              "${widget.locationData[index].businessName}",
+                                              "${updatedList[index].businessName}",
                                               style: const TextStyle(
                                                   color: Colors
                                                       .black,
@@ -203,10 +221,10 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    widget.locationData[index].address.isEmpty
+                                    updatedList[index].address.isEmpty
                                         ? const SizedBox()
                                         :Text(
-                                        "${widget.locationData[index].address[0].apartment} ${widget.locationData[index].address[0].city} ${widget.locationData[index].address[0].zipCode}",
+                                        "${updatedList[index].address[0].apartment} ${updatedList[index].address[0].city} ${updatedList[index].address[0].zipCode}",
                                         style: const TextStyle(
                                             color:
                                                 Colors.black,

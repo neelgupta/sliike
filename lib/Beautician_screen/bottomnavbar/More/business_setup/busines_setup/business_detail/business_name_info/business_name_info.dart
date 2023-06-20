@@ -39,6 +39,8 @@ class _business_Name_InfoState extends State<business_Name_Info> {
   bool isLoading = false;
   GetData? getmodelProfile;
 
+  String countryCode = "";
+
   var languageitemslist = [
     "English (UK)",
     "FRENCH",
@@ -220,7 +222,10 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                           children: [
                             CountryCodePicker(
                               flagWidth: 25,
-                              onChanged: print,
+                              onChanged: (value) {
+                                countryCode = value.toString();
+                                print("countryCode :: ${countryCode}");
+                              },
                               initialSelection: 'Ca',
                               enabled: true,
                               favorite: const ['+1', 'Ca'],
@@ -437,57 +442,57 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                 thickness: 1,
                 color: Color(0xffCFCFCF),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.02),
-                child: textComoon(
-                    "Language setting", 16, Colors.black, FontWeight.w700),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.01),
-                child: textComoonfade(
-                    "Choose the default language for appointment notification messages sent to your clients. You can also set language for each client depending on their language.",
-                    12,
-                    Color(0xff414141),
-                    FontWeight.w500),
-              ),
-              SizedBox(
-                height: height * 0.025,
-              ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.only(left: 20, right: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.black38)),
-                child: DropdownButton(
-                  hint: Text("English (UK)"),
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontFamily: 'spartan',
-                      fontWeight: FontWeight.w500),
-                  underline: SizedBox(),
-                  dropdownColor: Colors.white,
-                  iconDisabledColor: Colors.black,
-                  iconEnabledColor: Colors.yellow,
-                  isExpanded: true,
-                  icon:
-                      Icon(Icons.keyboard_arrow_down, color: Color(0xff414141)),
-                  value: languagevalue,
-                  items: languageitemslist.map((String items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      languagevalue = newValue!;
-                    });
-                  },
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: height * 0.02),
+              //   child: textComoon(
+              //       "Language setting", 16, Colors.black, FontWeight.w700),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: height * 0.01),
+              //   child: textComoonfade(
+              //       "Choose the default language for appointment notification messages sent to your clients. You can also set language for each client depending on their language.",
+              //       12,
+              //       Color(0xff414141),
+              //       FontWeight.w500),
+              // ),
+              // SizedBox(
+              //   height: height * 0.025,
+              // ),
+              // Container(
+              //   width: double.infinity,
+              //   padding: EdgeInsets.only(left: 20, right: 20),
+              //   decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(5),
+              //       border: Border.all(color: Colors.black38)),
+              //   child: DropdownButton(
+              //     hint: Text("English (UK)"),
+              //     style: TextStyle(
+              //         fontSize: 14,
+              //         color: Colors.black,
+              //         fontFamily: 'spartan',
+              //         fontWeight: FontWeight.w500),
+              //     underline: SizedBox(),
+              //     dropdownColor: Colors.white,
+              //     iconDisabledColor: Colors.black,
+              //     iconEnabledColor: Colors.yellow,
+              //     isExpanded: true,
+              //     icon:
+              //         Icon(Icons.keyboard_arrow_down, color: Color(0xff414141)),
+              //     value: languagevalue,
+              //     items: languageitemslist.map((String items) {
+              //       return DropdownMenuItem(
+              //         value: items,
+              //         child: Text(items),
+              //       );
+              //     }).toList(),
+              //     onChanged: (String? newValue) {
+              //       setState(() {
+              //         languagevalue = newValue!;
+              //       });
+              //     },
+              //   ),
+              // ),
               SizedBox(
                 height: height * 0.025,
               ),
@@ -728,7 +733,10 @@ class _business_Name_InfoState extends State<business_Name_Info> {
       'facebookUrl': Facebook.text,
       'instagramUrl': Instagram.text,
       'website': Website.text,
+      "country_code" : countryCode
     };
+    log("Body : ${Body}");
+    log("token : ${Helper.prefs!.getString(UserPrefs.keyutoken)}");
     var headers = {
       'Content-Type': "application/json; charset=utf-8",
       "Authorization":
@@ -786,20 +794,22 @@ class _business_Name_InfoState extends State<business_Name_Info> {
       Map map = jsonDecode(response.body);
       if(map["status"] == 200){
         getmodelProfile = GetData.fromJson(jsonDecode(response.body));
-        businessname.text = getmodelProfile!.data!.businessName!;
-        phonernumber.text = getmodelProfile!.data!.userId!.phoneNumber.toString();
-        email.text = getmodelProfile!.data!.userId!.email!;
-        Description.text = getmodelProfile!.data!.description!;
-        mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
-        languagevalue = getmodelProfile!.data!.language!;
-        Instagram.text = getmodelProfile!.data!.instagramUrl!;
-        Facebook.text = getmodelProfile!.data!.facebookUrl!;
-        Website.text = getmodelProfile!.data!.website!;
-        getmodelProfile!.data!.calenderSetting!.formate=="12"?
-        timeformatvalue = timeformatitems[1]:
-        timeformatvalue = timeformatitems[0];
-        isLoading = false;
-        setState(() {});
+        setState(() {
+          businessname.text = getmodelProfile!.data!.businessName!;
+          phonernumber.text = getmodelProfile!.data!.userId!.phoneNumber.toString();
+          email.text = getmodelProfile!.data!.userId!.email!;
+          Description.text = getmodelProfile!.data!.description!;
+          mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
+          languagevalue = getmodelProfile!.data!.language!;
+          Instagram.text = getmodelProfile!.data!.instagramUrl!;
+          Facebook.text = getmodelProfile!.data!.facebookUrl!;
+          Website.text = getmodelProfile!.data!.website!;
+          getmodelProfile!.data!.calenderSetting!.formate=="12"?
+          timeformatvalue = timeformatitems[1]:
+          timeformatvalue = timeformatitems[0];
+          countryCode = getmodelProfile!.data!.countryCode!;
+          isLoading = false;
+        });
       }
       setState(() {
         isLoading = false;

@@ -283,25 +283,12 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-
-                      if(isLicensed == 1 && data?.data?.licenseImagePath!=null){
-                         Navigator.pop(context);
-                      }else if(isLicensed == 1 && imagePath==""){
-                        Fluttertoast.showToast(msg: "Please upload licence photo");
-                      }else{
-                        addBusinessLicense();
-                      }
-
-                      // print("${Helper.prefs!.getString(UserPrefs.keyutoken)}");
-                      // if (selected == "No") {
-                      //   Navigator.push(context, MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return addServicetype(
-                      //         secondflow: false,
-                      //       );
-                      //     },
-                      //   ));
-                      // }
+                       if(isLicensed == 1 && imagePath == ""){
+                         Fluttertoast.showToast(msg: "Please upload licence photo");
+                       }
+                       else{
+                         addBusinessLicense();
+                       }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -398,6 +385,10 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
           isLicensed = 1;
           setState(() {});
         }
+        setState(() {
+          data!.data!.isLicensed==0?selected="No":"Yes";
+          print(isLicensed);
+        });
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

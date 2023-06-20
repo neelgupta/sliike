@@ -338,6 +338,7 @@ class _edit_LocationState extends State<edit_Location> {
         "zipCode" : PostalCode.text,
         "country" : Country.text,
       };
+      log("Body :: ${Body}");
       var Headers = {
         "Authorization" : "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
         // "Content-Type" : "application/json",

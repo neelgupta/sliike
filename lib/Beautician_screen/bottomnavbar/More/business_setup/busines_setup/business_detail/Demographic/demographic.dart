@@ -227,8 +227,9 @@ class _demograPhicState extends State<demograPhic> {
       if (map['status'] == 200) {
           getDemography = getDemographyListData.fromjson(map);
           await getDemographySelected();
+          setState(() {
           isLoading = false;
-          setState(() {});
+          });
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -294,9 +295,6 @@ class _demograPhicState extends State<demograPhic> {
   }
 
   getDemographySelected() async {
-      setState(() {
-        isLoading = true;
-      });
       var Headers = {
         "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };

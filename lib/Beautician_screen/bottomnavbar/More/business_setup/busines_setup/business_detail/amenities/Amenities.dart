@@ -193,8 +193,7 @@ class _AmenitiesState extends State<Amenities> {
           amenity = getAmenity.fromjson(map);
           isCheck = List.generate(amenity!.data.length, (index) => false);
           await getAmenitySelected();
-          isLoading = false;
-          setState(() {});
+          setState(() {isLoading = false;});
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -251,9 +250,6 @@ class _AmenitiesState extends State<Amenities> {
   }
 
   getAmenitySelected() async {
-      setState(() {
-        isLoading = true;
-      });
       var Headers = {
         "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
@@ -270,7 +266,6 @@ class _AmenitiesState extends State<Amenities> {
       if(map['status'] == 200) {
         setState(() {
           selectedAmenties = getAmenitySelectedData.fromjson(map);
-          isLoading = false;
           for(int i = 0; i < amenity!.data.length; i++){
               for(int j = 0; j < selectedAmenties!.data.length; j++){
                   if(selectedAmenties!.data[j].id.toLowerCase() == amenity!.data[i].id.toLowerCase()){
@@ -283,6 +278,7 @@ class _AmenitiesState extends State<Amenities> {
                 }
 
             }
+          isLoading = false;
         });
       }
       else if(response.statusCode == 401){

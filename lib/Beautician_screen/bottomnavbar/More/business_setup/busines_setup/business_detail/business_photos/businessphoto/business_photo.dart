@@ -85,17 +85,17 @@ class _business_PhotoState extends State<business_Photo> {
             SizedBox(height: height*0.02,),
             textComoonfade("Set up your business photos so clients can see your services and all that you are about.", 12, Color(0xff414141), FontWeight.w500),
             SizedBox(height: height*0.04,),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 17,),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black12))
-              ),
-              child: GestureDetector(
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return logo();
-                  },));
-                },
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context) {
+                  return logo();
+                },));
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 17,),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.black12))
+                ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
@@ -110,17 +110,17 @@ class _business_PhotoState extends State<business_Photo> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 17,),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black12))
-              ),
-              child: GestureDetector(
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return worlplace_PhotosTwo();
-                  },));
-                },
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context) {
+                  return worlplace_PhotosTwo();
+                },));
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 17,),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.black12))
+                ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textComoon("Workplace Photo",14,Color(0xff414141), FontWeight.w500),
@@ -133,17 +133,17 @@ class _business_PhotoState extends State<business_Photo> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 17,),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black12))
-              ),
-              child: GestureDetector(
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return professional_Licence_Camera();
-                  },));
-                },
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context) {
+                  return professional_Licence_Camera();
+                },));
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 17,),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.black12))
+                ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textComoon("Licence",14,Color(0xff414141), FontWeight.w500),

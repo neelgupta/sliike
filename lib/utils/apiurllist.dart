@@ -51,6 +51,7 @@ class ApiUrlList {
   static String appointmentDetails = "${baseUrl}client/appointmentDetails";
   static String postlogoimage = "${logowork}beautician/addBusinessLogo";
   static String addWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
+  static String updateWorkSpaceImg = "${logowork}beautician/addWorkSpaceImg";
   static String getlogoimage = "${baseUrl}beautician/getBeauticianLogoImg";
 
   static String getTaxSetUpStatus = "${baseUrl}beautician/getTaxSetUpStatus";
@@ -158,6 +159,7 @@ class ApiUrlList {
   // static String addSingleServiceDetails = "${baseUrl}beautician/addSingleServiceDetails";
   static String updateServiceDetails = "${baseUrl}beautician/updateServiceDetails/";
   static String updateSalonLocation = "${baseUrl}beautician/updateSalonLocation";
+  static String updateSalonLocationClient = "${baseUrl}client/updateSalonLocation";
 
 
   /// Card Services Endpoints (Client)///

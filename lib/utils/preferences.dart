@@ -8,6 +8,10 @@ class UserPrefs {
   static const String keyDeviceToken = "deviceToken";
   static const String keyutoken = "token";
   static String selectedadd = "";
+  static String firstName = "";
+  static String lastName = "";
+  static String email = "";
+  static String password = "";
   static int select = 0;
 
   ///addBusinessDetail

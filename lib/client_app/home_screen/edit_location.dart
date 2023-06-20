@@ -324,11 +324,12 @@ class _editLocationState extends State<editLocation> {
         "zipCode" : PostalCode.text,
         "country" : Country.text,
       };
+      log("Body :: ${Body}");
       var Headers = {
         "Authorization" : "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
         // "Content-Type" : "application/json",
       };
-      var postUri = Uri.parse("${ApiUrlList.updateSalonLocation}");
+      var postUri = Uri.parse("${ApiUrlList.updateSalonLocationClient}");
       var res = await http.put(
         postUri,
         body: Body,

@@ -285,8 +285,9 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       if (map['status'] == 200) {
           getHealthSafetyData = getHealthSafety.fromjson(map);
           await getHealthSafetySelected();
+          setState(() {
           isLoading = false;
-          setState(() {});
+          });
       }
       else if(response.statusCode == 401){
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
@@ -351,9 +352,6 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetySelected() async {
-      setState(() {
-        isLoading = true;
-      });
       var Headers = {
         "Authorization":"Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };

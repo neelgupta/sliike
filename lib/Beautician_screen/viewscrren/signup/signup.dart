@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -935,6 +936,7 @@ class _signUpState extends State<signUp> {
         'deviceToken': deviceToken,
         'firebaseToken': firebaseToken
       };
+      log("Body :: ${bodydata}");
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
       };
@@ -949,7 +951,12 @@ class _signUpState extends State<signUp> {
         s1 = SignUpModel.fromJson(map);
         Helper.prefs!.setString(UserPrefs.keyDeviceToken, deviceToken);
         Helper.prefs!.setString(UserPrefs.keyusertype, radiovalue);
+        Helper.prefs!.setString(UserPrefs.firstName, firstName);
+        Helper.prefs!.setString(UserPrefs.lastName, lastName);
+        Helper.prefs!.setString(UserPrefs.email, email);
+        Helper.prefs!.setString("country_code",  countrycode.replaceAll("+", ""));
         Helper.prefs!.setString(UserPrefs.keybusinessNumber, phoneNumber);
+        Helper.prefs!.setString(UserPrefs.password, password);
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

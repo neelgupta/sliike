@@ -130,117 +130,6 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   children: [
-                    // GestureDetector(
-                    //   onTap: () {
-                    //
-                    //   },
-                    //   child: Container(
-                    //       width: width,
-                    //       height: 150,
-                    //       decoration: BoxDecoration(
-                    //           image: fristimagestatus
-                    //               ? DecorationImage(
-                    //               image:
-                    //               FileImage(File(firstimagestring)))
-                    //               : firstNetworkImage!=null?DecorationImage(image: NetworkImage(fourthNetworkImage)):
-                    //           DecorationImage(
-                    //               image: AssetImage(
-                    //                   "assets/images/Rectangle_greyline.png"),
-                    //               fit: BoxFit.fill)),
-                    //       child: fristimagestatus
-                    //           ? Stack(
-                    //         children: [
-                    //           Positioned(
-                    //             right: 50,
-                    //             child: GestureDetector(
-                    //               onTap: () async {
-                    //                 XFile? selectedImages =
-                    //                 await _picker.pickImage(
-                    //                     source:
-                    //                     ImageSource.gallery);
-                    //                 if (selectedImages != null) {
-                    //                   setState(() {
-                    //                     fristimage =
-                    //                         File(selectedImages.path);
-                    //                     firstimagestring =
-                    //                         selectedImages.path;
-                    //                     fristimagestatus = true;
-                    //                     print(fristimagestatus);
-                    //                   });
-                    //                 }
-                    //               },
-                    //               child: Container(
-                    //                 width: 30,
-                    //                 height: 30,
-                    //                 decoration: BoxDecoration(
-                    //                   color: Color(0xffFFFFFF),
-                    //                   borderRadius:
-                    //                   BorderRadius.circular(5),
-                    //                   border: Border.all(
-                    //                       color: Color(0xffE7E7E7),
-                    //                       width: 1),
-                    //                 ),
-                    //                 child: Padding(
-                    //                   padding:
-                    //                   const EdgeInsets.all(8.0),
-                    //                   child: Image.asset(
-                    //                       "assets/images/edit_grey.png"),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           Positioned(
-                    //             right: 10,
-                    //             child: GestureDetector(
-                    //               onTap: () {
-                    //                 setState(() {
-                    //                   firstimagestring = "";
-                    //                   fristimagestatus = false;
-                    //                 });
-                    //               },
-                    //               child: Container(
-                    //                 width: 30,
-                    //                 height: 30,
-                    //                 decoration: BoxDecoration(
-                    //                   color: Color(0xffFFFFFF),
-                    //                   borderRadius:
-                    //                   BorderRadius.circular(5),
-                    //                   border: Border.all(
-                    //                       color: Color(0xffE7E7E7),
-                    //                       width: 1),
-                    //                 ),
-                    //                 child: Padding(
-                    //                   padding:
-                    //                   const EdgeInsets.all(8.0),
-                    //                   child: Image.asset(
-                    //                       "assets/images/delete.png"),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           )
-                    //         ],
-                    //       )
-                    //           : Column(
-                    //         crossAxisAlignment:
-                    //         CrossAxisAlignment.center,
-                    //         mainAxisAlignment:
-                    //         MainAxisAlignment.center,
-                    //         children: [
-                    //           Center(
-                    //             child: Image(
-                    //               height: 40,
-                    //               image: AssetImage(
-                    //                   "assets/images/camera_grey.png"),
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             height: 5,
-                    //           ),
-                    //           textComoon("Add Logo", 12,
-                    //               Color(0xff414141), FontWeight.w500),
-                    //         ],
-                    //       )),
-                    // ),
                     SizedBox(height: height * 0.03,),
                     textComoonfade(
                         "Show clients what your space looks like before they show up at your door.",
@@ -298,7 +187,7 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                     onTap: (){
                                       // deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
                                       firstImageStatus = false;
-                                      // one = false;
+                                      one = false;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -1752,6 +1641,50 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   }
 
 
+  updateImage(String workspace, String oldPath) async {
+    setState(() {
+      isLoading = true;
+    });
+    var postUri = Uri.parse(ApiUrlList.updateWorkSpaceImg);
+    var request = http.MultipartRequest("PUT", postUri);
+    request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('workspace', workspace);
+      request.files.add(multipartFile);
+
+      request.fields["oldImgPath"] = oldPath;
+
+    http.StreamedResponse response = await request.send();
+    print('updateImage Code: ${response.statusCode}');
+    final res = await http.Response.fromStream(response);
+    print('updateImage Body: ${res.body}');
+    Map map = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+
   Future _sheet() => showDialog(
     context: context,
     builder: (context) {
@@ -1783,12 +1716,18 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 firstImagePath = photo.path;
                 files.add(firstImage!);
                 firstImageStatus = true;
+                if(secondImageStatus){
+                  one = false;
+                }
                 if(p!.data!.first.workSpaceImgs.length==1){
                   if(two || three || four){
                     one = false;
                   }else{
                     one = true;
                   }
+                }
+                if(firstImageStatus){
+                  updateImage(firstImage!.path, p!.data!.first.workSpaceImgs[0]);
                 }
               }
             }),
@@ -1812,12 +1751,18 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   firstImagePath = selectedImages.path;
                   firstImageStatus = true;
                   files.add(firstImage!);
+                  if(secondImageStatus){
+                    one = false;
+                  }
                   if(p!.data!.first.workSpaceImgs.length==1){
                     if(two || three || four){
                       one = false;
                     }else{
                       one = true;
                     }
+                  }
+                  if(firstImageStatus){
+                    updateImage(firstImage!.path, p!.data!.first.workSpaceImgs[0]);
                   }
                 });
               }
@@ -1874,8 +1819,16 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 secondImageStatus = true;
                 two = true;
                 one = false;
+                if(thirdImageStatus){
+                  two = false;
+                }
                 if(p!.data!.first.workSpaceImgs.length==2){
                   two = true;
+                }
+                for(var i in p!.data!.first.workSpaceImgs){
+                  if(i[1].isNotEmpty){
+                    updateImage(secondImage!.path, p!.data!.first.workSpaceImgs[1]);
+                  }
                 }
               }
             }),
@@ -1896,12 +1849,20 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 setState(() {
                   one = false;
                   two = true;
+                  if(thirdImageStatus){
+                    two = false;
+                  }
                   secondImage = File(selectedImages.path);
                   files.add(secondImage!);
                   secondImagePath = selectedImages.path;
                   secondImageStatus = true;
                   if(p!.data!.first.workSpaceImgs.length==2){
                     two = true;
+                  }
+                  for(var i in p!.data!.first.workSpaceImgs){
+                    if(i[1].isNotEmpty){
+                      updateImage(secondImage!.path, p!.data!.first.workSpaceImgs[1]);
+                    }
                   }
                 });
               }
@@ -1959,8 +1920,16 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 one = false;
                 two = false;
                 three = true;
+                if(fourthImageStatus){
+                  three = false;
+                }
                 if(p!.data!.first.workSpaceImgs.length==3){
                   three = true;
+                }
+                for(var i in p!.data!.first.workSpaceImgs){
+                  if(i[2].isNotEmpty){
+                    updateImage(thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
+                  }
                 }
               }
             }),
@@ -1986,8 +1955,16 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   one = false;
                   two = false;
                   three = true;
+                  if(fourthImageStatus){
+                    three = false;
+                  }
                   if(p!.data!.first.workSpaceImgs.length==3){
                     three = true;
+                  }
+                  for(var i in p!.data!.first.workSpaceImgs){
+                    if(i[2].isNotEmpty){
+                      updateImage(thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
+                    }
                   }
                 });
               }
@@ -2047,6 +2024,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                 files.add(fourthImage!);
                 if(p!.data!.first.workSpaceImgs.length==4){
                 }
+                for(var i in p!.data!.first.workSpaceImgs){
+                  if(i[3].isNotEmpty){
+                    updateImage(fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
+                  }
+                }
               }
             }),
             SizedBox(
@@ -2072,6 +2054,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   two = false;
                   three = false;
                   if(p!.data!.first.workSpaceImgs.length==4){
+                  }
+                  for(var i in p!.data!.first.workSpaceImgs){
+                    if(i[3].isNotEmpty){
+                      updateImage(fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
+                    }
                   }
                 });
               }

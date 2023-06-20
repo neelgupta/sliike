@@ -103,7 +103,7 @@ class _my_favoritesState extends State<my_favorites> {
                       ),
                       child: Text("services",
                           style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 14,
                               fontFamily: "spartan",
                               color: service?Colors.white:Colors.black)).tr(),
                     ),
@@ -230,7 +230,7 @@ class _my_favoritesState extends State<my_favorites> {
                                       height: height * 0.12,
                                       width: width * 0.25,
                                       child:  CachedNetworkImage(
-                                        imageUrl: favoritelist[index].country ?? '',
+                                        imageUrl: favoritelist[index].logoPath ?? '',
                                         imageBuilder: (context, imageProvider) => Container(
                                           padding: const EdgeInsets.all(10),
                                           height: height * 0.18,
@@ -281,7 +281,8 @@ class _my_favoritesState extends State<my_favorites> {
                                             const SizedBox(
                                               width: 5,
                                             ),
-                                            SizedBox(
+
+                                            if(favoritelist[index].isLicensed=="1")SizedBox(
                                               height:
                                               height *
                                                   0.03,

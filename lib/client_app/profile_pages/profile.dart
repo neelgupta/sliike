@@ -65,6 +65,7 @@ class _profileState extends State<profile> {
     if (pickedFile != null) {
       setState(() {
         userImageFile = File(pickedFile.path);
+        print(userImageFile);
       });
       updateUserProfileImage();
     }
@@ -1390,6 +1391,8 @@ class _profileState extends State<profile> {
       });
       var postUri = Uri.parse(ApiUrlList.updateProfileImage);
       var request = http.MultipartRequest("POST", postUri);
+      log("logg :: ${request.files}");
+      log("logg :: ${Helper.prefs!.getString(UserPrefs.keyutoken)}");
       request.headers['Authorization'] =
           "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
       http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
