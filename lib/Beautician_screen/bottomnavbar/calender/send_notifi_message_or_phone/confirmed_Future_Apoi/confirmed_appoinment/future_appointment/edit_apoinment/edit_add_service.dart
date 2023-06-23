@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
+import 'package:new_sliikeapps_apps/models/serviceDetailModel.dart';
+import 'package:new_sliikeapps_apps/services/appointment_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 
 class edit_add_service extends StatefulWidget {
@@ -14,11 +19,7 @@ class _add_SreviceState extends State<edit_add_service> {
   TextEditingController search = TextEditingController();
   String? selectdradioValue = "";
 
-  List findserviceradioList = [
-    'Men’s Cut',
-    'Women’s Cut',
-    'Beard Trim',
-  ];
+  List findserviceradioList = [];
   List DurationTimeradioList = [
     "30 min",
     "25 min",
@@ -44,6 +45,19 @@ class _add_SreviceState extends State<edit_add_service> {
     "Every year",
   ];
   String? recurringOptionsRadio = "";
+
+  AppointmentService _appointmentService = AppointmentService();
+
+  GetServiceDetailsModel ? getServiceDetailsModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      getServiceDetailsModel =  await _appointmentService.getServiceDetails(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -373,7 +387,6 @@ class _add_SreviceState extends State<edit_add_service> {
                     ),
                   ),
                 ),
-
                 Spacer(),
                 CommonButton(
                     context, "SAVE", 12, FontWeight.w600, Colors.white, () {
@@ -388,9 +401,6 @@ class _add_SreviceState extends State<edit_add_service> {
       ),
     );
   }
-
-
-
   findservice() {
     double height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
@@ -475,59 +485,43 @@ class _add_SreviceState extends State<edit_add_service> {
                         child: Container(
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: findserviceradioList.length,
+                            itemCount: getServiceDetailsModel!.data!.length,
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
                                   setState(() {
-                                    selectdradioValue =
-                                        findserviceradioList[index]
-                                            .toString();
+                                    // selectdradioValue = findserviceradioList[index].toString();
                                     Navigator.pop(context);
                                   });
                                 },
                                 child: Container(
                                   child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           Container(
                                             height: 60,
                                             child: Column(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .center,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${findserviceradioList[index]}",
-                                                  style: TextStyle(
-                                                      fontFamily:
-                                                      'spartan',
-                                                      color: Color(
-                                                          0xff292929),
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w700,
+                                                  "${getServiceDetailsModel!.data![index].serviceType!.serviceTypeName}",
+                                                  style: TextStyle(fontFamily: 'spartan',
+                                                      color: Color(0xff292929),
+                                                      fontWeight: FontWeight.w700,
                                                       fontSize: 16),
                                                 ),
                                                 Text(
-                                                  "\$20 for 30 min",
-                                                  style: TextStyle(
-                                                      fontFamily:
-                                                      'spartan',
-                                                      color: Color(
-                                                          0xff414141),
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w500,
+                                                  "\$${getServiceDetailsModel!.data![index].price} for ${Util().formatMinuteDuration(
+                                                    hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
+                                                    min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
+                                                  )}",
+                                                  style: TextStyle(fontFamily: 'spartan',
+                                                      color: Color(0xff414141),
+                                                      fontWeight: FontWeight.w500,
                                                       fontSize: 10),
                                                 ),
                                               ],
@@ -535,30 +529,20 @@ class _add_SreviceState extends State<edit_add_service> {
                                           ),
                                           Spacer(),
                                           Radio<String>(
-                                            value:
-                                            findserviceradioList[
-                                            index],
+                                            value: getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!,
                                             activeColor:
                                             Color(0xff01635D),
-                                            groupValue:
-                                            selectdradioValue,
+                                            groupValue: selectdradioValue,
                                             onChanged: (value) {
                                               setState(() {
-                                                selectdradioValue =
-                                                    value
-                                                        .toString();
-
-                                                Navigator.pop(
-                                                    context);
+                                                selectdradioValue = value.toString();
+                                                Navigator.pop(context);
                                               });
                                             },
                                           )
                                         ],
                                       ),
-                                      Divider(
-                                        thickness: 1,
-                                        color: Color(0xffCFCFCF),
-                                      ),
+                                      Divider(thickness: 1, color: Color(0xffCFCFCF),),
                                     ],
                                   ),
                                 ),
@@ -578,6 +562,7 @@ class _add_SreviceState extends State<edit_add_service> {
       },
     );
   }
+
   Durationdialog() {
     double height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
@@ -685,6 +670,7 @@ class _add_SreviceState extends State<edit_add_service> {
       },
     );
   }
+
   recurringoption() {
     double height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -

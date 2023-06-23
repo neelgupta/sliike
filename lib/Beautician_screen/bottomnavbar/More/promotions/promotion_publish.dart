@@ -100,7 +100,7 @@ class _promotion_PublishState extends State<promotion_Publish> {
                 ),
                 textComoon("Save Big on ${widget.body["serviceName"]}", 18, Color(0xff292929), FontWeight.w700),
                 SizedBox(height: height*0.01,),
-                textComoonfade("Save big from on ${widget.StartDate} ${widget.EndDate} to ${widget.body["serviceName"]}. Get ${widget.body["discount"]} off on this service.", 14, Color(0xff414141), FontWeight.w500),
+                textComoonfade("Save big from on ${widget.body["serviceName"]} ${widget.StartDate} to ${widget.EndDate}. Get ${widget.body["discount"]} off on this service.", 14, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.05,),
                 Container(
                   height: height*0.1,
@@ -109,7 +109,7 @@ class _promotion_PublishState extends State<promotion_Publish> {
                     color: Color(0xff78D6F5),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child:Center(child: textComoon("${widget.body["discount"]} %", 18, Color(0xff292929), FontWeight.w700)),
+                  child:Center(child: textComoon("${widget.body["discount"]} % OFF", 18, Color(0xff292929), FontWeight.w700)),
                 ),
                 SizedBox(height: height*0.04,),
                 textComoon("Service", 12, Color(0xff292929), FontWeight.w700),

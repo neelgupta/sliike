@@ -49,7 +49,6 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         if (details.data.status == 0) {
           appointmentStatus = "PENDING!";
           // pending
-
           statusAppbarColor = const Color(0xFFF2C94C);
         } else if (details.data.status == 1) {
           //Accepted
@@ -324,7 +323,6 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           : AppBar(
               automaticallyImplyLeading: false,
               toolbarHeight: height * 0.13, //
-
               flexibleSpace: Container(
                 color: statusAppbarColor,
                 child: Column(

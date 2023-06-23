@@ -1113,22 +1113,35 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                 InkWell(
                   onTap: () {
                     if(!widget.secondflow){
-                      Navigator.pop(context, {
-                        "day": selectedValue,
-                        "startTime": startTime,
-                        "endTime": endTime,
-                        "breakStartTime": breakstartTime,
-                        "breakEndTime": breakendTime,
-                        "isOpen": Onoff,
-                      });
-                      print("POp Data :  ${{
-                        "day": selectedValue,
-                        "startTime": startTime,
-                        "endTime": endTime,
-                        "breakStartTime": breakstartTime,
-                        "breakEndTime": breakendTime,
-                        "isOpen": Onoff,
-                      }}");
+                      if(selectedValue.isEmpty){
+                        Fluttertoast.showToast(msg: "Please select day");
+                      }else if(startTime.isEmpty){
+                        Fluttertoast.showToast(msg: "Please select start time");
+                      }else if(endTime.isEmpty){
+                        Fluttertoast.showToast(msg: "Please select end time");
+                      }else if(breakstartTime.isEmpty){
+                        Fluttertoast.showToast(msg: "Please select break start time");
+                      }else if(breakendTime.isEmpty){
+                        Fluttertoast.showToast(msg: "Please select break end time");
+                      }
+                      else{
+                        Navigator.pop(context, {
+                          "day": selectedValue,
+                          "startTime": startTime,
+                          "endTime": endTime,
+                          "breakStartTime": breakstartTime,
+                          "breakEndTime": breakendTime,
+                          "isOpen": Onoff,
+                        });
+                        print("POp Data :  ${{
+                          "day": selectedValue,
+                          "startTime": startTime,
+                          "endTime": endTime,
+                          "breakStartTime": breakstartTime,
+                          "breakEndTime": breakendTime,
+                          "isOpen": Onoff,
+                        }}");
+                      }
                     }else{
                       if (Onoff == false) {
                         Fluttertoast.showToast(

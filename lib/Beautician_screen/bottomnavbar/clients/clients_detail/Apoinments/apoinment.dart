@@ -102,10 +102,6 @@ class _apoinmentState extends State<apoinment> {
 
 
 
-
-
-
-
 ///Upcoming
 Widget upcoming(BuildContext context,){
   double height = MediaQuery.of(context).size.height -

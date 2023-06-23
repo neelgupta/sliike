@@ -1,7 +1,15 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:new_sliikeapps_apps/services/card_services.dart';
+
+import '../../utils/util.dart';
 
 class new_card extends StatefulWidget {
   const new_card({Key? key}) : super(key: key);
@@ -12,6 +20,11 @@ class new_card extends StatefulWidget {
 
 class _new_cardState extends State<new_card> {
   bool save = false;
+  cardServices _cardServices = cardServices();
+  TextEditingController txtCardHolderName = TextEditingController();
+  TextEditingController txtCardNumber = TextEditingController();
+  TextEditingController txtCVV = TextEditingController();
+  var txtExpiry = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
@@ -40,6 +53,7 @@ class _new_cardState extends State<new_card> {
                       fontWeight: FontWeight.bold)).tr(),
               SizedBox(height: height*0.04,),
               TextField(
+                controller: txtCardHolderName,
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -48,6 +62,8 @@ class _new_cardState extends State<new_card> {
               ),
               SizedBox(height: height*0.03,),
               TextField(
+                inputFormatters: [LengthLimitingTextInputFormatter(16)],
+                controller: txtCardNumber,
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -66,9 +82,32 @@ class _new_cardState extends State<new_card> {
                               color: Colors.black,
                               fontFamily: "spartan",)).tr(),
                       SizedBox(height: height*0.02,),
+                      // SizedBox(
+                      //   width: width*0.43,
+                      //   child: TextField(
+                      //     controller: txtExpiry,
+                      //     onChanged: (value){
+                      //       if(value.length == 2) txtExpiry.text += "/";
+                      //     },
+                      //     style: TextStyle(fontFamily: "spartan",fontSize: 12),
+                      //     decoration: InputDecoration(
+                      //       border: OutlineInputBorder(),
+                      //       labelText: "MM/YY",
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
                         width: width*0.43,
-                        child: const TextField(
+                        child: TextFormField(
+                          controller: txtExpiry,
+                          onChanged: (value){
+                            // if(value.length == 2) txtExpiry.text += "/";
+
+
+                            log("txtExpiry.text :: ${txtExpiry.text}");
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(5),CardExpirationFormatter(),],
                           style: TextStyle(fontFamily: "spartan",fontSize: 12),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -91,6 +130,8 @@ class _new_cardState extends State<new_card> {
                       SizedBox(
                         width: width*0.43,
                         child: TextField(
+                          inputFormatters: [LengthLimitingTextInputFormatter(3)],
+                          controller: txtCVV,
                           style: TextStyle(fontFamily: "spartan",fontSize: 12),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -175,9 +216,25 @@ class _new_cardState extends State<new_card> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //   return appointments();
-                      // },));
+                      if(txtCardHolderName.text.isEmpty){
+                        Fluttertoast.showToast(msg: "Please fill Card Holder Name!!");
+                      }else if(txtCardNumber.text.isEmpty){
+                        Fluttertoast.showToast(msg: "Please fill Card Number!!");
+                      }else if(txtExpiry.text.isEmpty){
+                        Fluttertoast.showToast(msg: "Please fill Card Expiry!!");
+                      }else if(txtCVV.text.isEmpty){
+                        Fluttertoast.showToast(msg: "Please fill Card CVV");
+                      }else{
+                        var Body = {
+                          "cardHolderName" : txtCardHolderName.text,
+                          "cardNumber" : txtCardNumber.text,
+                          "cardMonth" : txtExpiry.text.split("/").first,
+                          "cardYear" : txtExpiry.text.split("/").last,
+                          "cardCVC" : txtCVV.text,
+                        };
+                        log("Body :: $Body");
+                        _cardServices.addCardDetails(context, Body);
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,

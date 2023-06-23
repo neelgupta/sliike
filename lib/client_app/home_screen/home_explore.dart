@@ -1219,9 +1219,9 @@ class _home_exploreState extends State<home_explore> {
     } catch (e) {
       rethrow;
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      // setState(() {
+      //   isLoading = false;
+      // });
     }
   }
 

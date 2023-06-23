@@ -171,8 +171,21 @@ class ApiUrlList {
   /// Promotion Services Endpoints (Beautician) ///
   static String getServicesList = "${baseUrl}beautician/getServicesList";
   static String getProductList = "${baseUrl}beautician/getProductList";
-  static String addPromotion = "${baseUrl}}beautician/addPromotion";
-  static String getServices = "${baseUrl}}beautician/getPromotionList/service";
+  static String addPromotion = "${baseUrl}beautician/addPromotion";
+  static String getServices = "${baseUrl}beautician/getPromotionList/service";
+
+
+  /// Client Add Rating ///
+  static String addRating = "${baseUrl}client/addRating";
+
+
+  /// Switch Account ///
+  static String switchAccount = "${baseUrl}auth/switch-account/";
+
+
+  /// Appointment Services Endpoints ///
+  static String getServiceDetails = "${baseUrl}beautician/getServiceDetails";
+
 
 
 

@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +14,9 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/signup.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/home_explore.dart';
+import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -39,6 +46,9 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
   bool isLoading = false;
   String businessname = "";
   String Userid = "";
+  String firebaseToken = "";
+  String deviceToken = "";
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -362,83 +372,81 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //     ),
                       //   ),
                       // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20,right: 20),
-                      //   child: Container(
-                      //     padding: EdgeInsets.only(top: 10,bottom: 60),
-                      //     decoration: BoxDecoration(
-                      //         border: Border(bottom: BorderSide(color: Colors.black12))
-                      //     ),
-                      //     child: InkWell(
-                      //       onTap: (){
-                      //         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //           return promotion();
-                      //         },));
-                      //       },
-                      //       child: Row(
-                      //         children: [
-                      //           Container(
-                      //             height: 30,
-                      //           child: Image.asset("assets/images/receiptdisscount.png"),
-                      //           ),
-                      //           SizedBox(width: 15,),
-                      //           textComoon("Promotions",14,Color(0xff414141), FontWeight.w500),
-                      //           Spacer(),
-                      //           Container(
-                      //             height: 15,
-                      //             width: 30,
-                      //             child: Image.asset("assets/images/righticon.png"),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Container(
-                      //   height: height * 0.05,
-                      //   width: width,
-                      //   color: Color(0xffF3F3F3),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20,right: 20),
+                        child: Container(
+                          padding: EdgeInsets.only(top: 10,bottom: 60),
+                          decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.black12))
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return promotion();
+                              },));
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 30,
+                                child: Image.asset("assets/images/receiptdisscount.png"),
+                                ),
+                                SizedBox(width: 15,),
+                                textComoon("Promotions",14,Color(0xff414141), FontWeight.w500),
+                                Spacer(),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset("assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: height * 0.05,
+                        width: width,
+                        color: Color(0xffF3F3F3),
+                      ),
                       //
-                      // //help center
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20, right: 20),
-                      //   child: Container(
-                      //     padding: EdgeInsets.symmetric(
-                      //       vertical: 17,
-                      //     ),
-                      //     decoration: BoxDecoration(
-                      //         border: Border(
-                      //             bottom: BorderSide(color: Colors.black12))),
-                      //     child: InkWell(
-                      //       onTap: () {
-                      //         Navigator.push(context, MaterialPageRoute(
-                      //           builder: (context) {
-                      //             return help_center_beauti();
-                      //           },
-                      //         ));
-                      //       },
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           textComoon("Help Center", 14, Color(0xff414141),
-                      //               FontWeight.w500),
-                      //           Container(
-                      //             height: 15,
-                      //             width: 30,
-                      //             child: Image.asset(
-                      //                 "assets/images/righticon.png"),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      //help center
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 17,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(color: Colors.black12))),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return help_center_beauti();
+                                },
+                              ));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textComoon("Help Center", 14, Color(0xff414141),
+                                    FontWeight.w500),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       InkWell(
                         onTap: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          //   return homescreen();
-                          // },));
+                          switchAccount();
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20,right: 20),
@@ -450,7 +458,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                textComoon("Become Client",14,Color(0xff414141), FontWeight.w500),
+                                textComoon(!getmodelProfile!.data!.isRegisterUser!? "Become Client" : "Switch to client",14,Color(0xff414141), FontWeight.w500),
                                 Container(
                                   height: 15,
                                   width: 30,
@@ -530,25 +538,22 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       log("getApi response.body ==> ${response.body}");
       log("getAPi status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
-        // Map map = jsonDecode(response.body);
-        getmodelProfile =
-            getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
+        getmodelProfile = getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
         if (getmodelProfile!.status == 200) {
           setState(() {
+            getDeviceInfo();
+            getFirebaseToken();
             businessname = getmodelProfile!.data?.businessName ?? '';
             Userid = getmodelProfile!.data?.uid ?? '';
           });
-          //imagepath = getmodelProfile?.data?.profileImage ?? '';
-          // print("dataphone===${getmodelProfile?.data?.userId?.phoneNumber}");
-          // print("data_countryname===${_countryname}");
         }
       }
     } catch (e) {
       rethrow;
     } finally {
-      setState(() {
+      // setState(() {
         isLoading = false;
-      });
+      // });
       // Loader.hide();
     }
   }
@@ -619,6 +624,81 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  switchAccount() async {
+    Loader.show(context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator: const CircularProgressIndicator(
+            backgroundColor: Color(0xff01635D)),
+        themeData: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color(0xff01635D))));
+    var Body = {
+      'deviceToken': deviceToken,
+      'firebaseToken': firebaseToken,
+    };
+    log("Body : ${Body}");
+    log("Token : ${Helper.prefs!.getString(UserPrefs.keyutoken)}");
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.post(Uri.parse("${ApiUrlList.switchAccount}${"user"}"),
+        body: jsonEncode(Body),
+        headers: Headers
+    );
+    log('switchAccount Code : ${response.statusCode}');
+    log('switchAccount Body :${response.body}');
+    log('switchAccount Payload Body :${Body}');
+    var map = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      Loader.hide();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homescreen(selectedIndex: 0),));
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Loader.hide();
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  getFirebaseToken() async {
+    if (Platform.isIOS) {
+      await _firebaseMessaging.requestPermission().then((value) async {
+        firebaseToken = (await _firebaseMessaging.getToken())!;
+      });
+    } else {
+      firebaseToken = (await _firebaseMessaging.getToken())!;
+    }
+    print(firebaseToken);
+  }
+
+  getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceToken = androidInfo.id;
+      print('Device id is ${androidInfo.id}'); // e.g. "Moto G (4)"
+    } else {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceToken = iosInfo.identifierForVendor!;
+      print('Device id is ${iosInfo.identifierForVendor!}');
     }
   }
 

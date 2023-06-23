@@ -271,15 +271,15 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetyList() async {
-    Fluttertoast.showToast(msg: "getHealthSafetyListStart");
+    setState(() {
+      isLoading = true;
+    });
     var getUri = Uri.parse(ApiUrlList.getHealthSafetyList);
-    Fluttertoast.showToast(msg: "getHealthSafetyListCall");
       var response = await http.get(getUri);
       log("getHealthSafetyList Code ====> ${response.statusCode}");
       log("getHealthSafetyList Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        Fluttertoast.showToast(msg: "getHealthSafetyListDone");
           getHealthSafetyData = getHealthSafety.fromjson(map);
           await getHealthSafetySelected();
       }
@@ -346,13 +346,14 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
   }
 
   getHealthSafetySelected() async {
-    Fluttertoast.showToast(msg: "getHealthSafetySelectedStart");
+    setState(() {
+      isLoading = true;
+    });
       var Headers = {
         "Content-Type": "application/json; charset=utf-8",
         "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var getUri = Uri.parse(ApiUrlList.getHealthSafety);
-    Fluttertoast.showToast(msg: "getHealthSafetySelectedCall");
       var response = await http.get(
           getUri,
           headers: Headers
@@ -361,7 +362,6 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       log("getHealthSafetySelected Body ====>  ${response.body}");
       Map map = jsonDecode(response.body);
       if(map['status'] == 200) {
-        Fluttertoast.showToast(msg: "getHealthSafetySelectedDone");
         setState(() {
           selectedData = getHealthSafetySelectedData.fromjson(map);
           detailForClient = selectedData!.data!.detailForClient;
@@ -396,14 +396,13 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
 
 class getHealthSafety{
   int status;
-  String message;
   List<getHealthSafetyData>  data;
-  getHealthSafety(this.status, this.message,this.data);
+  getHealthSafety(this.status,this.data);
 
   factory getHealthSafety.fromjson(Map<dynamic,dynamic>map){
     List list = map["data"];
     List<getHealthSafetyData> d = list.map((e) => getHealthSafetyData.fromjson(e)).toList();
-    return getHealthSafety(map['status'], map['message'],d);
+    return getHealthSafety(map['status'],d);
   }
 }
 class getHealthSafetyData{

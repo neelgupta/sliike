@@ -1,7 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getAppointmentDetailsModel.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appoinment.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../../services/calender_service.dart';
 import '../../../../b_model/employee_get_list.dart';
@@ -9,6 +19,7 @@ import '../../../../b_model/get_appointment_details_model.dart';
 import '../confirmed_Future_Apoi/confirmed_appoinment/future_appointment/appointment_detail_screen.dart';
 import 'allow_location.dart';
 import 'appointment_data_source.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class calender extends StatefulWidget {
@@ -28,9 +39,9 @@ class _calenderState extends State<calender> {
 
   OverlayEntry? popupDialog;
 
-  GetAppointMentDetailsModel? appointMentDetails;
+  GetAppointmentDetailModel? appointMentDetails;
   List<EmployeeData> employeeDataList = [];
-  List<AppointData> appointDataList = [];
+  List<AppointmentDatum> appointDataList = [];
   bool isThereAnyEvent = false;
 
   CalenderService calenderService = CalenderService();
@@ -38,6 +49,11 @@ class _calenderState extends State<calender> {
 
   bool isLoading = false;
   bool isAppointmentsLoading = false;
+
+  ScrollController _scrollController = ScrollController();
+
+  int Index = 0;
+
 
   getDates(DateTime date) {
     setState(() {
@@ -50,11 +66,69 @@ class _calenderState extends State<calender> {
         ),
       ).duration.inDays;
       for (int i = 1; i <= noOfDays; i++) {
-        dates.add(
-          DateTime(date.year, date.month, i),
+        log("Index ${Index}");
+        dates.add(DateTime(date.year, date.month, i),
         );
       }
+      if (_scrollController.hasClients) {
+        for(int i =0; i< dates.length;i++){
+
+          // log("pickeddate == dates[i] : ${pickeddate == dates[i]}");
+        if(pickeddate == dates[i]){
+          log("pickeddate == dates[i] : ${pickeddate == dates[i]}");
+          log("dates[i] : ${dates[i]}");
+          log("i.toDouble() : ${i.toDouble()}");
+
+        setState(() {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent/
+            (dates.length-6) * i);
+
+        });
+        }
+      }
+        }
     });
+  }
+
+  List<TimeRegion> _getTimeRegions() {
+    final List<TimeRegion> regions = <TimeRegion>[];
+    if(appointMentDetails?.data?.timingOfDay?.breakStartTime!= ""&& appointMentDetails?.data?.timingOfDay?.breakEndTime!=""){
+      String bsHour = appointMentDetails?.data?.timingOfDay?.breakStartTime?.split(":")[0] ?? "00";
+      String bsMinute = appointMentDetails?.data?.timingOfDay?.breakStartTime?.split(":")[1] ?? "00";
+      var now = DateTime.now();
+      DateTime startBreakDateTime = DateTime(
+          pickeddate.year,
+          pickeddate.month,
+          pickeddate.day,
+          // appointMentDetails?.data?.appointmentData?[0].dateTime!.year ?? now.year,
+          // appointMentDetails?.data?.appointmentData?[0].dateTime!.month ?? now.month,
+          // appointMentDetails?.data?.appointmentData?[0].dateTime!.day ?? now.day,
+          int.parse(bsHour),
+          int.parse(bsMinute)
+      );
+      String beHour = appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[0] ?? "00";
+      String beMinute = appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[1] ?? "00";
+      DateTime endBreakDateTime = DateTime(
+          pickeddate.year,
+          pickeddate.month,
+          pickeddate.day,
+          // appointMentDetails?.data?.appointmentData?[0].endDateTime!.year ?? now.year,
+          // appointMentDetails?.data?.appointmentData?[0].endDateTime!.month ?? now.month,
+          // appointMentDetails?.data?.appointmentData?[0].endDateTime!.day ?? now.day,
+          int.parse(beHour),
+          int.parse(beMinute)
+      );
+      log("startBreakDateTime ${startBreakDateTime}");
+      log("endBreakDateTime ${endBreakDateTime}");
+      regions.add(TimeRegion(
+          startTime: startBreakDateTime,
+          endTime: endBreakDateTime,
+          enablePointerInteraction: false,
+          color: Colors.grey.withOpacity(0.2),
+          text: 'Break'));
+
+    }
+    return regions;
   }
 
   // setEmployeeDataList() {
@@ -88,11 +162,47 @@ class _calenderState extends State<calender> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCalendarAppointments2(pickeddate);
+    print(pickeddate);
 
-    getCalendarAppointments(pickeddate);
   }
 
-  getCalendarAppointments(selectedDate, {String? stylishId}) async {
+  // getCalendarAppointments(selectedDate, {String? stylishId}) async {
+  //   setState(() {
+  //     pickeddate = selectedDate;
+  //     // isAppointmentLoading = true;
+  //     isAppointmentsLoading = true;
+  //   });
+  //
+  //   getDates(pickeddate);
+  //
+  //   appointDataList.clear();
+  //
+  //   var date = DateFormat('yyyy-MM-dd').format(selectedDate);
+  //   appointMentDetails = await calenderService.getAppointmentDetailByDate(
+  //     selectedDate: date,
+  //     stylishId: stylishId,
+  //   );
+  //
+  //   if (appointMentDetails != null) {
+  //     if (appointMentDetails!.data.isNotEmpty) {
+  //       appointDataList.addAll(appointMentDetails!.data);
+  //
+  //     } else {
+  //       // appointDataList.clear();
+  //     }
+  //     // if (appointDataList.isNotEmpty) {
+  //     //   getAppointDataSource();
+  //     // }
+  //   }
+  //
+  //   // log("appointDataList len ${appointDataList.length}");
+  //   setState(() {
+  //     isAppointmentsLoading = false;
+  //   });
+  // }
+
+  getCalendarAppointments2(selectedDate,{String? stylishId}) async {
     setState(() {
       pickeddate = selectedDate;
       // isAppointmentLoading = true;
@@ -104,18 +214,19 @@ class _calenderState extends State<calender> {
     appointDataList.clear();
 
     var date = DateFormat('yyyy-MM-dd').format(selectedDate);
-    appointMentDetails = await calenderService.getAppointmentDetailByDate(
+    var day = DateFormat('EEEE').format(selectedDate);
+    appointMentDetails = await calenderService.getAppointmentDetailByDate2(
       selectedDate: date,
       stylishId: stylishId,
+      selectedDay: day
     );
 
     if (appointMentDetails != null) {
-      if (appointMentDetails!.data.isNotEmpty) {
-        appointDataList.addAll(appointMentDetails!.data);
+      if (appointMentDetails!.data!.appointmentData!.isNotEmpty) {
+        appointDataList.addAll(appointMentDetails!.data!.appointmentData!);
       } else {
         // appointDataList.clear();
       }
-
       // if (appointDataList.isNotEmpty) {
       //   getAppointDataSource();
       // }
@@ -126,6 +237,7 @@ class _calenderState extends State<calender> {
       isAppointmentsLoading = false;
     });
   }
+
 
   AppointmentDataSource getAppointDataSource() {
     List<Appointment> meetings = <Appointment>[];
@@ -146,36 +258,31 @@ class _calenderState extends State<calender> {
         // startTimeZoneName = singleData.dateTime.timeZoneName;
         // endTimeZoneName = singleData.endDateTime.timeZoneName;
         startTime = DateTime(
-          singleData.dateTime.year,
-          singleData.dateTime.month,
-          singleData.dateTime.day,
-          singleData.dateTime.hour,
-          singleData.dateTime.minute,
-          singleData.dateTime.second,
+          singleData.dateTime!.year,
+          singleData.dateTime!.month,
+          singleData.dateTime!.day,
+          singleData.dateTime!.hour,
+          singleData.dateTime!.minute,
+          singleData.dateTime!.second,
         );
         endTime = DateTime(
-          singleData.endDateTime.year,
-          singleData.endDateTime.month,
-          singleData.endDateTime.day,
-          singleData.endDateTime.hour,
-          singleData.endDateTime.minute,
-          singleData.endDateTime.second,
+          singleData.endDateTime!.year,
+          singleData.endDateTime!.month,
+          singleData.endDateTime!.day,
+          singleData.endDateTime!.hour,
+          singleData.endDateTime!.minute,
+          singleData.endDateTime!.second,
         );
-
         meetings.add(
           Appointment(
+            isAllDay: false,
             id: singleData.id,
-            subject:
-                "${singleData.clientData.firstName} ${singleData.clientData.lastName}(${singleData.serviceDetails.serviceTypeName})",
+            subject: "${singleData.clientData?.firstName} ${singleData.clientData?.lastName}(${singleData.serviceDetails?.serviceTypeName})",
             startTime: startTime.toLocal(),
             endTime: endTime.toLocal(),
             // startTimeZone: startTimeZoneName,
             // endTimeZone: endTimeZoneName,
-
-            color:
-                // Colors.primaries[Random().nextInt(appointDataList.length)].shade500,
-                const Color(0xFF005874),
-
+            color: const Color(0xFF005874),
             // isAllDay: false,
           ),
         );
@@ -183,7 +290,6 @@ class _calenderState extends State<calender> {
     }
     setState(() {
       isThereAnyEvent = meetings.isEmpty ? false : true;
-
       isLoading = false;
     });
 
@@ -217,6 +323,9 @@ class _calenderState extends State<calender> {
           ),
         ),
       );
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +369,7 @@ class _calenderState extends State<calender> {
                           pickeddate = date;
                           highlight = true;
                         });
-                        getCalendarAppointments(pickeddate);
+                        getCalendarAppointments2(pickeddate);
                       },
                       child: Row(
                         children: [
@@ -323,54 +432,50 @@ class _calenderState extends State<calender> {
           ),
         ),
       ),
-      // floatingActionButton: SpeedDial(
-      //   spaceBetweenChildren: 12,
-      //   animatedIcon: AnimatedIcons.add_event,
-      //   backgroundColor: Color(0xff01635D),
-      //   children: [
-      //     SpeedDialChild(
-      //       child: Center(child: Image(image: AssetImage("assets/images/clock.png"),height: 20,color: Colors.white,)),
-      //       backgroundColor: Color(0xffDD6A03),
-      //       label: "New Break Time"
-      //     ),
-      //     SpeedDialChild(
-      //         child: Center(child: Image(image: AssetImage("assets/images/calender.png"),height: 20,color: Colors.white,)),
-      //         backgroundColor: Color(0xffDD6A03),
-      //         label: "New Appointment",
-      //     ),
-      //   ],
-      // ),
-      // Column(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: [
-      //     Container(
-      //       child: Image(
-      //         image: AssetImage("assets/images/Group 12096.png"),
-      //         fit: BoxFit.cover,
-      //         height: 60,
-      //         width: 60,
-      //       ),
-      //     ),
-      //     SizedBox(
-      //       height: height * 0.04,
-      //     ),
-      //     FloatingActionButton(
-      //       backgroundColor: Color(0xff01635D),
-      //       onPressed: () {
-      //         setState(() {
-      //           Navigator.push(context, MaterialPageRoute(
-      //             builder: (context) {
-      //               return newAppointment();
-      //             },
-      //           ));
-      //         });
-      //       },
-      //       child: Icon(
-      //         Icons.add,
-      //       ),
-      //     ),
-      //   ],
-      // ),
+      floatingActionButton: SpeedDial(
+        spaceBetweenChildren: 12,
+        animatedIcon: AnimatedIcons.add_event,
+        backgroundColor: Color(0xff01635D),
+        activeIcon: Icons.close,
+        closeDialOnPop: true,
+        children: [
+          SpeedDialChild(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  add_Your_Work_Hours(
+                secondflow: false,
+                Day: appointMentDetails?.data?.timingOfDay?.day,
+                isOpen: appointMentDetails?.data?.timingOfDay?.isOpen,
+                startTime: appointMentDetails?.data?.timingOfDay?.startTime,
+                endTime: appointMentDetails?.data?.timingOfDay?.endTime,
+              ),)).then((value){
+                var displayDate = DateFormat('yyyy-MM-dd').format(pickeddate);
+                Map<String ,dynamic> body = {
+                  "day": value["day"],
+                  "date" : displayDate,
+                  "startTime": value["startTime"],
+                  "endTime": value["endTime"],
+                  "breakStartTime": value["breakStartTime"],
+                  "breakEndTime": value["breakEndTime"],
+                  "isOpen": value["isOpen"]
+                };
+                saveCalenderAdjustment(body);
+              });
+            },
+            child: Center(child: Image(image: AssetImage("assets/images/clock.png"),height: 20,color: Colors.white,)),
+            backgroundColor: Color(0xffDD6A03),
+            label: "New Break Time"
+          ),
+          SpeedDialChild(
+              onTap: (){
+                // Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppoinment_Viwe_Add(),));
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppointment(),));
+              },
+              child: Center(child: Image(image: AssetImage("assets/images/calender.png"),height: 20,color: Colors.white,)),
+              backgroundColor: Color(0xffDD6A03),
+              label: "New Appointment",
+          ),
+        ],
+      ),
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -379,24 +484,23 @@ class _calenderState extends State<calender> {
               child: Column(
                 children: [
                   SizedBox(
+                    // color: Colors.red,
                     height: 70,
                     width: width,
                     child: ListView.builder(
                       itemCount: dates.length,
                       scrollDirection: Axis.horizontal,
+                      controller: _scrollController,
                       itemBuilder: (context, index) {
-                        // dv.log(
-                        //     "dates[index] == pickeddate ${dates[index]}, $pickeddate");
                         return GestureDetector(
                           onTap: () {
                             setState(() {
                               pickeddate = dates[index];
                               calendarcontroller.displayDate = dates[index];
                             });
-
                             log("pickeddate :; ${pickeddate}");
                             log("calendarcontroller.displayDate :; ${calendarcontroller.displayDate}");
-                            getCalendarAppointments(dates[index]);
+                            getCalendarAppointments2(dates[index]);
                           },
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -491,6 +595,7 @@ class _calenderState extends State<calender> {
                   ),
                   if (employeeDataList.isNotEmpty)
                     Container(
+                      // color: Colors.green,
                       height: 70,
                       width: width,
                       decoration: const BoxDecoration(color: Colors.white),
@@ -501,7 +606,6 @@ class _calenderState extends State<calender> {
                           return const SizedBox(width: 10);
                         },
                         itemBuilder: (context, index) {
-                          // log("employeesList.length ${employeeDataList.length}");
                           var singleEmp = employeeDataList[index];
                           return GestureDetector(
                             onTap: () {
@@ -512,7 +616,7 @@ class _calenderState extends State<calender> {
                                 employeeDataList[index].isSelected = true;
                               });
                               // getCalendarAppointments(pickeddate);
-                              getCalendarAppointments(
+                              getCalendarAppointments2(
                                 pickeddate,
                                 stylishId: employeeDataList[index].id,
                               );
@@ -628,14 +732,19 @@ class _calenderState extends State<calender> {
                       //   ),
                       // ),
                     ),
-                  Stack(
+                    Stack(
                     children: [
                       Container(
-                        // constraints: const BoxConstraints.expand(),
+                        // color: Colors.red
                         margin: const EdgeInsets.all(0),
                         height: height * 0.7,
                         width: double.infinity,
                         child: SfCalendar(
+                          monthViewSettings: const MonthViewSettings(showAgenda: true),
+                          showCurrentTimeIndicator: true,
+                          showWeekNumber: true,
+                          specialRegions: _getTimeRegions(),
+                          // allowAppointmentResize: true,
                           view: CalendarView.day,
                           firstDayOfWeek: 1,
                           headerHeight: 0,
@@ -643,8 +752,7 @@ class _calenderState extends State<calender> {
                           initialSelectedDate: pickeddate,
                           initialDisplayDate: pickeddate,
                           controller: calendarcontroller,
-                          loadMoreWidgetBuilder:
-                              (context, loadMoreAppointments) {
+                          loadMoreWidgetBuilder: (context, loadMoreAppointments) {
                             return isAppointmentsLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(),
@@ -652,43 +760,32 @@ class _calenderState extends State<calender> {
                                 : const SizedBox();
                           },
                           allowViewNavigation: true,
-                          showCurrentTimeIndicator: true,
                           todayHighlightColor: Colors.red,
-                          // viewNavigationMode: ViewNavigationMode.none,
                           onViewChanged: (viewChangedDetails) {
                             log("viewChangedDetails.visibleDates year :: ${viewChangedDetails.visibleDates.first.year.toString()}    pickeddate.month  ${pickeddate.year}");
                             log("viewChangedDetails.visibleDates month :: ${viewChangedDetails.visibleDates.first.month.toString()} ,,  pickeddate.month ${pickeddate.month}");
                             log("viewChangedDetails.visibleDates  :: ${viewChangedDetails.visibleDates.first.toString()} ,,  pickeddate $pickeddate");
 
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((timeStamp) {
-                              getCalendarAppointments(
-                                viewChangedDetails.visibleDates.first,
-                              );
+                            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                              getCalendarAppointments2(viewChangedDetails.visibleDates.first);
                             });
                           },
                           dataSource: getAppointDataSource(),
-                          timeSlotViewSettings: const TimeSlotViewSettings(
+                          timeSlotViewSettings:  TimeSlotViewSettings(
+                            numberOfDaysInView: -1,
                             timeIntervalWidth: 50,
                             startHour: 0,
                             endHour: 24,
-
-                            // numberOfDaysInView: 31,
-
                             timeRulerSize: 50,
-
                             timeInterval: Duration(minutes: 15),
-                            timelineAppointmentHeight: 100,
-                            // timeTextStyle: TextStyle(color: Colors.blueGrey),
-                            timeFormat: 'h:mm a',
+                            timelineAppointmentHeight: 50,
+                            timeFormat: appointMentDetails?.data?.calenderSetting?.formate==12? 'h:mm a' : 'HH:mm',
                             timeIntervalHeight: 35,
                           ),
-                          appointmentBuilder: (context,
-                              CalendarAppointmentDetails appoDetails) {
+                          appointmentBuilder: (context, CalendarAppointmentDetails appoDetails) {
                             // log("appointment.subject :${appoDetails.appointments.first.subject}");
                             // log("appointment.startTime :${appoDetails.appointments.first.startTime}");
                             // log("appointment.endTime  :${appoDetails.appointments.first.endTime}");
-
                             return GestureDetector(
                               // onLongPress: () {
                               //   popupDialog = showPopupAppointmentDialog();
@@ -697,37 +794,16 @@ class _calenderState extends State<calender> {
                               // // remove the OverlayEntry from Overlay, so it would be hidden
                               // onLongPressEnd: (details) =>
                               //     popupDialog?.remove(),
-
                               onTap: () {
-                                if (DateTime.now().isAfter(
-                                    appoDetails.appointments.first.startTime)) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          AppointmentDetailScreen(
-                                        appointmentId:
-                                            appoDetails.appointments.first.id,
-                                        isFuture: false,
-                                      ),
-                                    ),
-                                  );
+                                if (DateTime.now().isAfter(appoDetails.appointments.first.startTime)) {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => AppointmentDetailScreen(appointmentId: appoDetails.appointments.first.id, isFuture: false,),),);
                                   // log("value is : $value");
                                   // if (value as bool == true) {
                                   //   getCalenderAppointsApis();
                                   // }
                                 } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          AppointmentDetailScreen(
-                                        appointmentId:
-                                            appoDetails.appointments.first.id,
-                                        isFuture: true,
-                                      ),
-                                    ),
-                                  );
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentDetailScreen(appointmentId: appoDetails.appointments.first.id,isFuture: true,),));
                                   // log("value is : $value");
                                   // if (value as bool) {
                                   //   getCalenderAppointsApis();
@@ -735,8 +811,6 @@ class _calenderState extends State<calender> {
                                 }
                               },
                               child: Container(
-                                // height: 150,
-                                // timeDiff.inMinutes * 10,
                                 margin: const EdgeInsets.only(
                                   left: 1,
                                   right: 0,
@@ -757,8 +831,6 @@ class _calenderState extends State<calender> {
                                 ),
                                 child: Wrap(
                                   spacing: 10,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "${DateFormat("hh:mm a").format(appoDetails.appointments.first.startTime)} - ${DateFormat("hh:mm a").format(appoDetails.appointments.first.endTime)}",
@@ -795,7 +867,7 @@ class _calenderState extends State<calender> {
 
                       Positioned(
                         right: 10,
-                        bottom: 25,
+                        bottom: 50,
                         child: Visibility(
                           visible: !isAppointmentsLoading,
                           child: Visibility(
@@ -972,4 +1044,57 @@ class _calenderState extends State<calender> {
             ),
     );
   }
+
+  saveCalenderAdjustment(Map<String,dynamic> body) async {
+    setState(() {
+      isLoading = true;
+    });
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var Body = body;
+    log("Body => ${jsonEncode(Body)}");
+    var response = await http.post(
+      Uri.parse(ApiUrlList.saveCalenderAdjustment),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("saveCalenderAdjustment Code : ${response.statusCode}");
+    log("saveCalenderAdjustment Body : ${response.body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      // var displayDate = DateFormat('yyyy-MM-dd').format(pickedDate!);
+      // var displayDay = DateFormat('EEEE').format(pickedDate!);
+      // getScheduleForDate(displayDate,displayDay.toString());
+      // setState(() {
+      //   // isLoading = false;
+      //   getScheduledData =  GetScheduledData.fromJson(jsonDecode(response.body));
+      // });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
 }

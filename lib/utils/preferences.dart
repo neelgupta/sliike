@@ -13,6 +13,7 @@ class UserPrefs {
   static String email = "";
   static String password = "";
   static int select = 0;
+  static String keyFirebaseToken = "";
 
   ///addBusinessDetail
   static const String keybusinessName = "businessName";

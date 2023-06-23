@@ -550,6 +550,7 @@ class Data {
   DateTime? updatedAt;
   int? v;
   PaymentDetails? paymentDetails;
+  RatingData? ratingData;
 
   Data({
     this.id,
@@ -568,7 +569,8 @@ class Data {
     this.createdAt,
     this.updatedAt,
     this.v,
-    this.paymentDetails
+    this.paymentDetails,
+    this.ratingData
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -589,6 +591,7 @@ class Data {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     paymentDetails: PaymentDetails.fromJson(json["paymentDetails"] ?? {}),
+    ratingData: RatingData.fromJson(json["ratingData"] ?? {})
   );
 
   Map<String, dynamic> toJson() => {
@@ -609,6 +612,7 @@ class Data {
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "paymentDetails": paymentDetails,
+    "ratingData" : ratingData
   };
 }
 
@@ -798,5 +802,25 @@ class PaymentDetails {
   Map<String, dynamic> toJson() => {
     "_id": id,
     "BookingId": bookingId,
+  };
+}
+
+class RatingData {
+  double rating;
+  String reviews;
+
+  RatingData({
+    required this.rating,
+    required this.reviews,
+  });
+
+  factory RatingData.fromJson(Map<String, dynamic> json) => RatingData(
+    rating: json["rating"],
+    reviews: json["reviews"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "rating": rating,
+    "reviews": reviews,
   };
 }

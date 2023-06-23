@@ -12,8 +12,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverification/emailverification.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/privcy_policy.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/teams_and_condition.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/unbording/unboarding%20screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -22,8 +24,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: camel_case_types, must_be_immutable
 class signUp extends StatefulWidget {
   bool? isverify;
+  String ? userType;
 
-  signUp({Key? key, this.isverify}) : super(key: key);
+  signUp({Key? key, this.isverify,this.userType}) : super(key: key);
 
   @override
   State<signUp> createState() => _signUpState();
@@ -883,6 +886,8 @@ class _signUpState extends State<signUp> {
                             fontSize: 12)),
                     InkWell(
                         onTap: () {
+                          widget.userType=="user"?
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const signInScreen(),)):
                           Navigator.pop(context);
                         },
                         child: const Text(" Sign In",

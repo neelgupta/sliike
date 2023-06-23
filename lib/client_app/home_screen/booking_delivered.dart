@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
@@ -25,11 +26,13 @@ class booking_delivered extends StatefulWidget {
 }
 
 class _booking_deliveredState extends State<booking_delivered> {
+  TextEditingController txtreviews = TextEditingController();
   bool rating = true;
   bool isLoading = false;
   OnlyoneModal? onlyonemodal;
   String beauticianId = "";
   String place = "";
+  double  ? ratingValue;
   getTimeFormatedValue(String minute) {
     String formatedTime = "";
     switch (minute) {
@@ -75,12 +78,15 @@ class _booking_deliveredState extends State<booking_delivered> {
     }
     return formatedTime;
   }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         getAppointmentPastList(widget.id);
+        print(widget.id);
+        print(Helper.prefs!.getString(UserPrefs.keyutoken));
       });
     });
   }
@@ -440,7 +446,7 @@ class _booking_deliveredState extends State<booking_delivered> {
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 20),
               //   child: Container(
-              //     height: height*0.58,
+              //     height: onlyonemodal?.data?.ratingData?.rating == null ? height*0.58 : height*0.30,
               //     width: width,
               //     decoration: BoxDecoration(
               //         color: const Color(0xFFE7E7E7),
@@ -450,26 +456,31 @@ class _booking_deliveredState extends State<booking_delivered> {
               //     child: Column(
               //       children: [
               //         SizedBox(height: height*0.03,),
-              //         const Text("rate",
+              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate",
               //             style: TextStyle(
               //                 fontSize: 22,
               //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr(),
-              //         SizedBox(height: height*0.04,),
-              //         const Text("rate_info",
+              //                 color: Colors.black)).tr() : Text("My Ratings",style: TextStyle(
+              //                 fontSize: 22,
+              //                 fontFamily: "spartan",
+              //                 color: Colors.black)),
+              //         onlyonemodal?.data?.ratingData?.rating == null ? SizedBox(height: height*0.04,) : SizedBox(),
+              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate_info",
               //             style: TextStyle(
               //                 fontSize: 12,
               //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr(),
-              //         const Text("you",
+              //                 color: Colors.black)).tr() : SizedBox(),
+              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("you",
               //             style: TextStyle(
               //                 fontSize: 12,
               //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr(),
+              //                 color: Colors.black)).tr() : SizedBox(),
               //         SizedBox(height: height*0.04,),
               //         RatingBar.builder(
+              //           initialRating: ratingValue ?? 0.0,
               //           direction: Axis.horizontal,
-              //           allowHalfRating: false,
+              //           allowHalfRating: true,
+              //           updateOnDrag: true,
               //           itemCount: 5,
               //           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
               //           itemBuilder: (context, _) => const Icon(
@@ -477,13 +488,17 @@ class _booking_deliveredState extends State<booking_delivered> {
               //             color: Colors.amber,
               //           ),
               //           onRatingUpdate: (rating) {
+              //             setState(() {
+              //               ratingValue = rating;
+              //             });
               //             print(rating);
               //           },
               //         ),
               //         SizedBox(height: height*0.04,),
-              //         rating == true?Padding(
+              //         onlyonemodal?.data?.ratingData?.rating == null ? Padding(
               //           padding: const EdgeInsets.symmetric(horizontal: 20),
               //           child: TextField(
+              //             controller: txtreviews,
               //             style: const TextStyle(fontFamily: "spartan",fontSize: 12),
               //             maxLines: 3,
               //             decoration: InputDecoration(
@@ -491,50 +506,51 @@ class _booking_deliveredState extends State<booking_delivered> {
               //               hintText: 'describe'.tr(),
               //             ),
               //           ),
-              //         ):Padding(
-              //           padding: const EdgeInsets.symmetric(horizontal: 20),
-              //           child: Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               const Text("My Review:",
-              //                   style: TextStyle(
-              //                       fontSize: 16,
-              //                       fontFamily: "spartan",
-              //                       color: Colors.black54
-              //                   )
-              //               ),
-              //               SizedBox(height: height*0.02,),
-              //               const Text("Rita delivered quality service",
-              //                   style: TextStyle(
-              //                       fontSize: 18,
-              //                       fontFamily: "spartan",
-              //                       color: Colors.black
-              //                   )
-              //               ),
-              //             ],
-              //           ),
-              //         ),
+              //         ) : SizedBox(),
+              //         onlyonemodal?.data?.ratingData?.reviews != null ? Padding(
+              //           padding: EdgeInsets.only(right: width * 0.48),
+              //           child: Text("My Review:",style: TextStyle(
+              //               fontSize: 13,
+              //               fontFamily: "spartan",
+              //               fontWeight: FontWeight.w500,
+              //               color: Colors.black)),
+              //         ) : SizedBox(),
+              //         onlyonemodal?.data?.ratingData?.reviews != null ? Container(
+              //           // color: Colors.red,
+              //           width: width*0.69,
+              //           child: Text("${onlyonemodal?.data?.ratingData?.reviews}",style: TextStyle(
+              //               fontSize: 15,
+              //               fontFamily: "spartan",
+              //               fontWeight: FontWeight.w500,
+              //               color: Colors.black)),
+              //         ) : SizedBox(),
               //         SizedBox(height: height*0.04,),
-              //         GestureDetector(
+              //         onlyonemodal?.data?.ratingData?.rating == null ? GestureDetector(
               //           onTap: () {
-              //             setState(() {
-              //               rating = false;
-              //             });
               //           },
               //           child: Padding(
               //             padding: const EdgeInsets.symmetric(horizontal: 20),
               //             child: Row(
               //               children: [
               //                 const Spacer(),
-              //                 Container(alignment: Alignment.center,
-              //                   height: height*0.07,
-              //                   width: width*0.3,
-              //                   decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
-              //                   child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
+              //                 InkWell(
+              //                   onTap: (){
+              //                     if(ratingValue == null){
+              //                       Fluttertoast.showToast(msg: "Please give rating");
+              //                     }else{
+              //                       addRating();
+              //                     }
+              //                   },
+              //                   child: Container(alignment: Alignment.center,
+              //                     height: height*0.07,
+              //                     width: width*0.3,
+              //                     decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
+              //                     child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
+              //                 ),
               //               ],
               //             ),
               //           ),
-              //         )
+              //         ) : SizedBox()
               //       ],
               //     ),
               //   ),
@@ -554,6 +570,7 @@ class _booking_deliveredState extends State<booking_delivered> {
     ),
     );
   }
+
   getAppointmentPastList(id) async {
     try {
       setState(() {
@@ -580,6 +597,7 @@ class _booking_deliveredState extends State<booking_delivered> {
         if(onlyonemodal!.data!.place == 0){
           setState(() {
             place = "Beautician’s place";
+            ratingValue = onlyonemodal?.data?.ratingData?.rating;
           });
         }else{
           setState(() {
@@ -601,4 +619,56 @@ class _booking_deliveredState extends State<booking_delivered> {
       });
     }
   }
+
+
+  addRating() async {
+    setState(() {
+      isLoading = true;
+    });
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var Body = {
+      "appointmentId" : widget.id,
+      "rating" : ratingValue,
+      "reviews" : txtreviews.text,
+    };
+    var response = await http.post(
+      Uri.parse(ApiUrlList.addRating),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("addRating Code : ${response.statusCode}");
+    log("addRating Body : ${response.body}");
+    log("addRating PayLoad : ${Body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 200) {
+      getAppointmentPastList(widget.id);
+      // setState(() {
+      //   isLoading = false;
+      // });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
 }

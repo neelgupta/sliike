@@ -156,11 +156,11 @@ class _demograPhicState extends State<demograPhic> {
                               child: Checkbox(
                                 checkColor: Colors.white,
                                 activeColor: Color(0xff01635D),
-                                value: getDemography!.data[index].isSelected!,
+                                value: getDemography!.data[index].isSelected,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    getDemography!.data[index].isSelected = value;
-                                    getDemography!.data[index].isSelected! ? demographicsIds.add(getDemography!.data[index].id) :
+                                    getDemography!.data[index].isSelected = value!;
+                                    getDemography!.data[index].isSelected ? demographicsIds.add(getDemography!.data[index].id) :
                                     demographicsIds.remove(getDemography!.data[index].id);
                                   });
                                 },),
@@ -341,27 +341,23 @@ class _demograPhicState extends State<demograPhic> {
 
 class getDemographyListData{
   int status;
-  String message;
   List<Data>  data;
-  getDemographyListData(this.status, this.message,this.data);
+  getDemographyListData(this.status,this.data);
 
   factory getDemographyListData.fromjson(Map<dynamic,dynamic>map){
     List list = map["data"];
     List<Data> d = list.map((e) => Data.fromjson(e)).toList();
-    return getDemographyListData(map['status'], map['message'],d);
+    return getDemographyListData(map['status'],d);
   }
 }
 class Data{
   String id;
   String name;
-  int status;
-  bool? isSelected;
-  Data(this.id, this.name, this.status, {
-    this.isSelected = false,
-  });
+  bool isSelected;
+  Data(this.id, this.name,this.isSelected);
 
   factory Data.fromjson(Map<dynamic,dynamic>map){
-    return Data(map["_id"], map["demographyName"], map["status"]);
+    return Data(map["_id"], map["demographyName"], false);
   }
 }
 

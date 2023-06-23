@@ -12,7 +12,8 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class add_promotion extends StatefulWidget {
-  const add_promotion({Key? key}) : super(key: key);
+  String ? type;
+  add_promotion({Key? key, this.type}) : super(key: key);
 
   @override
   State<add_promotion> createState() => _add_promotionState();
@@ -21,7 +22,7 @@ class add_promotion extends StatefulWidget {
 class _add_promotionState extends State<add_promotion> {
 
   ///service
-    int? _radioSelected=1;
+    int? _radioSelected =1;
 
   TextEditingController svpromotiontitle = TextEditingController();
   TextEditingController ServiceName = TextEditingController();
@@ -40,7 +41,7 @@ class _add_promotionState extends State<add_promotion> {
     var StartDate;
     var EndDate;
   /// product
-    int? _radioSelected2=1;
+    int? _radioSelected2 =1;
 
     TextEditingController prpromotiontitle = TextEditingController();
     TextEditingController productName2 = TextEditingController();
@@ -56,7 +57,7 @@ class _add_promotionState extends State<add_promotion> {
 
   String status2 = "";
   bool Product = false;
-  bool Service = true;
+  bool Service = false;
   String? selectedvaluemin;
   String? service;
   String? product;
@@ -84,6 +85,16 @@ class _add_promotionState extends State<add_promotion> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.type == "1"){
+      setState(() {
+        Service = true;
+      });
+    }
+    if(widget.type == "2"){
+      setState(() {
+        Product = true;
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
      getServicesListData = await _promotionServices.getServicesList(context);
      getProductListData = await _promotionServices.getProductList(context);
@@ -181,13 +192,17 @@ class _add_promotionState extends State<add_promotion> {
                   children: [
                     InkWell(
                       onTap: () {
-                        setState(() {
-                          Service = true;
-                          Product = false;
-                          type = "1";
-                          promotionFor = "service";
-                          print(type);
-                        });
+                        if(widget.type=="1"){
+                          setState(() {
+                            Service = true;
+                            Product = false;
+                            type = "1";
+                            promotionFor = "service";
+                            print(type);
+                          });
+                        }else{
+                          Fluttertoast.showToast(msg: "Cannot Add promotions for Service");
+                        }
                       },
                       child: Container(
                         padding:
@@ -212,13 +227,17 @@ class _add_promotionState extends State<add_promotion> {
                     ),
                     InkWell(
                       onTap: () {
-                        setState(() {
-                          Service = false;
-                          Product = true;
-                          type = "2";
-                          promotionFor = "product";
-                          print(type);
-                        });
+                        if(widget.type=="2"){
+                          setState(() {
+                            Service = false;
+                            Product = true;
+                            type = "2";
+                            promotionFor = "product";
+                            print(type);
+                          });
+                        }else{
+                          Fluttertoast.showToast(msg: "Cannot Add promotions for Product");
+                        }
                       },
                       child: Container(
                         padding:
@@ -580,13 +599,19 @@ class _add_promotionState extends State<add_promotion> {
                                     SizedBox(height: height*0.015,),
                                     Container(
                                       child: TextField(
+                                        maxLength: 3,
+                                        keyboardType: TextInputType.number,
                                         controller: Productprice,
                                         onChanged: (value) {
-                                          // enterYourAddressStatus = false;
+                                          int x;
+                                          x = int.parse(value);
+                                          if(_radioSelected == 1 &&  x > 100){
+                                            Fluttertoast.showToast(msg: "Percentage value cannot be more then 100");
+                                          }
                                         },
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.only(left: 20),
-                                          hintText: "50%",
+                                          hintText: "Discount",
                                           hintStyle: TextStyle(color: Color(0xff000000)),
                                           prefixIcon: InkWell(
                                             onTap: () {
@@ -602,8 +627,7 @@ class _add_promotionState extends State<add_promotion> {
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                                   children: [
-                                                    textComoon("Discount (%)", 12, Color(0xff707070),
-                                                        FontWeight.w600),
+                                                    textComoon(_radioSelected==1?"Discount (%)":"Discount (\$)", 12, Color(0xff707070), FontWeight.w600),
                                                     VerticalDivider(
                                                       color: Color(0xff707070),
                                                       thickness: 1,
@@ -638,13 +662,39 @@ class _add_promotionState extends State<add_promotion> {
                             SizedBox(height: height*0.015,),
                             Container(
                               child: TextField(
+                                onTap: () async{
+                                  final DateTime? picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate,
+                                      builder: ( context,  child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme: ColorScheme.fromSwatch(
+                                              primarySwatch: Colors.teal,
+                                              primaryColorDark: Colors.teal,
+                                              accentColor: Colors.teal,
+                                            ),
+                                            dialogBackgroundColor: Colors.white,
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                      firstDate: DateTime(2015, 8),
+                                      lastDate: DateTime(2101));
+                                  if (picked != null && picked != selectedDate) {
+                                    StartDate = DateFormat('yyyy-MM-dd').format(picked);
+                                    Startdate.text = DateFormat('E, MMM d').format(picked);
+                                    print(selectedDate);
+                                  }
+                                },
+                                readOnly: true,
                                 controller: Startdate,
                                 onChanged: (value) {
 
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 20),
-                                  hintText: "17 April, 2022",
+                                  hintText: "Select start date",
                                   hintStyle: TextStyle(color: Color(0xff000000)),
                                   prefixIcon: InkWell(
                                     onTap: () async{
@@ -721,13 +771,41 @@ class _add_promotionState extends State<add_promotion> {
                             ),
                             Container(
                               child: TextField(
+                                readOnly: true,
+                                onTap: () async{
+                                  final DateTime? picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate,
+                                      builder: ( context,  child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme: ColorScheme.fromSwatch(
+                                              primarySwatch: Colors.teal,
+                                              primaryColorDark: Colors.teal,
+                                              accentColor: Colors.teal,
+                                            ),
+                                            dialogBackgroundColor: Colors.white,
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                      firstDate: DateTime(2015, 8),
+                                      lastDate: DateTime(2101));
+                                  if (picked != null && picked != selectedDate) {
+                                    EndDate = DateFormat('yyyy-MM-dd').format(picked);
+                                    Enddate.text = DateFormat('E, MMM d').format(picked);
+                                    // Enddate.text = selectedDate.toString();
+                                        ;
+                                    print(EndDate);
+                                  }
+                                },
                                 controller: Enddate,
                                 onChanged: (value) {
 
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 20),
-                                  hintText: "22 April, 2022",
+                                  hintText: "Select end date",
                                   hintStyle: TextStyle(color: Color(0xff000000)),
                                   prefixIcon: InkWell(
                                     onTap: () async{
@@ -808,30 +886,38 @@ class _add_promotionState extends State<add_promotion> {
                                   Fluttertoast.showToast(msg: "Please fill promotion category");
                                 }else if(svpromotiontitle.text.isEmpty){
                                   Fluttertoast.showToast(msg: "Please fill promotion title");
-                                }else if(service!.isEmpty){
+                                }else if(selectedvaluemin == null){
+                                  Fluttertoast.showToast(msg: "Please select your service category");
+                                }
+                                else if(service == null){
                                   Fluttertoast.showToast(msg: "Please fill service name");
-                                }else if(description.text.isEmpty){
-                                  Fluttertoast.showToast(msg: "Please fill description");
-                                }else if(Startdate.text.isEmpty){
+                                }else if(Productprice.text.isEmpty){
+                                  Fluttertoast.showToast(msg: "Please fill discount");
+                                }
+                                else if(Startdate.text.isEmpty){
                                   Fluttertoast.showToast(msg: "Please fill start date");
                                 }else if(Enddate.text.isEmpty){
                                   Fluttertoast.showToast(msg: "Please fill end date");
                                 }else{
-                                  var Body = {
-                                    "promotionFor": promotionFor,
-                                    "promotionTitle": svpromotiontitle.text,
-                                    "serviceName": service, //send productName
-                                    "description": description.text,
-                                    "isDiscPercentage": _radioSelected.toString(),
-                                    "discount": Productprice.text,
-                                    "startDate": StartDate,
-                                    "endDate": EndDate,
-                                    "subTypeId": serviceId, //send productId
-                                  };
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
-                                  },));
-                                }
+                                  if(type == "1"){
+                                    var Body = {
+                                      "promotionFor": promotionFor,
+                                      "promotionTitle": svpromotiontitle.text,
+                                      "serviceName": service, //send productName
+                                      "description": description.text,
+                                      "isDiscPercentage": _radioSelected.toString(),
+                                      "discount": Productprice.text,
+                                      "startDate": StartDate,
+                                      "endDate": EndDate,
+                                      "subTypeId": serviceId, //send productId
+                                    };
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                      return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
+                                    },));
+                                  } else{
+                                    Fluttertoast.showToast(msg: "Invalid promotion selection");
+                                  }
+                                  }
                             }),
                             SizedBox(
                               height: height * 0.05,
@@ -1217,13 +1303,19 @@ class _add_promotionState extends State<add_promotion> {
                               SizedBox(height: height*0.015,),
                               Container(
                                 child: TextField(
+                                  maxLength: 3,
+                                  keyboardType: TextInputType.number,
                                   controller: Productprice2,
                                   onChanged: (value) {
-                                    // enterYourAddressStatus = false;
+                                    int x;
+                                    x = int.parse(value);
+                                    if(_radioSelected2 == 1 &&  x > 100){
+                                      Fluttertoast.showToast(msg: "Percentage value cannot be more then 100");
+                                    }
                                   },
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(left: 20),
-                                    hintText: "50%",
+                                    hintText: "Discount",
                                     hintStyle: TextStyle(color: Color(0xff000000)),
                                     prefixIcon: InkWell(
                                       onTap: () {
@@ -1239,7 +1331,7 @@ class _add_promotionState extends State<add_promotion> {
                                             mainAxisAlignment:
                                             MainAxisAlignment.start,
                                             children: [
-                                              textComoon("Discount (%)", 12, Color(0xff707070),
+                                              textComoon(_radioSelected2==1?"Discount (%)":"Discount (\$)", 12, Color(0xff707070),
                                                   FontWeight.w600),
 
 
@@ -1276,13 +1368,41 @@ class _add_promotionState extends State<add_promotion> {
                       SizedBox(height: height*0.015,),
                       Container(
                         child: TextField(
+                          onTap: () async{
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                builder: ( context,  child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: ColorScheme.fromSwatch(
+                                        primarySwatch: Colors.teal,
+                                        primaryColorDark: Colors.teal,
+                                        accentColor: Colors.teal,
+                                      ),
+                                      dialogBackgroundColor: Colors.white,
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime(2101));
+                            if (picked != null && picked != selectedDate) {
+                              StartDate = DateFormat('yyyy-MM-dd').format(picked);
+                              Startdate2.text = DateFormat('E, MMM d').format(picked);
+                              // Enddate.text = selectedDate.toString();
+                                  ;
+                              print(EndDate);
+                            }
+                          },
+                          readOnly: true,
                           controller: Startdate2,
                           onChanged: (value) {
 
                           },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(left: 20),
-                            hintText: "17 April, 2022",
+                            hintText: "Select start date",
                             hintStyle: TextStyle(color: Color(0xff000000)),
                             prefixIcon: InkWell(
                               onTap: () async{
@@ -1361,13 +1481,41 @@ class _add_promotionState extends State<add_promotion> {
                       ),
                       Container(
                         child: TextField(
+                          onTap: () async{
+                            final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                builder: ( context,  child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: ColorScheme.fromSwatch(
+                                        primarySwatch: Colors.teal,
+                                        primaryColorDark: Colors.teal,
+                                        accentColor: Colors.teal,
+                                      ),
+                                      dialogBackgroundColor: Colors.white,
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime(2101));
+                            if (picked != null && picked != selectedDate) {
+                              EndDate = DateFormat('yyyy-MM-dd').format(picked);
+                              Enddate2.text = DateFormat('E, MMM d').format(picked);
+                              // Enddate.text = selectedDate.toString();
+                                  ;
+                              print(EndDate);
+                            }
+                          },
+                          readOnly: true,
                           controller: Enddate2,
                           onChanged: (value) {
 
                           },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(left: 20),
-                            hintText: "22 April, 2022",
+                            hintText: "Select end date",
                             hintStyle: TextStyle(color: Color(0xff000000)),
                             prefixIcon: InkWell(
                               onTap: () async{
@@ -1448,29 +1596,37 @@ class _add_promotionState extends State<add_promotion> {
                           Fluttertoast.showToast(msg: "Please fill promotion category");
                         }else if(prpromotiontitle.text.isEmpty){
                           Fluttertoast.showToast(msg: "Please fill promotion title");
-                        }else if(product!.isEmpty){
+                        }else if(selectedvaluemin2 == null){
+                          Fluttertoast.showToast(msg: "Please fill product category");
+                        }
+                        else if(product == null){
                           Fluttertoast.showToast(msg: "Please fill service name");
-                        }else if(description2.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Please fill description");
-                        }else if(Startdate2.text.isEmpty){
+                        }else if(Productprice2.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Please fill discount");
+                        }
+                        else if(Startdate2.text.isEmpty){
                           Fluttertoast.showToast(msg: "Please fill start date");
                         }else if(Enddate2.text.isEmpty){
                           Fluttertoast.showToast(msg: "Please fill end date");
                         }else{
-                          var Body = {
-                            "promotionFor": promotionFor,
-                            "promotionTitle": prpromotiontitle.text,
-                            "serviceName": product, //send productName
-                            "description": description2.text,
-                            "isDiscPercentage": _radioSelected.toString(),
-                            "discount": Productprice2.text,
-                            "startDate": StartDate,
-                            "endDate": EndDate,
-                            "subTypeId": productId, //send productId
-                          };
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
-                          },));
+                          if(type == "2"){
+                            var Body = {
+                              "promotionFor": promotionFor,
+                              "promotionTitle": prpromotiontitle.text,
+                              "serviceName": product, //send productName
+                              "description": description2.text,
+                              "isDiscPercentage": _radioSelected.toString(),
+                              "discount": Productprice2.text,
+                              "startDate": StartDate,
+                              "endDate": EndDate,
+                              "subTypeId": productId, //send productId
+                            };
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                              return promotion_Publish(body: Body,StartDate: Startdate.text,EndDate: Enddate.text);
+                            },));
+                          }else{
+                            Fluttertoast.showToast(msg: "Invalid promotion selection");
+                          }
                         }
                       }),
                       SizedBox(

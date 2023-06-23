@@ -19,6 +19,7 @@ class promotion extends StatefulWidget {
 class _promotionState extends State<promotion> {
   bool Product = false;
   bool Service = true;
+  bool isLoading = true;
   String type = "1";
   int myproductcnt = 0;
   GetServices ? getServices;
@@ -31,6 +32,11 @@ class _promotionState extends State<promotion> {
       if(type == "1"){
       getServices = await _promotionServices.getServices(context);
       getProducts = await _promotionServices.getProducts(context);
+      if(getServices?.status == 200 && getProducts?.status == 200){
+        setState(() {
+          isLoading = false;
+        });
+      }
       setState((){});
       }
     });
@@ -92,7 +98,11 @@ class _promotionState extends State<promotion> {
                                 fontWeight: FontWeight.w700)),
                       ),
                       Container(
-                        child: Text("(1)",
+                        child: isLoading ? Text ("") :
+                        Text(type == "1" && getServices?.data!=null?
+                        "(${getServices?.data!.length})":
+                        type == "2" && getProducts?.data!=null?
+                        "(${getProducts?.data!.length})" : "",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 16,
@@ -109,7 +119,11 @@ class _promotionState extends State<promotion> {
           ),
         ),
       ),
-      body: Padding(
+      body: 
+          isLoading?
+              Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
+              getServices != null || getProducts !=null ?
+              Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,11 +142,12 @@ class _promotionState extends State<promotion> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () async{
+                      onTap: ()  {
+                          // isLoading = true;
                           Service = true;
                           Product = false;
                           type = "1";
-                          getServices = await _promotionServices.getServices(context);
+                           _promotionServices.getServices(context);
                           setState((){});
                           print(type);
                       },
@@ -158,11 +173,17 @@ class _promotionState extends State<promotion> {
                       width: width * 0.05,
                     ),
                     InkWell(
-                      onTap: () async {
+                      onTap: ()  {
+                          // isLoading = true;
                           Service = false;
                           Product = true;
                           type = "2";
-                          getProducts = await _promotionServices.getProducts(context);
+                           _promotionServices.getProducts(context);
+                          if(getProducts?.data==200){
+                            setState(() {
+                            isLoading = false;
+                            });
+                          }
                           setState((){});
                           print(type);
                       },
@@ -191,10 +212,7 @@ class _promotionState extends State<promotion> {
                 ),
               ),
             ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            if(type == "1")getServices?.data != null?Expanded(
+            if(type == "1") getServices?.data != null?Expanded(
               child: ListView.builder(
                 itemCount: getServices?.data?.length,
                 shrinkWrap: true,
@@ -237,7 +255,7 @@ class _promotionState extends State<promotion> {
                                     SizedBox(height: height * 0.015,),
                                     Text("${getServices?.data?[index].serviceName}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,)),
                                     SizedBox(height: height * 0.015,),
-                                    SizedBox(width: width*0.5,child: Text("${DateFormat('E, MMM d').format(getServices!.data![index].startDate!)} - ${DateFormat('E, MMM d').format(getServices!.data![index].endDate!)}"
+                                    SizedBox(width: width*0.5,child: Text("${DateFormat('d MMMM').format(getServices!.data![index].startDate!)} - ${DateFormat('d MMMM, y').format(getServices!.data![index].endDate!)}"
                                         ,maxLines: null,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,))),
                                   ],
                                 )
@@ -249,8 +267,8 @@ class _promotionState extends State<promotion> {
                     ),
                   );
                 },),
-            ):Center(child: CircularProgressIndicator(color: Color(0xff01635D),)),
-            if(type == "2")getProducts?.data != null?Expanded(
+            ):noRunningPromos(),
+            if(type == "2") getProducts?.data != null?Expanded(
               child: ListView.builder(
                 itemCount: getProducts?.data?.length,
                 shrinkWrap: true,
@@ -293,7 +311,7 @@ class _promotionState extends State<promotion> {
                                     SizedBox(height: height * 0.015,),
                                     Text("${getProducts?.data?[index].serviceName}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,)),
                                     SizedBox(height: height * 0.015,),
-                                    SizedBox(width: width*0.5,child: Text("${DateFormat('E, MMM d').format(getProducts!.data![index].startDate!)} - ${DateFormat('E, MMM d').format(getProducts!.data![index].endDate!)}"
+                                    SizedBox(width: width*0.5,child: Text("${DateFormat('d MMMM').format(getProducts!.data![index].startDate!)} - ${DateFormat('d MMMM, y').format(getProducts!.data![index].endDate!)}"
                                         ,maxLines: null,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,))),
                                   ],
                                 )
@@ -305,10 +323,14 @@ class _promotionState extends State<promotion> {
                     ),
                   );
                 },),
-            ):Center(child: CircularProgressIndicator(color: Color(0xff01635D),)),
-            CommonButton(context, "ADD NEW PROMOTION",12, FontWeight.w600, Colors.white, () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {return add_promotion();},));
-                }),
+            ):noRunningPromosProduct(),
+            SizedBox(height: 10,),
+            if(type == "1") getServices?.data != null?CommonButton(context, "ADD NEW PROMOTION",12, FontWeight.w600, Colors.white, () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {return add_promotion(type: "1",);},));
+                }):SizedBox(),
+            if(type == "2") getProducts?.data != null?CommonButton(context, "ADD NEW PROMOTION",12, FontWeight.w600, Colors.white, () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {return add_promotion(type: "2",);},));
+                }):SizedBox(),
             SizedBox(height: 20,)
             // ///promotions 0 ?ADD to No Page
             // myproductcnt==1?Column(
@@ -490,7 +512,60 @@ class _promotionState extends State<promotion> {
             // ),
           ],
         ),
-      ),
+      ):
+              Center(child: Text("Something went wrong !!"))
     );
   }
+
+  Widget noRunningPromos() => Padding(
+    padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+    child: Align(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("assets/images/nopromo.png",height: MediaQuery.of(context).size.height * 0.15,),
+          const SizedBox(height: 20,),
+          Text("You currently have no running\n promotions",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
+          const SizedBox(height: 20,),
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {return add_promotion(type: "1",);},));
+            },
+            child: Container(
+              color: Color(0xff01635D),
+              padding: EdgeInsets.all(15),
+              child: Text("ADD PROMOTION",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600),),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+
+  Widget noRunningPromosProduct() => Padding(
+    padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+    child: Align(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("assets/images/nopromo.png",height: MediaQuery.of(context).size.height * 0.15,),
+          const SizedBox(height: 20,),
+          Text("You currently have no running\n promotions",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
+          const SizedBox(height: 20,),
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {return add_promotion(type: "2",);},));
+            },
+            child: Container(
+              color: Color(0xff01635D),
+              padding: EdgeInsets.all(15),
+              child: Text("ADD PROMOTION",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600),),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }

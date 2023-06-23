@@ -54,6 +54,7 @@ class ProfileData {
   // DateTime createdAt;
   // DateTime updatedAt;
   int v;
+  bool isRegisterBeautician;
 
   ProfileData({
     required this.id,
@@ -70,6 +71,7 @@ class ProfileData {
     // required this.createdAt,
     // required this.updatedAt,
     required this.v,
+    required this.isRegisterBeautician
   });
 
   factory ProfileData.fromJson(Map<String, dynamic> json) => ProfileData(
@@ -89,6 +91,7 @@ class ProfileData {
         // createdAt: DateTime.parse(json["createdAt"]),
         // updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+        isRegisterBeautician: json["isRegisterBeautician"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,6 +109,7 @@ class ProfileData {
         // "createdAt": createdAt.toIso8601String(),
         // "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
+        "isRegisterBeautician" : isRegisterBeautician
       };
 }
 

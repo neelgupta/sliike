@@ -128,11 +128,11 @@ class _AmenitiesState extends State<Amenities> {
                             child: Checkbox(
                               checkColor: Colors.white,
                               activeColor: Color(0xff01635D),
-                              value: amenity!.data[index].isSelected!,
+                              value: amenity!.data[index].isSelected,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  amenity!.data[index].isSelected = value;
-                                  amenity!.data[index].isSelected! ? amenityIds.add(amenity!.data[index].id) :
+                                  amenity!.data[index].isSelected = value!;
+                                  amenity!.data[index].isSelected ? amenityIds.add(amenity!.data[index].id) :
                                   amenityIds.remove(amenity!.data[index].id);
                                   // if(amenity!.data[index].isSelected!)amenityIds.remove(selectedAmenties!.data[index].id);
                                 });
@@ -296,25 +296,23 @@ class _AmenitiesState extends State<Amenities> {
 
 class getAmenity{
   int status;
-  String message;
   List<Data>   data;
-  getAmenity(this.status, this.message,this.data);
+  getAmenity(this.status,this.data);
 
   factory getAmenity.fromjson(Map<dynamic,dynamic>map){
     List list = map["data"];
     List<Data> d = list.map((e) => Data.fromjson(e)).toList();
-    return getAmenity(map['status'], map['message'],d);
+    return getAmenity(map['status'],d);
   }
 }
 class Data{
   String id;
   String name;
-  int status;
-  bool? isSelected;
-  Data(this.id, this.name, this.status,{this.isSelected = false});
+  bool isSelected;
+  Data(this.id, this.name,this.isSelected);
 
   factory Data.fromjson(Map<dynamic,dynamic>map){
-    return Data(map["_id"], map["name"], map["status"]);
+    return Data(map["_id"], map["name"], false);
   }
 }
 
