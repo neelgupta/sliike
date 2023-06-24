@@ -14,8 +14,8 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class BookingConfirmed extends StatefulWidget {
   String? id;
-  bool isPast = false;
-  BookingConfirmed({Key? key,this.id,this.isPast = false}) : super(key: key);
+  bool ? isPast;
+  BookingConfirmed({Key? key,this.id,this.isPast}) : super(key: key);
 
   @override
   State<BookingConfirmed> createState() => _BookingConfirmedState();
@@ -84,8 +84,8 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
 
   @override
   Widget build(BuildContext context) {
-    var startData = onlyonemodal != null ? DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${onlyonemodal!.data!.dateTime}')):const SizedBox();
-    var endData = onlyonemodal != null ? DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}')):const SizedBox();
+    var startData = onlyonemodal != null ? DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${onlyonemodal!.data!.dateTime}')): "";
+    var endData = onlyonemodal != null ? DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}')): "";
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
     double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
     return Scaffold(
@@ -322,7 +322,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                 ),
               ],
             ),
-            if(!widget.isPast)Padding(
+            if(widget.isPast ?? false)Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {

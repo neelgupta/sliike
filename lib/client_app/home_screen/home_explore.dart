@@ -1093,7 +1093,7 @@ class _home_exploreState extends State<home_explore> {
     } catch (e) {
       rethrow;
     } finally {
-      // isLoading = false;
+      isLoading = false;
     }
   }
 
@@ -1213,15 +1213,15 @@ class _home_exploreState extends State<home_explore> {
           },
         ), (route) => false);
       }
-      // setState(() {
-      //   isLoading = false;
-      // });
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       rethrow;
     } finally {
-      // setState(() {
-      //   isLoading = false;
-      // });
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

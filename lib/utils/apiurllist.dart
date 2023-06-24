@@ -185,6 +185,7 @@ class ApiUrlList {
 
   /// Appointment Services Endpoints ///
   static String getServiceDetails = "${baseUrl}beautician/getServiceDetails";
+  static String getStaffData = "${baseUrl}beautician/getEmployeeList";
 
 
 
