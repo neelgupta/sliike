@@ -172,39 +172,39 @@ class _promotionState extends State<promotion> {
                     SizedBox(
                       width: width * 0.05,
                     ),
-                    InkWell(
-                      onTap: ()  {
-                          // isLoading = true;
-                          Service = false;
-                          Product = true;
-                          type = "2";
-                           _promotionServices.getProducts(context);
-                          if(getProducts?.data==200){
-                            setState(() {
-                            isLoading = false;
-                            });
-                          }
-                          setState((){});
-                          print(type);
-                      },
-                      child: Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(21),
-                            color: Product
-                                ? Color(0xff01635D)
-                                : Color(0xffEBEFEE)),
-                        child: Text(
-                          "Product",
-                          style: TextStyle(
-                              color: Product ? Colors.white : Color(0xff01635D),
-                              fontFamily: 'spartan',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: ()  {
+                    //       // isLoading = true;
+                    //       Service = false;
+                    //       Product = true;
+                    //       type = "2";
+                    //        _promotionServices.getProducts(context);
+                    //       if(getProducts?.data==200){
+                    //         setState(() {
+                    //         isLoading = false;
+                    //         });
+                    //       }
+                    //       setState((){});
+                    //       print(type);
+                    //   },
+                    //   child: Container(
+                    //     padding:
+                    //     EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(21),
+                    //         color: Product
+                    //             ? Color(0xff01635D)
+                    //             : Color(0xffEBEFEE)),
+                    //     child: Text(
+                    //       "Product",
+                    //       style: TextStyle(
+                    //           color: Product ? Colors.white : Color(0xff01635D),
+                    //           fontFamily: 'spartan',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.w600),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       width: width * 0.01,
                     ),
@@ -244,7 +244,7 @@ class _promotionState extends State<promotion> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("${getServices?.data?[index].discount}\% \n""OFF",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700,height: 1.5)),
+                                Text("${getServices?.data?[index].isDiscPercentage==0?"\$":""}${getServices?.data?[index].discount}${getServices?.data?[index].isDiscPercentage==1?"\%" : ""}\n""OFF",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700,height: 1.5)),
                                 Spacer(),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +300,7 @@ class _promotionState extends State<promotion> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("${getProducts?.data?[index].discount}\% \n""OFF",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700,height: 1.5)),
+                                Text("${getServices?.data?[index].isDiscPercentage==0?"\$":""}${getServices?.data?[index].discount}${getServices?.data?[index].isDiscPercentage==1?"\%" : ""}\n""OFF",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700,height: 1.5)),
                                 Spacer(),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

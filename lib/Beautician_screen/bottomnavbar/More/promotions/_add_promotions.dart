@@ -225,38 +225,38 @@ class _add_promotionState extends State<add_promotion> {
                     SizedBox(
                       width: width * 0.05,
                     ),
-                    InkWell(
-                      onTap: () {
-                        if(widget.type=="2"){
-                          setState(() {
-                            Service = false;
-                            Product = true;
-                            type = "2";
-                            promotionFor = "product";
-                            print(type);
-                          });
-                        }else{
-                          Fluttertoast.showToast(msg: "Cannot Add promotions for Product");
-                        }
-                      },
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(21),
-                            color: Product
-                                ? Color(0xff01635D)
-                                : Color(0xffEBEFEE)),
-                        child: Text(
-                          "Product",
-                          style: TextStyle(
-                              color: Product ? Colors.white : Color(0xff01635D),
-                              fontFamily: 'spartan',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     if(widget.type=="2"){
+                    //       setState(() {
+                    //         Service = false;
+                    //         Product = true;
+                    //         type = "2";
+                    //         promotionFor = "product";
+                    //         print(type);
+                    //       });
+                    //     }else{
+                    //       Fluttertoast.showToast(msg: "Cannot Add promotions for Product");
+                    //     }
+                    //   },
+                    //   child: Container(
+                    //     padding:
+                    //         EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(21),
+                    //         color: Product
+                    //             ? Color(0xff01635D)
+                    //             : Color(0xffEBEFEE)),
+                    //     child: Text(
+                    //       "Product",
+                    //       style: TextStyle(
+                    //           color: Product ? Colors.white : Color(0xff01635D),
+                    //           fontFamily: 'spartan',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.w600),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       width: width * 0.01,
                     ),

@@ -757,25 +757,25 @@ class _profileState extends State<profile> {
                   decoration: const BoxDecoration(
                       border:
                           Border(bottom: BorderSide(color: Colors.black12))),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                        child: Icon(Icons.star_border),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      textComoon("Rating", 14, const Color(0xff414141),
-                          FontWeight.w500),
-                      const Spacer(),
-                      SizedBox(
-                        height: 15,
-                        width: 30,
-                        child: Image.asset("assets/images/righticon.png"),
-                      ),
-                    ],
-                  ),
+                  // child: Row(
+                  //   children: [
+                  //     const SizedBox(
+                  //       height: 30,
+                  //       child: Icon(Icons.star_border),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 15,
+                  //     ),
+                  //     textComoon("Rating", 14, const Color(0xff414141),
+                  //         FontWeight.w500),
+                  //     const Spacer(),
+                  //     SizedBox(
+                  //       height: 15,
+                  //       width: 30,
+                  //       child: Image.asset("assets/images/righticon.png"),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
               ),
             ),

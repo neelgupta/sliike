@@ -213,53 +213,53 @@ class _MyFavoritesViewAllState extends State<MyFavoritesViewAll> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  if(favoritelist[index].rating!="0" && favoritelist[index].noOfReviews!="0")
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        height:
-                                            height *
-                                                0.02,
-                                        child: const Image(
-                                            image: AssetImage(
-                                                "assets/images/Star 1.png")),
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        alignment:
-                                            Alignment
-                                                .topLeft,
-                                        child: Text(
-                                            "${favoritelist[index].rating} Ratings",
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .black,
-                                                fontSize:
-                                                    14,
-                                                fontFamily:
-                                                    "spartan")),
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        alignment:
-                                            Alignment
-                                                .topLeft,
-                                        child: Text(
-                                            "${favoritelist[index].noOfReviews} reviews",
-                                            style: TextStyle(
-                                                color: Colors
-                                                    .grey,
-                                                fontSize:
-                                                    14,
-                                                fontFamily:
-                                                    "spartan")),
-                                      ),
-                                    ],
-                                  ),
+                                  // if(favoritelist[index].rating!="0" && favoritelist[index].noOfReviews!="0")
+                                  // Row(
+                                  //   children: [
+                                  //     SizedBox(
+                                  //       height:
+                                  //           height *
+                                  //               0.02,
+                                  //       child: const Image(
+                                  //           image: AssetImage(
+                                  //               "assets/images/Star 1.png")),
+                                  //     ),
+                                  //     const SizedBox(
+                                  //       width: 5,
+                                  //     ),
+                                  //     Container(
+                                  //       alignment:
+                                  //           Alignment
+                                  //               .topLeft,
+                                  //       child: Text(
+                                  //           "${favoritelist[index].rating} Ratings",
+                                  //           style: TextStyle(
+                                  //               color: Colors
+                                  //                   .black,
+                                  //               fontSize:
+                                  //                   14,
+                                  //               fontFamily:
+                                  //                   "spartan")),
+                                  //     ),
+                                  //     const SizedBox(
+                                  //       width: 5,
+                                  //     ),
+                                  //     Container(
+                                  //       alignment:
+                                  //           Alignment
+                                  //               .topLeft,
+                                  //       child: Text(
+                                  //           "${favoritelist[index].noOfReviews} reviews",
+                                  //           style: TextStyle(
+                                  //               color: Colors
+                                  //                   .grey,
+                                  //               fontSize:
+                                  //                   14,
+                                  //               fontFamily:
+                                  //                   "spartan")),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                 ],
                               ))
                         ],

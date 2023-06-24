@@ -98,11 +98,11 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                             ? SizedBox()
                             : InkWell(
                                 onTap: () {
-                                  // Navigator.push(context, MaterialPageRoute(
-                                  //   builder: (context) {
-                                  //     return profilePage();
-                                  //   },
-                                  // ));
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return profilePage();
+                                    },
+                                  ));
                                   print(getmodelProfile!.data!.profileImage);
                                 },
                                 child: Padding(

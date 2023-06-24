@@ -512,53 +512,53 @@ class _home_exploreState extends State<home_explore> {
                                                             const SizedBox(
                                                               height: 5,
                                                             ),
-                                                            if(favoritelist[index].rating!="0" && favoritelist[index].noOfReviews!="0")
-                                                            Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.02,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Star 1.png")),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Container(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                  child: Text(
-                                                                      "${favoritelist[index].rating} Ratings",
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontFamily:
-                                                                              "spartan")),
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Container(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                  child: Text(
-                                                                      "${favoritelist[index].noOfReviews} reviews",
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .grey,
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontFamily:
-                                                                              "spartan")),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                            // if(favoritelist[index].rating!="0" && favoritelist[index].noOfReviews!="0")
+                                                            // Row(
+                                                            //   children: [
+                                                            //     SizedBox(
+                                                            //       height:
+                                                            //           height *
+                                                            //               0.02,
+                                                            //       child: const Image(
+                                                            //           image: AssetImage(
+                                                            //               "assets/images/Star 1.png")),
+                                                            //     ),
+                                                            //     const SizedBox(
+                                                            //       width: 5,
+                                                            //     ),
+                                                            //     Container(
+                                                            //       alignment:
+                                                            //           Alignment
+                                                            //               .topLeft,
+                                                            //       child: Text(
+                                                            //           "${favoritelist[index].rating} Ratings",
+                                                            //           style: TextStyle(
+                                                            //               color: Colors
+                                                            //                   .black,
+                                                            //               fontSize:
+                                                            //                   14,
+                                                            //               fontFamily:
+                                                            //                   "spartan")),
+                                                            //     ),
+                                                            //     const SizedBox(
+                                                            //       width: 5,
+                                                            //     ),
+                                                            //     Container(
+                                                            //       alignment:
+                                                            //           Alignment
+                                                            //               .topLeft,
+                                                            //       child: Text(
+                                                            //           "${favoritelist[index].noOfReviews} reviews",
+                                                            //           style: TextStyle(
+                                                            //               color: Colors
+                                                            //                   .grey,
+                                                            //               fontSize:
+                                                            //                   14,
+                                                            //               fontFamily:
+                                                            //                   "spartan")),
+                                                            //     ),
+                                                            //   ],
+                                                            // ),
                                                           ],
                                                         ))
                                                   ],
@@ -757,53 +757,53 @@ class _home_exploreState extends State<home_explore> {
                                                             const SizedBox(
                                                               height: 5,
                                                             ),
-                                                            if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
-                                                              Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height:
-                                                                    height *
-                                                                        0.02,
-                                                                    child: const Image(
-                                                                        image: AssetImage(
-                                                                            "assets/images/Star 1.png")),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  Container(
-                                                                    alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                                    child: Text(
-                                                                        "${recentList[index].rating} Ratings",
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                            14,
-                                                                            fontFamily:
-                                                                            "spartan")),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  Container(
-                                                                    alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                                    child: Text(
-                                                                        "${recentList[index].noOfReviews} reviews",
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .grey,
-                                                                            fontSize:
-                                                                            14,
-                                                                            fontFamily:
-                                                                            "spartan")),
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                            // if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
+                                                            //   Row(
+                                                            //     children: [
+                                                            //       SizedBox(
+                                                            //         height:
+                                                            //         height *
+                                                            //             0.02,
+                                                            //         child: const Image(
+                                                            //             image: AssetImage(
+                                                            //                 "assets/images/Star 1.png")),
+                                                            //       ),
+                                                            //       const SizedBox(
+                                                            //         width: 5,
+                                                            //       ),
+                                                            //       Container(
+                                                            //         alignment:
+                                                            //         Alignment
+                                                            //             .topLeft,
+                                                            //         child: Text(
+                                                            //             "${recentList[index].rating} Ratings",
+                                                            //             style: TextStyle(
+                                                            //                 color: Colors
+                                                            //                     .black,
+                                                            //                 fontSize:
+                                                            //                 14,
+                                                            //                 fontFamily:
+                                                            //                 "spartan")),
+                                                            //       ),
+                                                            //       const SizedBox(
+                                                            //         width: 5,
+                                                            //       ),
+                                                            //       Container(
+                                                            //         alignment:
+                                                            //         Alignment
+                                                            //             .topLeft,
+                                                            //         child: Text(
+                                                            //             "${recentList[index].noOfReviews} reviews",
+                                                            //             style: TextStyle(
+                                                            //                 color: Colors
+                                                            //                     .grey,
+                                                            //                 fontSize:
+                                                            //                 14,
+                                                            //                 fontFamily:
+                                                            //                 "spartan")),
+                                                            //       ),
+                                                            //     ],
+                                                            //   ),
                                                           ],
                                                         ))
                                                   ],
@@ -1002,53 +1002,53 @@ class _home_exploreState extends State<home_explore> {
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
-                                                      if(recommended[index].rating!="0" && recommended[index].noOfReviews!="0")
-                                                        Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              height:
-                                                              height *
-                                                                  0.02,
-                                                              child: const Image(
-                                                                  image: AssetImage(
-                                                                      "assets/images/Star 1.png")),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Container(
-                                                              alignment:
-                                                              Alignment
-                                                                  .topLeft,
-                                                              child: Text(
-                                                                  "${recommended[index].rating} Ratings",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                      14,
-                                                                      fontFamily:
-                                                                      "spartan")),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Container(
-                                                              alignment:
-                                                              Alignment
-                                                                  .topLeft,
-                                                              child: Text(
-                                                                  "${recommended[index].noOfReviews} reviews",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      fontSize:
-                                                                      14,
-                                                                      fontFamily:
-                                                                      "spartan")),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                      // if(recommended[index].rating!="0" && recommended[index].noOfReviews!="0")
+                                                      //   Row(
+                                                      //     children: [
+                                                      //       SizedBox(
+                                                      //         height:
+                                                      //         height *
+                                                      //             0.02,
+                                                      //         child: const Image(
+                                                      //             image: AssetImage(
+                                                      //                 "assets/images/Star 1.png")),
+                                                      //       ),
+                                                      //       const SizedBox(
+                                                      //         width: 5,
+                                                      //       ),
+                                                      //       Container(
+                                                      //         alignment:
+                                                      //         Alignment
+                                                      //             .topLeft,
+                                                      //         child: Text(
+                                                      //             "${recommended[index].rating} Ratings",
+                                                      //             style: TextStyle(
+                                                      //                 color: Colors
+                                                      //                     .black,
+                                                      //                 fontSize:
+                                                      //                 14,
+                                                      //                 fontFamily:
+                                                      //                 "spartan")),
+                                                      //       ),
+                                                      //       const SizedBox(
+                                                      //         width: 5,
+                                                      //       ),
+                                                      //       Container(
+                                                      //         alignment:
+                                                      //         Alignment
+                                                      //             .topLeft,
+                                                      //         child: Text(
+                                                      //             "${recommended[index].noOfReviews} reviews",
+                                                      //             style: TextStyle(
+                                                      //                 color: Colors
+                                                      //                     .grey,
+                                                      //                 fontSize:
+                                                      //                 14,
+                                                      //                 fontFamily:
+                                                      //                 "spartan")),
+                                                      //       ),
+                                                      //     ],
+                                                      //   ),
                                                     ],
                                                   ))
                                             ],

@@ -30,10 +30,11 @@ class _faq_beautyState extends State<faq_beauty> {
     double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           toolbarHeight: height * 0.13, // Set this height
           flexibleSpace: Container(
-            decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)),
+            // decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png",),fit: BoxFit.fill,)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

@@ -103,6 +103,13 @@ class _feedbackState extends State<feedback> {
                 ),
               ),
               SizedBox(height: height*0.04,),
+              Container(
+                      padding: EdgeInsets.all(20),
+                      color: Colors.blue[50],
+                      child: Text(
+                          "Thanks for you feedback. A customer care personnel will reach out if shortly",style: TextStyle(color: Color(0xff1571ED))),
+                    ),
+
               /// Toast Container ///
               // Container(
               //   padding: const EdgeInsets.symmetric(horizontal: 10),
