@@ -15,8 +15,8 @@ import '../ beautician _page/manage_appoinment.dart';
 
 class booking_panding extends StatefulWidget {
   String? id;
-  bool isPast = false;
-  booking_panding({Key? key,this.id, this.isPast = false}) : super(key: key);
+  bool ? isPast;
+  booking_panding({Key? key,this.id, this.isPast}) : super(key: key);
 
   @override
   State<booking_panding> createState() => _booking_pandingState();
@@ -79,13 +79,14 @@ class _booking_pandingState extends State<booking_panding> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         getAppointmentPastList(widget.id);
+        print(widget.isPast);
       });
     });
   }
   @override
   Widget build(BuildContext context) {
-    var startData = onlyonemodal != null ? DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${onlyonemodal!.data!.dateTime}')):const SizedBox();
-    var endData = onlyonemodal != null ? DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}')):const SizedBox();
+    var startData = onlyonemodal != null ? DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${onlyonemodal!.data!.dateTime}')): "";
+    var endData = onlyonemodal != null ? DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}')): "";
     double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
     double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
     return Scaffold(
@@ -343,7 +344,7 @@ class _booking_pandingState extends State<booking_panding> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Divider(color: Colors.black54,),
                   ),
-                  if(!widget.isPast)GestureDetector(
+                  if(widget.isPast ?? true)GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return  manage_appoinment(
@@ -414,7 +415,7 @@ class _booking_pandingState extends State<booking_panding> {
                 ),
               ),
               SizedBox(height: height*0.05,),
-              if(!widget.isPast)Padding(
+              if(widget.isPast ?? true)Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                     onTap: () {
@@ -537,7 +538,7 @@ class Data {
   String? clientId;
   BeauticianId? beauticianId;
   ServiceId? serviceId;
-  dynamic stylistId;
+  // dynamic stylistId;
   DateTime? dateTime;
   DateTime? endDateTime;
   int? price;
@@ -545,10 +546,10 @@ class Data {
   String? note;
   int? status;
   String? createdBy;
-  dynamic recurringOpt;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  int? v;
+  // dynamic recurringOpt;
+  String? createdAt;
+  String? updatedAt;
+  // int? v;
   PaymentDetails? paymentDetails;
   RatingData? ratingData;
 
@@ -557,7 +558,7 @@ class Data {
     this.clientId,
     this.beauticianId,
     this.serviceId,
-    this.stylistId,
+    // this.stylistId,
     this.dateTime,
     this.endDateTime,
     this.price,
@@ -565,10 +566,10 @@ class Data {
     this.note,
     this.status,
     this.createdBy,
-    this.recurringOpt,
+    // this.recurringOpt,
     this.createdAt,
     this.updatedAt,
-    this.v,
+    // this.v,
     this.paymentDetails,
     this.ratingData
   });
@@ -578,20 +579,22 @@ class Data {
     clientId: json["clientId"],
     beauticianId: json["beauticianId"] == null ? null : BeauticianId.fromJson(json["beauticianId"]),
     serviceId: json["serviceId"] == null ? null : ServiceId.fromJson(json["serviceId"]),
-    stylistId: json["stylistID"],
+    // stylistId: json["stylistID"],
     dateTime: json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
     endDateTime: json["endDateTime"] == null ? null : DateTime.parse(json["endDateTime"]),
+    //   dateTime: json["dateTime"] == null ? null : "",
+    // endDateTime: json["endDateTime"] == null ? null : "",
     price: json["price"],
     place: json["place"],
     note: json["note"],
     status: json["status"],
     createdBy: json["createdBy"],
-    recurringOpt: json["recurringOpt"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-    paymentDetails: PaymentDetails.fromJson(json["paymentDetails"] ?? {}),
-    ratingData: RatingData.fromJson(json["ratingData"] ?? {})
+    // recurringOpt: json["recurringOpt"],
+    // createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    // updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    // v: json["__v"],
+    paymentDetails: json["paymentDetails"] == null ? null :  PaymentDetails.fromJson(json["paymentDetails"]),
+    ratingData: json["ratingData"] == null ? null : RatingData.fromJson(json["ratingData"])
   );
 
   Map<String, dynamic> toJson() => {
@@ -599,18 +602,18 @@ class Data {
     "clientId": clientId,
     "beauticianId": beauticianId?.toJson(),
     "serviceId": serviceId?.toJson(),
-    "stylistID": stylistId,
-    "dateTime": dateTime?.toIso8601String(),
-    "endDateTime": endDateTime?.toIso8601String(),
+    // "stylistID": stylistId,
+    // "dateTime": dateTime?.toIso8601String(),
+    // "endDateTime": endDateTime?.toIso8601String(),
     "price": price,
     "place": place,
     "note": note,
     "status": status,
     "createdBy": createdBy,
-    "recurringOpt": recurringOpt,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "__v": v,
+    // "recurringOpt": recurringOpt,
+    // "createdAt": createdAt?.toIso8601String(),
+    // "updatedAt": updatedAt?.toIso8601String(),
+    // "__v": v,
     "paymentDetails": paymentDetails,
     "ratingData" : ratingData
   };
@@ -621,34 +624,34 @@ class BeauticianId {
   Address? address;
   String? businessName;
   String? logoPath;
-  List<dynamic>? workSpaceImgPaths;
-  String? beauticianIdId;
+  // List<dynamic>? workSpaceImgPaths;
+  // String? beauticianIdId;
 
   BeauticianId({
     this.id,
     this.address,
     this.businessName,
-    this.logoPath,
-    this.workSpaceImgPaths,
-    this.beauticianIdId,
+    // this.logoPath,
+    // this.workSpaceImgPaths,
+    // this.beauticianIdId,
   });
 
   factory BeauticianId.fromJson(Map<String, dynamic> json) => BeauticianId(
     id: json["_id"],
     address: json["address"] == null ? null : Address.fromJson(json["address"]),
     businessName: json["businessName"],
-    logoPath: json["logoPath"] ?? "",
-    workSpaceImgPaths: json["workSpaceImgPaths"] == null ? [] : List<dynamic>.from(json["workSpaceImgPaths"]!.map((x) => x)),
-    beauticianIdId: json["id"],
+    // logoPath: json["logoPath"] ?? "",
+    // workSpaceImgPaths: json["workSpaceImgPaths"] == null ? [] : List<dynamic>.from(json["workSpaceImgPaths"]!.map((x) => x)),
+    // beauticianIdId: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
     "address": address?.toJson(),
     "businessName": businessName,
-    "logoPath": logoPath,
-    "workSpaceImgPaths": workSpaceImgPaths == null ? [] : List<dynamic>.from(workSpaceImgPaths!.map((x) => x)),
-    "id": beauticianIdId,
+    // "logoPath": logoPath,
+    // "workSpaceImgPaths": workSpaceImgPaths == null ? [] : List<dynamic>.from(workSpaceImgPaths!.map((x) => x)),
+    // "id": beauticianIdId,
   };
 }
 
@@ -690,17 +693,17 @@ class Address {
 
 class Province{
   String? id;
-  String? province;
+  String? name;
 
   Province({
     this.id,
-    this.province
+    this.name
   });
 
   factory Province.fromjson(Map<dynamic, dynamic>map){
     return Province(
       id: map['_id'] ?? "",
-      province: map['province'] ?? "",
+      name:                                   map['name'] ?? "",
     );
   }
 }
@@ -815,8 +818,8 @@ class RatingData {
   });
 
   factory RatingData.fromJson(Map<String, dynamic> json) => RatingData(
-    rating: json["rating"],
-    reviews: json["reviews"],
+    rating: json["rating"] ?? 0.0,
+    reviews: json["reviews"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {

@@ -865,6 +865,7 @@ class _shopping_infoState extends State<shopping_info> {
       },
     );
   }
+
   void selectionChanged(CalendarSelectionDetails details) {
     if (_controller.view == CalendarView.month ||
         _controller.view == CalendarView.timelineMonth) {
