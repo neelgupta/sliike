@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/import_client_scrren/imp_client_form_contact_scrren.dart';
 
 
 class conGraTuLation extends StatefulWidget {
@@ -68,11 +69,11 @@ class _conGraTuLation_HoursState extends State<conGraTuLation> {
                           padding: const EdgeInsets.only(left: 10,right: 10),
                           child: InkWell(
                             onTap: (){
-                              setState(() {
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                                  return const BottomNavigation();
-                                },),(route) => false, );
-                              });
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => importClientScreen(),));
+                              //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+                              //     return const BottomNavigation();
+                              //   },),(route) => false, );
+                              // });
                             },
                             child: Container(
                               width: width,

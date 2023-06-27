@@ -5,6 +5,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/client/appoinment_clientlist.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/service/add_another_service/add_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/client_list/client_list.dart';
 
 
 
@@ -20,6 +21,21 @@ class _newAppointmentState extends State<newAppointment> {
   TextEditingController notes=TextEditingController();
   bool notesstatus = false;
   bool Onoff = false;
+  bool permissionDenied = false;
+  List<Contact>? contacts;
+  String clientName = "";
+  String clientID = "";
+  fetchContacts() async{
+    contacts = await FlutterContacts.getContacts(withProperties: true);
+    setState(() => contacts = contacts);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchContacts();
+
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
@@ -102,7 +118,7 @@ class _newAppointmentState extends State<newAppointment> {
               SizedBox(height: height*0.03,),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Client",
+                  Text(clientName!=""?"${clientName}":"Client",
                       style: TextStyle(
                           fontSize: 14, overflow: TextOverflow.ellipsis,
                           color: Color(0xff292929),
@@ -111,8 +127,12 @@ class _newAppointmentState extends State<newAppointment> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return appoiment_clientList();
-                      },));
+                        return clientListContact(contacts,false);
+                      },)).then((value){
+                        clientName = value[0];
+                        clientID = value[1];
+                        setState(() {});
+                      });
                     },
                     child: Container(
                       width: 40,
@@ -142,7 +162,7 @@ class _newAppointmentState extends State<newAppointment> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return edit_add_service();
+                        return edit_add_service(clientID);
                       },));
                     },
                     child: Container(
@@ -163,58 +183,58 @@ class _newAppointmentState extends State<newAppointment> {
               Divider(thickness: 1,color: Color(0xffCFCFCF),),
               SizedBox(height: height*0.02,),
 
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Request deposit",
-                                style: TextStyle(
-                                    fontSize: 14, overflow: TextOverflow.ellipsis,
-                                    color: Color(0xff292929),
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.bold)),
-
-                          ],
-                        ),
-                        SizedBox(height: height*0.01,),
-                        Row(
-                          children: [
-                            Text("Request a percentage of your\nservice charge from clients.",
-                                style: TextStyle(
-                                    fontSize: 12, overflow: TextOverflow.ellipsis,
-                                    color: Color(0xff292929),
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w500)),
-
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      FlutterSwitch(
-                        width: 55.0,
-                        height: 25.0,
-                        valueFontSize: 12.0,
-                        toggleSize: 18.0,
-                        activeColor: Color(0xff01635D),
-                        value: Onoff,
-                        onToggle: (value) {
-                          setState(() {
-                            Onoff = value;
-                          });
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: height*0.02,),
-              Divider(thickness: 1,color: Color(0xffCFCFCF),),
+              // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Expanded(
+              //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Row(
+              //             children: [
+              //               Text("Request deposit",
+              //                   style: TextStyle(
+              //                       fontSize: 14, overflow: TextOverflow.ellipsis,
+              //                       color: Color(0xff292929),
+              //                       fontFamily: "spartan",
+              //                       fontWeight: FontWeight.bold)),
+              //
+              //             ],
+              //           ),
+              //           SizedBox(height: height*0.01,),
+              //           Row(
+              //             children: [
+              //               Text("Request a percentage of your\nservice charge from clients.",
+              //                   style: TextStyle(
+              //                       fontSize: 12, overflow: TextOverflow.ellipsis,
+              //                       color: Color(0xff292929),
+              //                       fontFamily: "spartan",
+              //                       fontWeight: FontWeight.w500)),
+              //
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     Row(
+              //       children: [
+              //         FlutterSwitch(
+              //           width: 55.0,
+              //           height: 25.0,
+              //           valueFontSize: 12.0,
+              //           toggleSize: 18.0,
+              //           activeColor: Color(0xff01635D),
+              //           value: Onoff,
+              //           onToggle: (value) {
+              //             setState(() {
+              //               Onoff = value;
+              //             });
+              //           },
+              //         ),
+              //       ],
+              //     )
+              //   ],
+              // ),
+              // SizedBox(height: height*0.02,),
+              // Divider(thickness: 1,color: Color(0xffCFCFCF),),
               SizedBox(height: height*0.02,),
 
               Row(children: [

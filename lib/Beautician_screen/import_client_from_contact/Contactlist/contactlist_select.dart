@@ -1,21 +1,64 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/checkbox.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/client_list/client_list.dart';
+import 'package:new_sliikeapps_apps/services/invite_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 // ignore: camel_case_types, must_be_immutable
 class contactLIst_Select extends StatefulWidget {
   List<Contact>? contacts;
+  bool isADD;
 
-  contactLIst_Select(this.contacts, {Key? key}) : super(key: key);
+  contactLIst_Select(this.contacts, this.isADD, {Key? key}) : super(key: key);
 
   @override
   State<contactLIst_Select> createState() => _contactLIst_SelectState();
 }
 // ignore: camel_case_types, must_be_immutable
 class _contactLIst_SelectState extends State<contactLIst_Select> {
-  bool checkboxvalue = false;
+  // bool checkboxvalue = false;
+
+  List<bool> ? checkboxvalue;
+
   TextEditingController search = TextEditingController();
 
+  String _name = "";
+  String _number = "";
+
+  Future whatsapp(String contact,String message) async{
+    var androidUrl = "whatsapp://send?phone=$contact&text=$message";
+    var iosUrl = "https://wa.me/$contact?text=${Uri.parse('$message')}";
+    try{
+      if(Platform.isIOS){
+        await launchUrl(Uri.parse(iosUrl),mode: LaunchMode.externalApplication);
+      }
+      else{
+        await launchUrl(Uri.parse(androidUrl),mode: LaunchMode.externalApplication);
+      }
+    } on Exception{
+      Fluttertoast.showToast(msg: "WhatsApp is not installed.");
+    }
+  }
+
+
+  InviteServices _inviteServices = InviteServices();
+
+  getName ? name;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      checkboxvalue = List.generate(widget.contacts!.length, (index) => false);
+      name = await _inviteServices.getBeauticianProfile(context);
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,311 +145,203 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
           ),
         ),
       ),
-      body: SizedBox(
-        width: width,
-        height: height,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * 0.02,
-              ),
-              TextField(
-                controller: search,
-                onChanged: (value) {},
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  hintText: "Search service",
-                  hintStyle: const TextStyle(color: Color(0xff707070)),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, top: 12, right: 12, bottom: 10),
-                    child: SizedBox(
-                      height: 5,
-                      child: Image.asset("assets/images/search-normal.png"),
+      body: WillPopScope(
+        onWillPop: () async {
+          Loader.hide();
+          return true;
+        },
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                TextField(
+                  controller: search,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(left: 20),
+                    hintText: "Search service",
+                    hintStyle: const TextStyle(color: Color(0xff707070)),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, top: 12, right: 12, bottom: 10),
+                      child: SizedBox(
+                        height: 5,
+                        child: Image.asset("assets/images/search-normal.png"),
+                      ),
+                    ),
+                    labelStyle:
+                        const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(color: Colors.black38),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(color: Colors.black38),
                     ),
                   ),
-                  labelStyle:
-                      const TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.black38),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.black38),
-                  ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Row(
-                children: [
-                  Custom_Checkbox(
-                    isChecked: checkboxvalue,
-                    onChange: (value) {
-                      setState(() {
-                        checkboxvalue = value;
-                      });
-                    },
-                    backgroundColor: const Color(0xff01635D),
-                    borderColor: const Color(0xff01635D),
-                    icon: Icons.check,
-                    iconColor: Colors.white,
-                    size: 24,
-                    iconSize: 20,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text("Select All (${widget.contacts!.length})",
-                      style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: "spartan",
-                          color: Color(0xff292929),
-                          fontWeight: FontWeight.w600)),
-                ],
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              const Divider(
-                thickness: 1,
-                color: (Color(0xffCFCFCF)),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: widget.contacts!.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 6, bottom: 2),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Custom_Checkbox(
-                                isChecked: checkboxvalue,
-                                onChange: (value) {
-                                  setState(() {
-                                    checkboxvalue = value;
-                                  });
-                                },
-                                backgroundColor: const Color(0xff01635D),
-                                borderColor: const Color(0xff01635D),
-                                icon: Icons.check,
-                                iconColor: Colors.white,
-                                size: 24,
-                                iconSize: 20,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Container(
-                                width: 35,
-                                height: 35,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffCFCFCF),
-                                  shape: BoxShape.circle,
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                // Row(
+                //   children: [
+                //     Custom_Checkbox(
+                //       isChecked: checkboxvalue,
+                //       onChange: (value) {
+                //         setState(() {
+                //           checkboxvalue = value;
+                //         });
+                //       },
+                //       backgroundColor: const Color(0xff01635D),
+                //       borderColor: const Color(0xff01635D),
+                //       icon: Icons.check,
+                //       iconColor: Colors.white,
+                //       size: 24,
+                //       iconSize: 20,
+                //     ),
+                //     const SizedBox(
+                //       width: 10,
+                //     ),
+                //     Text("Select All (${widget.contacts!.length})",
+                //         style: const TextStyle(
+                //             fontSize: 12,
+                //             fontFamily: "spartan",
+                //             color: Color(0xff292929),
+                //             fontWeight: FontWeight.w600)),
+                //   ],
+                // ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                const Divider(
+                  thickness: 1,
+                  color: (Color(0xffCFCFCF)),
+                ),
+                if(checkboxvalue!=null)Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: widget.contacts!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 6, bottom: 2),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Custom_Checkbox(
+                                  isChecked: checkboxvalue![index],
+                                  onChange: (value) {
+                                    print(widget.contacts);
+                                    setState(() {
+                                      checkboxvalue![index] = value;
+                                      _name = widget.contacts![index].displayName;
+                                      _number =  widget.contacts![index].phones.first.number;
+                                      print(_name);
+                                      print(_number);
+                                    });
+                                  },
+                                  backgroundColor: const Color(0xff01635D),
+                                  borderColor: const Color(0xff01635D),
+                                  icon: Icons.check,
+                                  iconColor: Colors.white,
+                                  size: 24,
+                                  iconSize: 20,
                                 ),
-                                child: Image.asset(
-                                    "assets/images/profile.png",
-                                    fit: BoxFit.fill),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  widget.contacts![index].displayName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff414141),
-                                    fontFamily: "spartan",
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xffCFCFCF),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                      "assets/images/profile.png",
+                                      fit: BoxFit.fill),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    widget.contacts![index].displayName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff414141),
+                                      fontFamily: "spartan",
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            color: (Color(0xffCFCFCF)),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              //Spacer(),
-
-              SizedBox(
-                width: width,
-                height: 100,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          // checkboxvalue == true
-                          //     ? showDialog(
-                          //         context: context,
-                          //         builder: (context) {
-                          //           return Center(
-                          //             child: Material(
-                          //               type: MaterialType.transparency,
-                          //               child: Stack(
-                          //                 alignment: Alignment.topCenter,
-                          //                 children: [
-                          //                   Container(
-                          //                     margin: const EdgeInsets.only(
-                          //                         left: 20,
-                          //                         right: 20,
-                          //                         top: 25,
-                          //                         bottom: 25),
-                          //                     decoration: BoxDecoration(
-                          //                       borderRadius:
-                          //                           BorderRadius.circular(10),
-                          //                       color: Colors.white,
-                          //                       // gradient: boxGradient,
-                          //                     ),
-                          //                     padding: const EdgeInsets.only(
-                          //                         top: 5, bottom: 5),
-                          //                     width: width,
-                          //                     height: 220,
-                          //                     child: Center(
-                          //                       child: Padding(
-                          //                         padding:
-                          //                             const EdgeInsets.only(
-                          //                                 left: 10, right: 10),
-                          //                         child: Column(
-                          //                           children: [
-                          //                             SizedBox(
-                          //                               height: height * 0.07,
-                          //                             ),
-                          //                             Text("Clients",
-                          //                                 textAlign:
-                          //                                     TextAlign.center,
-                          //                                 style: TextStyle(
-                          //                                   fontSize: 15,
-                          //                                   fontFamily:
-                          //                                       "spartan",
-                          //                                   fontWeight:
-                          //                                       FontWeight.w600,
-                          //                                   color: Color(
-                          //                                       0xff292929),
-                          //                                 )),
-                          //                             SizedBox(
-                          //                               height: height * 0.02,
-                          //                             ),
-                          //                             Text(
-                          //                                 "Successfully Invited",
-                          //                                 textAlign:
-                          //                                     TextAlign.center,
-                          //                                 style: TextStyle(
-                          //                                   fontSize: 12,
-                          //                                   fontFamily:
-                          //                                       "spartan",
-                          //                                   fontWeight:
-                          //                                       FontWeight.w500,
-                          //                                   color: Color(
-                          //                                       0xff414141),
-                          //                                 )),
-                          //                             SizedBox(
-                          //                               height: height * 0.03,
-                          //                             ),
-                          //                             InkWell(
-                          //                               onTap: () {
-                          //                                 Navigator.push(
-                          //                                     context,
-                          //                                     MaterialPageRoute(
-                          //                                   builder: (context) {
-                          //                                     return clientListContact(
-                          //                                         widget
-                          //                                             .contacts);
-                          //                                   },
-                          //                                 ));
-                          //                                 // Navigator.pop(context);
-                          //                               },
-                          //                               child: Container(
-                          //                                 width: width,
-                          //                                 height: 50,
-                          //                                 decoration:
-                          //                                     BoxDecoration(
-                          //                                   borderRadius:
-                          //                                       BorderRadius
-                          //                                           .circular(
-                          //                                               5),
-                          //                                   color: Color(
-                          //                                       0xff219653),
-                          //                                 ),
-                          //                                 child: Center(
-                          //                                   child: Text("DONE",
-                          //                                       textAlign:
-                          //                                           TextAlign
-                          //                                               .center,
-                          //                                       style: TextStyle(
-                          //                                           fontSize:
-                          //                                               15,
-                          //                                           fontFamily:
-                          //                                               "spartan",
-                          //                                           color: Color(
-                          //                                               0xffffffff),
-                          //                                           fontWeight:
-                          //                                               FontWeight
-                          //                                                   .w500)),
-                          //                                 ),
-                          //                               ),
-                          //                             ),
-                          //                           ],
-                          //                         ),
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   Container(
-                          //                     height: 90,
-                          //                     width: 90,
-                          //                     child: Image.asset(
-                          //                         "assets/images/stackright.png"),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           );
-                          //         },
-                          //       ) :
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return clientListContact(widget.contacts);
-                                  },
-                                ));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: width,
-                          height: height * 0.06,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: const Color(0xff01635D)),
-                          child: const Text("SEND INVITE",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "spartan",
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600)),
+                              ],
+                            ),
+                            const Divider(
+                              thickness: 1,
+                              color: (Color(0xffCFCFCF)),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
-              ),
-            ],
+                //Spacer(),
+                SizedBox(
+                  width: width,
+                  height: 100,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () async{
+                            String message = "Hello, $_name\n"
+                                "This is ${name?.data.firstName} ${name?.data.lastName}\n"
+                                "I am inviting you to join Sliike platform. The digital marketplace where you can easily book and pay for my beauty services and products.\n"
+                                "Click here to accept my invite and go to your app store or  ${"www.sliike.com"} to download the app.";
+                            if(_name!=""){
+                             WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+                              await whatsapp(_number,message).then((value){
+                                _inviteServices.inviteContacts(context, _number);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => clientListContact(widget.contacts,widget.isADD),));
+                              });
+                             });
+                            }else{
+                              Fluttertoast.showToast(msg: "Please select any contact");
+                            }
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: width,
+                            height: height * 0.06,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(0xff01635D)),
+                            child: const Text("SEND INVITE",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: "spartan",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

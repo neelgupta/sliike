@@ -765,7 +765,6 @@ class _calenderState extends State<calender> {
                             log("viewChangedDetails.visibleDates year :: ${viewChangedDetails.visibleDates.first.year.toString()}    pickeddate.month  ${pickeddate.year}");
                             log("viewChangedDetails.visibleDates month :: ${viewChangedDetails.visibleDates.first.month.toString()} ,,  pickeddate.month ${pickeddate.month}");
                             log("viewChangedDetails.visibleDates  :: ${viewChangedDetails.visibleDates.first.toString()} ,,  pickeddate $pickeddate");
-
                             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                               getCalendarAppointments2(viewChangedDetails.visibleDates.first);
                             });

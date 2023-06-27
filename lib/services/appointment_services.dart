@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/models/GetAddBAppointment.dart';
+import 'package:new_sliikeapps_apps/models/getAppointmentPreDetailsModel.dart';
 import 'package:new_sliikeapps_apps/models/getStaffDataModel.dart';
 import 'package:new_sliikeapps_apps/models/serviceDetailModel.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -11,6 +15,8 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AppointmentService {
+
+  List appointmentIds = [];
 
   Future<GetServiceDetailsModel?> getServiceDetails(BuildContext context) async {
     Loader.show(
@@ -92,6 +98,164 @@ class AppointmentService {
     }
     Loader.hide();
     return GetStaffDataModel.fromJson(jsonDecode(response.body));
+  }
+
+  addBAppointment(BuildContext context,Map<String ,dynamic> Body) async {
+    Loader.show(
+      context,
+      isSafeAreaOverlay: false,
+      overlayColor: Colors.black26,
+      progressIndicator:
+      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+      themeData: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+      ),
+    );
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.post(
+      Uri.parse(ApiUrlList.addBAppointment),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("addBAppointment Code : ${response.statusCode}");
+    log("addBAppointment Body : ${response.body}");
+    log("addBAppointment PayLoad : ${Body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 201) {
+      Loader.hide();
+      appointmentIds.add(map["data"]["appointmentId"].toString());
+      log("appointmentIds : ${appointmentIds}");
+      Navigator.push(context, MaterialPageRoute(builder: (context) => newAppoinment_Viwe_Add(appointmentIds),));
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return GetAddBAppointment.fromJson(jsonDecode(response.body));
+    } else {
+      Loader.hide();
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    return GetAddBAppointment.fromJson(jsonDecode(response.body));
+  }
+
+  Future<GetAppointmentPreDetailsData?> getAppointmentPreDetails(BuildContext context,data) async {
+    Loader.show(
+      context,
+      isSafeAreaOverlay: false,
+      overlayColor: Colors.black26,
+      progressIndicator:
+      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+      themeData: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+      ),
+    );
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var Body = {
+      "appointmentIds" : data,
+    };
+    log("addBAppointment PayLoad : ${Body}");
+    var response = await http.post(
+      Uri.parse(ApiUrlList.getAppointmentPreDetails),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("addBAppointment Code : ${response.statusCode}");
+    log("addBAppointment Body : ${response.body}");
+    log("addBAppointment PayLoad : ${Body}");
+    log("addBAppointment PayLoad : ${Headers}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      Loader.hide();
+      // Fluttertoast.showToast(
+      //     msg: map["message"],
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Colors.black,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0);
+      return GetAppointmentPreDetailsData.fromJson(jsonDecode(response.body));
+    } else {
+      Loader.hide();
+      // Fluttertoast.showToast(
+      //     msg: map["message"],
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Colors.black,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0);
+    }
+    Loader.hide();
+    return GetAppointmentPreDetailsData.fromJson(jsonDecode(response.body));
+  }
+
+  saveAppointmentDetails(BuildContext context,Map<String ,dynamic> Body,List appId) async {
+    Loader.show(
+      context,
+      isSafeAreaOverlay: false,
+      overlayColor: Colors.black26,
+      progressIndicator:
+      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+      themeData: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+      ),
+    );
+    var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.post(
+      Uri.parse(ApiUrlList.saveAppointmentDetails),
+      body: jsonEncode(Body),
+      headers: Headers,
+    );
+    log("saveAppointmentDetails Code : ${response.statusCode}");
+    log("saveAppointmentDetails Body : ${response.body}");
+    log("saveAppointmentDetails PayLoad : ${Body}");
+    Map map = jsonDecode(response.body);
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      appId.clear();
+      Loader.hide();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => calender(),));
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      // return GetAddBAppointment.fromJson(jsonDecode(response.body));
+    } else {
+      Loader.hide();
+      Fluttertoast.showToast(
+          msg: map["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    // return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
 
 }

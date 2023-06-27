@@ -1,12 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/Contactlist/contactlist_select.dart';
+import 'package:new_sliikeapps_apps/models/getClientListModel.dart';
+import 'package:new_sliikeapps_apps/services/invite_services.dart';
 
 // ignore: camel_case_types, must_be_immutable
+class SelectedContact {
+  String name;
+  String mobile;
+  String status;
+  String id;
+  SelectedContact({required this.name,required  this.mobile,required  this.status,required  this.id});
+}
+
 class clientListContact extends StatefulWidget {
   List<Contact>? contacts;
-   clientListContact(this.contacts, {Key? key}) : super(key: key);
+  bool isStart;
+   clientListContact(this.contacts,this.isStart, {Key? key}) : super(key: key);
 
   @override
   State<clientListContact> createState() => _clientListContactState();
@@ -14,6 +28,31 @@ class clientListContact extends StatefulWidget {
 // ignore: camel_case_types, must_be_immutable
 class _clientListContactState extends State<clientListContact> {
   TextEditingController search=TextEditingController();
+  InviteServices _inviteServices = InviteServices();
+  GetClientListData ? getClientListData;
+  List<SelectedContact> contactList = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      getClientListData = await _inviteServices.getInvitedClientList(context);
+      addContact();
+    });
+  }
+
+
+  addContact() {
+    widget.contacts!.forEach((element) {
+      for(var item in getClientListData!.data ?? []) {
+        if(element.phones.first.number == item.phoneNubWithFormat) {
+          contactList.add(SelectedContact(name: "${element.name.first} ${element.name.last}", mobile: element.phones.first.number, status: item.status.toString(),id: item.clientId));
+        }
+      }
+    });
+    log("length : ${contactList.length}");
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -122,71 +161,77 @@ class _clientListContactState extends State<clientListContact> {
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-
-                  itemCount: widget.contacts!.length,
+                  itemCount: contactList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 6, bottom: 2),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 35,
-                                height: 35,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffCFCFCF),
-                                  shape: BoxShape.circle,
+                          InkWell(
+                            onTap: (){
+                              if(!widget.isStart &&  contactList[index].status=="1"){
+                                Navigator.pop(context,[contactList[index].name,contactList[index].id]);
+                              }else{
+                                Fluttertoast.showToast(msg: "This client has not been registered till now!");
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xffCFCFCF),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                      "assets/images/profile.png",
+                                      fit: BoxFit.fill),
                                 ),
-                                child: Image.asset(
-                                    "assets/images/profile.png",
-                                    fit: BoxFit.fill),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              SizedBox(
-                                width: width*0.5,
-                                child: Text(
-                                  widget.contacts![index].displayName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff414141),
-                                    fontFamily: "spartan",
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                SizedBox(
+                                  width: width*0.5,
+                                  child: Text(
+                                    "${contactList[index].name}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff414141),
+                                      fontFamily: "spartan",
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              ///pending Button ?
-                              Container(
-
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadiusDirectional.circular(4),
-
-                                    color: const Color(0xffFFD059),
+                                const Spacer(),
+                                ///pending Button ?
+                                Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: contactList[index].status=="1"?Colors.green : Color(0xffFFD059),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                                    child: Text(contactList[index].status=="1"?"Accepted" : "Pending",style: TextStyle(fontFamily: 'Cairo',fontSize: 12,color: Color(0xff111111)),),
+                                  ),
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                                  child: Text("Pending",style: TextStyle(fontFamily: 'Cairo',fontSize: 12,color: Color(0xff111111)),),
-                                ),
-                              ),
-                              ///Accepted buttom ?
-                              // Container(
-                              //
-                              //   alignment: Alignment.center,
-                              //   decoration: BoxDecoration(
-                              //     borderRadius: BorderRadiusDirectional.circular(4),
-                              //
-                              //     color: Color(0xff219653),
-                              //   ),
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                              //     child: Text("Accepted",style: TextStyle(fontSize: 10,fontFamily: 'Cairo',color: Color(0xffFFFFFF)),),
-                              //   ),
-                              // ),
-                            ],
+                                ///Accepted buttom ?
+                                // Container(
+                                //
+                                //   alignment: Alignment.center,
+                                //   decoration: BoxDecoration(
+                                //     borderRadius: BorderRadiusDirectional.circular(4),
+                                //
+                                //     color: Color(0xff219653),
+                                //   ),
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                                //     child: Text("Accepted",style: TextStyle(fontSize: 10,fontFamily: 'Cairo',color: Color(0xffFFFFFF)),),
+                                //   ),
+                                // ),
+                              ],
+                            ),
                           ),
                           const Divider(
                             thickness: 1,
@@ -200,13 +245,14 @@ class _clientListContactState extends State<clientListContact> {
               ),
               const Spacer(),
               SizedBox(
-
                 width: width*0.4,
                 child: InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return contactLIst_Select(widget.contacts);
-                    },));
+                    widget.isStart?
+                    Navigator.pop(context):
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return contactLIst_Select(widget.contacts,false);
+                        },));
                   },
                   child: Row(
                     children: const [
@@ -231,8 +277,7 @@ class _clientListContactState extends State<clientListContact> {
                 ),
               ),
               SizedBox(height: height*0.04,),
-
-              InkWell(
+              widget.isStart?InkWell(
                 onTap: () {
                   setState(() {
                     setState(() {
@@ -255,7 +300,7 @@ class _clientListContactState extends State<clientListContact> {
                           fontFamily: "spartan",
                           color: Colors.white)),
                 ),
-              ),
+              ):SizedBox(),
               SizedBox(height: height*0.04,),
             ],
           ),
