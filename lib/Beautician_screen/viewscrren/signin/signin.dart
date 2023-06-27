@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,7 +24,6 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/main.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../client_service_api/login_service.dart';
 import '../signup/signup.dart';
@@ -90,24 +90,24 @@ class _signInScreenState extends State<signInScreen> {
       isChecked = value;
     });
     if (value) {
-          Helper.prefs!.setBool("remember_me", true);
-          Helper.prefs!.setString('email', temail.text);
-          Helper.prefs!.setString('password', tpassword.text);
+      Helper.prefs!.setBool("remember_me", true);
+      Helper.prefs!.setString('email', temail.text);
+      Helper.prefs!.setString('password', tpassword.text);
     } else {
-          Helper.prefs!.setBool("remember_me", false);
-          Helper.prefs!.setString('email', "");
-          Helper.prefs!.setString('password', "");
+      Helper.prefs!.setBool("remember_me", false);
+      Helper.prefs!.setString('email', "");
+      Helper.prefs!.setString('password', "");
     }
   }
 
   void _loadUserEmailPassword() async {
-      var rememberMe = Helper.prefs!.getBool("remember_me") ?? false;
-      if (rememberMe) {
-        setState(() {
-          isChecked = true;
-        });
-        temail.text = Helper.prefs!.getString("email") ?? "";
-      }
+    var rememberMe = Helper.prefs!.getBool("remember_me") ?? false;
+    if (rememberMe) {
+      setState(() {
+        isChecked = true;
+      });
+      temail.text = Helper.prefs!.getString("email") ?? "";
+    }
   }
 
   @override
@@ -585,8 +585,10 @@ class _signInScreenState extends State<signInScreen> {
       if (response.statusCode == 200) {
         signinmodel = SigninModel.fromJson(map);
         Helper.prefs!.setString(UserPrefs.keyDeviceToken, deviceToken);
-        Helper.prefs!.setString(UserPrefs.keyusertype, signinmodel!.success!.type!);
-        Helper.prefs!.setString(UserPrefs.keyutoken, signinmodel!.success!.token ?? "");
+        Helper.prefs!
+            .setString(UserPrefs.keyusertype, signinmodel!.success!.type!);
+        Helper.prefs!
+            .setString(UserPrefs.keyutoken, signinmodel!.success!.token ?? "");
 
         if (signinmodel!.success!.type == "user") {
           if ((signinmodel!.success!.screenStatus ?? 0) == 2) {
@@ -597,9 +599,7 @@ class _signInScreenState extends State<signInScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return homescreen(
-                    selectedIndex: 0,
-                  );
+                  return homescreen();
                 },
               ),
               (route) => false,

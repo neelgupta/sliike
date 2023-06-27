@@ -5,8 +5,9 @@ import 'package:new_sliikeapps_apps/client_app/profile_pages/contact_us.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/faq_page.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/feedback.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/privacy_policy.dart';
-import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/client_app/profile_pages/terms_of_service.dart';
 
+import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class help_center extends StatefulWidget {
   const help_center({Key? key}) : super(key: key);
@@ -18,8 +19,12 @@ class help_center extends StatefulWidget {
 class _help_centerState extends State<help_center> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -27,28 +32,34 @@ class _help_centerState extends State<help_center> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               color: Color(0xFFFCF0E6),
-              image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)
-          ),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/Rectangle 28.png"),
+                  fit: BoxFit.fill)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 20,bottom: 10),
+                padding: const EdgeInsets.only(left: 10, right: 20, bottom: 10),
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
-                        height: height*0.06,
-                        child:Container(
+                        height: height * 0.06,
+                        child: Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                            child: const Image(
+                              image: AssetImage("assets/images/Group 55.png"),
+                              color: Colors.black,
+                            )),
                       ),
                     ),
-                    SizedBox(width: width*0.20,),
+                    SizedBox(
+                      width: width * 0.20,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
@@ -72,13 +83,18 @@ class _help_centerState extends State<help_center> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              SizedBox(height:height*0.04,),
-              const Text("Welcome to Sliike help center, how can we be of help?",
+              SizedBox(
+                height: height * 0.04,
+              ),
+              const Text(
+                  "Welcome to Sliike help center, how can we be of help?",
                   style: TextStyle(
                       fontSize: 14,
                       fontFamily: "spartan",
                       color: Colors.black)),
-              SizedBox(height:height*0.02,),
+              SizedBox(
+                height: height * 0.02,
+              ),
               // Container(
               //     alignment: Alignment.center,
               //     width: width,
@@ -100,21 +116,28 @@ class _help_centerState extends State<help_center> {
               //       ],
               //     )
               // ),
-              SizedBox(height:height*0.04,),
+              SizedBox(
+                height: height * 0.04,
+              ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const faq_page();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const faq_page();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 17,),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("FAQ",16,const Color(0xff414141), FontWeight.w500),
+                      textComoon(
+                          "FAQ", 16, const Color(0xff414141), FontWeight.w500),
                       const Spacer(),
                       SizedBox(
                         height: 15,
@@ -127,18 +150,23 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const feedback();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const feedback();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 17,),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Feedback",16,const Color(0xff414141), FontWeight.w500),
+                      textComoon("Feedback", 16, const Color(0xff414141),
+                          FontWeight.w500),
                       const Spacer(),
                       SizedBox(
                         height: 15,
@@ -151,18 +179,23 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const contact_us();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const contact_us();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 17,),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Contact Us",16,const Color(0xff414141), FontWeight.w500),
+                      textComoon("Contact Us", 16, const Color(0xff414141),
+                          FontWeight.w500),
                       const Spacer(),
                       SizedBox(
                         height: 15,
@@ -175,18 +208,23 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const privacy_policy();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const privacy_policy();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 17,),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Privacy Policy",16,const Color(0xff414141), FontWeight.w500),
+                      textComoon("Privacy Policy", 16, const Color(0xff414141),
+                          FontWeight.w500),
                       const Spacer(),
                       SizedBox(
                         height: 15,
@@ -199,18 +237,23 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const privacy_policy();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const TermsOfService();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 17,),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Terms of Service",16,const Color(0xff414141), FontWeight.w500),
+                      textComoon("Terms of Service", 16,
+                          const Color(0xff414141), FontWeight.w500),
                       const Spacer(),
                       SizedBox(
                         height: 15,

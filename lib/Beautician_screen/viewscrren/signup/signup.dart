@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,7 +16,6 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/emailverificati
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/privcy_policy.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/teams_and_condition.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/unbording/unboarding%20screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -24,9 +24,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: camel_case_types, must_be_immutable
 class signUp extends StatefulWidget {
   bool? isverify;
-  String ? userType;
+  String? userType;
 
-  signUp({Key? key, this.isverify,this.userType}) : super(key: key);
+  signUp({Key? key, this.isverify, this.userType}) : super(key: key);
 
   @override
   State<signUp> createState() => _signUpState();
@@ -333,15 +333,16 @@ class _signUpState extends State<signUp> {
                   Column(
                     children: [
                       TextField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                        ],
+                        // inputFormatters: [
+                        // FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                        // ],
                         controller: tname,
                         onChanged: (value) {
                           setState(() {
                             namestatus = false;
                           });
                         },
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "First Name",
@@ -374,13 +375,14 @@ class _signUpState extends State<signUp> {
                               height: 20,
                             ),
                       TextField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                        ],
+                        // inputFormatters: [
+                        //   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                        // ],
                         controller: tlastname,
                         onChanged: (value) {
                           lastnamestatus = false;
                         },
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "Last Name",
@@ -886,9 +888,13 @@ class _signUpState extends State<signUp> {
                             fontSize: 12)),
                     InkWell(
                         onTap: () {
-                          widget.userType=="user"?
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const signInScreen(),)):
-                          Navigator.pop(context);
+                          widget.userType == "user"
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const signInScreen(),
+                                  ))
+                              : Navigator.pop(context);
                         },
                         child: const Text(" Sign In",
                             style: TextStyle(
@@ -959,7 +965,8 @@ class _signUpState extends State<signUp> {
         Helper.prefs!.setString(UserPrefs.firstName, firstName);
         Helper.prefs!.setString(UserPrefs.lastName, lastName);
         Helper.prefs!.setString(UserPrefs.email, email);
-        Helper.prefs!.setString("country_code",  countrycode.replaceAll("+", ""));
+        Helper.prefs!
+            .setString("country_code", countrycode.replaceAll("+", ""));
         Helper.prefs!.setString(UserPrefs.keybusinessNumber, phoneNumber);
         Helper.prefs!.setString(UserPrefs.password, password);
         Fluttertoast.showToast(

@@ -1,22 +1,18 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/service_setup/setup_main.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/second_beautyservice_or_product/service_add/categorytype_service.dart';
 import 'dart:convert';
 import 'dart:developer';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/app_colors.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import '../../../../../../models/getServicesListModel.dart';
-import '../../../../calender/send_notifi_message_or_phone/new_appoinment/service/add_another_service/add_service.dart';
-
 
 class addService extends StatefulWidget {
   const addService({Key? key}) : super(key: key);
@@ -145,7 +141,6 @@ class _addServiceState extends State<addService> {
   String? selectedServiceIdValue = "";
   String selectedServiceNameValue = "";
 
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -258,87 +253,131 @@ class _addServiceState extends State<addService> {
                                   width: width - 40,
                                   child: Card(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: ListView.builder(
+                                    child: ListView.separated(
                                       shrinkWrap: true,
                                       itemCount: categoryDataList.length,
-                                      itemBuilder:
-                                          (context, index) {
-                                        var singleItem = categoryDataList[index];
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.white,width: 1)),
-                                          child: Column(
-                                            children: [
-                                              Theme(
-                                                data: ThemeData(
-                                                  //here change to your color
-                                                  unselectedWidgetColor:
-                                                  const Color(
-                                                      0xff01635D),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                  const EdgeInsets
-                                                      .only(
-                                                      left: 10,
-                                                      right: 10,
-                                                      top: 8,
-                                                      bottom:
-                                                      8),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .center,
-                                                    children: [
-                                                      Text(
-                                                        "${singleItem.serviceCategoryName}",
-                                                        style: const TextStyle(
-                                                            fontSize:
-                                                            15,
-                                                            color: Color(
-                                                                0xff292929),
-                                                            fontFamily:
-                                                            "spartan",
-                                                            fontWeight:
-                                                            FontWeight.normal),
-                                                      ),
-                                                      Radio<String?>(
-                                                        value: singleItem.id,
-                                                        activeColor:
-                                                        const Color(
-                                                            0xff01635D),
-                                                        groupValue: selectedServiceIdValue,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            print("000");
-                                                            selectedServiceCategoryIdValue = singleItem.id!;
-                                                            selectedServiceCategoryNameValue = singleItem.serviceCategoryName!;
-                                                            fetchServicesType(selectedServiceCategoryIdValue);
-                                                            Navigator.pop(context);
-                                                            print(selectedServiceCategoryNameValue);
-                                                          });
-                                                        },
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 1,
-                                                width: width,
-                                                color: const Color(
-                                                    0xffE7E7E7),
-                                              )
-                                            ],
-                                          ),
+                                      separatorBuilder: (context, index) {
+                                        return Divider(
+                                          color: AppColors.greyColor
+                                              .withOpacity(0.35),
+                                          indent: 10,
+                                          endIndent: 10,
+                                          height: 5,
+                                          thickness: 1,
                                         );
+                                      },
+                                      itemBuilder: (context, index) {
+                                        var singleItem =
+                                            categoryDataList[index];
+                                        return RadioListTile<String?>(
+                                          value: singleItem.id,
+                                          activeColor: const Color(0xff01635D),
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                          groupValue: selectedServiceIdValue,
+                                          title: Text(
+                                            "${singleItem.serviceCategoryName}",
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Color(0xff292929),
+                                                fontFamily: "spartan",
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              print("000");
+                                              selectedServiceCategoryIdValue =
+                                                  singleItem.id!;
+                                              selectedServiceCategoryNameValue =
+                                                  singleItem
+                                                      .serviceCategoryName!;
+                                              fetchServicesType(
+                                                  selectedServiceCategoryIdValue);
+                                              Navigator.pop(context);
+                                              print(
+                                                  selectedServiceCategoryNameValue);
+                                            });
+                                          },
+                                        );
+
+                                        //  Container(
+                                        //   decoration: BoxDecoration(
+                                        //       border: Border.all(
+                                        //           color: Colors.white,
+                                        //           width: 1)),
+                                        //   child: Column(
+                                        //     children: [
+                                        //       Theme(
+                                        //         data: ThemeData(
+                                        //           //here change to your color
+                                        //           unselectedWidgetColor:
+                                        //               const Color(0xff01635D),
+                                        //         ),
+                                        //         child: Padding(
+                                        //           padding:
+                                        //               const EdgeInsets.only(
+                                        //                   left: 10,
+                                        //                   right: 10,
+                                        //                   top: 8,
+                                        //                   bottom: 8),
+                                        //           child: Row(
+                                        //             mainAxisAlignment:
+                                        //                 MainAxisAlignment
+                                        //                     .spaceBetween,
+                                        //             crossAxisAlignment:
+                                        //                 CrossAxisAlignment
+                                        //                     .center,
+                                        //             children: [
+                                        //               Text(
+                                        //                 "${singleItem.serviceCategoryName}",
+                                        //                 style: const TextStyle(
+                                        //                     fontSize: 15,
+                                        //                     color: Color(
+                                        //                         0xff292929),
+                                        //                     fontFamily:
+                                        //                         "spartan",
+                                        //                     fontWeight:
+                                        //                         FontWeight
+                                        //                             .normal),
+                                        //               ),
+                                        //               Radio<String?>(
+                                        //                 value: singleItem.id,
+                                        //                 activeColor:
+                                        //                     const Color(
+                                        //                         0xff01635D),
+                                        //                 groupValue:
+                                        //                     selectedServiceIdValue,
+                                        //                 onChanged: (value) {
+                                        //                   setState(() {
+                                        //                     print("000");
+                                        //                     selectedServiceCategoryIdValue =
+                                        //                         singleItem.id!;
+                                        //                     selectedServiceCategoryNameValue =
+                                        //                         singleItem
+                                        //                             .serviceCategoryName!;
+                                        //                     fetchServicesType(
+                                        //                         selectedServiceCategoryIdValue);
+                                        //                     Navigator.pop(
+                                        //                         context);
+                                        //                     print(
+                                        //                         selectedServiceCategoryNameValue);
+                                        //                   });
+                                        //                 },
+                                        //               )
+                                        //             ],
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //       Container(
+                                        //         height: 1,
+                                        //         width: width,
+                                        //         color: const Color(0xffE7E7E7),
+                                        //       )
+                                        //     ],
+                                        //   ),
+                                        // );
                                       },
                                     ),
                                   ),
@@ -348,40 +387,33 @@ class _addServiceState extends State<addService> {
                           );
                         },
                         child: Container(
-                          height: 48,
+                          height: 50,
                           decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5),
                               border: Border.all(
-                                  color: const Color(0xff707070),
-                                  width: 1)),
+                                  color: const Color(0xff707070), width: 1)),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 10),
+                            padding: const EdgeInsets.only(left: 15, right: 10),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 selectedServiceCategoryNameValue == ""
                                     ? const Text(
-                                  "Service category",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color:
-                                      Color(0xff707070),
-                                      fontFamily: "spartan",
-                                      fontWeight:
-                                      FontWeight.normal),
-                                )
-                                    :
-                                Text(
-                                  selectedServiceCategoryNameValue,
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xff292929),
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.normal),
-                                ),
+                                        "Service category",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xff707070),
+                                            fontFamily: "spartan",
+                                            fontWeight: FontWeight.normal),
+                                      )
+                                    : Text(
+                                        selectedServiceCategoryNameValue,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xff292929),
+                                            fontFamily: "spartan",
+                                            fontWeight: FontWeight.normal),
+                                      ),
                                 const Icon(
                                   Icons.keyboard_arrow_right,
                                   size: 30,
@@ -394,18 +426,18 @@ class _addServiceState extends State<addService> {
                       ),
                       categoryStatus
                           ? SizedBox(
-                        height: 30,
-                        child: Text(
-                          status,
-                          style: TextStyle(
-                              fontFamily: 'spartan',
-                              fontSize: 12,
-                              color: Colors.red),
-                        ),
-                      )
+                              height: 30,
+                              child: Text(
+                                status,
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
                           : Container(
-                        height: 30,
-                      ),
+                              height: 30,
+                            ),
                       const Divider(
                         color: Color(0xffCFCFCF),
                         thickness: 1,
@@ -415,409 +447,412 @@ class _addServiceState extends State<addService> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: const Text("Choose service type",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color(0xff292929),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold)),
+                        child: const Text(
+                          "Choose service type",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xff292929),
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      const SizedBox(height: 15),
                       dropdown == true
                           ? DropdownButtonHideUnderline(
-                        child: Container(
-                          height: 48,
-                          width: width,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(5),
-                              border: Border.all(
-                                  color:
-                                  const Color(0xff707070),
-                                  width: 1)),
-                          child: DropdownButtonFormField2<
-                              TypesData>(
-                            isExpanded: true,
-                            hint: const Padding(
-                              padding:
-                              EdgeInsets.only(left: 20),
-                              child: Text(
-                                'Service type',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "spartan",
-                                  color: Color(0xff707070),
+                              child: Container(
+                                height: 50,
+                                width: width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: const Color(0xff707070),
+                                        width: 1)),
+                                child: DropdownButtonFormField2<TypesData>(
+                                  isExpanded: true,
+
+                                  hint: const Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 20, bottom: 0),
+                                    child: Text(
+                                      'Service type',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: "spartan",
+                                        color: Color(0xff707070),
+                                      ),
+                                    ),
+                                  ),
+                                  items: dropdown == true
+                                      ? typesDataList
+                                          .map((item) =>
+                                              DropdownMenuItem<TypesData>(
+                                                onTap: () {
+                                                  setState(() {
+                                                    serviceStatus = false;
+                                                    dropdown = false;
+                                                  });
+                                                },
+                                                value: item,
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20),
+                                                      child: Text(
+                                                        item.serviceTypeName,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: "spartan",
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    //Icon(Icons.chevron_right),
+                                                  ],
+                                                ),
+                                              ))
+                                          .toList()
+                                      : null,
+                                  // customItemsHeights: _getCustomItemsHeights(),
+                                  value: selectedService,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedService = value!;
+                                      print(selectedServiceIdValue);
+                                      selectedServiceIdValue = value.id;
+                                      print('======>$selectedServiceIdValue');
+                                      selectedServiceNameValue =
+                                          value.serviceTypeName;
+                                    });
+                                  },
+                                  buttonHeight: 60,
+                                  buttonPadding:
+                                      const EdgeInsets.only(right: 10),
+                                  icon: (const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 30,
+                                    color: Color(0xff707070),
+                                  )),
+                                  dropdownMaxHeight: 200,
+                                  buttonWidth: 140,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                ),
+                              ),
+                            )
+                          : Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: const Color(0xffE7E7E7),
+                                        width: 1)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 18, right: 18, top: 10, bottom: 10),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            arrow = !arrow;
+                                          });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            selectedServiceNameValue == " "
+                                                ? const Text(
+                                                    "Select service type",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xff292929),
+                                                        fontFamily: "spartan",
+                                                        fontWeight:
+                                                            FontWeight.bold))
+                                                : Text(selectedServiceNameValue,
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xff292929),
+                                                        fontFamily: "spartan",
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                            arrow
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        dropdown = true;
+                                                      });
+                                                    },
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          selectedService =
+                                                              null;
+                                                          selectedServiceIdValue =
+                                                              "";
+                                                          selectedServiceNameValue =
+                                                              "";
+                                                          arrow = false;
+                                                          dropdown = true;
+                                                        });
+                                                      },
+                                                      child: const Icon(
+                                                          Icons.cancel_outlined,
+                                                          size: 30,
+                                                          color: Color(
+                                                              0xff707070)),
+                                                    ),
+                                                  )
+                                                : InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        arrow = true;
+                                                      });
+                                                    },
+                                                    child: const Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down,
+                                                        size: 30,
+                                                        color:
+                                                            Color(0xff707070)),
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                      arrow
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                const Divider(
+                                                  thickness: 1,
+                                                  color: Color(0xffCFCFCF),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                const Text(
+                                                    "You can suggest Service Type through the Help Centre.",
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color:
+                                                            Color(0xff707070),
+                                                        fontFamily: "spartan",
+                                                        fontWeight:
+                                                            FontWeight.normal)),
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          5, 5, 5, 5),
+                                                  child:
+                                                      DropdownButtonFormField(
+                                                    enableFeedback: true,
+                                                    isDense: true,
+                                                    isExpanded: true,
+                                                    alignment: Alignment.center,
+                                                    elevation: 2,
+                                                    value: selectedvaluemin,
+                                                    items: mindropdownlist
+                                                        .map((String items) {
+                                                      return DropdownMenuItem(
+                                                        value: items,
+                                                        child: Text(
+                                                          items,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 12),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (String?
+                                                        selectedvalue) {
+                                                      setState(() {
+                                                        mintoforamt(
+                                                            selectedvalue);
+                                                        print(
+                                                            "selectedvalue==${selectedvalue}");
+                                                        // selectedvaluemin = selectedvalue!;
+                                                        // selectedvalueminnewformat = newValue!;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.keyboard_arrow_down,
+                                                      size: 30,
+                                                    ),
+                                                    decoration: InputDecoration(
+                                                      //labelText: "Duration",
+                                                      label: const Text(
+                                                          "Duration",
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff292929))),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .black38),
+                                                      ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .black38),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: height * 0.03,
+                                                ),
+                                                Container(
+                                                  child: TextField(
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                              RegExp(r'[0-9]'))
+                                                    ],
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    controller: servicePrice,
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xff292929)),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        servicePriceStatus =
+                                                            false;
+                                                      });
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 20),
+                                                      hintText: "00",
+                                                      hintStyle:
+                                                          const TextStyle(
+                                                              fontSize: 15,
+                                                              color: Color(
+                                                                  0xff292929)),
+                                                      prefixIcon: SizedBox(
+                                                        width: 70,
+                                                        child: IntrinsicHeight(
+                                                          child: Row(
+                                                            children: const [
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            20,
+                                                                        right:
+                                                                            10),
+                                                                child: Text(
+                                                                    "\$",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color: Color(
+                                                                            0xff292929))),
+                                                              ),
+                                                              VerticalDivider(
+                                                                color: Color(
+                                                                    0xff707070),
+                                                                thickness: 1,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      labelText:
+                                                          "Service Price",
+                                                      labelStyle:
+                                                          const TextStyle(
+                                                              fontFamily:
+                                                                  'spartan',
+                                                              color: Colors
+                                                                  .black54),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .black38),
+                                                      ),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .black38),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // servicePriceStatus
+                                                //     ? SizedBox(
+                                                //   height: 30,
+                                                //   child: Text(
+                                                //     status,
+                                                //     style: TextStyle(
+                                                //         fontFamily:
+                                                //         'spartan',
+                                                //         fontSize:
+                                                //         12,
+                                                //         color:
+                                                //         Colors.red),
+                                                //   ),
+                                                // )
+                                                //     : Container(
+                                                //   height: 30,
+                                                // ),
+                                              ],
+                                            )
+                                          : Container()
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                            items: dropdown == true
-                                ? typesDataList
-                                .map((item) =>
-                                DropdownMenuItem<
-                                    TypesData>(
-                                  onTap: () {
-                                    setState(() {
-                                      serviceStatus = false;
-                                      dropdown =
-                                      false;
-                                    });
-                                  },
-                                  value: item,
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets
-                                            .only(
-                                            left: 20),
-                                        child: Text(
-                                          item.serviceTypeName,
-                                          style:
-                                          const TextStyle(
-                                            fontSize:
-                                            14,
-                                            fontFamily:
-                                            "spartan",
-                                          ),
-                                        ),
-                                      ),
-                                      //Icon(Icons.chevron_right),
-                                    ],
-                                  ),
-                                ))
-                                .toList()
-                                : null,
-                            // customItemsHeights: _getCustomItemsHeights(),
-                            value: selectedService,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedService = value!;
-                                print(selectedServiceIdValue);
-                                selectedServiceIdValue = value.id;
-                                print('======>$selectedServiceIdValue');
-                                selectedServiceNameValue =
-                                    value.serviceTypeName;
-                              });
-                            },
-                            buttonHeight: 60,
-                            buttonPadding:
-                            const EdgeInsets.only(
-                                right: 10),
-                            icon: (const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                              color: Color(0xff707070),
-                            )),
-                            dropdownMaxHeight: 200,
-                            buttonWidth: 140,
-                            itemPadding:
-                            const EdgeInsets.symmetric(
-                                horizontal: 20),
-                          ),
-                        ),
-                      )
-                          : Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(10),
-                        ),
-                        child: Container(
-                          width: width,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(5),
-                              border: Border.all(
-                                  color:
-                                  const Color(0xffE7E7E7),
-                                  width: 1)),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20,
-                                right: 20,
-                                top: 10,
-                                bottom: 10),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      arrow = !arrow;
-                                    });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment
-                                        .spaceBetween,
-                                    children: [
-                                      selectedServiceNameValue ==
-                                          " "
-                                          ? const Text(
-                                          "Select service type",
-                                          style: TextStyle(
-                                              fontSize:
-                                              12,
-                                              color: Color(
-                                                  0xff292929),
-                                              fontFamily:
-                                              "spartan",
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold))
-                                          : Text(
-                                          selectedServiceNameValue,
-                                          style: const TextStyle(
-                                              fontSize:
-                                              12,
-                                              color: Color(
-                                                  0xff292929),
-                                              fontFamily:
-                                              "spartan",
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold)),
-                                      arrow
-                                          ? InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            dropdown =
-                                            true;
-                                          });
-                                        },
-                                        child: InkWell(
-                                          onTap: (){
-                                            setState(() {
-                                              selectedService = null;
-                                              selectedServiceIdValue = "";
-                                              selectedServiceNameValue = "";
-                                              arrow=false;
-                                              dropdown = true;
-                                            });
-                                          },
-                                          child: const Icon(
-                                              Icons
-                                                  .cancel_outlined,
-                                              size: 30,
-                                              color: Color(
-                                                  0xff707070)),
-                                        ),
-                                      )
-                                          : InkWell(onTap: (){
-                                        setState(() {
-                                          arrow=true;
-                                        });
-                                      },
-                                        child: const Icon(
-                                            Icons
-                                                .keyboard_arrow_down,
-                                            size: 30,
-                                            color: Color(
-                                                0xff707070)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                arrow
-                                    ? Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Divider(
-                                      thickness: 1,
-                                      color: Color(
-                                          0xffCFCFCF),
-                                    ),
-                                    const SizedBox(
-                                        height: 5),
-                                    const Text(
-                                        "You can suggest Service Type through the Help Centre.",
-                                        style: TextStyle(
-                                            fontSize:
-                                            10,
-                                            color: Color(
-                                                0xff707070),
-                                            fontFamily:
-                                            "spartan",
-                                            fontWeight:
-                                            FontWeight
-                                                .normal)),
-                                    SizedBox(
-                                      height:
-                                      height * 0.02,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                      child: DropdownButtonFormField(
-                                        enableFeedback: true,
-                                        isDense: true,
-                                        isExpanded: true,
-                                        alignment: Alignment.center,
-                                        elevation: 2,
-                                        value: selectedvaluemin,
-                                        items: mindropdownlist.map((String items) {
-                                          return DropdownMenuItem(
-                                            value: items,
-                                            child: Text(items,
-                                              style: const TextStyle(fontSize: 12),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String?selectedvalue) {
-                                          setState(() {
-                                            mintoforamt(selectedvalue);
-                                            print("selectedvalue==${selectedvalue}");
-                                            // selectedvaluemin = selectedvalue!;
-                                            // selectedvalueminnewformat = newValue!;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.keyboard_arrow_down, size: 30,),
-                                        decoration: InputDecoration(
-                                          //labelText: "Duration",
-                                          label: const Text("Duration", style: TextStyle(color: Color(0xff292929))),
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                            borderSide: const BorderSide(
-                                                color: Colors.black38),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                            borderSide: const BorderSide(color: Colors.black38),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                      height * 0.03,
-                                    ),
-                                    Container(
-                                      child: TextField(
-                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
-                                        keyboardType:
-                                        TextInputType
-                                            .number,
-                                        controller:
-                                        servicePrice,
-                                        style: const TextStyle(
-                                            color: Color(
-                                                0xff292929)),
-                                        onTap: () {
-                                          setState(() {
-                                            servicePriceStatus =
-                                            false;
-                                          });
-                                        },
-                                        decoration:
-                                        InputDecoration(
-                                          contentPadding:
-                                          const EdgeInsets
-                                              .only(
-                                              left:
-                                              20),
-                                          hintText:
-                                          "00",
-                                          hintStyle: const TextStyle(
-                                              fontSize:
-                                              15,
-                                              color: Color(
-                                                  0xff292929)),
-                                          prefixIcon:
-                                          SizedBox(
-                                            width: 70,
-                                            child:
-                                            IntrinsicHeight(
-                                              child:
-                                              Row(
-                                                children: const [
-                                                  Padding(
-                                                    padding:
-                                                    EdgeInsets.only(left: 20, right: 10),
-                                                    child:
-                                                    Text("\$", style: TextStyle(fontSize: 15, color: Color(0xff292929))),
-                                                  ),
-                                                  VerticalDivider(
-                                                    color:
-                                                    Color(0xff707070),
-                                                    thickness:
-                                                    1,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          labelText:
-                                          "Service Price",
-                                          labelStyle: const TextStyle(
-                                              fontFamily:
-                                              'spartan',
-                                              color: Colors
-                                                  .black54),
-                                          focusedBorder:
-                                          OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(5),
-                                            borderSide:
-                                            const BorderSide(
-                                                color:
-                                                Colors.black38),
-                                          ),
-                                          border:
-                                          OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(5),
-                                            borderSide:
-                                            const BorderSide(
-                                                color:
-                                                Colors.black38),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    // servicePriceStatus
-                                    //     ? SizedBox(
-                                    //   height: 30,
-                                    //   child: Text(
-                                    //     status,
-                                    //     style: TextStyle(
-                                    //         fontFamily:
-                                    //         'spartan',
-                                    //         fontSize:
-                                    //         12,
-                                    //         color:
-                                    //         Colors.red),
-                                    //   ),
-                                    // )
-                                    //     : Container(
-                                    //   height: 30,
-                                    // ),
-                                  ],
-                                )
-                                    : Container()
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                       serviceStatus || servicePriceStatus
                           ? SizedBox(
-                        height: 30,
-                        child: Text(
-                          status,
-                          style: TextStyle(
-                              fontFamily: 'spartan',
-                              fontSize: 12,
-                              color: Colors.red),
-                        ),
-                      )
+                              height: 30,
+                              child: Text(
+                                status,
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
                           : Container(
-                        height: 30,
-                      ),
+                              height: 30,
+                            ),
                       Row(
                         children: [
                           Text("Service Description ",
@@ -834,29 +869,26 @@ class _addServiceState extends State<addService> {
                                   fontWeight: FontWeight.bold)),
                         ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Container(
+                        height: 50,
                         child: TextField(
                           controller: description,
                           maxLines: null,
                           style: TextStyle(
-                              fontSize: 15,
-                              color: Color(
-                                0xff414141,
-                              )),
+                            fontSize: 15,
+                            color: Color(0xff414141),
+                          ),
                           onChanged: (value) {
                             descriptionstatus = false;
                           },
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                                left: 20, top: 12, bottom: 12),
+                            contentPadding:
+                                EdgeInsets.only(left: 20, top: 12, bottom: 12),
                             hintText: "Description",
                             labelText: "Description",
                             labelStyle: TextStyle(
-                                fontFamily: 'spartan',
-                                color: Colors.black54),
+                                fontFamily: 'spartan', color: Colors.black54),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                               borderSide: BorderSide(color: Colors.black38),
@@ -875,17 +907,15 @@ class _addServiceState extends State<addService> {
                         onTap: () {
                           setState(() {
                             print(status);
-                            if( selectedServiceCategoryIdValue == ""){
+                            if (selectedServiceCategoryIdValue == "") {
                               status = "Please Select  Service Category";
                               datachanghe = true;
                               categoryStatus = true;
-
-                            } else if(selectedServiceIdValue==""){
+                            } else if (selectedServiceIdValue == "") {
                               status = "Please Select  Service Type";
                               datachanghe = true;
                               serviceStatus = true;
-                            }
-                            else if (servicePrice.text.isEmpty ) {
+                            } else if (servicePrice.text.isEmpty) {
                               status = "Please Enter Price";
                               datachanghe = true;
                               servicePriceStatus = true;
@@ -948,40 +978,42 @@ class _addServiceState extends State<addService> {
       ),
     );
   }
+
   addServices() async {
     var geturi = Uri.parse(ApiUrlList.fetchServiceCategories);
 
-      setState(() {
-        isLoading = true;
-        selectedService = null;
-        selectedServiceIdValue = "";
-        selectedServiceNameValue = "";
-      });
-      var response = await http.get(
-        geturi,
-      );
-      print("geturigeturi : $geturi");
-      print(response.body);
-      print("status code ==>${response.statusCode}");
-      if (response.statusCode == 200) {
-        Map map = jsonDecode(response.body);
-        if (map['status'] == 200) {
-          c = Category.fromJson(jsonDecode(response.body));
-          if (c!.data!.isNotEmpty) {
-            categoryDataList = c!.data ?? [];
-            setState(() {});
-          }
+    setState(() {
+      isLoading = true;
+      selectedService = null;
+      selectedServiceIdValue = "";
+      selectedServiceNameValue = "";
+    });
+    var response = await http.get(
+      geturi,
+    );
+    print("geturigeturi : $geturi");
+    print(response.body);
+    print("status code ==>${response.statusCode}");
+    if (response.statusCode == 200) {
+      Map map = jsonDecode(response.body);
+      if (map['status'] == 200) {
+        c = Category.fromJson(jsonDecode(response.body));
+        if (c!.data!.isNotEmpty) {
+          categoryDataList = c!.data ?? [];
+          setState(() {});
         }
-      }else if(response.statusCode == 401){
-        logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
       }
+    } else if (response.statusCode == 401) {
+      logoutdata();
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return signInScreen();
+        },
+      ), (route) => false);
+    }
     setState(() {
       isLoading = false;
     });
-
   }
 
   Future<void> addServiceDetails() async {
@@ -994,20 +1026,22 @@ class _addServiceState extends State<addService> {
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
                   .copyWith(secondary: const Color(0xff01635D))));
-        var bodyData = {
-          'serviceCategory': selectedServiceCategoryIdValue,
-          'serviceType': selectedServiceIdValue,
-          "duration": selectedvalueminnewformat,
-          "price": servicePrice.text,
-          "description": description.text,
-        };
-        print(bodyData);
+      var bodyData = {
+        'serviceCategory': selectedServiceCategoryIdValue,
+        'serviceType': selectedServiceIdValue,
+        "duration": selectedvalueminnewformat,
+        "price": servicePrice.text,
+        "description": description.text,
+      };
+      print(bodyData);
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("addServiceDetails url : ${ApiUrlList.addSingleServiceDetails}");
-      var response = await http.post(Uri.parse(ApiUrlList.addSingleServiceDetails),
+      var response = await http.post(
+        Uri.parse(ApiUrlList.addSingleServiceDetails),
         body: jsonEncode(bodyData),
         headers: headers,
       );
@@ -1025,7 +1059,7 @@ class _addServiceState extends State<addService> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      }else{
+      } else {
         Navigator.pop(context);
       }
     } catch (e) {
@@ -1064,14 +1098,15 @@ class _addServiceState extends State<addService> {
               selectedServiceNameValue = t!.td.first.serviceTypeName;
               print(t!.td.first.serviceTypeName);
             });
-
           }
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1082,6 +1117,7 @@ class _addServiceState extends State<addService> {
     }
   }
 }
+
 class Category {
   int? status;
   bool? success;
@@ -1112,9 +1148,9 @@ class CategoryData {
   });
 
   factory CategoryData.fromJson(Map<String, dynamic> map) => CategoryData(
-    id: map['_id'],
-    serviceCategoryName: map['serviceCategoryName'],
-  );
+        id: map['_id'],
+        serviceCategoryName: map['serviceCategoryName'],
+      );
 }
 
 class Types {
@@ -1131,19 +1167,19 @@ class Types {
   });
 
   factory Types.fromJson(Map<String, dynamic> json) => Types(
-    status: json["status"],
-    success: json["success"],
-    td: List<TypesData>.from(
-        json["data"].map((x) => TypesData.fromJson(x))),
-    message: json["message"],
-  );
+        status: json["status"],
+        success: json["success"],
+        td: List<TypesData>.from(
+            json["data"].map((x) => TypesData.fromJson(x))),
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "td": List<dynamic>.from(td.map((x) => x.toJson())),
-    "message": message,
-  };
+        "status": status,
+        "success": success,
+        "td": List<dynamic>.from(td.map((x) => x.toJson())),
+        "message": message,
+      };
 }
 
 class TypesData {
@@ -1156,14 +1192,14 @@ class TypesData {
   });
 
   factory TypesData.fromJson(Map<String, dynamic> json) => TypesData(
-    id: json["_id"],
-    serviceTypeName: json["serviceTypeName"],
-  );
+        id: json["_id"],
+        serviceTypeName: json["serviceTypeName"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "serviceTypeName": serviceTypeName,
-  };
+        "_id": id,
+        "serviceTypeName": serviceTypeName,
+      };
 }
 
 class addServiceDetailsModel {

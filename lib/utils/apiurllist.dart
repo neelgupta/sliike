@@ -140,33 +140,38 @@ class ApiUrlList {
   static String getWorkHours = "${baseUrl}beautician/getWorkHours";
 
   ///Business Setup
-  static String getCancellationStatus = "${baseUrl}beautician/getNOShow&CancellationProtection";
-  static String updateProtectionStatus = "${baseUrl}beautician/saveNoShowProtection";
-  static String updateCancellationStatus = "${baseUrl}beautician/saveCancelProtection";
+  static String getCancellationStatus =
+      "${baseUrl}beautician/getNOShow&CancellationProtection";
+  static String updateProtectionStatus =
+      "${baseUrl}beautician/saveNoShowProtection";
+  static String updateCancellationStatus =
+      "${baseUrl}beautician/saveCancelProtection";
   static String getBookingSetting = "${baseUrl}beautician/getBookingSettings";
   static String saveBookingSetting = "${baseUrl}beautician/saveBookingSettings";
 
-
-
   static String getScheduleForDate = "${baseUrl}beautician/getScheduleForDate";
-  static String saveCalenderAdjustment = "${baseUrl}beautician/saveCalenderAdjustment";
+  static String saveCalenderAdjustment =
+      "${baseUrl}beautician/saveCalenderAdjustment";
   static String GetServiceDetails = "${baseUrl}beautician/getServiceDetails";
-  static String getSingleServiceDetails = "${baseUrl}beautician/getSingleServiceDetails/";
-  static String deleteServiceDetails = "${baseUrl}beautician/deleteServiceDetails/";
+  static String getSingleServiceDetails =
+      "${baseUrl}beautician/getSingleServiceDetails/";
+  static String deleteServiceDetails =
+      "${baseUrl}beautician/deleteServiceDetails/";
   static String deleteWorkSpaceImg = "${baseUrl}beautician/deleteWorkSpaceImg";
 
-
-  static String addSingleServiceDetails = "${baseUrl}beautician/addSingleServiceDetails";
+  static String addSingleServiceDetails =
+      "${baseUrl}beautician/addSingleServiceDetails";
   // static String addSingleServiceDetails = "${baseUrl}beautician/addSingleServiceDetails";
-  static String updateServiceDetails = "${baseUrl}beautician/updateServiceDetails/";
-  static String updateSalonLocation = "${baseUrl}beautician/updateSalonLocation";
-  static String updateSalonLocationClient = "${baseUrl}client/updateSalonLocation";
-
+  static String updateServiceDetails =
+      "${baseUrl}beautician/updateServiceDetails/";
+  static String updateSalonLocation =
+      "${baseUrl}beautician/updateSalonLocation";
+  static String updateSalonLocationClient =
+      "${baseUrl}client/updateSalonLocation";
 
   /// Card Services Endpoints (Client)///
   static String getCardDetails = "${baseUrl}client/getCardDetails";
   static String addCardDetails = "${baseUrl}client/addCardDetails";
-
 
   /// Promotion Services Endpoints (Beautician) ///
   static String getServicesList = "${baseUrl}beautician/getServicesList";
@@ -174,20 +179,20 @@ class ApiUrlList {
   static String addPromotion = "${baseUrl}beautician/addPromotion";
   static String getServices = "${baseUrl}beautician/getPromotionList/service";
 
-
   /// Client Add Rating ///
   static String addRating = "${baseUrl}client/addRating";
-
 
   /// Switch Account ///
   static String switchAccount = "${baseUrl}auth/switch-account/";
 
-
   /// Appointment Services Endpoints ///
   static String getServiceDetails = "${baseUrl}beautician/getServiceDetails";
   static String getStaffData = "${baseUrl}beautician/getEmployeeList";
-
-
-
-
+  
+  static String addBAppointment = "${baseUrl}beautician/addBAppointment";
+  static String getAppointmentPreDetails = "${baseUrl}beautician/getAppointmentPreDetails";
+  static String saveAppointmentDetails = "${baseUrl}beautician/saveAppointmentDetails";
+  /// Invite Services Endpoints ///
+  static String inviteContacts = "${baseUrl}beautician/inviteContacts";
+  static String getInvitedClientList = "${baseUrl}beautician/getInvitedClientList";
 }

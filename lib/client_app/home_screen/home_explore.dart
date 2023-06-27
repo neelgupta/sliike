@@ -2,10 +2,12 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/Filter.dart';
@@ -15,8 +17,8 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/recently_viewed_viewa
 import 'package:new_sliikeapps_apps/client_app/home_screen/recommended_viewall.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/view_page.dart';
-import 'package:http/http.dart' as http;
-import 'package:permission_handler/permission_handler.dart';
+import 'package:new_sliikeapps_apps/utils/app_colors.dart';
+
 import '../../client_model/get_favorite_list_model.dart';
 import '../../commonClass.dart';
 import '../../utils/apiurllist.dart';
@@ -105,7 +107,6 @@ class _home_exploreState extends State<home_explore> {
                         //   child: Image.asset("assets/images/cart.png",
                         //       height: width * 0.13),
                         // ),
-
 
                         Container(
                           margin: EdgeInsets.only(
@@ -245,12 +246,17 @@ class _home_exploreState extends State<home_explore> {
                                             .serviceCategoryName;
                                         return GestureDetector(
                                           onTap: () {
-                                            print("selectedService id is  =====> ${ serviceName[index].id.toString()}");
+                                            print(
+                                                "selectedService id is  =====> ${serviceName[index].id.toString()}");
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return searchScreen(
-                                                    selectedService: [serviceName[index].id.toString(),]);
+                                                    selectedService: [
+                                                      serviceName[index]
+                                                          .id
+                                                          .toString(),
+                                                    ]);
                                               },
                                             )).then((value) {
                                               getLocation();
@@ -258,53 +264,83 @@ class _home_exploreState extends State<home_explore> {
                                               getClientFavoriteList();
                                               getRecentBeauticians();
                                               setState(() {});
-                                            });;
+                                            });
+                                            ;
                                           },
                                           child: Column(
                                             children: [
                                               CachedNetworkImage(
-                                                  imageUrl: serviceName[index].imgPath ?? '',
-                                                      imageBuilder: (context, imageProvider) => Container(
-                                                        padding:
-                                                        const EdgeInsets.all(10),
+                                                imageUrl: serviceName[index]
+                                                        .imgPath ??
+                                                    '',
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  height: height * 0.13,
+                                                  width: width * 0.27,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.fill)),
+                                                  margin:
+                                                      const EdgeInsets.all(5),
+                                                ),
+                                                progressIndicatorBuilder: (context,
+                                                        url, process) =>
+                                                    Container(
                                                         height: height * 0.13,
                                                         width: width * 0.27,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius:
-                                                          BorderRadius.circular(8),
-                                                          image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
-                                                        ),
-                                                        margin: const EdgeInsets.all(5),
-                                                      ),
-                                                  progressIndicatorBuilder: (context, url, process) => Container(
-                                                      height: height * 0.13,
-                                                      width: width * 0.27,
-                                                      margin: const EdgeInsets.all(5),
-                                                      child: const Center(child: CircularProgressIndicator())
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator())),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Container(
+                                                  height: height * 0.13,
+                                                  width: width * 0.27,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                    color: AppColors.greyColor
+                                                        .withOpacity(0.15),
                                                   ),
-                                                  errorWidget: (context, url, error) => Container(
-                                                      height: height * 0.13,
-                                                      width: width * 0.27,
-                                                      margin: const EdgeInsets.all(5),
-                                                      alignment: Alignment.center,
-                                                      child: Center(child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.error),
-                                                          SizedBox(height: height*0.02,),
-                                                          const Text("No Image")
-                                                        ],
-                                                      ))
+                                                  margin:
+                                                      const EdgeInsets.all(5),
+                                                  alignment: Alignment.center,
+                                                  child: Center(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Icon(Icons.error),
+                                                        SizedBox(height: 5),
+                                                        const Text("No Image")
+                                                      ],
+                                                    ),
                                                   ),
+                                                ),
                                               ),
                                               Text(
-                                                  "${serviceName[index].serviceCategoryName}",
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 10,
-                                                    fontFamily: "spartan",
-                                                  )),
+                                                "${serviceName[index].serviceCategoryName}",
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10,
+                                                  fontFamily: "spartan",
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         );
@@ -340,10 +376,10 @@ class _home_exploreState extends State<home_explore> {
                                                 onTap: () {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return const MyFavoritesViewAll();
-                                                        },
-                                                      )).then((value) {
+                                                    builder: (context) {
+                                                      return const MyFavoritesViewAll();
+                                                    },
+                                                  )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
                                                     getClientFavoriteList();
@@ -354,7 +390,8 @@ class _home_exploreState extends State<home_explore> {
                                                 child: Container(
                                                   child: const Text("view_all",
                                                       style: TextStyle(
-                                                        color: Color(0xFFDD5103),
+                                                        color:
+                                                            Color(0xFFDD5103),
                                                         fontSize: 14,
                                                         fontFamily: "spartan",
                                                       )).tr(),
@@ -380,6 +417,8 @@ class _home_exploreState extends State<home_explore> {
                                         : ListView.builder(
                                             itemCount: favoritelist.length,
                                             scrollDirection: Axis.horizontal,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 5),
                                             itemBuilder: (context, index) {
                                               favoritesId =
                                                   favoritelist[index].id!;
@@ -397,7 +436,7 @@ class _home_exploreState extends State<home_explore> {
                                                                       index]
                                                                   .id!);
                                                     }),
-                                                  )..then((value) {
+                                                  ).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
                                                     getClientFavoriteList();
@@ -412,39 +451,80 @@ class _home_exploreState extends State<home_explore> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     CachedNetworkImage(
-                                                      imageUrl: favoritelist[index].logoPath ?? '',
-                                                      imageBuilder: (context, imageProvider) => Container(
+                                                      imageUrl:
+                                                          favoritelist[index]
+                                                                  .logoPath ??
+                                                              '',
+                                                      imageBuilder: (context,
+                                                              imageProvider) =>
+                                                          Container(
                                                         padding:
-                                                        const EdgeInsets.all(10),
+                                                            const EdgeInsets
+                                                                .all(10),
                                                         height: height * 0.18,
-                                                        width: width * 0.6,
+                                                        width: width * 0.62,
                                                         decoration: BoxDecoration(
                                                             borderRadius:
-                                                            BorderRadius.circular(8),
-                                                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            image: DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                      ),
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  process) =>
+                                                              Container(
+                                                        height: height * 0.18,
+                                                        width: width * 0.62,
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Container(
+                                                        height: height * 0.18,
+                                                        width: width * 0.62,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors
+                                                              .greyColor
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
                                                         ),
-                                                        margin: const EdgeInsets.all(5),
-                                                      ),
-                                                      progressIndicatorBuilder: (context, url, process) => Container(
-                                                          height: height * 0.18,
-                                                          width: width * 0.6,
-                                                          margin: const EdgeInsets.all(5),
-                                                          child: const Center(child: CircularProgressIndicator())
-                                                      ),
-                                                      errorWidget: (context, url, error) => Container(
-                                                          height: height * 0.18,
-                                                          width: width * 0.6,
-                                                          margin: const EdgeInsets.all(5),
-                                                          alignment: Alignment.center,
-                                                          child: Center(child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
                                                             children: [
-                                                              const Icon(Icons.error),
-                                                              SizedBox(height: height*0.02,),
-                                                              const Text("No Image")
+                                                              const Icon(
+                                                                  Icons.error),
+                                                              SizedBox(
+                                                                  height: 10),
+                                                              const Text(
+                                                                  "No Image")
                                                             ],
-                                                          ))
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                     Padding(
@@ -468,47 +548,82 @@ class _home_exploreState extends State<home_explore> {
                                                                       Alignment
                                                                           .topLeft,
                                                                   child: Text(
-                                                                      "${favoritelist[index].businessName}",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontFamily:
-                                                                              "spartan",
-                                                                          fontWeight:
-                                                                              FontWeight.w600)),
+                                                                    "${favoritelist[index].businessName}",
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontFamily:
+                                                                          "spartan",
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                if(favoritelist[index].isLicensed=="1")
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.03,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Subtract (1).png")),
-                                                                )
+                                                                if (recommended[
+                                                                            index]
+                                                                        .isLicensed ==
+                                                                    "1")
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            8),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/Subtract (1).png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  ),
+                                                                if (recommended[
+                                                                            index]
+                                                                        .hasShop ==
+                                                                    0)
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            5),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/independentmen.png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  )
                                                               ],
                                                             ),
                                                             const SizedBox(
-                                                              height: 5,
-                                                            ),
+                                                                height: 5),
                                                             favoritelist[index]
                                                                         .address ==
                                                                     null
                                                                 ? const SizedBox()
-                                                                : Text(
-                                                                    "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
-                                                                    style: const TextStyle(
+                                                                : SizedBox(
+                                                                    width:
+                                                                        width *
+                                                                            0.58,
+                                                                    child: Text(
+                                                                      "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
+                                                                      maxLines:
+                                                                          null,
+                                                                      style:
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .black,
                                                                         fontSize:
                                                                             12,
                                                                         fontFamily:
-                                                                            "spartan")),
+                                                                            "spartan",
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                             const SizedBox(
                                                               height: 5,
                                                             ),
@@ -595,10 +710,10 @@ class _home_exploreState extends State<home_explore> {
                                                 onTap: () {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return const RecentlyViewedViewAll();
-                                                        },
-                                                      )).then((value) {
+                                                    builder: (context) {
+                                                      return const RecentlyViewedViewAll();
+                                                    },
+                                                  )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
                                                     getClientFavoriteList();
@@ -609,7 +724,8 @@ class _home_exploreState extends State<home_explore> {
                                                 child: Container(
                                                   child: const Text("view_all",
                                                       style: TextStyle(
-                                                        color: Color(0xFFDD5103),
+                                                        color:
+                                                            Color(0xFFDD5103),
                                                         fontSize: 14,
                                                         fontFamily: "spartan",
                                                       )).tr(),
@@ -635,6 +751,8 @@ class _home_exploreState extends State<home_explore> {
                                         : ListView.builder(
                                             itemCount: recentList.length,
                                             scrollDirection: Axis.horizontal,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 5),
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
@@ -661,39 +779,81 @@ class _home_exploreState extends State<home_explore> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     CachedNetworkImage(
-                                                      imageUrl: recentList[index].logoPath ?? '',
-                                                      imageBuilder: (context, imageProvider) => Container(
+                                                      imageUrl:
+                                                          recentList[index]
+                                                                  .logoPath ??
+                                                              '',
+                                                      imageBuilder: (context,
+                                                              imageProvider) =>
+                                                          Container(
                                                         padding:
-                                                        const EdgeInsets.all(10),
+                                                            const EdgeInsets
+                                                                .all(10),
                                                         height: height * 0.18,
-                                                        width: width * 0.6,
+                                                        width: width * 0.62,
                                                         decoration: BoxDecoration(
                                                             borderRadius:
-                                                            BorderRadius.circular(8),
-                                                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            image: DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                      ),
+                                                      progressIndicatorBuilder: (context,
+                                                              url, process) =>
+                                                          Container(
+                                                              height:
+                                                                  height * 0.18,
+                                                              width:
+                                                                  width * 0.6,
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(5),
+                                                              child: const Center(
+                                                                  child:
+                                                                      CircularProgressIndicator())),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Container(
+                                                        height: height * 0.18,
+                                                        width: width * 0.62,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors
+                                                              .greyColor
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
                                                         ),
-                                                        margin: const EdgeInsets.all(5),
-                                                      ),
-                                                      progressIndicatorBuilder: (context, url, process) => Container(
-                                                          height: height * 0.18,
-                                                          width: width * 0.6,
-                                                          margin: const EdgeInsets.all(5),
-                                                          child: const Center(child: CircularProgressIndicator())
-                                                      ),
-                                                      errorWidget: (context, url, error) => Container(
-                                                          height: height * 0.18,
-                                                          width: width * 0.6,
-                                                          margin: const EdgeInsets.all(5),
-                                                          alignment: Alignment.center,
-                                                          child: Center(child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
                                                             children: [
-                                                              const Icon(Icons.error),
-                                                              SizedBox(height: height*0.02,),
-                                                              const Text("No Image")
+                                                              const Icon(
+                                                                  Icons.error),
+                                                              SizedBox(
+                                                                  height: 10),
+                                                              const Text(
+                                                                  "No Image")
                                                             ],
-                                                          ))
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                     Padding(
@@ -722,41 +882,63 @@ class _home_exploreState extends State<home_explore> {
                                                                           color: Colors
                                                                               .black,
                                                                           fontSize:
-                                                                              18,
+                                                                              15,
                                                                           fontFamily:
                                                                               "spartan",
                                                                           fontWeight:
                                                                               FontWeight.w600)),
                                                                 ),
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                if(recentList[index].isLicensed=="1")
-                                                                SizedBox(
-                                                                  height:
-                                                                      height *
-                                                                          0.03,
-                                                                  child: const Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/Subtract (1).png")),
-                                                                )
+                                                                if (recommended[
+                                                                            index]
+                                                                        .isLicensed ==
+                                                                    "1")
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            8),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/Subtract (1).png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  ),
+                                                                if (recommended[
+                                                                            index]
+                                                                        .hasShop ==
+                                                                    0)
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            5),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/independentmen.png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  )
                                                               ],
                                                             ),
                                                             const SizedBox(
-                                                              height: 5,
-                                                            ),
+                                                                height: 5),
                                                             Text(
-                                                                "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontFamily:
-                                                                        "spartan")),
-                                                            const SizedBox(
-                                                              height: 5,
+                                                              "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 12,
+                                                                fontFamily:
+                                                                    "spartan",
+                                                              ),
                                                             ),
+                                                            const SizedBox(
+                                                                height: 5),
                                                             // if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
                                                             //   Row(
                                                             //     children: [
@@ -839,10 +1021,10 @@ class _home_exploreState extends State<home_explore> {
                                                 onTap: () {
                                                   Navigator.push(context,
                                                       MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return const RecommendedViewAll();
-                                                        },
-                                                      )).then((value) {
+                                                    builder: (context) {
+                                                      return const RecommendedViewAll();
+                                                    },
+                                                  )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
                                                     getClientFavoriteList();
@@ -853,7 +1035,8 @@ class _home_exploreState extends State<home_explore> {
                                                 child: Container(
                                                   child: const Text("view_all",
                                                       style: TextStyle(
-                                                        color: Color(0xFFDD5103),
+                                                        color:
+                                                            Color(0xFFDD5103),
                                                         fontSize: 14,
                                                         fontFamily: "spartan",
                                                       )).tr(),
@@ -863,199 +1046,271 @@ class _home_exploreState extends State<home_explore> {
                                           ),
                                         ],
                                       )),
-
                                   SizedBox(
                                     height: height * 0.31,
                                     child: recommended.isEmpty
                                         ? const Center(
-                                      child: Text(
-                                        "No Data Found!!!",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontFamily: "spartan",
-                                        ),
-                                      ),
-                                    )
-                                        : ListView.builder(
-                                      itemCount: recommended.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return services(
-                                                      beauticianId:
-                                                      "${recommended[index].id}",
-                                                      businessName:
-                                                      "${recommended[index].businessName}",
-                                                    );
-                                                  },
-                                                )).then((value) {
-                                              getLocation();
-                                              fetchServiceCategories();
-                                              getClientFavoriteList();
-                                              getRecentBeauticians();
-                                              setState(() {});
-                                            });
-                                          },
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: recommended[index].logo ?? '',
-                                                imageBuilder: (context, imageProvider) => Container(
-                                                  padding:
-                                                  const EdgeInsets.all(10),
-                                                  height: height * 0.18,
-                                                  width: width * 0.6,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(8),
-                                                      image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
-                                                  ),
-                                                  margin: const EdgeInsets.all(5),
-                                                ),
-                                                progressIndicatorBuilder: (context, url, process) => Container(
-                                                    height: height * 0.18,
-                                                    width: width * 0.6,
-                                                    margin: const EdgeInsets.all(5),
-                                                    child: const Center(child: CircularProgressIndicator())
-                                                ),
-                                                errorWidget: (context, url, error) => Container(
-                                                    height: height * 0.18,
-                                                    width: width * 0.6,
-                                                    margin: const EdgeInsets.all(5),
-                                                    alignment: Alignment.center,
-                                                    child: Center(child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        const Icon(Icons.error),
-                                                        SizedBox(height: height*0.02,),
-                                                        const Text("No Image")
-                                                      ],
-                                                    ))
-                                                ),
+                                            child: Text(
+                                              "No Data Found!!!",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontFamily: "spartan",
                                               ),
-                                              Padding(
-                                                  padding:
-                                                  const EdgeInsets
-                                                      .only(
-                                                    left: 15,
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: recommended.length,
+                                            scrollDirection: Axis.horizontal,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 5),
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return services(
+                                                        beauticianId:
+                                                            "${recommended[index].id}",
+                                                        businessName:
+                                                            "${recommended[index].businessName}",
+                                                      );
+                                                    },
+                                                  )).then((value) {
+                                                    getLocation();
+                                                    fetchServiceCategories();
+                                                    getClientFavoriteList();
+                                                    getRecentBeauticians();
+                                                    setState(() {});
+                                                  });
+                                                },
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    CachedNetworkImage(
+                                                      imageUrl:
+                                                          recommended[index]
+                                                                  .logo ??
+                                                              '',
+                                                      imageBuilder: (context,
+                                                              imageProvider) =>
                                                           Container(
-                                                            alignment:
-                                                            Alignment
-                                                                .topLeft,
-                                                            child: Text(
-                                                                "${recommended[index].businessName}",
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                    18,
-                                                                    fontFamily:
-                                                                    "spartan",
-                                                                    fontWeight:
-                                                                    FontWeight.w600)),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          if(recommended[index].isLicensed=="1")
-                                                            SizedBox(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(10),
                                                               height:
-                                                              height *
-                                                                  0.03,
-                                                              child: const Image(
-                                                                  image: AssetImage(
-                                                                      "assets/images/Subtract (1).png")),
-                                                            )
-                                                        ],
+                                                                  height * 0.18,
+                                                              width:
+                                                                  width * 0.62,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                image: DecorationImage(
+                                                                    image:
+                                                                        imageProvider,
+                                                                    fit: BoxFit
+                                                                        .fill),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(5)),
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  process) =>
+                                                              Container(
+                                                        height: height * 0.18,
+                                                        width: width * 0.62,
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator()),
                                                       ),
-                                                      const SizedBox(
-                                                        height: 5,
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Container(
+                                                        height: height * 0.18,
+                                                        width: width * 0.62,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors
+                                                              .greyColor
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                        ),
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              const Icon(
+                                                                  Icons.error),
+                                                              SizedBox(
+                                                                  height: 10),
+                                                              const Text(
+                                                                  "No Image")
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
-                                                      Text(
-                                                          "${recommended[index].address.apartment} ${recommended[index].address.province} ${recommended[index].address.city} ${recommended[index].address.zipCode}",
-                                                          style: const TextStyle(
-                                                              color: Colors
-                                                                  .black,
-                                                              fontSize:
-                                                              12,
-                                                              fontFamily:
-                                                              "spartan")),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      // if(recommended[index].rating!="0" && recommended[index].noOfReviews!="0")
-                                                      //   Row(
-                                                      //     children: [
-                                                      //       SizedBox(
-                                                      //         height:
-                                                      //         height *
-                                                      //             0.02,
-                                                      //         child: const Image(
-                                                      //             image: AssetImage(
-                                                      //                 "assets/images/Star 1.png")),
-                                                      //       ),
-                                                      //       const SizedBox(
-                                                      //         width: 5,
-                                                      //       ),
-                                                      //       Container(
-                                                      //         alignment:
-                                                      //         Alignment
-                                                      //             .topLeft,
-                                                      //         child: Text(
-                                                      //             "${recommended[index].rating} Ratings",
-                                                      //             style: TextStyle(
-                                                      //                 color: Colors
-                                                      //                     .black,
-                                                      //                 fontSize:
-                                                      //                 14,
-                                                      //                 fontFamily:
-                                                      //                 "spartan")),
-                                                      //       ),
-                                                      //       const SizedBox(
-                                                      //         width: 5,
-                                                      //       ),
-                                                      //       Container(
-                                                      //         alignment:
-                                                      //         Alignment
-                                                      //             .topLeft,
-                                                      //         child: Text(
-                                                      //             "${recommended[index].noOfReviews} reviews",
-                                                      //             style: TextStyle(
-                                                      //                 color: Colors
-                                                      //                     .grey,
-                                                      //                 fontSize:
-                                                      //                 14,
-                                                      //                 fontFamily:
-                                                      //                 "spartan")),
-                                                      //       ),
-                                                      //     ],
-                                                      //   ),
-                                                    ],
-                                                  ))
-                                            ],
+                                                    ),
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          left: 15,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topLeft,
+                                                                  child: Text(
+                                                                    "${recommended[index].businessName}",
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontFamily:
+                                                                          "spartan",
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                if (recommended[
+                                                                            index]
+                                                                        .isLicensed ==
+                                                                    "1")
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            8),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/Subtract (1).png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  ),
+                                                                if (recommended[
+                                                                            index]
+                                                                        .hasShop ==
+                                                                    0)
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            5),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/independentmen.png",
+                                                                      height:
+                                                                          20,
+                                                                      width: 20,
+                                                                    ),
+                                                                  )
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5),
+                                                            Text(
+                                                              "${recommended[index].address.apartment} ${recommended[index].address.province} ${recommended[index].address.city} ${recommended[index].address.zipCode}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 12,
+                                                                fontFamily:
+                                                                    "spartan",
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 5),
+                                                            // if(recommended[index].rating!="0" && recommended[index].noOfReviews!="0")
+                                                            //   Row(
+                                                            //     children: [
+                                                            //       SizedBox(
+                                                            //         height:
+                                                            //         height *
+                                                            //             0.02,
+                                                            //         child: const Image(
+                                                            //             image: AssetImage(
+                                                            //                 "assets/images/Star 1.png")),
+                                                            //       ),
+                                                            //       const SizedBox(
+                                                            //         width: 5,
+                                                            //       ),
+                                                            //       Container(
+                                                            //         alignment:
+                                                            //         Alignment
+                                                            //             .topLeft,
+                                                            //         child: Text(
+                                                            //             "${recommended[index].rating} Ratings",
+                                                            //             style: TextStyle(
+                                                            //                 color: Colors
+                                                            //                     .black,
+                                                            //                 fontSize:
+                                                            //                 14,
+                                                            //                 fontFamily:
+                                                            //                 "spartan")),
+                                                            //       ),
+                                                            //       const SizedBox(
+                                                            //         width: 5,
+                                                            //       ),
+                                                            //       Container(
+                                                            //         alignment:
+                                                            //         Alignment
+                                                            //             .topLeft,
+                                                            //         child: Text(
+                                                            //             "${recommended[index].noOfReviews} reviews",
+                                                            //             style: TextStyle(
+                                                            //                 color: Colors
+                                                            //                     .grey,
+                                                            //                 fontSize:
+                                                            //                 14,
+                                                            //                 fontFamily:
+                                                            //                 "spartan")),
+                                                            //       ),
+                                                            //     ],
+                                                            //   ),
+                                                          ],
+                                                        ))
+                                                  ],
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        );
-                                      },
-                                    ),
                                   ),
                                   SizedBox(height: height * 0.02),
                                 ],
@@ -1124,11 +1379,16 @@ class _home_exploreState extends State<home_explore> {
           f = FavoriteListModel.fromjson(map);
           favoritelist = f!.data!.favoritesList!;
         }
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       rethrow;
     } finally {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -1158,6 +1418,9 @@ class _home_exploreState extends State<home_explore> {
         if (map['status'] == 200) {
           rb = RecentBeauticians.fromjson(map);
           recentList = rb!.data!.recentList!;
+          setState(() {
+            isLoading = false;
+          });
         }
       }
     } catch (e) {
@@ -1175,10 +1438,11 @@ class _home_exploreState extends State<home_explore> {
       setState(() {
         isLoading = true;
       });
+
       var headers = {
         // 'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       print("longitude ===> $longitude");
@@ -1205,6 +1469,9 @@ class _home_exploreState extends State<home_explore> {
           r = Recommended.fromJson(jsonDecode(response.body));
           recommended = r!.beauticians.data;
         }
+        setState(() {
+          isLoading = false;
+        });
       } else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -1212,10 +1479,10 @@ class _home_exploreState extends State<home_explore> {
             return signInScreen();
           },
         ), (route) => false);
+        setState(() {
+          isLoading = false;
+        });
       }
-      setState(() {
-        isLoading = false;
-      });
     } catch (e) {
       rethrow;
     } finally {
@@ -1232,38 +1499,38 @@ class _home_exploreState extends State<home_explore> {
       isLoading = true;
     });
 
-      // Test if location services are enabled.
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (serviceEnabled == LocationPermission.denied) {
-        await Geolocator.openLocationSettings();
-        return Future.error('Location services are disabled.');
-      }
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled == LocationPermission.denied) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
 
-      permission = await Geolocator.checkPermission();
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          // Navigator.pop(context);
-          return Future.error('Location permissions are denied');
-        }
+        // Navigator.pop(context);
+        return Future.error('Location permissions are denied');
       }
+    }
 
-      if (permission == LocationPermission.deniedForever) {
-        permission = await Geolocator.requestPermission();
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      }
-      if (permission == LocationPermission.whileInUse ||
-          permission == LocationPermission.always) {
-        Position? p = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
+    if (permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Position? p = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
-        latitude = p.latitude.toString();
-        longitude = p.longitude.toString();
-        print("///lat${p.latitude}");
-        print("///long${p.longitude}");
-        getRecomadedBeauticians();
-      }
+      latitude = p.latitude.toString();
+      longitude = p.longitude.toString();
+      print("///lat${p.latitude}");
+      print("///long${p.longitude}");
+      getRecomadedBeauticians();
+    }
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -1501,16 +1768,16 @@ class Recommended {
   });
 
   factory Recommended.fromJson(Map<String, dynamic> json) => Recommended(
-    status: json["status"],
-    success: json["success"],
-    beauticians: Beauticians.fromJson(json["beauticians"]),
-  );
+        status: json["status"],
+        success: json["success"],
+        beauticians: Beauticians.fromJson(json["beauticians"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "beauticians": beauticians.toJson(),
-  };
+        "status": status,
+        "success": success,
+        "beauticians": beauticians.toJson(),
+      };
 }
 
 class Beauticians {
@@ -1523,18 +1790,19 @@ class Beauticians {
   });
 
   factory Beauticians.fromJson(Map<String, dynamic> json) => Beauticians(
-    count: json["count"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+        count: json["count"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "count": count,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "count": count,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
 }
 
 class Datum {
   String id;
+  int hasShop;
   String businessName;
   String profileImgPath;
   String isLicensed;
@@ -1547,6 +1815,7 @@ class Datum {
 
   Datum({
     required this.id,
+    required this.hasShop,
     required this.businessName,
     required this.profileImgPath,
     required this.isLicensed,
@@ -1559,27 +1828,29 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["_id"],
-    businessName: json["businessName"],
-    profileImgPath: json["profileImgPath"] ?? "",
-    isLicensed: (json["isLicensed"] ?? 0).toString(),
-    noOfReviews: (json["noOfReviews"] ?? 0).toString(),
-    location: RecommendedLocation.fromJson(json["location"]),
-    dis: Dis.fromJson(json["dis"]),
-    logo: json["logo"],
-    address: RecommendedAddress.fromJson(json["address"]),
-    rating: (json["rating"] ?? 0).toString(),
-  );
+        id: json["_id"],
+        hasShop: json["hasShop"],
+        businessName: json["businessName"],
+        profileImgPath: json["profileImgPath"] ?? "",
+        isLicensed: (json["isLicensed"] ?? 0).toString(),
+        noOfReviews: (json["noOfReviews"] ?? 0).toString(),
+        location: RecommendedLocation.fromJson(json["location"]),
+        dis: Dis.fromJson(json["dis"]),
+        logo: json["logo"],
+        address: RecommendedAddress.fromJson(json["address"]),
+        rating: (json["rating"] ?? 0).toString(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "businessName": businessName,
-    "location": location.toJson(),
-    "dis": dis.toJson(),
-    "logo": logo,
-    "address": address.toJson(),
-    "rating": rating,
-  };
+        "_id": id,
+        "hasShop": hasShop,
+        "businessName": businessName,
+        "location": location.toJson(),
+        "dis": dis.toJson(),
+        "logo": logo,
+        "address": address.toJson(),
+        "rating": rating,
+      };
 }
 
 class RecommendedAddress {
@@ -1607,12 +1878,12 @@ class RecommendedAddress {
       );
 
   Map<String, dynamic> toJson() => {
-    "address": address,
-    "province": province,
-    "apartment": apartment,
-    "city": city,
-    "zipCode": zipCode,
-  };
+        "address": address,
+        "province": province,
+        "apartment": apartment,
+        "city": city,
+        "zipCode": zipCode,
+      };
 }
 
 class Dis {
@@ -1623,12 +1894,12 @@ class Dis {
   });
 
   factory Dis.fromJson(Map<String, dynamic> json) => Dis(
-    calculated: json["calculated"],
-  );
+        calculated: json["calculated"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "calculated": calculated,
-  };
+        "calculated": calculated,
+      };
 }
 
 class RecommendedLocation {
@@ -1644,11 +1915,11 @@ class RecommendedLocation {
       RecommendedLocation(
         type: json["type"],
         coordinates:
-        List<double>.from(json["coordinates"].map((x) => x?.toDouble())),
+            List<double>.from(json["coordinates"].map((x) => x?.toDouble())),
       );
 
   Map<String, dynamic> toJson() => {
-    "type": type,
-    "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
-  };
+        "type": type,
+        "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
+      };
 }

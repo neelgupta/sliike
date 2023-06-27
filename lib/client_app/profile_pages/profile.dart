@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,15 +13,12 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/calendar_management/calendar_manage_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/business_setup_all_scrren/setup_profile.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/second_beautyservice_or_product/service_add/categorytype_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/type_first_second_bussines/bussinessinfo_type.dart';
-import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/add_new_address.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/delete_my_account.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/edit_profile.dart';
@@ -28,6 +27,7 @@ import 'package:new_sliikeapps_apps/client_app/profile_pages/my_favorites.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/payments.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+
 import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import '../../client_model/get_profile_model.dart';
 import '../../utils/apiurllist.dart';
@@ -46,7 +46,7 @@ class _profileState extends State<profile> {
   // PersonalInfo? p;
   ProfileData? profileData;
   AddressData? addressData;
-  SwitchAccountModel ? switchAccountModel;
+  SwitchAccountModel? switchAccountModel;
 
   File? userImageFile;
 
@@ -162,69 +162,70 @@ class _profileState extends State<profile> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: height * 0.10),
-            Padding(
-              padding: const EdgeInsets.only(left: 100),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: height * 0.12,
-                    width: width * 0.25,
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(200)),
-                      child:
-                          profileData != null && profileData?.profileImage != ""
-                              ? Image.network(
-                                  profileData!.profileImage!,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  "assets/images/Ellipse 202.png",
-                                  fit: BoxFit.fill,
-                                ),
+            SizedBox(height: 80),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: height * 0.12,
+                  width: width * 0.25,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(200)),
+                    child:
+                        profileData != null && profileData?.profileImage != ""
+                            ? Image.network(
+                                profileData!.profileImage!,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                "assets/images/Ellipse 202.png",
+                                fit: BoxFit.fill,
+                              ),
+                  ),
+                ),
+                SizedBox(height: height * 0.02),
+                Text(
+                  "${profileData?.firstName} ${profileData?.lastName}",
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                    fontFamily: "spartan",
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: height * 0.02),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      editProfile = true;
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 38,
+                    width: 160,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFDD6A03)),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Text("${profileData?.firstName} ${profileData?.lastName}",
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: height * 0.02),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        editProfile = true;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: height * 0.05,
-                      width: width * 0.45,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFDD6A03)),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                    child: Center(
                       child: Text(
                         "view_profile".tr(),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Color(0xFFDD6A03),
                           fontFamily: "spartan",
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
-            SizedBox(height: height * 0.02),
+            SizedBox(height: 20),
             // Container(
             //   height: height * 0.25,
             //   color: const Color(0xffF3F3F3),
@@ -304,48 +305,46 @@ class _profileState extends State<profile> {
             //   ),
             // ),
             // SizedBox(height: height * 0.01),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return homescreen(
-                      selectedIndex: 1,
-                    );
-                  },
-                ));
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 17,
-                  ),
-                  decoration: const BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        child: Image.asset("assets/images/calendar-2.png"),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      textComoon("my_appointments", 14, const Color(0xff414141),
-                          FontWeight.w500),
-                      const Spacer(),
-                      SizedBox(
-                        height: 15,
-                        width: 30,
-                        child: Image.asset("assets/images/righticon.png"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: height * 0.01),
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.push(context, MaterialPageRoute(
+            //       builder: (context) {
+            //         return homescreen(selectedIndex: 1);
+            //       },
+            //     ));
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 15),
+            //     child: Container(
+            //       padding: const EdgeInsets.symmetric(
+            //         vertical: 17,
+            //       ),
+            //       decoration: const BoxDecoration(
+            //           border:
+            //               Border(bottom: BorderSide(color: Colors.black12))),
+            //       child: Row(
+            //         children: [
+            //           SizedBox(
+            //             height: 30,
+            //             child: Image.asset("assets/images/calendar-2.png"),
+            //           ),
+            //           const SizedBox(
+            //             width: 15,
+            //           ),
+            //           textComoon("my_appointments", 14, const Color(0xff414141),
+            //               FontWeight.w500),
+            //           const Spacer(),
+            //           SizedBox(
+            //             height: 15,
+            //             width: 30,
+            //             child: Image.asset("assets/images/righticon.png"),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: height * 0.01),
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
@@ -546,6 +545,7 @@ class _profileState extends State<profile> {
               ),
             ),
             SizedBox(height: height * 0.01),
+
             /// Help Center ///
             InkWell(
               onTap: () {
@@ -668,7 +668,7 @@ class _profileState extends State<profile> {
                   ),
                   decoration: const BoxDecoration(
                       border:
-                      Border(bottom: BorderSide(color: Colors.black12))),
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
                       const SizedBox(
@@ -678,7 +678,12 @@ class _profileState extends State<profile> {
                       const SizedBox(
                         width: 15,
                       ),
-                      textComoon(profileData!.isRegisterBeautician? "Switch to Beautician" : "Become Beautician", 14, const Color(0xff414141),
+                      textComoon(
+                          profileData!.isRegisterBeautician
+                              ? "Switch to Beautician"
+                              : "Become Beautician",
+                          14,
+                          const Color(0xff414141),
                           FontWeight.w500),
                       const Spacer(),
                       SizedBox(
@@ -740,45 +745,45 @@ class _profileState extends State<profile> {
               ),
             ),
             SizedBox(height: height * 0.01),
-            GestureDetector(
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(
-                //   builder: (context) {
-                //     return const rating_scareen();
-                //   },
-                // ));
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 17,
-                  ),
-                  decoration: const BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
-                  // child: Row(
-                  //   children: [
-                  //     const SizedBox(
-                  //       height: 30,
-                  //       child: Icon(Icons.star_border),
-                  //     ),
-                  //     const SizedBox(
-                  //       width: 15,
-                  //     ),
-                  //     textComoon("Rating", 14, const Color(0xff414141),
-                  //         FontWeight.w500),
-                  //     const Spacer(),
-                  //     SizedBox(
-                  //       height: 15,
-                  //       width: 30,
-                  //       child: Image.asset("assets/images/righticon.png"),
-                  //     ),
-                  //   ],
-                  // ),
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     // Navigator.push(context, MaterialPageRoute(
+            //     //   builder: (context) {
+            //     //     return const rating_scareen();
+            //     //   },
+            //     // ));
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 15),
+            //     child: Container(
+            //       padding: const EdgeInsets.symmetric(
+            //         vertical: 17,
+            //       ),
+            //       decoration: const BoxDecoration(
+            //           border:
+            //               Border(bottom: BorderSide(color: Colors.black12))),
+            //       // child: Row(
+            //       //   children: [
+            //       //     const SizedBox(
+            //       //       height: 30,
+            //       //       child: Icon(Icons.star_border),
+            //       //     ),
+            //       //     const SizedBox(
+            //       //       width: 15,
+            //       //     ),
+            //       //     textComoon("Rating", 14, const Color(0xff414141),
+            //       //         FontWeight.w500),
+            //       //     const Spacer(),
+            //       //     SizedBox(
+            //       //       height: 15,
+            //       //       width: 30,
+            //       //       child: Image.asset("assets/images/righticon.png"),
+            //       //     ),
+            //       //   ],
+            //       // ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -828,25 +833,25 @@ class _profileState extends State<profile> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(200)),
                           child: profileData?.profileImage != ""
-                              ? Image.network(
-                                  profileData!.profileImage!,
-                                  fit: BoxFit.fill,
+                              ? CachedNetworkImage(
+                                  imageUrl: profileData!.profileImage!,
+                                  fit: BoxFit.cover,
                                 )
                               : userImageFile != null
                                   ? Image.file(
                                       userImageFile!,
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     )
                                   : Image.asset(
                                       "assets/images/Ellipse 202.png",
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     ),
                         ),
                       ),
                     ),
                     Positioned(
-                      top: 50,
-                      right: 1,
+                      bottom: 5,
+                      right: 2,
                       child: GestureDetector(
                         onTap: () {
                           pickImageBottomSheet();
@@ -854,22 +859,25 @@ class _profileState extends State<profile> {
                         child: Image.asset(
                           "assets/images/Group 13175.png",
                           fit: BoxFit.fill,
-                          height: 33,
-                          width: 33,
+                          height: 28,
+                          width: 28,
                         ),
                       ),
                     )
                   ],
                 ),
-                SizedBox(height: height * 0.02),
+                SizedBox(height: 20),
                 Row(
                   children: [
-                    const Text("Personal Info",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: "spartan",
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
+                    const Text(
+                      "Personal Info",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "spartan",
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
@@ -906,18 +914,18 @@ class _profileState extends State<profile> {
                           } else {}
                         });
                       },
-                      child: const Text("Edit",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "spartan",
-                            color: Color(0xFFDD6A03),
-                          )),
+                      child: const Text(
+                        "Edit",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Color(0xFFDD6A03),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
+                SizedBox(height: height * 0.02),
                 const Text("First name",
                     style: TextStyle(
                       fontSize: 16,
@@ -1494,8 +1502,8 @@ class _profileState extends State<profile> {
     Loader.show(context,
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xffDD6A03)),
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
         themeData: Theme.of(context).copyWith(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(secondary: const Color(0xffDD6A03))));
@@ -1509,56 +1517,76 @@ class _profileState extends State<profile> {
       'Content-Type': "application/json; charset=utf-8",
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
-    var response = await http.post(Uri.parse("${ApiUrlList.switchAccount}${"beautician"}"),
+    var response = await http.post(
+        Uri.parse("${ApiUrlList.switchAccount}${"beautician"}"),
         body: jsonEncode(Body),
-        headers: Headers
-    );
+        headers: Headers);
     log('switchAccount Code : ${response.statusCode}');
     log('switchAccount Body :${response.body}');
     log('switchAccount Payload Body :${Body}');
     var map = jsonDecode(response.body);
     if (response.statusCode == 200) {
       setState(() {
-        SwitchAccountModel switchAccountModel = SwitchAccountModel.fromJson(jsonDecode(response.body));
+        SwitchAccountModel switchAccountModel =
+            SwitchAccountModel.fromJson(jsonDecode(response.body));
         Loader.hide();
         if ((switchAccountModel.screenStatus ?? 0) == 3) {
-            Loader.hide();
-            Navigator.push(context, MaterialPageRoute(builder: (context) {return setup_profile();},),);
-          }
-        else if ((switchAccountModel.screenStatus ?? 0) == 4) {
-            Loader.hide();
-            Navigator.push(context, MaterialPageRoute(builder: (context) {return const bussinessInfoCATEGORY();},));
-          }
-        else if ((switchAccountModel.screenStatus ?? 0) == 5) {
-            Loader.hide();
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) {return addServicetype(secondflow: true);},));
-          }
-        else if ((switchAccountModel.screenStatus ?? 0) == 6) {
-            Loader.hide();
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {return add_Your_Work_Hours(secondflow: true);},), (route) => false,);
-          } else if ((switchAccountModel.screenStatus ?? 0) == 7) {
-            Loader.hide();
-            Fluttertoast.showToast(
-                msg: "${map['message']}",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 16.0);
-            Helper.prefs!.setBool(UserPrefs.keyisserviceprovide, true);
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return const BottomNavigation();
-                },
-              ),
-                  (route) => false,
-            );
-            Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
-          }else {
+          Loader.hide();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return setup_profile();
+              },
+            ),
+          );
+        } else if ((switchAccountModel.screenStatus ?? 0) == 4) {
+          Loader.hide();
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return const bussinessInfoCATEGORY();
+            },
+          ));
+        } else if ((switchAccountModel.screenStatus ?? 0) == 5) {
+          Loader.hide();
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return addServicetype(secondflow: true);
+            },
+          ));
+        } else if ((switchAccountModel.screenStatus ?? 0) == 6) {
+          Loader.hide();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return add_Your_Work_Hours(secondflow: true);
+              },
+            ),
+            (route) => false,
+          );
+        } else if ((switchAccountModel.screenStatus ?? 0) == 7) {
+          Loader.hide();
+          Fluttertoast.showToast(
+              msg: "${map['message']}",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          Helper.prefs!.setBool(UserPrefs.keyisserviceprovide, true);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const BottomNavigation();
+              },
+            ),
+            (route) => false,
+          );
+          Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
+        } else {
           Loader.hide();
           Fluttertoast.showToast(
               msg: "${map['message']}",
@@ -1615,9 +1643,12 @@ class _profileState extends State<profile> {
     }
   }
 }
-SwitchAccountModel switchAccountModelFromJson(String str) => SwitchAccountModel.fromJson(json.decode(str));
 
-String switchAccountModelToJson(SwitchAccountModel data) => json.encode(data.toJson());
+SwitchAccountModel switchAccountModelFromJson(String str) =>
+    SwitchAccountModel.fromJson(json.decode(str));
+
+String switchAccountModelToJson(SwitchAccountModel data) =>
+    json.encode(data.toJson());
 
 class SwitchAccountModel {
   int? status;
@@ -1634,20 +1665,20 @@ class SwitchAccountModel {
     this.screenStatus,
   });
 
-  factory SwitchAccountModel.fromJson(Map<String, dynamic> json) => SwitchAccountModel(
-    status: json["status"],
-    success: json["success"],
-    type: json["type"],
-    message: json["message"],
-    screenStatus: json["screenStatus"],
-  );
+  factory SwitchAccountModel.fromJson(Map<String, dynamic> json) =>
+      SwitchAccountModel(
+        status: json["status"],
+        success: json["success"],
+        type: json["type"],
+        message: json["message"],
+        screenStatus: json["screenStatus"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "type": type,
-    "message": message,
-    "screenStatus": screenStatus,
-  };
+        "status": status,
+        "success": success,
+        "type": type,
+        "message": message,
+        "screenStatus": screenStatus,
+      };
 }
-

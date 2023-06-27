@@ -2,13 +2,15 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/advanced_search.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
-import 'package:http/http.dart' as http;
+
 import '../../utils/apiurllist.dart';
 
 class filterpage extends StatefulWidget {
@@ -158,30 +160,33 @@ class _filterpageState extends State<filterpage> {
                             child: Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5)),
-                                    border: Border.all(
-                                        color: const Color(0xFFDD5103))),
-                                height: height * 0.07,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  border: Border.all(
+                                      color: const Color(0xFFDD5103)),
+                                ),
+                                height: 50,
                                 width: width,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image(
-                                        image: const AssetImage(
-                                          "assets/images/search.png",
-                                        ),
-                                        color: const Color(0xFFDD5103),
-                                        height: height * 0.025),
-                                    const SizedBox(
-                                      width: 5,
+                                      image: const AssetImage(
+                                        "assets/images/search.png",
+                                      ),
+                                      color: const Color(0xFFDD5103),
+                                      height: 24,
+                                      width: 24,
                                     ),
+                                    const SizedBox(width: 8),
                                     const Text(
                                       "Go To Advanced Search",
                                       style: TextStyle(
-                                          fontFamily: "spartan",
-                                          color: Color(0xFFDD5103),
-                                          fontSize: 12),
+                                        fontFamily: "spartan",
+                                        color: Color(0xFFDD5103),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     )
                                   ],
                                 )),
@@ -354,7 +359,7 @@ class _filterpageState extends State<filterpage> {
                         Wrap(
                           alignment: WrapAlignment.start,
                           runSpacing: 10,
-                          spacing: 8,
+                          spacing: 10,
                           children: [
                             for (int i = 0; i < preferenceName.length; i++)
                               GestureDetector(
@@ -381,11 +386,11 @@ class _filterpageState extends State<filterpage> {
                                   }
                                 },
                                 child: Container(
-                                  height: height * 0.06,
+                                  height: 40,
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 8),
+                                      horizontal: 15, vertical: 5),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(28),
                                       border: Border.all(
                                           color: preferenceName[i].isSelected
                                               ? const Color(0xFFDD5103)
@@ -396,23 +401,23 @@ class _filterpageState extends State<filterpage> {
                                   child: Text(
                                     preferenceName[i].prefenceName,
                                     style: TextStyle(
-                                        fontFamily: "spartan",
-                                        fontSize: 16,
-                                        color: preferenceName[i].isSelected
-                                            ? Colors.white
-                                            : Colors.black54),
+                                      fontFamily: "spartan",
+                                      fontSize: 15,
+                                      color: preferenceName[i].isSelected
+                                          ? Colors.white
+                                          : Colors.black54,
+                                    ),
                                   ),
                                 ),
                               )
                           ],
                         ),
-                        SizedBox(
-                          height: height * 0.01,
+                        SizedBox(height: 10),
+                        const Divider(
+                          indent: 10,
+                          endIndent: 10,
                         ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -420,17 +425,18 @@ class _filterpageState extends State<filterpage> {
                           ),
                           child: Container(
                             alignment: Alignment.topLeft,
-                            child: const Text("Services",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600)),
+                            child: const Text(
+                              "Services",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
+                        SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -439,7 +445,7 @@ class _filterpageState extends State<filterpage> {
                           child: Wrap(
                             alignment: WrapAlignment.start,
                             runSpacing: 10,
-                            spacing: 8,
+                            spacing: 10,
                             children: [
                               for (int i = 0; i < serviceName.length; i++)
                                 GestureDetector(
@@ -450,12 +456,11 @@ class _filterpageState extends State<filterpage> {
                                     });
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    height: height * 0.06,
+                                    height: 40,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 8),
+                                        horizontal: 15, vertical: 5),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(28),
                                         border: Border.all(
                                             color: serviceName[i].isSelected
                                                 ? const Color(0xFFDD5103)
@@ -466,45 +471,43 @@ class _filterpageState extends State<filterpage> {
                                     child: Text(
                                       "${serviceName[i].serviceCategoryName}",
                                       style: TextStyle(
-                                          fontFamily: "spartan",
-                                          fontSize: 16,
-                                          color: serviceName[i].isSelected
-                                              ? Colors.white
-                                              : Colors.black54),
+                                        fontFamily: "spartan",
+                                        fontSize: 15,
+                                        color: serviceName[i].isSelected
+                                            ? Colors.white
+                                            : Colors.black54,
+                                      ),
                                     ),
                                   ),
                                 )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.01,
-                        ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 10),
+                        const Divider(indent: 10, endIndent: 10),
+                        const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
                             alignment: Alignment.topLeft,
-                            child: const Text("Demography",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600)),
+                            child: const Text(
+                              "Demography",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Wrap(
                             alignment: WrapAlignment.start,
                             runSpacing: 10,
-                            spacing: 8,
+                            spacing: 10,
                             children: [
                               for (int i = 0; i < demographyName.length; i++)
                                 GestureDetector(
@@ -515,11 +518,11 @@ class _filterpageState extends State<filterpage> {
                                     });
                                   },
                                   child: Container(
-                                    height: height * 0.06,
+                                    height: 40,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 8),
+                                        horizontal: 15, vertical: 5),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(28),
                                         border: Border.all(
                                             color: demographyName[i].isSelected
                                                 ? const Color(0xFFDD5103)
@@ -530,151 +533,141 @@ class _filterpageState extends State<filterpage> {
                                     child: Text(
                                       "${demographyName[i].demographyName}",
                                       style: TextStyle(
-                                          fontFamily: "spartan",
-                                          fontSize: 16,
-                                          color: demographyName[i].isSelected
-                                              ? Colors.white
-                                              : Colors.black54),
+                                        fontFamily: "spartan",
+                                        fontSize: 15,
+                                        color: demographyName[i].isSelected
+                                            ? Colors.white
+                                            : Colors.black54,
+                                      ),
                                     ),
                                   ),
                                 )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.01,
-                        ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 10),
+                        const Divider(indent: 10, endIndent: 10),
+                        const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
                             alignment: Alignment.topLeft,
-                            child: const Text("Sort By",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600)),
+                            child: const Text(
+                              "Sort By",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
+                        const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    activeColor: const Color(0xFFDD5103),
-                                    value: "forYou",
-                                    groupValue: character,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        character = value.toString();
-                                      });
-                                    },
+                              RadioListTile(
+                                visualDensity: const VisualDensity(
+                                    horizontal: 0, vertical: 0),
+                                activeColor: const Color(0xFFDD5103),
+                                value: "forYou",
+                                groupValue: character,
+                                onChanged: (value) {
+                                  setState(() {
+                                    character = value.toString();
+                                  });
+                                },
+                                title: Text(
+                                  "Recommended For You",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
                                   ),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  const Text("Recommended For You",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
-                                ],
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    activeColor: const Color(0xFFDD5103),
-                                    value: "myfavorite",
-                                    groupValue: character,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        character = value.toString();
-                                      });
-                                    },
+                              RadioListTile(
+                                visualDensity: const VisualDensity(
+                                    horizontal: 0, vertical: 0),
+                                activeColor: const Color(0xFFDD5103),
+                                value: "myfavorite",
+                                groupValue: character,
+                                onChanged: (value) {
+                                  setState(() {
+                                    character = value.toString();
+                                  });
+                                },
+                                title: Text(
+                                  "My Favorites",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
                                   ),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  const Text("My Favorites",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
-                                ],
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    activeColor: const Color(0xFFDD5103),
-                                    value: "topRated",
-                                    groupValue: character,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        character = value.toString();
-                                      });
-                                    },
+                              RadioListTile(
+                                visualDensity: const VisualDensity(
+                                    horizontal: 0, vertical: 0),
+                                activeColor: const Color(0xFFDD5103),
+                                value: "topRated",
+                                groupValue: character,
+                                onChanged: (value) {
+                                  setState(() {
+                                    character = value.toString();
+                                  });
+                                },
+                                title: Text(
+                                  "Top Rated",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
                                   ),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  const Text("Top Rated",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
-                                ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 30,
+                        const Divider(
+                          indent: 10,
+                          endIndent: 10,
                         ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                     Container(
-                        height: height * 0.06,
-                        color: const Color(0xffF3F3F3),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text("Filters",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.w600)),
-                              Text("Clear All",
-                                  style: TextStyle(
-                                    color: Color(0xFFDD5103),
-                                    fontSize: 14,
-                                    fontFamily: "spartan",
-                                  )),
-                            ],
-                          ),
-                        )),
-                    const SizedBox(
-                      height: 10,
+                      height: height * 0.06,
+                      color: const Color(0xffF3F3F3),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Filters",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "Clear All",
+                              style: TextStyle(
+                                color: Color(0xFFDD5103),
+                                fontSize: 14,
+                                fontFamily: "spartan",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Column(
                       children: [
@@ -684,13 +677,17 @@ class _filterpageState extends State<filterpage> {
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: const Text("Gender",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600)),
+                                child: const Text(
+                                  "Gender",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
+                              const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -706,12 +703,14 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                   ),
-                                  const Text("Male",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
+                                  const Text(
+                                    "Male",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                    ),
+                                  ),
                                   Radio(
                                     visualDensity: const VisualDensity(
                                         horizontal: 0, vertical: 0),
@@ -724,12 +723,14 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                   ),
-                                  const Text("Female",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
+                                  const Text(
+                                    "Female",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                    ),
+                                  ),
                                   Radio(
                                     visualDensity: const VisualDensity(
                                         horizontal: 0, vertical: 0),
@@ -742,30 +743,31 @@ class _filterpageState extends State<filterpage> {
                                       });
                                     },
                                   ),
-                                  const Text("Other",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                      )),
+                                  const Text(
+                                    "Other",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                    ),
+                                  ),
                                 ],
                               ),
                               const Divider(),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: const Text("Price Range",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600)),
+                                child: const Text(
+                                  "Price Range",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -792,22 +794,24 @@ class _filterpageState extends State<filterpage> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
-                                          child: textComoon(
-                                              "\$20",
-                                              12,
-                                              price
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              FontWeight.w500)),
+                                        child: textComoon(
+                                          "\$20",
+                                          10,
+                                          price ? Colors.white : Colors.black,
+                                          FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5),
-                                    child: Container(
-                                      height: 1,
-                                      width: width * 0.15,
-                                      color: Colors.black,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      child: Container(
+                                        height: 1,
+                                        width: width * 0.15,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                   GestureDetector(
@@ -842,13 +846,15 @@ class _filterpageState extends State<filterpage> {
                                               FontWeight.w500)),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5),
-                                    child: Container(
-                                      height: 1,
-                                      width: width * 0.15,
-                                      color: Colors.black,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      child: Container(
+                                        height: 1,
+                                        width: width * 0.15,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                   GestureDetector(
@@ -883,13 +889,15 @@ class _filterpageState extends State<filterpage> {
                                               FontWeight.w500)),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5),
-                                    child: Container(
-                                      height: 1,
-                                      width: width * 0.15,
-                                      color: Colors.black,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      child: Container(
+                                        height: 1,
+                                        width: width * 0.15,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                   GestureDetector(
@@ -915,20 +923,18 @@ class _filterpageState extends State<filterpage> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: Center(
-                                          child: textComoon(
-                                              "\$1000",
-                                              08,
-                                              price3
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              FontWeight.w500)),
+                                        child: textComoon(
+                                          "\$1000",
+                                          8,
+                                          price3 ? Colors.white : Colors.black,
+                                          FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: height * 0.01,
-                              ),
+                              SizedBox(height: height * 0.01),
                               const Divider(),
                               Row(
                                 mainAxisAlignment:
@@ -936,12 +942,16 @@ class _filterpageState extends State<filterpage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Center(
-                                      child: Text("Distance",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontFamily: "spartan",
-                                              fontWeight: FontWeight.w600))),
+                                    child: Text(
+                                      "Distance",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: "spartan",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
                                   Center(
                                     child: Text(
                                       "${_startValue.toStringAsFixed(1)} - ${_endValue.toStringAsFixed(1)} km",
@@ -955,9 +965,7 @@ class _filterpageState extends State<filterpage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               RangeSlider(
                                 onChangeStart: (value) {
                                   _startValue = value.start;
@@ -980,9 +988,7 @@ class _filterpageState extends State<filterpage> {
                                 },
                               ),
                               const Divider(),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1005,45 +1011,49 @@ class _filterpageState extends State<filterpage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      setState(() {
-                                        for (var item in serviceName) {
-                                          if (item.isSelected) {
-                                            selectedService.add(item.id!);
+                                      setState(
+                                        () {
+                                          for (var item in serviceName) {
+                                            if (item.isSelected) {
+                                              selectedService.add(item.id!);
+                                            }
                                           }
-                                        }
-                                        for (var item in demographyName) {
-                                          if (item.isSelected) {
-                                            selectedDemography.add(item.id!);
+                                          for (var item in demographyName) {
+                                            if (item.isSelected) {
+                                              selectedDemography.add(item.id!);
+                                            }
                                           }
-                                        }
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                          builder: (context) {
-                                            return searchScreen(
-                                              myPlace: myPlace,
-                                              selectedService: selectedService,
-                                              selectedDemography:
-                                                  selectedDemography,
-                                              gender: gender,
-                                              sortBy: character,
-                                              priceValue: priceValue,
-                                              latitude: latitude,
-                                              longitude: longitude,
-                                            );
-                                          },
-                                        ));
-                                      });
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                            builder: (context) {
+                                              return searchScreen(
+                                                myPlace: myPlace,
+                                                selectedService:
+                                                    selectedService,
+                                                selectedDemography:
+                                                    selectedDemography,
+                                                gender: gender,
+                                                sortBy: character,
+                                                priceValue: priceValue,
+                                                latitude: latitude,
+                                                longitude: longitude,
+                                              );
+                                            },
+                                          ));
+                                        },
+                                      );
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: height * 0.07,
                                       width: width * 0.4,
                                       decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xFFDD5103)),
-                                          color: const Color(0xFFDD5103),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5))),
+                                        border: Border.all(
+                                            color: const Color(0xFFDD5103)),
+                                        color: const Color(0xFFDD5103),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5)),
+                                      ),
                                       child: const Text(
                                         "APPLY",
                                         style: TextStyle(color: Colors.white),
@@ -1052,9 +1062,7 @@ class _filterpageState extends State<filterpage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const SizedBox(height: 30),
                             ],
                           ),
                         )

@@ -795,7 +795,7 @@ class Datum {
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         id: json["_id"] ?? "",
-        subTotal: json["subTotal"]??0,
+        subTotal: json["subTotal"] ?? 0,
         discount: json["discount"],
         gstORhst: json["gstORhst"],
         pstORqst: json["pstORqst"],
@@ -805,7 +805,9 @@ class Datum {
         total: json["total"],
         bookingId: json["BookingId"],
         paymentStatus: json["paymentStatus"],
-        cardDetails: json["cardDetails"]==null ? null : CardDetails.fromMap(json["cardDetails"]),
+        cardDetails: json["cardDetails"] == null
+            ? null
+            : CardDetails.fromMap(json["cardDetails"]),
         appointmentDetails: List<AppointmentDetail>.from(
             json["appointmentDetails"]
                     .map((x) => AppointmentDetail.fromMap(x)) ??
@@ -877,7 +879,7 @@ class AppointmentDetail {
         clientId: json["clientId"],
         beauticianId: json["beauticianId"],
         serviceId: json["serviceId"],
-        stylistId: json["stylistID"]??"",
+        stylistId: json["stylistID"] ?? "",
         dateTime: DateTime.parse(json["dateTime"]),
         endDateTime: DateTime.parse(json["endDateTime"]),
         price: json["price"],

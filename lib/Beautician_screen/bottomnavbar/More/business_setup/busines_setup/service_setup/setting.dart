@@ -4,10 +4,11 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class setting extends StatefulWidget {
-  bool ? isBookOnline;
-  bool ? isHomeService;
-  String ? intervalTime;
-  setting({Key? key,this.isBookOnline,this.isHomeService,this.intervalTime}) : super(key: key);
+  bool? isBookOnline;
+  bool? isHomeService;
+  String? intervalTime;
+  setting({Key? key, this.isBookOnline, this.isHomeService, this.intervalTime})
+      : super(key: key);
 
   @override
   State<setting> createState() => _settingState();
@@ -20,17 +21,11 @@ class _settingState extends State<setting> {
     "45 min",
     "60 min",
   ];
-  List<String> timelist = <String>[
-    "0",
-    "25 min",
-    "20 min",
-    "15 min",
-    "10 min"
-  ];
+  List<String> timelist = <String>["0", "25 min", "20 min", "15 min", "10 min"];
   String? selectedvaluemin = "30 min";
   String? selectedchosstime = "0";
-  bool clentswitch=false;
-  bool homeswitch=false;
+  bool clentswitch = false;
+  bool homeswitch = false;
 
   TextEditingController txtPClients = TextEditingController();
 
@@ -115,22 +110,30 @@ class _settingState extends State<setting> {
       body: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            height: height*0.85,
+            height: height * 0.85,
             child: Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height*0.01,),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
                   Container(
                     padding: EdgeInsets.symmetric(
                       vertical: 17,
                     ),
                     decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        border:
+                            Border(bottom: BorderSide(color: Colors.black12))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        textComoon("Allow clients to book online?", 14, Color(0xff292929),FontWeight.w500),
-                        SizedBox(width: 20,),
+                        textComoon("Allow clients to book online?", 14,
+                            Color(0xff292929), FontWeight.w500),
+                        SizedBox(
+                          width: 20,
+                        ),
                         FlutterSwitch(
                           width: 55.0,
                           height: 25.0,
@@ -144,7 +147,6 @@ class _settingState extends State<setting> {
                             });
                           },
                         ),
-
                       ],
                     ),
                   ),
@@ -153,11 +155,16 @@ class _settingState extends State<setting> {
                       vertical: 17,
                     ),
                     decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: Colors.black12))),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        border:
+                            Border(bottom: BorderSide(color: Colors.black12))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        textComoon("Home Service?", 14, Color(0xff292929),FontWeight.w500),
-                        SizedBox(width: 20,),
+                        textComoon("Home Service?", 14, Color(0xff292929),
+                            FontWeight.w500),
+                        SizedBox(
+                          width: 20,
+                        ),
                         FlutterSwitch(
                           width: 55.0,
                           height: 25.0,
@@ -171,17 +178,25 @@ class _settingState extends State<setting> {
                             });
                           },
                         ),
-
                       ],
                     ),
                   ),
-                  SizedBox(height: height*0.035,),
-                  textComoon("Interval", 14, Color(0xff292929),
-                      FontWeight.w700),
-                  SizedBox(height: height*0.02,),
-                  textComoonfade("Set time slots for which clients can book between appointments. (e.g with 10min intervals, they can book appointments at 9:00, 9:10, 9:20, 9:30, etc.)", 12, Color(0xff414141),
+                  SizedBox(
+                    height: height * 0.035,
+                  ),
+                  textComoon(
+                      "Interval", 14, Color(0xff292929), FontWeight.w700),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  textComoonfade(
+                      "Set time slots for which clients can book between appointments. (e.g with 10min intervals, they can book appointments at 9:00, 9:10, 9:20, 9:30, etc.)",
+                      12,
+                      Color(0xff414141),
                       FontWeight.w500),
-                  SizedBox(height: height*0.03,),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
                   DropdownButtonFormField(
                     enableFeedback: true,
                     isDense: true,
@@ -194,7 +209,8 @@ class _settingState extends State<setting> {
                         value: items,
                         child: Text(
                           items,
-                          style: TextStyle(fontSize: 14, color: Color(0xff292929)),
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0xff292929)),
                         ),
                       );
                     }).toList(),
@@ -207,7 +223,8 @@ class _settingState extends State<setting> {
                       padding: const EdgeInsets.only(right: 10),
                       child: Icon(
                         Icons.keyboard_arrow_down,
-                        size: 30,color: Color(0xff969696),
+                        size: 30,
+                        color: Color(0xff969696),
                       ),
                     ),
                     decoration: InputDecoration(
@@ -219,8 +236,8 @@ class _settingState extends State<setting> {
                           color: Color(0xff292929),
                           fontWeight: FontWeight.w500),
                       labelText: "Choose Time",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                      labelStyle: TextStyle(
+                          fontFamily: 'spartan', color: Colors.black54),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide(color: Color(0xff292929)),
@@ -232,49 +249,60 @@ class _settingState extends State<setting> {
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.only(top: height*0.015),
-                    child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
+                    padding: EdgeInsets.only(top: height * 0.015),
+                    child: Divider(
+                      thickness: 1,
+                      color: Color(0xffCFCFCF),
+                    ),
                   ),
-                  SizedBox(height: height*0.035,),
+                  SizedBox(
+                    height: height * 0.035,
+                  ),
                   textComoon("Parallel Clients", 14, Color(0xff292929),
                       FontWeight.w700),
-                  SizedBox(height: height*0.02,),
-                  textComoonfade("Maximum number of clients able to book a service in the same time.", 12, Color(0xff414141),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  textComoonfade(
+                      "Maximum number of clients able to book a service in the same time.",
+                      12,
+                      Color(0xff414141),
                       FontWeight.w500),
-                  SizedBox(height: height*0.03,),
-                  Expanded(
-                    child: Container(
-                      child: TextField(
-                        controller: txtPClients,
-                        style: const TextStyle(
+                  SizedBox(height: height * 0.03),
+                  Container(
+                    height: 50,
+                    child: TextField(
+                      controller: txtPClients,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff292929),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "spartan"),
+                      onChanged: (value) {
+                        setState(() {
+                          // servicecategorystatus = false;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(left: 20),
+                        hintText: "Parallel Clients",
+                        hintStyle: const TextStyle(
                             fontSize: 14,
+                            fontFamily: 'spartan',
                             color: Color(0xff292929),
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "spartan"),
-                        onChanged: (value) {
-                          setState(() {
-                            // servicecategorystatus = false;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(left: 20),
-                          hintText: "Parallel Clients",
-                          hintStyle: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'spartan',
-                              color: Color(0xff292929),
-                              fontWeight: FontWeight.w500),
-                          labelText: "Parallel Clients",
-                          labelStyle: const TextStyle(
-                              fontFamily: 'spartan', color: Colors.black54),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Color(0xff292929)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Color(0xff292929)),
-                          ),
+                            fontWeight: FontWeight.w500),
+                        labelText: "Parallel Clients",
+                        labelStyle: const TextStyle(
+                            fontFamily: 'spartan', color: Colors.black54),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide:
+                              const BorderSide(color: Color(0xff292929)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide:
+                              const BorderSide(color: Color(0xff292929)),
                         ),
                       ),
                     ),
@@ -329,16 +357,27 @@ class _settingState extends State<setting> {
                   //   ),
                   // ),
                   Padding(
-                    padding:  EdgeInsets.only(top: height*0.015),
-                    child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
+                    padding: EdgeInsets.only(top: height * 0.015),
+                    child: Divider(
+                      thickness: 1,
+                      color: Color(0xffCFCFCF),
+                    ),
                   ),
                   Spacer(),
-                  CommonButton(context,"OK", 12, FontWeight.w600, Colors.white, () {
-                    print(homeswitch,);
-                    print(clentswitch,);
-                    Navigator.pop(context,[txtPClients.text,homeswitch,clentswitch]);
+                  CommonButton(context, "OK", 12, FontWeight.w600, Colors.white,
+                      () {
+                    print(
+                      homeswitch,
+                    );
+                    print(
+                      clentswitch,
+                    );
+                    Navigator.pop(
+                        context, [txtPClients.text, homeswitch, clentswitch]);
                   }),
-                  SizedBox(height: height*0.025,),
+                  SizedBox(
+                    height: height * 0.025,
+                  ),
                 ],
               ),
             ),

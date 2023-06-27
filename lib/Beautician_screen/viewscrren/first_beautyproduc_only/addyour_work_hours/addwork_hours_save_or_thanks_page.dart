@@ -1,16 +1,18 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/congration_sucess/congratulation_screen.dart';
-import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../utils/app_colors.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class addWork_Save_or_NoThanks_Page extends StatefulWidget {
@@ -33,7 +35,7 @@ class addWork_Save_or_NoThanks_Page extends StatefulWidget {
 class _addWork_Save_or_NoThanks_PageState
     extends State<addWork_Save_or_NoThanks_Page> {
   AddWorkModel? addworkMmdel;
-  var  any="";
+  var any = "";
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -60,11 +62,8 @@ class _addWork_Save_or_NoThanks_PageState
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.pop(context,[
-                              false,
-                               widget.dayDetailsList.first.day
-
-                            ]);
+                            Navigator.pop(context,
+                                [false, widget.dayDetailsList.first.day]);
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
@@ -129,12 +128,10 @@ class _addWork_Save_or_NoThanks_PageState
         width: width,
         height: height,
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: const EdgeInsets.only(left: 18, right: 18),
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.03,
-              ),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: widget.secondflow == true
@@ -144,18 +141,20 @@ class _addWork_Save_or_NoThanks_PageState
                           Text(
                             "4/",
                             style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff292929),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w300),
+                              fontSize: 12,
+                              color: Color(0xff292929),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                           Text(
                             "4",
                             style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff111111),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold),
+                              fontSize: 12,
+                              color: Color(0xff111111),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       )
@@ -165,31 +164,32 @@ class _addWork_Save_or_NoThanks_PageState
                           Text(
                             "3/",
                             style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff292929),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w300),
+                              fontSize: 12,
+                              color: Color(0xff292929),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
                           Text(
                             "3",
                             style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff111111),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold),
+                              fontSize: 12,
+                              color: Color(0xff111111),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 25),
 
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: widget.dayDetailsList.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  color: AppColors.greyColor,
+                ),
                 itemBuilder: (BuildContext context, int index) {
                   // return SaveThanksCommoncheckbox(
                   //     context, "Monday", "9:00 - 17:00", () {
@@ -226,91 +226,104 @@ class _addWork_Save_or_NoThanks_PageState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-
                                   children: [
                                     Text(
                                       "${widget.dayDetailsList[index].startTime}",
                                       style: const TextStyle(
-                                          color: Color(0xff292929),
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: "spartan",
-                                          fontSize: 12),
+                                        color: Color(0xff292929),
+                                        fontWeight: FontWeight.w300,
+                                        fontFamily: "spartan",
+                                        fontSize: 12,
+                                      ),
                                     ),
                                     Text(
                                       widget.dayDetailsList[index].isOpen!
                                           ? " to "
                                           : "Closed",
                                       style: const TextStyle(
-                                          color: Color(0xff292929),
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: "spartan",
-                                          fontSize: 12),
+                                        color: Color(0xff292929),
+                                        fontWeight: FontWeight.w300,
+                                        fontFamily: "spartan",
+                                        fontSize: 12,
+                                      ),
                                     ),
                                     Text(
                                       "${widget.dayDetailsList[index].endTime}",
                                       style: const TextStyle(
-                                          color: Color(0xff292929),
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: "spartan",
-                                          fontSize: 12),
+                                        color: Color(0xff292929),
+                                        fontWeight: FontWeight.w300,
+                                        fontFamily: "spartan",
+                                        fontSize: 12,
+                                      ),
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                              widget.dayDetailsList[index].breakStartTime != ""?"break":"",
-                                      style: const TextStyle(
-                                          color: Color(0xff292D32),
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: "spartan",
-                                          fontSize: 10),
-                                    ),
-                                    Text(
-                                      " ${widget.dayDetailsList[index].breakStartTime}",
-                                      style: const TextStyle(
-                                          color: Color(0xff292D32),
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: "spartan",
-                                          fontSize: 10),
-                                    ),
-                                    Text(
-                                      widget.dayDetailsList[index].breakStartTime != ""?" - ":"",
-                                      style: const TextStyle(
-                                          color: Color(0xff292D32),
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: "spartan",
-                                          fontSize: 10),
-                                    ),
-                                    Text(
-                                      "${widget.dayDetailsList[index].breakEndTime}",
-                                      style: const TextStyle(
-                                          color: Color(0xff292D32),
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: "spartan",
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
+                                !widget.dayDetailsList[index].isOpen!
+                                    ? SizedBox(height: 12)
+                                    : Row(
+                                        children: [
+                                          Text(
+                                            widget.dayDetailsList[index]
+                                                        .breakStartTime !=
+                                                    ""
+                                                ? "Break : "
+                                                : "",
+                                            style: const TextStyle(
+                                                color: Color(0xff292D32),
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: "spartan",
+                                                fontSize: 10),
+                                          ),
+                                          Text(
+                                            " ${widget.dayDetailsList[index].breakStartTime}",
+                                            style: const TextStyle(
+                                                color: Color(0xff292D32),
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: "spartan",
+                                                fontSize: 10),
+                                          ),
+                                          Text(
+                                            widget.dayDetailsList[index]
+                                                        .breakStartTime !=
+                                                    ""
+                                                ? " - "
+                                                : "",
+                                            style: const TextStyle(
+                                                color: Color(0xff292D32),
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: "spartan",
+                                                fontSize: 10),
+                                          ),
+                                          Text(
+                                            "${widget.dayDetailsList[index].breakEndTime}",
+                                            style: const TextStyle(
+                                                color: Color(0xff292D32),
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: "spartan",
+                                                fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                               ],
                             ),
                             InkWell(
                               onTap: () {
-
-
-                                Navigator.pop(context,[
-                                  false,
-                                  widget.dayDetailsList[index].day,
-                                  widget.dayDetailsList[index].startTime,
-                                  widget.dayDetailsList[index].endTime,
-                                  widget.dayDetailsList[index].breakStartTime,
-                                  widget.dayDetailsList[index].breakEndTime,
-
-                                ]);
-                                print("navistartoop=${widget.dayDetailsList[index].startTime}");
+                                Navigator.pop(
+                                  context,
+                                  [
+                                    false,
+                                    widget.dayDetailsList[index].day,
+                                    widget.dayDetailsList[index].startTime,
+                                    widget.dayDetailsList[index].endTime,
+                                    widget.dayDetailsList[index].breakStartTime,
+                                    widget.dayDetailsList[index].breakEndTime,
+                                  ],
+                                );
+                                print(
+                                    "navistartoop=${widget.dayDetailsList[index].startTime}");
                                 // Navigator.push(context,MaterialPageRoute(builder: (context) {
                                 //   return add_Your_Work_Hours(secondflow: false,);
                                 // },));
@@ -319,8 +332,8 @@ class _addWork_Save_or_NoThanks_PageState
                                 alignment: Alignment.topRight,
                                 height: 15,
                                 width: 15,
-                                child: Image.asset(
-                                    "assets/images/righticon.png"),
+                                child:
+                                    Image.asset("assets/images/righticon.png"),
                               ),
                             ),
                           ],
@@ -335,7 +348,7 @@ class _addWork_Save_or_NoThanks_PageState
               const Spacer(),
               InkWell(
                 onTap: () {
-                  addWorkHours(context,widget.dayDetailsList);
+                  addWorkHours(context, widget.dayDetailsList);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -379,8 +392,8 @@ class _addWork_Save_or_NoThanks_PageState
       Loader.show(context,
           isSafeAreaOverlay: false,
           overlayColor: Colors.black26,
-          progressIndicator:
-              const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xffDD6A03)),
           // ignore: use_build_context_synchronously
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
@@ -416,10 +429,8 @@ class _addWork_Save_or_NoThanks_PageState
       print("statuscode : ${response.statusCode}");
       print("res  body :: ${response.body}");
       if (response.statusCode == 201) {
-
-
         addworkMmdel = AddWorkModel.fromJson(map);
-         print(addworkMmdel);
+        print(addworkMmdel);
         print('account sucessfully');
 
         Fluttertoast.showToast(
@@ -437,8 +448,7 @@ class _addWork_Save_or_NoThanks_PageState
             return const conGraTuLation();
           },
         ));
-      }
-      else {
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

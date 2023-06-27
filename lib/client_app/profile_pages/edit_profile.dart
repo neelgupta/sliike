@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+
 import '../../utils/apiurllist.dart';
 
 class edit_profile extends StatefulWidget {
@@ -203,9 +205,10 @@ class _edit_profileState extends State<edit_profile> {
                         fontFamily: "spartan",
                         height: 1,
                       ),
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         labelText: "First Name",
-                        labelStyle:  const TextStyle(
+                        labelStyle: const TextStyle(
                             fontSize: 12,
                             fontFamily: 'spartan',
                             color: Colors.black54),
@@ -229,9 +232,10 @@ class _edit_profileState extends State<edit_profile> {
                         fontFamily: "spartan",
                         height: 1,
                       ),
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         labelText: "Last Name",
-                        labelStyle:  const TextStyle(
+                        labelStyle: const TextStyle(
                             fontSize: 12,
                             fontFamily: 'spartan',
                             color: Colors.black54),
@@ -555,7 +559,8 @@ class _edit_profileState extends State<edit_profile> {
       });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -593,12 +598,14 @@ class _edit_profileState extends State<edit_profile> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else if(response.statusCode == 401){
+        } else if (response.statusCode == 401) {
           logoutdata();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-            return signInScreen();
-          },), (route) => false);
-        }else {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ), (route) => false);
+        } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,
@@ -630,7 +637,6 @@ class PersonalInfo {
     return PersonalInfo(
         status: map['status'] ?? 0,
         success: map['success'] ?? false,
-        message: map['message'] ?? ""
-    );
+        message: map['message'] ?? "");
   }
 }

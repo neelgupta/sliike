@@ -2,10 +2,12 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_summary.dart';
@@ -13,7 +15,7 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart'
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:http/http.dart' as http;
+
 import '../../commonClass.dart';
 
 class book_appoinment extends StatefulWidget {
@@ -26,14 +28,17 @@ class book_appoinment extends StatefulWidget {
   String? bookingId;
   bool isManage = false;
 
-  book_appoinment({Key? key,
-    this.serviceTypeName,
-    this.price,
-    this.duration,
-    this.beauticianId,
-    this.serviceId,
-    this.serviceDuration,
-    this.bookingId, this.isManage = false}) : super(key: key);
+  book_appoinment(
+      {Key? key,
+      this.serviceTypeName,
+      this.price,
+      this.duration,
+      this.beauticianId,
+      this.serviceId,
+      this.serviceDuration,
+      this.bookingId,
+      this.isManage = false})
+      : super(key: key);
 
   @override
   State<book_appoinment> createState() => _book_appoinmentState();
@@ -192,6 +197,7 @@ class _book_appoinmentState extends State<book_appoinment> {
     }
     return formatedTime;
   }
+
   DateTime datetime = DateTime.now();
   List<Data> stylistName = [];
   List servicePlace = [
@@ -210,35 +216,19 @@ class _book_appoinmentState extends State<book_appoinment> {
     super.initState();
     datetime = getDateTime();
     print(widget.beauticianId);
-    widget.bookingId != null ? getAppointmentPastList(widget.bookingId):getStylistList();
+    widget.bookingId != null
+        ? getAppointmentPastList(widget.bookingId)
+        : getStylistList();
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery
-        .of(context)
-        .size
-        .height -
-        MediaQuery
-            .of(context)
-            .padding
-            .top -
-        MediaQuery
-            .of(context)
-            .padding
-            .bottom;
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width -
-        MediaQuery
-            .of(context)
-            .padding
-            .right -
-        MediaQuery
-            .of(context)
-            .padding
-            .left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -278,11 +268,11 @@ class _book_appoinmentState extends State<book_appoinment> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("set_appointment",
-                            style: TextStyle(
-                                fontSize: 23,
-                                color: Colors.black,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold))
+                                style: TextStyle(
+                                    fontSize: 23,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold))
                             .tr(),
                       ],
                     ),
@@ -295,366 +285,381 @@ class _book_appoinmentState extends State<book_appoinment> {
       ),
       body: isLoading
           ? const Center(
-        child: CircularProgressIndicator(
-          color: Color(0xffDD6A03),
-        ),
-      )
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
+              ),
+            )
           : SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height * 0.04,
-            ),
-            Container(
-              width: width,
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Row(
+              child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(onlyonemodal != null ? "${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}":"${widget.serviceTypeName}",
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontFamily: "spartan",
-                            color: Colors.black)),
+                  SizedBox(
+                    height: height * 0.04,
                   ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(onlyonemodal != null ? "\$${onlyonemodal!.data!.serviceId!.price}":"\$${widget.price}",
+                  Container(
+                    width: width,
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                              onlyonemodal != null
+                                  ? "${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}"
+                                  : "${widget.serviceTypeName}",
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: "spartan",
+                                  color: Colors.black)),
+                        ),
+                        const Spacer(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                                onlyonemodal != null
+                                    ? "\$${onlyonemodal!.data!.serviceId!.price}"
+                                    : "\$${widget.price}",
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "spartan",
+                                    color: Colors.black)),
+                            Text(
+                                onlyonemodal != null
+                                    ? "for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}"
+                                    : "${widget.duration}",
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "spartan",
+                                    color: Colors.black54)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text("Set_date_time",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff111111),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.w500))
+                          .tr(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      height: 48,
+                      width: width,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xff707070), width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('$_text $calenderTime',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff707070),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.w500,
+                                )),
+                            const Spacer(),
+                            const VerticalDivider(
+                              color: Colors.black54,
+                            ),
+                            InkWell(
+                              child: const Icon(
+                                Icons.keyboard_arrow_right,
+                                size: 30,
+                                color: Color(0xff707070),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  dateTime = false;
+                                  datewtimeDialog();
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  dateTime
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          alignment: Alignment.topLeft,
+                          height: 30,
+                          child: Text(
+                            status,
+                            style: const TextStyle(
+                                fontFamily: 'spartan',
+                                fontSize: 12,
+                                color: Colors.red),
+                          ),
+                        )
+                      : SizedBox(
+                          height: height * 0.03,
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text("select_stylist",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff111111),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.w500))
+                          .tr(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      height: 48,
+                      width: width,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xff707070), width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: DropdownButton<String>(
+                          underline: Container(
+                            color: Colors.white,
+                          ),
                           style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black)),
-                      Text(onlyonemodal != null ? "for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}":"${widget.duration}",
+                              fontFamily: "spartan", color: Colors.black),
+                          isExpanded: true,
+                          icon: Row(
+                            children: const [
+                              VerticalDivider(
+                                color: Colors.black54,
+                              ),
+                              Icon(Icons.keyboard_arrow_down_outlined,
+                                  size: 30),
+                            ],
+                          ),
+                          hint: const Text('No Preference'),
+                          // Not necessary for Option 1
+                          value: _selectedLocation,
+                          onChanged: (newValue) {
+                            setState(() {
+                              dateTime = false;
+                              _selectedLocation = newValue;
+                              StylistId = _selectedLocation!;
+                            });
+                          },
+                          items: stylistName.map((stylist) {
+                            return DropdownMenuItem<String>(
+                              value: stylist.id,
+                              child: Text(
+                                  "${stylist.firstName} ${stylist.lastName}"),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text("Preferred place of service",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff111111),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.w500))
+                          .tr(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      height: 48,
+                      width: width,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xff707070), width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: DropdownButton<String>(
+                          underline: Container(
+                            color: Colors.white,
+                          ),
                           style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              color: Colors.black54)),
-                    ],
+                              fontFamily: "spartan", color: Colors.black),
+                          isExpanded: true,
+                          icon: Row(
+                            children: const [
+                              VerticalDivider(
+                                color: Colors.black54,
+                              ),
+                              Icon(Icons.keyboard_arrow_down_outlined,
+                                  size: 30),
+                            ],
+                          ),
+                          hint: const Text('Select Place'),
+                          // Not necessary for Option 1
+                          value: _selectedPlace,
+                          onChanged: (newValue) {
+                            if (newValue == "Beautician’s place") {
+                              placeid = 0;
+                            } else {
+                              placeid = 1;
+                            }
+                            setState(() {
+                              _selectedPlace = newValue;
+                            });
+                          },
+                          items: servicePlace.map((servicePlace) {
+                            return DropdownMenuItem<String>(
+                              value: servicePlace,
+                              child: Text(servicePlace),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.04,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text("drop_a_note",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff111111),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.w500))
+                          .tr(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: const Text(
+                        "note_info",
+                        style: TextStyle(
+                          fontSize: 13,
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.black54,
+                          fontFamily: "spartan",
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ).tr(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: note,
+                      style:
+                          const TextStyle(fontFamily: "spartan", fontSize: 12),
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'note_hint'.tr(),
+                        labelStyle: const TextStyle(
+                            fontFamily: 'spartan', color: Colors.black54),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(color: Colors.black38),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(color: Colors.black38),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: InkWell(
+                      onTap: () {
+                        if (widget.isManage && widget.bookingId != null) {
+                          updateAppointment(widget.bookingId);
+                        } else if (pickedtime.isEmpty && _text.isEmpty) {
+                          setState(() {
+                            dateTime = true;
+                            status = "Please select Date and Time";
+                          });
+                        } else {
+                          setState(() {
+                            addAppointment();
+                          });
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width,
+                        height: height * 0.06,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: const Color(0xffDD6A03)),
+                        child: const Text(
+                          "continue",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "spartan",
+                            color: Colors.white,
+                          ),
+                        ).tr(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              height: height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Text("Set_date_time",
-                    style: TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        color: Color(0xff111111),
-                        fontFamily: "spartan",
-                        fontWeight: FontWeight.w500))
-                    .tr(),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 48,
-                width: width,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: const Color(0xff707070), width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('$_text $calenderTime',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
-                            color: Color(0xff707070),
-                            fontFamily: "spartan",
-                            fontWeight: FontWeight.w500,))
-                      ,
-                      const Spacer(),
-                      const VerticalDivider(
-                        color: Colors.black54,
-                      ),
-                      InkWell(
-                        child: const Icon(
-                          Icons.keyboard_arrow_right,
-                          size: 30,
-                          color: Color(0xff707070),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            dateTime = false;
-                            datewtimeDialog();
-                          });
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            dateTime
-                ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              alignment: Alignment.topLeft,
-              height: 30,
-              child: Text(status,
-                style: const TextStyle(
-                    fontFamily: 'spartan',
-                    fontSize: 12,
-                    color: Colors.red
-                ),
-              ),
-            ) : SizedBox(
-              height: height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Text("select_stylist",
-                    style: TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        color: Color(0xff111111),
-                        fontFamily: "spartan",
-                        fontWeight: FontWeight.w500))
-                    .tr(),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 48,
-                width: width,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: const Color(0xff707070), width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: DropdownButton<String>(
-                    underline: Container(
-                      color: Colors.white,
-                    ),
-                    style: const TextStyle(
-                        fontFamily: "spartan", color: Colors.black),
-                    isExpanded: true,
-                    icon: Row(
-                      children: const [
-                        VerticalDivider(
-                          color: Colors.black54,
-                        ),
-                        Icon(Icons.keyboard_arrow_down_outlined,
-                            size: 30),
-                      ],
-                    ),
-                    hint: const Text('No Preference'),
-                    // Not necessary for Option 1
-                    value: _selectedLocation,
-                    onChanged: (newValue) {
-                      setState(() {
-                        dateTime = false;
-                        _selectedLocation = newValue;
-                        StylistId = _selectedLocation!;
-                      });
-                    },
-                    items: stylistName.map((stylist) {
-                      return DropdownMenuItem<String>(
-                        value: stylist.id,
-                        child: Text(
-                            "${stylist.firstName} ${stylist.lastName}"),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Text("Preferred place of service",
-                    style: TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        color: Color(0xff111111),
-                        fontFamily: "spartan",
-                        fontWeight: FontWeight.w500))
-                    .tr(),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 48,
-                width: width,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: const Color(0xff707070), width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: DropdownButton<String>(
-                    underline: Container(
-                      color: Colors.white,
-                    ),
-                    style: const TextStyle(
-                        fontFamily: "spartan", color: Colors.black),
-                    isExpanded: true,
-                    icon: Row(
-                      children: const [
-                        VerticalDivider(
-                          color: Colors.black54,
-                        ),
-                        Icon(Icons.keyboard_arrow_down_outlined,
-                            size: 30),
-                      ],
-                    ),
-                    hint: const Text('Select Place'),
-                    // Not necessary for Option 1
-                    value: _selectedPlace,
-                    onChanged: (newValue) {
-                      if (newValue == "Beautician’s place") {
-                        placeid = 0;
-                      } else {
-                        placeid = 1;
-                      }
-                      setState(() {
-                        _selectedPlace = newValue;
-                      });
-                    },
-                    items: servicePlace.map((servicePlace) {
-                      return DropdownMenuItem<String>(
-                        value: servicePlace,
-                        child: Text(servicePlace),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.04,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Text("drop_a_note",
-                    style: TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        color: Color(0xff111111),
-                        fontFamily: "spartan",
-                        fontWeight: FontWeight.w500))
-                    .tr(),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Text("note_info",
-                    style: TextStyle(
-                        fontSize: 13,
-                        overflow: TextOverflow.ellipsis,
-                        color: Colors.black54,
-                        fontFamily: "spartan",
-                        fontWeight: FontWeight.w500))
-                    .tr(),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
-                controller: note,
-                style:
-                const TextStyle(fontFamily: "spartan", fontSize: 12),
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'note_hint'.tr(),
-                  labelStyle: const TextStyle(
-                      fontFamily: 'spartan', color: Colors.black54),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.black38),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.black38),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.16,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: InkWell(
-                onTap: () {
-                  if(widget.isManage && widget.bookingId != null){
-                    updateAppointment(widget.bookingId);
-                  } else if (pickedtime.isEmpty && _text.isEmpty) {
-                    setState(() {
-                      dateTime = true;
-                      status = "Please select Date and Time";
-                    });
-                  } else {
-                    setState(() {
-                      addAppointment();
-                    });
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: width,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color(0xffDD6A03)),
-                  child: const Text("continue",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "spartan",
-                          color: Colors.white))
-                      .tr(),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -698,8 +703,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                             child: SfCalendar(
                                 controller: _controller,
                                 viewNavigationMode: ViewNavigationMode.none,
-                                onSelectionChanged: (details) {
-                                },
+                                onSelectionChanged: (details) {},
                                 onTap: (details) {
                                   if (_controller.view == CalendarView.month ||
                                       _controller.view ==
@@ -725,12 +729,12 @@ class _book_appoinmentState extends State<book_appoinment> {
                                       fontSize: 20,
                                     )),
                                 todayTextStyle:
-                                const TextStyle(fontFamily: 'spartan'),
+                                    const TextStyle(fontFamily: 'spartan'),
                                 cellBorderColor: Colors.transparent,
                                 view: CalendarView.month,
                                 viewHeaderStyle: const ViewHeaderStyle(
                                     dayTextStyle:
-                                    TextStyle(color: Color(0xFFDD6A03))),
+                                        TextStyle(color: Color(0xFFDD6A03))),
                                 selectionDecoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -743,7 +747,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                                           fontFamily: 'spartan',
                                           color: Colors.black)),
                                   appointmentDisplayMode:
-                                  MonthAppointmentDisplayMode.none,
+                                      MonthAppointmentDisplayMode.none,
                                   showTrailingAndLeadingDates: false,
                                 )),
                           ),
@@ -795,17 +799,18 @@ class _book_appoinmentState extends State<book_appoinment> {
                               calenderTime = pickedtime;
                             });
                           },
-                          children: time.map((text) =>
-                              Center(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(text,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "spartan",
-                                          color: Colors.black)),
-                                ),
-                              )).toList(),
+                          children: time
+                              .map((text) => Center(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: Text(text,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: "spartan",
+                                              color: Colors.black)),
+                                    ),
+                                  ))
+                              .toList(),
                         ),
                       ),
                       const Spacer(),
@@ -856,7 +861,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       print("bookingId ====> ${widget.bookingId}");
       log("get profile url is  : $geturi");
@@ -871,10 +876,14 @@ class _book_appoinmentState extends State<book_appoinment> {
       if (map["status"] == 200) {
         onlyonemodal = OnlyoneModal.fromJson(jsonDecode(response.body));
         note.text = onlyonemodal!.data!.note ?? "";
-        _selectedPlace = onlyonemodal!.data!.place == 0?"Beautician’s place":"At my place";
-        var startData = DateFormat('dd MMM,yyyy').format(DateTime.parse('${onlyonemodal!.data!.dateTime}'));
+        _selectedPlace = onlyonemodal!.data!.place == 0
+            ? "Beautician’s place"
+            : "At my place";
+        var startData = DateFormat('dd MMM,yyyy')
+            .format(DateTime.parse('${onlyonemodal!.data!.dateTime}'));
         _text = startData;
-        var endData = DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}'));
+        var endData = DateFormat('h:mm')
+            .format(DateTime.parse('${onlyonemodal!.data!.endDateTime}'));
         calenderTime = endData;
         if (onlyonemodal!.data!.place == 0) {
           placeid = 0;
@@ -906,7 +915,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -951,7 +960,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
         "serviceId": widget.serviceId,
@@ -964,7 +973,8 @@ class _book_appoinmentState extends State<book_appoinment> {
       };
       print("addAppointment url is ====> $posturi ");
       print("addAppointment bodydata ====> $bodydata ");
-      var response = await http.post(posturi,
+      var response = await http.post(
+        posturi,
         body: jsonEncode(bodydata),
         headers: headers,
       );
@@ -978,13 +988,15 @@ class _book_appoinmentState extends State<book_appoinment> {
         print(Helper.serviceId);
         Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) {
-            return booking_summary(beauticianId: widget.beauticianId,);
+            return booking_summary(
+              beauticianId: widget.beauticianId,
+            );
           },
         ));
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -992,8 +1004,8 @@ class _book_appoinmentState extends State<book_appoinment> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1017,7 +1029,7 @@ class _book_appoinmentState extends State<book_appoinment> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var bodydata = {
         "serviceId": widget.serviceId,
@@ -1030,7 +1042,8 @@ class _book_appoinmentState extends State<book_appoinment> {
       };
       print("updateAppointment url is ====> $posturi ");
       print("updateAppointment bodydata ====> $bodydata ");
-      var response = await http.post(posturi,
+      var response = await http.post(
+        posturi,
         body: jsonEncode(bodydata),
         headers: headers,
       );
@@ -1040,33 +1053,38 @@ class _book_appoinmentState extends State<book_appoinment> {
       if (response.statusCode == 201) {
         print("updateAppointment status ====>  ${map['status']}");
         a = Appointment.fromjson(map);
-        if(onlyonemodal!.data!.status == 0){
+        if (onlyonemodal!.data!.status == 0) {
           Navigator.pop(context);
           Navigator.pop(context);
-        } else if(onlyonemodal!.data!.status == 1){
+        } else if (onlyonemodal!.data!.status == 1) {
           Helper.serviceId.add(map['data']['appointmentId']);
           Navigator.pop(context);
           Navigator.pop(context);
-        }else if(onlyonemodal!.data!.status == 2 && onlyonemodal!.data!.status == 3){
+        } else if (onlyonemodal!.data!.status == 2 &&
+            onlyonemodal!.data!.status == 3) {
           Helper.serviceId.add(map['data']['appointmentId']);
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {
-              return booking_summary(beauticianId: widget.beauticianId,);
+              return booking_summary(
+                beauticianId: widget.beauticianId,
+              );
             },
           ));
-        }else if(response.statusCode == 401){
+        } else if (response.statusCode == 401) {
           logoutdata();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-            return signInScreen();
-          },), (route) => false);
-        }else{
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ), (route) => false);
+        } else {
           Navigator.pop(context);
           Navigator.pop(context);
         }
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1074,8 +1092,8 @@ class _book_appoinmentState extends State<book_appoinment> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1154,15 +1172,16 @@ class UpdateUppointment {
     required this.message,
   });
 
-  factory UpdateUppointment.fromJson(Map<String, dynamic> json) => UpdateUppointment(
-    success: json["success"],
-    status: json["status"],
-    message: json["message"],
-  );
+  factory UpdateUppointment.fromJson(Map<String, dynamic> json) =>
+      UpdateUppointment(
+        success: json["success"],
+        status: json["status"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "status": status,
-    "message": message,
-  };
+        "success": success,
+        "status": status,
+        "message": message,
+      };
 }

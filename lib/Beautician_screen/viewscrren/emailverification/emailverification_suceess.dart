@@ -8,7 +8,6 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class emailVeriSuceesful extends StatefulWidget {
-
   const emailVeriSuceesful({Key? key}) : super(key: key);
 
   @override
@@ -56,20 +55,32 @@ class _emailVeriSuceesfulState extends State<emailVeriSuceesful> {
               SizedBox(
                 height: height * 0.03,
               ),
-              const Text("Continue to explore Sliike best of beauty services, products and brand.",textAlign: TextAlign.center,style: TextStyle(color: Colors.black45, fontSize: 14, fontFamily: "spartan",),),
-              SizedBox(height: height*0.05,),
+              const Text(
+                "Continue to explore Sliike best of beauty services, products and brand.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 14,
+                  fontFamily: "spartan",
+                ),
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
               InkWell(
                 onTap: () async {
-                  String userType = Helper.prefs!.getString(UserPrefs.keyusertype) ?? "";
+                  String userType =
+                      Helper.prefs!.getString(UserPrefs.keyusertype) ?? "";
                   if (userType == "user") {
                     Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return homescreen(selectedIndex: 0,);
+                          return homescreen();
                         },
-                      ),(route) => false,
+                      ),
+                      (route) => false,
                     );
                   } else {
                     Navigator.pushAndRemoveUntil(
@@ -78,11 +89,10 @@ class _emailVeriSuceesfulState extends State<emailVeriSuceesful> {
                         builder: (context) {
                           return const setup_profile();
                         },
-                      ),(route) => false,
+                      ),
+                      (route) => false,
                     );
-
                   }
-
 
                   // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                   //   builder: (context) {

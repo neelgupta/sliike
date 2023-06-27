@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -161,7 +162,8 @@ class _home_appointmentsState extends State<home_appointments> {
                   upcoming
                       ? datalist.isNotEmpty
                           ? Padding(
-                              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.05),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -245,7 +247,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 color: Colors.black54),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 8,horizontal: width * 0.02),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8,
+                                                horizontal: width * 0.02),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -254,9 +258,12 @@ class _home_appointmentsState extends State<home_appointments> {
                                                   child: Image.network(
                                                     "${datalist[index].beauticianId!.profileImage}",
                                                     fit: BoxFit.fill,
-                                                    loadingBuilder: (context, loading, imageChunkEvent) {
+                                                    loadingBuilder: (context,
+                                                        loading,
+                                                        imageChunkEvent) {
                                                       return Center(
-                                                        child: CircularProgressIndicator(),
+                                                        child:
+                                                            CircularProgressIndicator(),
                                                       );
                                                     },
                                                     errorBuilder: (context,
@@ -416,7 +423,8 @@ class _home_appointmentsState extends State<home_appointments> {
                             )
                       : data.isNotEmpty
                           ? Padding(
-                              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.05),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -452,7 +460,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_panding(
-                                                    id: data[index].id,isPast: true,);
+                                                  id: data[index].id,
+                                                  isPast: true,
+                                                );
                                               },
                                             ));
                                           } else if (data[index].status == 1) {
@@ -460,7 +470,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return BookingConfirmed(
-                                                    id: data[index].id,
+                                                  id: data[index].id,
                                                   isPast: true,
                                                 );
                                               },
@@ -470,7 +480,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_delivered(
-                                                    id: data[index].id,isPast: true,);
+                                                  id: data[index].id,
+                                                  isPast: true,
+                                                );
                                               },
                                             ));
                                           } else if (data[index].status == 3) {
@@ -478,7 +490,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_cancel(
-                                                    id: data[index].id,isPast: true,);
+                                                  id: data[index].id,
+                                                  isPast: true,
+                                                );
                                               },
                                             ));
                                           } else {
@@ -486,7 +500,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 MaterialPageRoute(
                                               builder: (context) {
                                                 return booking_noshow(
-                                                    id: data[index].id,
+                                                  id: data[index].id,
                                                   isPast: true,
                                                 );
                                               },
@@ -501,7 +515,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 color: Colors.black54),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 8,horizontal: width * 0.02),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8,
+                                                horizontal: width * 0.02),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -510,9 +526,12 @@ class _home_appointmentsState extends State<home_appointments> {
                                                   child: Image.network(
                                                     "${data[index].beauticianId!.profileImage}",
                                                     fit: BoxFit.fill,
-                                                    loadingBuilder: (context, loading, imageChunkEvent) {
+                                                    loadingBuilder: (context,
+                                                        loading,
+                                                        imageChunkEvent) {
                                                       return Center(
-                                                        child: CircularProgressIndicator(),
+                                                        child:
+                                                            CircularProgressIndicator(),
                                                       );
                                                     },
                                                     errorBuilder: (context,
@@ -707,6 +726,7 @@ class _home_appointmentsState extends State<home_appointments> {
       setState(() {
         isLoading = true;
       });
+
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":

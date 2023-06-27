@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -14,8 +13,6 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/signup.dart';
-import 'package:new_sliikeapps_apps/client_app/home_screen/home_explore.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -61,7 +58,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: height * 0.18, //
+        toolbarHeight: 180, //
         flexibleSpace: Container(
           color: Color(0xff01635D),
           child: Column(
@@ -71,27 +68,26 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                 padding: const EdgeInsets.only(left: 0, bottom: 10),
                 child: Column(
                   children: [
-
                     //  InkWell(
-                      //  onTap: (){
-                      //    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //      return profilePage();
-                      //    },));
-                      //  },
-                      //  child:  Padding(
-                      //    padding: const EdgeInsets.all(20),
-                      //    child: SizedBox(
-                      //      height: 65,
-                      //      width: 65,
-                      //      child: ClipRRect(
-                      //        borderRadius:
-                      //        const BorderRadius.all(Radius.circular(200)),
-                      //        child: getmodelProfile?.data?.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
-                      //        Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
-                      //      ),
-                      //    ),
-                      //  ),
-
+                    //  onTap: (){
+                    //    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    //      return profilePage();
+                    //    },));
+                    //  },
+                    //  child:  Padding(
+                    //    padding: const EdgeInsets.all(20),
+                    //    child: SizedBox(
+                    //      height: 65,
+                    //      width: 65,
+                    //      child: ClipRRect(
+                    //        borderRadius:
+                    //        const BorderRadius.all(Radius.circular(200)),
+                    //        child: getmodelProfile?.data?.profileImage != null ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill) :
+                    //        Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
+                    //      ),
+                    //    ),
+                    //  ),
+                    SizedBox(height: 20),
                     isLoading
                         ? SizedBox()
                         : getmodelProfile == null
@@ -106,21 +102,32 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                   print(getmodelProfile!.data!.profileImage);
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.all(20),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
                                   child: SizedBox(
                                     height: 65,
                                     width: 65,
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(200)),
-                                      child:
-                                      getmodelProfile!.data!.profileImage!.isNotEmpty && getmodelProfile!.data!.profileImage!= null && getmodelProfile!.data!.profileImage!=""
-                                          ? Image.network(getmodelProfile!.data!.profileImage!,fit: BoxFit.fill)
-                                          : Image.asset("assets/images/Ellipse 202.png",fit: BoxFit.fill),
+                                      child: getmodelProfile!.data!
+                                                  .profileImage!.isNotEmpty &&
+                                              getmodelProfile!
+                                                      .data!.profileImage !=
+                                                  null &&
+                                              getmodelProfile!
+                                                      .data!.profileImage !=
+                                                  ""
+                                          ? Image.network(
+                                              getmodelProfile!
+                                                  .data!.profileImage!,
+                                              fit: BoxFit.fill)
+                                          : Image.asset(
+                                              "assets/images/Ellipse 202.png",
+                                              fit: BoxFit.fill),
                                     ),
                                   ),
                                 ),
-
 
                                 // Container(
                                 //   height: 65,
@@ -138,6 +145,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                     textComoon(businessname, 14, Colors.white, FontWeight.w700),
                     SizedBox(height: 5),
                     textComoon(Userid, 10, Colors.white, FontWeight.w500),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -373,31 +381,39 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //   ),
                       // ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20),
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 100),
                         child: Container(
-                          padding: EdgeInsets.only(top: 10,bottom: 60),
+                          padding: EdgeInsets.only(top: 10, bottom: 15),
                           decoration: BoxDecoration(
-                              border: Border(bottom: BorderSide(color: Colors.black12))
-                          ),
+                              border: Border(
+                                  bottom: BorderSide(color: Colors.black12))),
                           child: InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return promotion();
-                              },));
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return promotion();
+                                },
+                              ));
                             },
                             child: Row(
                               children: [
                                 Container(
                                   height: 30,
-                                child: Image.asset("assets/images/receiptdisscount.png"),
+                                  child: Image.asset(
+                                      "assets/images/receiptdisscount.png"),
                                 ),
-                                SizedBox(width: 15,),
-                                textComoon("Promotions",14,Color(0xff414141), FontWeight.w500),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                textComoon("Promotions", 14, Color(0xff414141),
+                                    FontWeight.w500),
                                 Spacer(),
                                 Container(
                                   height: 15,
                                   width: 30,
-                                  child: Image.asset("assets/images/righticon.png"),
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
                                 ),
                               ],
                             ),
@@ -449,20 +465,29 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                           switchAccount();
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 20,right: 20),
+                          padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 17,),
-                            decoration: BoxDecoration(
-                                border: Border(bottom: BorderSide(color: Colors.black12))
+                            padding: EdgeInsets.symmetric(
+                              vertical: 17,
                             ),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.black12))),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                textComoon(!getmodelProfile!.data!.isRegisterUser!? "Become Client" : "Switch to client",14,Color(0xff414141), FontWeight.w500),
+                                textComoon(
+                                    !getmodelProfile!.data!.isRegisterUser!
+                                        ? "Become Client"
+                                        : "Switch to client",
+                                    14,
+                                    Color(0xff414141),
+                                    FontWeight.w500),
                                 Container(
                                   height: 15,
                                   width: 30,
-                                  child: Image.asset("assets/images/righticon.png"),
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
                                 ),
                               ],
                             ),
@@ -538,7 +563,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       log("getApi response.body ==> ${response.body}");
       log("getAPi status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
-        getmodelProfile = getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
+        getmodelProfile =
+            getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
         if (getmodelProfile!.status == 200) {
           setState(() {
             getDeviceInfo();
@@ -552,7 +578,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       rethrow;
     } finally {
       // setState(() {
-        isLoading = false;
+      isLoading = false;
       // });
       // Loader.hide();
     }
@@ -631,8 +657,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
     Loader.show(context,
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xff01635D)),
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
         themeData: Theme.of(context).copyWith(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(secondary: const Color(0xff01635D))));
@@ -646,17 +672,22 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       'Content-Type': "application/json; charset=utf-8",
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
-    var response = await http.post(Uri.parse("${ApiUrlList.switchAccount}${"user"}"),
+    var response = await http.post(
+        Uri.parse("${ApiUrlList.switchAccount}${"user"}"),
         body: jsonEncode(Body),
-        headers: Headers
-    );
+        headers: Headers);
     log('switchAccount Code : ${response.statusCode}');
     log('switchAccount Body :${response.body}');
     log('switchAccount Payload Body :${Body}');
     var map = jsonDecode(response.body);
     if (response.statusCode == 200) {
       Loader.hide();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homescreen(selectedIndex: 0),));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homescreen(selectedIndex: 0),
+        ),
+      );
       Fluttertoast.showToast(
           msg: "${map['message']}",
           toastLength: Toast.LENGTH_SHORT,
@@ -701,5 +732,4 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       print('Device id is ${iosInfo.identifierForVendor!}');
     }
   }
-
 }

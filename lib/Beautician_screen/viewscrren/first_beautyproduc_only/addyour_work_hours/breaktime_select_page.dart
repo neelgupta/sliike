@@ -1,23 +1,36 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 // ignore: camel_case_types
-class brealTime_Select extends StatefulWidget {
+class BreakTimeSelect extends StatefulWidget {
+  const BreakTimeSelect({
+    Key? key,
+    required this.startTime,
+    required this.endTime,
+    required this.dayName,
+  }) : super(key: key);
   // bool secondflow;
 
-  const brealTime_Select({Key? key}) : super(key: key);
+  final String startTime;
+  final String endTime;
+  final String dayName;
 
   @override
-  State<brealTime_Select> createState() => _brealTime_SelectState();
+  State<BreakTimeSelect> createState() => _BreakTimeSelectState();
 }
 
 // ignore: camel_case_types
-class _brealTime_SelectState extends State<brealTime_Select> {
+class _BreakTimeSelectState extends State<BreakTimeSelect> {
   Duration initialTimer = const Duration();
   String breakStartTime = "";
   String breakEndTime = "";
-  List breaktime = [
+
+  List<DateTime> breakTime = [];
+  List breaktimes = [
     "00:00 ",
     "01:00 ",
     "01:15 ",
@@ -115,6 +128,39 @@ class _brealTime_SelectState extends State<brealTime_Select> {
   ];
   String pickedtimebreak = "";
 
+  DateFormat ymdFormatter = DateFormat("yyyy-mm-dd hh:mm");
+  DateFormat hhmmFormatter = DateFormat("HH:mm");
+  @override
+  void initState() {
+    super.initState();
+    log("startTime :: ${widget.startTime}");
+    log("endTime :: ${widget.endTime}");
+
+    var now = DateTime.now();
+    var nowDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      int.parse(widget.startTime.split(":")[0]),
+      int.parse(widget.startTime.split(":")[1]),
+    );
+    breakTime.add(nowDate.toLocal());
+    var secondDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      int.parse(widget.endTime.split(":")[0]),
+      int.parse(widget.endTime.split(":")[1]),
+    );
+    var interval = Duration(minutes: 15);
+
+    while (nowDate.millisecondsSinceEpoch < secondDate.millisecondsSinceEpoch) {
+      nowDate = nowDate.add(interval);
+      breakTime.add(nowDate.toLocal());
+    }
+    breakTime.add(secondDate.toLocal());
+    log("breakTime :: ${breakTime.toString()}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +195,8 @@ class _brealTime_SelectState extends State<brealTime_Select> {
                             height: height * 0.06,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(color: const Color(0xff414141))),
+                                border:
+                                    Border.all(color: const Color(0xff414141))),
                             child: Center(
                               child: Container(
                                   padding: const EdgeInsets.all(5),
@@ -166,33 +213,36 @@ class _brealTime_SelectState extends State<brealTime_Select> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text("Break - Monday",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Color(0xff292929),
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.bold)),
+                          children: [
+                            Text(
+                              "Break - ${widget.dayName}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                overflow: TextOverflow.ellipsis,
+                                color: Color(0xff292929),
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ],
                     ),
                     Row(
                       children: const [
-                        SizedBox(
-                          width: 60,
-                        ),
+                        SizedBox(width: 60),
                         Expanded(
                           child: Text(
-                              "Take a break, go for lunch or do you just want\nto relax? Choose your break time",
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  // you can change it accordingly
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Color(0xff414141),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.w400)),
+                            "Take a break, go for lunch or do you just want\nto relax? Choose your break time",
+                            style: TextStyle(
+                              fontSize: 10,
+                              // you can change it accordingly
+                              overflow: TextOverflow.ellipsis,
+                              color: Color(0xff414141),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                       ],
                     )
@@ -213,66 +263,80 @@ class _brealTime_SelectState extends State<brealTime_Select> {
               Column(
                 children: [
                   SizedBox(
-                    height: height * 0.6,
+                    height: height * 0.67,
                     child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      child: CupertinoPicker(
-                        itemExtent: 60,
-                        onSelectedItemChanged: (index) {
-                          setState(() {
-                            breakStartTime = breaktime[index];
-                          });
-                        },
-                        children: breaktime
-                            .map((text) => Center(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(text,
-                                        style: const TextStyle(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: CupertinoPicker(
+                            itemExtent: 60,
+                            squeeze: 1.5,
+                            onSelectedItemChanged: (index) {
+                              setState(() {
+                                breakStartTime =
+                                    DateFormat.Hm().format(breakTime[index]);
+                              });
+                            },
+                            children: breakTime
+                                .map((time) => Center(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "${DateFormat.Hm().format(time)}",
+                                          // hhmmFormatter
+                                          // time}",
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             fontFamily: "spartan",
-                                            color: Colors.black)),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: textComoon(
-                          "to", 15, const Color(0xff292929), FontWeight.w500),
-                    ),
-                    SizedBox(
-                      width: 100,
-                      child: CupertinoPicker(
-                        itemExtent: 60,
-                        onSelectedItemChanged: (index) {
-                          setState(() {
-                            breakEndTime = breaktime[index];
-                          });
-                        },
-                        children: breaktime
-                            .map((text) => Center(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(text,
-                                        style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: textComoon(
+                            "to",
+                            15,
+                            const Color(0xff292929),
+                            FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          child: CupertinoPicker(
+                            itemExtent: 60,
+                            squeeze: 1.5,
+                            onSelectedItemChanged: (index) {
+                              setState(() {
+                                breakEndTime =
+                                    DateFormat.Hm().format(breakTime[index]);
+                              });
+                            },
+                            children: breakTime
+                                .map((time) => Center(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "${DateFormat.Hm().format(time)}",
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             fontFamily: "spartan",
-                                            color: Colors.black)),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                  ],
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ],
                     ),
                   )
-
-                  // Close the modal
                 ],
               ),
               const Spacer(),
@@ -296,16 +360,17 @@ class _brealTime_SelectState extends State<brealTime_Select> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: const Color(0xff01635D)),
-                  child: const Text("SAVE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "spartan",
-                          color: Colors.white)),
+                  child: const Text(
+                    "SAVE",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "spartan",
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
+              SizedBox(height: 35),
             ],
           ),
         ),

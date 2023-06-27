@@ -1,12 +1,5 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/business_setup_all_scrren/setup_profile.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/second_beautyservice_or_product/service_add/categorytype_service.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/signup.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/type_first_second_bussines/bussinessinfo_type.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/unbording/unboarding%20screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -30,7 +23,7 @@ class _splash_ScrrenState extends State<splash_Scrren> {
     // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) {
-    next();
+      next();
     });
   }
 
@@ -46,12 +39,11 @@ class _splash_ScrrenState extends State<splash_Scrren> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return homescreen(selectedIndex: 0,);
+              return homescreen();
             },
           ),
         );
-      }
-      else {
+      } else {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -62,13 +54,12 @@ class _splash_ScrrenState extends State<splash_Scrren> {
           (route) => false,
         );
       }
-    }
-    else {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return const signInScreen();
-          },
-        ));
+    } else {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return const signInScreen();
+        },
+      ));
     }
   }
 

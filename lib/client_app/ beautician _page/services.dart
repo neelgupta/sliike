@@ -334,11 +334,12 @@ class _servicesState extends State<services> {
                                           !Beauticiandata[0].isFav!;
                                     },
                                     child: Icon(
-                                        Beauticiandata[0].isFav!
-                                            ? Icons.favorite
-                                            : Icons.favorite_border_outlined,
-                                        color: const Color(0xFFDD5103),
-                                        size: 30),
+                                      Beauticiandata[0].isFav!
+                                          ? Icons.favorite
+                                          : Icons.favorite_border_outlined,
+                                      color: const Color(0xFFDD5103),
+                                      size: 25,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -346,7 +347,7 @@ class _servicesState extends State<services> {
                           ],
                         ),
                         Container(
-                          height: height * 0.18,
+                          height: 160,
                           width: width,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
@@ -366,15 +367,13 @@ class _servicesState extends State<services> {
                                     Text(
                                       "${Beauticiandata[0].businessName}",
                                       style: const TextStyle(
-                                        fontSize: 25,
+                                        fontSize: 24,
                                         fontFamily: "spartan",
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: height * 0.01,
-                                    ),
+                                    SizedBox(height: height * 0.01),
                                     Text(
                                       "${Beauticiandata[0].address!.apartment} ${Beauticiandata[0].address!.city} ${Beauticiandata[0].address!.zipCode}",
                                       style: const TextStyle(
@@ -2242,7 +2241,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFFDD6A03),
+                      backgroundColor: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2319,7 +2318,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFFDD6A03),
+                      backgroundColor: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
