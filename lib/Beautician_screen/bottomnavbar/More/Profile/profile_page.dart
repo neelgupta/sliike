@@ -5,8 +5,10 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/deleteprofile.dart';
@@ -15,8 +17,6 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:http/http.dart' as http;
-import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
 
@@ -154,14 +154,17 @@ class _profilePageState extends State<profilePage> {
                             width: width * 0.2,
                           ),
                           Container(
-                            child: const Text("My Profile",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Colors.black,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w700)),
+                            child: const Text(
+                              "My Profile",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                overflow: TextOverflow.ellipsis,
+                                color: Colors.black,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -321,6 +324,9 @@ class _profilePageState extends State<profilePage> {
                 ),
                 Container(
                   child: TextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                    ],
                     controller: firstname,
                     onChanged: (value) {
                       setState(() {
@@ -359,6 +365,9 @@ class _profilePageState extends State<profilePage> {
                         height: 25,
                       ),
                 TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                  ],
                   controller: lastname,
                   onChanged: (value) {
                     lastnamestatus = false;
@@ -1046,7 +1055,8 @@ class _profilePageState extends State<profilePage> {
       log("getApi response.body ==> ${response.body}");
       log("getAPi status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
-        getmodelProfile = getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
+        getmodelProfile =
+            getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
         if (getmodelProfile!.status == 200) {
           print(" gender >>> ${getmodelProfile!.data?.gender}");
           setState(() {
@@ -1084,11 +1094,13 @@ class _profilePageState extends State<profilePage> {
             Loader.hide();
           });
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1131,7 +1143,8 @@ class _profilePageState extends State<profilePage> {
       request.fields['year'] = y1;
       request.fields['oldPassword'] = currentpassword.text;
       request.fields['newPassword'] = newpassword.text;
-      request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+      request.headers['Authorization'] =
+          "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
       request.headers['Content-Type'] = "multipart/form-data";
       if (imagepath != "") {
         http.MultipartFile multipartFile = await http.MultipartFile.fromPath(

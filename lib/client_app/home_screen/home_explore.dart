@@ -53,8 +53,7 @@ class _home_exploreState extends State<home_explore> {
     super.initState();
     getLocation();
     fetchServiceCategories();
-    getClientFavoriteList();
-    getRecentBeauticians();
+
     Helper.serviceId.clear();
   }
 
@@ -78,8 +77,6 @@ class _home_exploreState extends State<home_explore> {
               onRefresh: () async {
                 setState(() {
                   fetchServiceCategories();
-                  getClientFavoriteList();
-                  getRecentBeauticians();
                 });
               },
               child: SingleChildScrollView(
@@ -237,10 +234,13 @@ class _home_exploreState extends State<home_explore> {
                                         ],
                                       )),
                                   SizedBox(
-                                    height: height * 0.18,
+                                    height: 140,
                                     child: ListView.builder(
                                       itemCount: serviceName.length,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
                                       scrollDirection: Axis.horizontal,
+                                      physics: BouncingScrollPhysics(),
                                       itemBuilder: (context, index) {
                                         allItemName = serviceName[index]
                                             .serviceCategoryName;
@@ -261,8 +261,7 @@ class _home_exploreState extends State<home_explore> {
                                             )).then((value) {
                                               getLocation();
                                               fetchServiceCategories();
-                                              getClientFavoriteList();
-                                              getRecentBeauticians();
+
                                               setState(() {});
                                             });
                                             ;
@@ -348,9 +347,7 @@ class _home_exploreState extends State<home_explore> {
                                     ),
                                   ),
                                   const Divider(),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  // const SizedBox(height: 10),
                                   Padding(
                                       padding: const EdgeInsets.all(10),
                                       child: Column(
@@ -382,8 +379,7 @@ class _home_exploreState extends State<home_explore> {
                                                   )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                 },
@@ -417,6 +413,7 @@ class _home_exploreState extends State<home_explore> {
                                         : ListView.builder(
                                             itemCount: favoritelist.length,
                                             scrollDirection: Axis.horizontal,
+                                            physics: BouncingScrollPhysics(),
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 5),
                                             itemBuilder: (context, index) {
@@ -439,8 +436,7 @@ class _home_exploreState extends State<home_explore> {
                                                   ).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                   print(
@@ -563,7 +559,7 @@ class _home_exploreState extends State<home_explore> {
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                if (recommended[
+                                                                if (favoritelist[
                                                                             index]
                                                                         .isLicensed ==
                                                                     "1")
@@ -580,7 +576,7 @@ class _home_exploreState extends State<home_explore> {
                                                                       width: 20,
                                                                     ),
                                                                   ),
-                                                                if (recommended[
+                                                                if (favoritelist[
                                                                             index]
                                                                         .hasShop ==
                                                                     0)
@@ -716,8 +712,7 @@ class _home_exploreState extends State<home_explore> {
                                                   )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                 },
@@ -751,6 +746,7 @@ class _home_exploreState extends State<home_explore> {
                                         : ListView.builder(
                                             itemCount: recentList.length,
                                             scrollDirection: Axis.horizontal,
+                                            physics: BouncingScrollPhysics(),
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 5),
                                             itemBuilder: (context, index) {
@@ -769,8 +765,7 @@ class _home_exploreState extends State<home_explore> {
                                                   )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                 },
@@ -857,137 +852,133 @@ class _home_exploreState extends State<home_explore> {
                                                       ),
                                                     ),
                                                     Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          left: 15,
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Container(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                  child: Text(
-                                                                      "${recentList[index].businessName}",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontFamily:
-                                                                              "spartan",
-                                                                          fontWeight:
-                                                                              FontWeight.w600)),
-                                                                ),
-                                                                if (recommended[
-                                                                            index]
-                                                                        .isLicensed ==
-                                                                    "1")
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            8),
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/images/Subtract (1).png",
-                                                                      height:
-                                                                          20,
-                                                                      width: 20,
-                                                                    ),
-                                                                  ),
-                                                                if (recommended[
-                                                                            index]
-                                                                        .hasShop ==
-                                                                    0)
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            5),
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/images/independentmen.png",
-                                                                      height:
-                                                                          20,
-                                                                      width: 20,
-                                                                    ),
-                                                                  )
-                                                              ],
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 5),
-                                                            Text(
-                                                              "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    "spartan",
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 15,
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topLeft,
+                                                                child: Text(
+                                                                    "${recentList[index].businessName}",
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontFamily:
+                                                                            "spartan",
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
                                                               ),
+                                                              if (recentList[
+                                                                          index]
+                                                                      .isLicensed ==
+                                                                  "1")
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 8),
+                                                                  child: Image
+                                                                      .asset(
+                                                                    "assets/images/Subtract (1).png",
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                  ),
+                                                                ),
+                                                              if (recentList[
+                                                                          index]
+                                                                      .hasShop ==
+                                                                  0)
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                                  child: Image
+                                                                      .asset(
+                                                                    "assets/images/independentmen.png",
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                  ),
+                                                                )
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Text(
+                                                            "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  "spartan",
                                                             ),
-                                                            const SizedBox(
-                                                                height: 5),
-                                                            // if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
-                                                            //   Row(
-                                                            //     children: [
-                                                            //       SizedBox(
-                                                            //         height:
-                                                            //         height *
-                                                            //             0.02,
-                                                            //         child: const Image(
-                                                            //             image: AssetImage(
-                                                            //                 "assets/images/Star 1.png")),
-                                                            //       ),
-                                                            //       const SizedBox(
-                                                            //         width: 5,
-                                                            //       ),
-                                                            //       Container(
-                                                            //         alignment:
-                                                            //         Alignment
-                                                            //             .topLeft,
-                                                            //         child: Text(
-                                                            //             "${recentList[index].rating} Ratings",
-                                                            //             style: TextStyle(
-                                                            //                 color: Colors
-                                                            //                     .black,
-                                                            //                 fontSize:
-                                                            //                 14,
-                                                            //                 fontFamily:
-                                                            //                 "spartan")),
-                                                            //       ),
-                                                            //       const SizedBox(
-                                                            //         width: 5,
-                                                            //       ),
-                                                            //       Container(
-                                                            //         alignment:
-                                                            //         Alignment
-                                                            //             .topLeft,
-                                                            //         child: Text(
-                                                            //             "${recentList[index].noOfReviews} reviews",
-                                                            //             style: TextStyle(
-                                                            //                 color: Colors
-                                                            //                     .grey,
-                                                            //                 fontSize:
-                                                            //                 14,
-                                                            //                 fontFamily:
-                                                            //                 "spartan")),
-                                                            //       ),
-                                                            //     ],
-                                                            //   ),
-                                                          ],
-                                                        ))
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          // if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
+                                                          //   Row(
+                                                          //     children: [
+                                                          //       SizedBox(
+                                                          //         height:
+                                                          //         height *
+                                                          //             0.02,
+                                                          //         child: const Image(
+                                                          //             image: AssetImage(
+                                                          //                 "assets/images/Star 1.png")),
+                                                          //       ),
+                                                          //       const SizedBox(
+                                                          //         width: 5,
+                                                          //       ),
+                                                          //       Container(
+                                                          //         alignment:
+                                                          //         Alignment
+                                                          //             .topLeft,
+                                                          //         child: Text(
+                                                          //             "${recentList[index].rating} Ratings",
+                                                          //             style: TextStyle(
+                                                          //                 color: Colors
+                                                          //                     .black,
+                                                          //                 fontSize:
+                                                          //                 14,
+                                                          //                 fontFamily:
+                                                          //                 "spartan")),
+                                                          //       ),
+                                                          //       const SizedBox(
+                                                          //         width: 5,
+                                                          //       ),
+                                                          //       Container(
+                                                          //         alignment:
+                                                          //         Alignment
+                                                          //             .topLeft,
+                                                          //         child: Text(
+                                                          //             "${recentList[index].noOfReviews} reviews",
+                                                          //             style: TextStyle(
+                                                          //                 color: Colors
+                                                          //                     .grey,
+                                                          //                 fontSize:
+                                                          //                 14,
+                                                          //                 fontFamily:
+                                                          //                 "spartan")),
+                                                          //       ),
+                                                          //     ],
+                                                          //   ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                               );
@@ -1027,8 +1018,7 @@ class _home_exploreState extends State<home_explore> {
                                                   )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                 },
@@ -1064,6 +1054,7 @@ class _home_exploreState extends State<home_explore> {
                                             scrollDirection: Axis.horizontal,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 5),
+                                            physics: BouncingScrollPhysics(),
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
@@ -1080,8 +1071,7 @@ class _home_exploreState extends State<home_explore> {
                                                   )).then((value) {
                                                     getLocation();
                                                     fetchServiceCategories();
-                                                    getClientFavoriteList();
-                                                    getRecentBeauticians();
+
                                                     setState(() {});
                                                   });
                                                 },
@@ -1341,14 +1331,16 @@ class _home_exploreState extends State<home_explore> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
-        setState(() {
-          isLoading = false;
-        });
+        // setState(() {
+        //   isLoading = false;
+        // });
       }
     } catch (e) {
       rethrow;
     } finally {
-      isLoading = false;
+      getClientFavoriteList();
+
+      // isLoading = false;
     }
   }
 
@@ -1379,16 +1371,17 @@ class _home_exploreState extends State<home_explore> {
           f = FavoriteListModel.fromjson(map);
           favoritelist = f!.data!.favoritesList!;
         }
-        setState(() {
-          isLoading = false;
-        });
+        // setState(() {
+        //   isLoading = false;
+        // });
       }
     } catch (e) {
       rethrow;
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      // setState(() {
+      //   isLoading = false;
+      // });
+      getRecentBeauticians();
     }
   }
 

@@ -17,6 +17,7 @@ import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoin
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../client_model/get_business_details.dart';
 import '../../commonClass.dart';
 import '../../utils/preferences.dart';
 
@@ -44,7 +45,7 @@ class _servicesState extends State<services> {
   bool? like;
   List<BeauticianServiceId> serviceNameList = [];
   List<SingalBeauticianData> Beauticiandata = [];
-  List<Beautician> BeauticianDetails = [];
+  BusinessDat? businessDetails;
   List<BeauticianServiceId> temp = [];
   TextEditingController search = TextEditingController();
   List<String> colors = [
@@ -87,6 +88,30 @@ class _servicesState extends State<services> {
   String long = "";
   double? lati, longi;
   GoogleMapController? mapController;
+
+  void launchFaceBookUrl(String fbUrl) async {
+    var url = Uri.parse("fb://facewebmodal/f?href=${fbUrl}");
+    // if (await canLaunchUrl(url)) {
+    await launchUrl(
+      url,
+      // mode: LaunchMode.externalApplication,
+    );
+    // } else {
+    //   throw 'There was a problem to open the url: $url';
+    // }
+  }
+
+  void launchInstagramUrl(String instaUrl) async {
+    var url = Uri.parse("https://www.instagram.com/icy");
+    // if (await canLaunchUrl(url)) {
+    await launchUrl(
+      url,
+      // mode: LaunchMode.externalApplication,
+    );
+    // } else {
+    //   throw 'There was a problem to open the url: $url';
+    // }
+  }
 
   @override
   void initState() {
@@ -145,12 +170,12 @@ class _servicesState extends State<services> {
   locationLatLng() {
     markers.add(
       Marker(
-          markerId: MarkerId(BeauticianDetails[0].id),
+          markerId: MarkerId(businessDetails!.id),
           position: LatLng(
-            BeauticianDetails[0].location.coordinates[1],
-            BeauticianDetails[0].location.coordinates[0],
+            businessDetails!.location.coordinates[1],
+            businessDetails!.location.coordinates[0],
           ),
-          infoWindow: InfoWindow(title: BeauticianDetails[0].location.type)),
+          infoWindow: InfoWindow(title: businessDetails!.location.type)),
     );
   }
 
@@ -204,7 +229,7 @@ class _servicesState extends State<services> {
                         Stack(
                           children: [
                             SizedBox(
-                              height: height * 0.35,
+                              height: height * 0.38,
                               child: Swiper(
                                 autoplay: true,
                                 itemBuilder: (BuildContext context, int index) {
@@ -441,6 +466,7 @@ class _servicesState extends State<services> {
                                 TabBar(
                                     labelColor: const Color(0xFFDD6A03),
                                     indicatorColor: const Color(0xFFDD6A03),
+                                    isScrollable: true,
                                     tabs: [
                                       Tab(
                                           child: const Text(
@@ -448,8 +474,9 @@ class _servicesState extends State<services> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontFamily: "spartan",
-                                            fontSize: 15),
+                                          fontFamily: "spartan",
+                                          fontSize: 15,
+                                        ),
                                       ).tr()),
                                       Tab(
                                           child: const Text(
@@ -482,7 +509,7 @@ class _servicesState extends State<services> {
                                 Container(
                                   // color: Colors.red,
                                   height:
-                                      viewMore ? height * 0.98 : height * 0.5,
+                                      viewMore ? height * 0.9 : height * 0.7,
 
                                   child: TabBarView(
                                     // physics: NeverScrollableScrollPhysics(),
@@ -1573,7 +1600,7 @@ class _servicesState extends State<services> {
                                       //     ),
                                       //   ),
                                       // ),
-                                      BeauticianDetails.isNotEmpty
+                                      businessDetails != null
                                           ? SingleChildScrollView(
                                               // physics:
                                               //     NeverScrollableScrollPhysics(),
@@ -1631,7 +1658,8 @@ class _servicesState extends State<services> {
                                                               padding: const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
-                                                                      15),
+                                                                      15,
+                                                                  vertical: 10),
                                                               child: Row(
                                                                 children: [
                                                                   Expanded(
@@ -1645,33 +1673,42 @@ class _servicesState extends State<services> {
                                                                               .center,
                                                                       children: [
                                                                         Text(
-                                                                            BeauticianDetails[0]
-                                                                                .businessName,
+                                                                          businessDetails!
+                                                                              .businessName,
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                17,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontFamily:
+                                                                                "spartan",
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                height * 0.01),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Text(
+                                                                            "${businessDetails!.address.address}\n${businessDetails!.address.city} ${businessDetails!.address.zipCode}",
                                                                             style:
                                                                                 const TextStyle(
-                                                                              fontSize: 15,
-                                                                              color: Colors.black,
+                                                                              fontSize: 13,
+                                                                              color: Colors.black54,
+                                                                              fontWeight: FontWeight.w500,
                                                                               fontFamily: "spartan",
-                                                                            )),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              height * 0.01,
-                                                                        ),
-                                                                        Expanded(
-                                                                          child: Text(
-                                                                              "${BeauticianDetails[0].beauticianAddress[0].address}\n${BeauticianDetails[0].beauticianAddress[0].city} ${BeauticianDetails[0].beauticianAddress[0].zipCode}",
-                                                                              style: const TextStyle(
-                                                                                fontSize: 14,
-                                                                                color: Colors.black54,
-                                                                                fontFamily: "spartan",
-                                                                              )),
+                                                                            ),
+                                                                          ),
                                                                         ),
                                                                       ],
                                                                     ),
                                                                   ),
                                                                   const SizedBox(
-                                                                    width: 10,
-                                                                  ),
+                                                                      width:
+                                                                          10),
                                                                   const Padding(
                                                                     padding: EdgeInsets.symmetric(
                                                                         vertical:
@@ -1692,8 +1729,8 @@ class _servicesState extends State<services> {
                                                                         onTap:
                                                                             () {
                                                                           _launchMapsUrl(
-                                                                              BeauticianDetails[0].location.coordinates[1],
-                                                                              BeauticianDetails[0].location.coordinates[0]);
+                                                                              businessDetails!.location.coordinates[1],
+                                                                              businessDetails!.location.coordinates[0]);
                                                                         },
                                                                         child:
                                                                             SizedBox(
@@ -1806,112 +1843,144 @@ class _servicesState extends State<services> {
                                                         // const Divider(
                                                         //   color: Colors.black54,
                                                         // ),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text("About Us",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 22,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text(
-                                                        //     "Barbing, freshness and confidence in one place. With a soft touch of modern styles, Freshman Cutz gives you that lost confidence.",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 16,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black54)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Divider(
-                                                        //   color: Colors.black54,
-                                                        // ),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.02),
+                                                        const Text(
+                                                          "About Us",
+                                                          style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontFamily:
+                                                                "spartan",
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.02),
+                                                        Text(
+                                                          businessDetails!
+                                                              .description,
+                                                          // "Barbing, freshness and confidence in one place. With a soft touch of modern styles, Freshman Cutz gives you that lost confidence.",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontFamily:
+                                                                "spartan",
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.02),
+                                                        const Divider(
+                                                            color:
+                                                                Colors.black54),
                                                         SizedBox(
                                                             height:
                                                                 height * 0.02),
                                                         const Text(
                                                           "Contact",
                                                           style: TextStyle(
-                                                            fontSize: 22,
+                                                            fontSize: 17,
                                                             fontFamily:
                                                                 "spartan",
                                                             color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w700,
                                                           ),
                                                         ),
                                                         SizedBox(
                                                             height:
                                                                 height * 0.02),
-                                                        InkWell(
-                                                          onTap: () {},
-                                                          child: Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius: 30,
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xffF3F3F3),
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              height: 40,
+                                                              width: 40,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: const Color(
+                                                                    0xffF3F3F3),
+                                                              ),
+                                                              child: Center(
                                                                 child:
                                                                     Image.asset(
                                                                   "assets/images/contact_call.png",
                                                                   color: const Color(
                                                                       0xff707070),
-                                                                  height: 20,
+                                                                  height: 24,
+                                                                  width: 24,
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              textComoon(
-                                                                  "${BeauticianDetails[0].businessNumber}",
-                                                                  15,
-                                                                  const Color(
-                                                                      0xff292929),
-                                                                  FontWeight
-                                                                      .w600),
-                                                              const Spacer(),
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  _launchDailer(
-                                                                      BeauticianDetails[
-                                                                              0]
-                                                                          .businessNumber
-                                                                          .toString());
-                                                                },
-                                                                child: Container(
-                                                                    height: 40,
-                                                                    width: 80,
-                                                                    decoration: BoxDecoration(
-                                                                        color: const Color(0xffFCF0E6),
-                                                                        border: Border.all(
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 10),
+                                                            textComoon(
+                                                                "${businessDetails!.businessNumber}",
+                                                                15,
+                                                                const Color(
+                                                                    0xff292929),
+                                                                FontWeight
+                                                                    .w600),
+                                                            const Spacer(),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                _launchDailer(
+                                                                    businessDetails!
+                                                                        .businessNumber
+                                                                        .toString());
+                                                              },
+                                                              child: Container(
+                                                                height: 40,
+                                                                width: 80,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        color: const Color(
+                                                                            0xffFCF0E6),
+                                                                        border: Border
+                                                                            .all(
                                                                           width:
                                                                               1,
                                                                           color:
                                                                               const Color(0xffE48835),
                                                                         ),
-                                                                        borderRadius: BorderRadius.circular(5)),
-                                                                    child: Center(child: textComoon("Call", 15, const Color(0xffDD6A03), FontWeight.w600))),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(5)),
+                                                                child: Center(
+                                                                    child: textComoon(
+                                                                        "Call",
+                                                                        15,
+                                                                        const Color(
+                                                                            0xffDD6A03),
+                                                                        FontWeight
+                                                                            .w600)),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
+                                                        SizedBox(height: 10),
                                                         const Divider(
                                                             color:
                                                                 Colors.black54),
                                                         const Text(
                                                           "Opening Hours",
                                                           style: TextStyle(
-                                                            fontSize: 22,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w700,
                                                             fontFamily:
                                                                 "spartan",
                                                             color: Colors.black,
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                            height:
-                                                                height * 0.02),
+                                                        SizedBox(height: 20),
                                                         // Row(
                                                         //   children:  [
                                                         //     const Text("Monday - Friday",
@@ -1920,7 +1989,7 @@ class _servicesState extends State<services> {
                                                         //             fontFamily: "spartan",
                                                         //             color: Colors.black54)),
                                                         //     const Spacer(),
-                                                        //     Text("${BeauticianDetails[0].workHours[0].dayDetails[0].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[0].endTime}",
+                                                        //     Text("${businessDetails!.workHours[0].dayDetails[0].startTime} - ${businessDetails!.workHours[0].dayDetails[0].endTime}",
                                                         //         style: const TextStyle(
                                                         //             fontSize: 20,
                                                         //             fontFamily: "spartan",
@@ -1930,7 +1999,7 @@ class _servicesState extends State<services> {
                                                         // SizedBox(
                                                         //   height: height * 0.02,
                                                         // ),
-                                                        BeauticianDetails[0]
+                                                        businessDetails!
                                                                 .workHours
                                                                 .isEmpty
                                                             ? const Center(
@@ -1947,68 +2016,59 @@ class _servicesState extends State<services> {
                                                                   ),
                                                                 ),
                                                               )
-                                                            : Container(
-                                                                // color: Colors.red,
-                                                                height: height *
-                                                                    0.5,
-                                                                child: ListView
-                                                                    .builder(
-                                                                  itemCount: BeauticianDetails[
-                                                                          0]
-                                                                      .workHours[
-                                                                          0]
-                                                                      .dayDetails
-                                                                      .length,
-                                                                  physics:
-                                                                      NeverScrollableScrollPhysics(),
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index) {
-                                                                    return Column(
-                                                                      children: [
-                                                                        Row(
-                                                                          children: [
-                                                                            Text("${BeauticianDetails[0].workHours[0].dayDetails[index].day}",
-                                                                                style: const TextStyle(fontSize: 16, fontFamily: "spartan", color: Colors.black54)),
-                                                                            const Spacer(),
-                                                                            Text("${BeauticianDetails[0].workHours[0].dayDetails[index].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[index].endTime}",
-                                                                                style: const TextStyle(fontSize: 20, fontFamily: "spartan", color: Colors.black)),
-                                                                          ],
-                                                                        ),
-                                                                        const SizedBox(
+                                                            : ListView.builder(
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemCount:
+                                                                    businessDetails!
+                                                                        .workHours[
+                                                                            0]
+                                                                        .dayDetails
+                                                                        .length,
+                                                                physics:
+                                                                    NeverScrollableScrollPhysics(),
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  return Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "${businessDetails!.workHours[0].dayDetails[index].day}",
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontFamily: "spartan",
+                                                                              color: Colors.black54,
+                                                                            ),
+                                                                          ),
+                                                                          const Spacer(),
+                                                                          Text(
+                                                                            "${businessDetails!.workHours[0].dayDetails[index].startTime} - ${businessDetails!.workHours[0].dayDetails[index].endTime}",
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 17,
+                                                                              fontFamily: "spartan",
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
                                                                           height:
-                                                                              10,
-                                                                        )
-                                                                      ],
-                                                                    );
-                                                                  },
-                                                                ),
+                                                                              10)
+                                                                    ],
+                                                                  );
+                                                                },
                                                               ),
-                                                        // Row(
-                                                        //   children: [
-                                                        //     const Text("Sarturday",
-                                                        //         style: TextStyle(
-                                                        //             fontSize: 16,
-                                                        //             fontFamily: "spartan",
-                                                        //             color: Colors.black54)),
-                                                        //     const Spacer(),
-                                                        //     Text("${BeauticianDetails[0].workHours[0].dayDetails[5].startTime} - ${BeauticianDetails[0].workHours[0].dayDetails[5].endTime}",
-                                                        //         style: const TextStyle(
-                                                        //             fontSize: 20,
-                                                        //             fontFamily: "spartan",
-                                                        //             color: Colors.black)),
-                                                        //   ],
-                                                        // ),
-                                                        // s
-                                                        SizedBox(
-                                                          height: height * 0.02,
-                                                        ),
+
+                                                        SizedBox(height: 10),
                                                         const Divider(
-                                                          color: Colors.black54,
-                                                        ),
-                                                        SizedBox(
-                                                          height: height * 0.02,
-                                                        ),
+                                                            color:
+                                                                Colors.black54),
+                                                        SizedBox(height: 10),
                                                         // const Text("Products",
                                                         //     style: TextStyle(
                                                         //         fontSize: 20,
@@ -2034,111 +2094,220 @@ class _servicesState extends State<services> {
                                                         // SizedBox(
                                                         //   height: height * 0.02,
                                                         // ),
-                                                        // const Text("Social Media Link",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 20,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // Row(
-                                                        //   children: [
-                                                        //     Column(
-                                                        //       children: [
-                                                        //         SizedBox(
-                                                        //           height: height * 0.08,
-                                                        //           child: Image.asset(
-                                                        //             "assets/images/Group 12685.png",
-                                                        //             fit: BoxFit.fill,
-                                                        //           ),
-                                                        //         ),
-                                                        //         SizedBox(
-                                                        //             height: height * 0.01),
-                                                        //         const Text("Instagram",
-                                                        //             style: TextStyle(
-                                                        //                 fontSize: 16,
-                                                        //                 fontFamily:
-                                                        //                     "spartan",
-                                                        //                 color: Colors
-                                                        //                     .black54)),
-                                                        //       ],
-                                                        //     ),
-                                                        //     SizedBox(
-                                                        //       width: width * 0.06,
-                                                        //     ),
-                                                        //     Column(
-                                                        //       children: [
-                                                        //         SizedBox(
-                                                        //           height: height * 0.08,
-                                                        //           child: Image.asset(
-                                                        //             "assets/images/Group 12685.png",
-                                                        //             fit: BoxFit.fill,
-                                                        //           ),
-                                                        //         ),
-                                                        //         SizedBox(
-                                                        //             height: height * 0.01),
-                                                        //         const Text("Facebook",
-                                                        //             style: TextStyle(
-                                                        //                 fontSize: 16,
-                                                        //                 fontFamily:
-                                                        //                     "spartan",
-                                                        //                 color: Colors
-                                                        //                     .black54)),
-                                                        //       ],
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Divider(
-                                                        //   color: Colors.black54,
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text("Amenities",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 20,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text("Parking space",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 18,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black54)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text(
-                                                        //     "Accessible to people with disabilities",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 18,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black54)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text("Child-friendly",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 18,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black54)),
-                                                        // SizedBox(
-                                                        //   height: height * 0.02,
-                                                        // ),
-                                                        // const Text("Wi-Fi",
-                                                        //     style: TextStyle(
-                                                        //         fontSize: 18,
-                                                        //         fontFamily: "spartan",
-                                                        //         color: Colors.black54)),
-                                                        SizedBox(
-                                                          height: height * 0.02,
+                                                        const Text(
+                                                          "Social Media Link",
+                                                          style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontFamily:
+                                                                "spartan",
+                                                            color: Colors.black,
+                                                          ),
                                                         ),
+                                                        SizedBox(height: 20),
+                                                        Row(
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                launchInstagramUrl(
+                                                                    businessDetails!
+                                                                        .instagramUrl);
+                                                              },
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height:
+                                                                        height *
+                                                                            0.08,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/Group 12685.png",
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  const Text(
+                                                                    "Instagram",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontFamily:
+                                                                            "spartan",
+                                                                        color: Colors
+                                                                            .black54),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                                width: width *
+                                                                    0.06),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                launchFaceBookUrl(
+                                                                    businessDetails!
+                                                                        .facebookUrl);
+                                                              },
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height:
+                                                                        height *
+                                                                            0.08,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/images/facebooklogo.png",
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  const Text(
+                                                                    "Facebook",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontFamily:
+                                                                            "spartan",
+                                                                        color: Colors
+                                                                            .black54),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        businessDetails!
+                                                                .amenities
+                                                                .isEmpty
+                                                            ? SizedBox()
+                                                            : Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
+                                                                          15),
+                                                                  const Divider(
+                                                                    color: Colors
+                                                                        .black54,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          15),
+                                                                  const Text(
+                                                                    "Amenities",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            17,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w700,
+                                                                        fontFamily:
+                                                                            "spartan",
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          20),
+                                                                  ListView
+                                                                      .separated(
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    itemCount: businessDetails!
+                                                                        .amenities
+                                                                        .length,
+                                                                    physics:
+                                                                        NeverScrollableScrollPhysics(),
+                                                                    separatorBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return SizedBox(
+                                                                          height:
+                                                                              15);
+                                                                    },
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return Text(
+                                                                        businessDetails!
+                                                                            .amenities[index]
+                                                                            .name,
+                                                                        // "Parking space",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          fontFamily:
+                                                                              "spartan",
+                                                                          color:
+                                                                              Colors.black54,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                        // const Text(
+                                                        //   "Parking space",
+                                                        //   style: TextStyle(
+                                                        //     fontSize: 15,
+                                                        //     fontWeight:
+                                                        //         FontWeight.w500,
+                                                        //     fontFamily:
+                                                        //         "spartan",
+                                                        //     color:
+                                                        //         Colors.black54,
+                                                        //   ),
+                                                        // ),
+                                                        // SizedBox(height: 20),
+                                                        // const Text(
+                                                        //   "Accessible to people with disabilities",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 15,
+                                                        //       fontWeight:
+                                                        //           FontWeight
+                                                        //               .w500,
+                                                        //       fontFamily:
+                                                        //           "spartan",
+                                                        //       color: Colors
+                                                        //           .black54),
+                                                        // ),
+                                                        // SizedBox(height: 20),
+                                                        // const Text(
+                                                        //   "Child-friendly",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 15,
+                                                        //       fontWeight:
+                                                        //           FontWeight
+                                                        //               .w500,
+                                                        //       fontFamily:
+                                                        //           "spartan",
+                                                        //       color: Colors
+                                                        //           .black54),
+                                                        // ),
+                                                        // SizedBox(height: 20),
+                                                        // const Text(
+                                                        //   "Wi-Fi",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 15,
+                                                        //       fontWeight:
+                                                        //           FontWeight
+                                                        //               .w500,
+                                                        //       fontFamily:
+                                                        //           "spartan",
+                                                        //       color: Colors
+                                                        //           .black54),
+                                                        // ),
+                                                        SizedBox(height: 70),
                                                       ],
                                                     ),
                                                   ),
@@ -2183,40 +2352,47 @@ class _servicesState extends State<services> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: 100,
-                  child: Text(
-                          "${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black))
-                      .tr(),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    width: double.infinity,
+                    child: Text(
+                      "${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}",
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: "spartan",
+                        color: Colors.black,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ).tr(),
+                  ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "\$${Beauticiandata[0].beauticianServiceId![index].price}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontFamily: "spartan",
-                            color: Colors.black)),
+                      "\$${Beauticiandata[0].beauticianServiceId![index].price}",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black),
+                    ),
                     Text(
-                        getTimeFormatedValue(Beauticiandata[0]
-                            .beauticianServiceId![index]
-                            .duration
-                            .toString()),
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: "spartan",
-                            color: Colors.black54)),
+                      getTimeFormatedValue(Beauticiandata[0]
+                          .beauticianServiceId![index]
+                          .duration
+                          .toString()),
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: "spartan",
+                          color: Colors.black54),
+                    ),
                   ],
                 ),
-                const Spacer(),
+                const SizedBox(width: 35),
                 ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(
@@ -2272,34 +2448,44 @@ class _servicesState extends State<services> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: 100,
-                  child: Text("${temp[index].serviceType!.serviceTypeName}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black))
-                      .tr(),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    width: double.infinity,
+                    child: Text(
+                      "${temp[index].serviceType!.serviceTypeName}",
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: "spartan",
+                        color: Colors.black,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ).tr(),
+                  ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("\$${temp[index].price}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontFamily: "spartan",
-                            color: Colors.black)),
-                    Text(getTimeFormatedValue(temp[index].duration.toString()),
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: "spartan",
-                            color: Colors.black54)),
+                    Text(
+                      "\$${temp[index].price}",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: "spartan",
+                          color: Colors.black),
+                    ),
+                    Text(
+                      getTimeFormatedValue(temp[index].duration.toString()),
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: "spartan",
+                          color: Colors.black54),
+                    ),
                   ],
                 ),
-                const Spacer(),
+                const SizedBox(width: 35),
                 ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(
@@ -2744,6 +2930,7 @@ class _servicesState extends State<services> {
       };
 
       var bodydata = {"id": widget.beauticianId, "limit": 10, "offset": 0};
+      print("headers is ====> $headers ");
       print("getBeauticianDetails url is ====> $posturi ");
       print("getBeauticianDetails bodydata ====> $bodydata ");
       var response = await http.post(
@@ -2783,7 +2970,7 @@ class _servicesState extends State<services> {
   }
 
   getBusinessDeatils() async {
-    var geturi = Uri.parse(ApiUrlList.getBusinessDeatils);
+    var geturi = Uri.parse(ApiUrlList.getBusinessDeatilsNew);
     try {
       setState(() {
         isLoading = true;
@@ -2798,7 +2985,7 @@ class _servicesState extends State<services> {
         "id": widget.beauticianId,
       };
 
-      print("getBusinessDeatils url is ====> $geturi ");
+      print("getBusinessDeatils url is ====> $geturi");
       log("bodydata is ====> $bodydata ");
       var response = await http.post(
         geturi,
@@ -2810,12 +2997,13 @@ class _servicesState extends State<services> {
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
-          bd = BeauticianDetail.fromMap(jsonDecode(response.body));
-          BeauticianDetails = bd!.beautician;
+          GetBusinessDetails getBusinessDetails =
+              GetBusinessDetails.fromMap(jsonDecode(response.body));
+          businessDetails = getBusinessDetails.beautician.first;
 
           _initialLocation = CameraPosition(
-            target: LatLng(BeauticianDetails[0].location.coordinates[1],
-                BeauticianDetails[0].location.coordinates[0]),
+            target: LatLng(businessDetails!.location.coordinates[1],
+                businessDetails!.location.coordinates[0]),
             zoom: 15,
           );
           locationLatLng();

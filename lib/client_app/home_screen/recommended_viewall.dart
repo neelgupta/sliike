@@ -74,19 +74,20 @@ class _RecommendedViewAllState extends State<RecommendedViewAll> {
                           alignment: Alignment.center,
                           height: height * 0.05,
                           width: width * 0.8,
-                          child: const Text("Recommended",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.w600)),
+                          child: const Text(
+                            "Recommended",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                         const Spacer(),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: height * 0.85,
+                  Expanded(
                     child: recommended.isEmpty
                         ? const Center(
                             child: Text(

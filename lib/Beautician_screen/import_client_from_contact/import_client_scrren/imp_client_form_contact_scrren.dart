@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/Contactlist/contactlist_select.dart';
 
@@ -20,10 +19,11 @@ class _importClientScreenState extends State<importClientScreen> {
     if (!await FlutterContacts.requestPermission(readonly: true)) {
       setState(() => permissionDenied = true);
     } else {
-       contacts = await FlutterContacts.getContacts();
+      contacts = await FlutterContacts.getContacts();
       setState(() => contacts = contacts);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,8 +42,7 @@ class _importClientScreenState extends State<importClientScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Loader.hide();
-        return true;
+        return await false;
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -61,27 +60,28 @@ class _importClientScreenState extends State<importClientScreen> {
                       child: Image.asset("assets/images/importclientimg.png",
                           fit: BoxFit.fill),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 60),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          height: height * 0.06,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white)),
-                          child: Container(
-                              padding: const EdgeInsets.all(5),
-                              child: const Image(
-                                image: AssetImage("assets/images/backwhite.png"),
-                                color: Colors.white,
-                              )),
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.pop(context);
+                    //   },`
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(left: 20, top: 60),
+                    //     child: Container(
+                    //       padding: const EdgeInsets.all(8),
+                    //       height: height * 0.06,
+                    //       decoration: BoxDecoration(
+                    //           shape: BoxShape.circle,
+                    //           border: Border.all(color: Colors.white)),
+                    //       child: Container(
+                    //           padding: const EdgeInsets.all(5),
+                    //           child: const Image(
+                    //             image:
+                    //                 AssetImage("assets/images/backwhite.png"),
+                    //             color: Colors.white,
+                    //           )),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(
@@ -225,16 +225,17 @@ class _importClientScreenState extends State<importClientScreen> {
                         // ignore: use_build_context_synchronously
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return contactLIst_Select(contacts!,true);
+                            return contactLIst_Select(contacts!, true);
                           },
                         ));
                       } else {
-                         contacts = await FlutterContacts.getContacts(withProperties: true);
+                        contacts = await FlutterContacts.getContacts(
+                            withProperties: true);
                         setState(() => contacts = contacts);
                         // ignore: use_build_context_synchronously
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return contactLIst_Select(contacts!,true);
+                            return contactLIst_Select(contacts!, true);
                           },
                         ));
                       }
@@ -274,8 +275,8 @@ class _importClientScreenState extends State<importClientScreen> {
                       height: height * 0.06,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border:
-                            Border.all(color: const Color(0xff01635D), width: 1),
+                        border: Border.all(
+                            color: const Color(0xff01635D), width: 1),
                       ),
                       child: const Text("SKIP FOR NOW",
                           style: TextStyle(

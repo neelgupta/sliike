@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
@@ -186,12 +187,14 @@ class _edit_profileState extends State<edit_profile> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Text("Edit Personal Info",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                "Edit Personal Info",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
                         ],
@@ -199,6 +202,9 @@ class _edit_profileState extends State<edit_profile> {
                     ),
                     SizedBox(height: height * 0.06),
                     TextField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                      ],
                       controller: firstNameTc,
                       cursorColor: Colors.black,
                       style: const TextStyle(
@@ -226,6 +232,9 @@ class _edit_profileState extends State<edit_profile> {
                       height: height * 0.04,
                     ),
                     TextField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                      ],
                       controller: lastNameTc,
                       cursorColor: Colors.black,
                       style: const TextStyle(

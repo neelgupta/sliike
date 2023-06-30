@@ -154,526 +154,452 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
     width = MediaQuery.of(context).size.width -
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
-    return mapscreen
-        ? mapView()
-        : Scaffold(
-            appBar: AppBar(
-                automaticallyImplyLeading: false,
-                toolbarHeight: height * 0.18, // Set this height
-                flexibleSpace: Container(
-                    color: const Color(0xff01635D),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20, bottom: 10),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text("Business Name and Location\nSetup",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: "spartan",
-                                            fontWeight: FontWeight.bold)),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                        "Set up your business name and\nlocation for easy identification.",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontFamily: "spartan",
-                                            color: Colors.white)),
-                                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        return await false;
+      },
+      child: mapscreen
+          ? mapView()
+          : Scaffold(
+              appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: height * 0.18, // Set this height
+                  flexibleSpace: Container(
+                      color: const Color(0xff01635D),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, bottom: 10),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      Text("Business Name and Location\nSetup",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Color(0xffFFFFFF),
+                                              fontFamily: "spartan",
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                          "Set up your business name and\nlocation for easy identification.",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: "spartan",
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ]))),
+              body: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  "1/",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xff292929),
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "4",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xffA0A0A0),
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                          )
-                        ]))),
-            body: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "1/",
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text("Business Details",
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Color(0xff292929),
                                     fontFamily: "spartan",
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold)),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              child: TextField(
+                                // inputFormatters: [
+                                //   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                                // ],
+                                controller: businessnamecontriller,
+                                onChanged: (value) {
+                                  businessnamestatus = false;
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  hintText: "Business Name",
+                                  hintStyle:
+                                      const TextStyle(color: Color(0xff292929)),
+                                  labelText: "Business Name",
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                ),
                               ),
-                              Text(
-                                "4",
+                            ),
+                            businessnamestatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    margin: EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(height: 20),
+                            Container(
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: phoneNumbercontriller,
+                                onChanged: (value) {
+                                  phoneNumberStatus = false;
+                                },
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  //  hintText: "+1 (514) 888-7722",hintStyle: TextStyle(color: Color(0xff292929)),
+                                  labelText: "Phone Number",
+
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            phoneNumberStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            const Divider(
+                              thickness: 1,
+                              color: Color(0xffCFCFCF),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            const Text("Business location",
                                 style: TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xffA0A0A0),
+                                    color: Color(0xff292929),
                                     fontFamily: "spartan",
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text("Business Details",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff292929),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            child: TextField(
-                              // inputFormatters: [
-                              //   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                              // ],
-                              controller: businessnamecontriller,
+                                    fontWeight: FontWeight.bold)),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextField(
+                              controller: enterYourAddresscontriller,
                               onChanged: (value) {
-                                businessnamestatus = false;
+                                enterYourAddressStatus = false;
                               },
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.only(left: 20),
-                                hintText: "Business Name",
+                                hintText: "Enter Your Address",
                                 hintStyle:
-                                    const TextStyle(color: Color(0xff292929)),
-                                labelText: "Business Name",
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'spartan',
-                                    color: Colors.black54),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
-                                ),
-                              ),
-                            ),
-                          ),
-                          businessnamestatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(height: 20),
-                          Container(
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              controller: phoneNumbercontriller,
-                              onChanged: (value) {
-                                phoneNumberStatus = false;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.only(left: 20),
-                                //  hintText: "+1 (514) 888-7722",hintStyle: TextStyle(color: Color(0xff292929)),
-                                labelText: "Phone Number",
-
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'spartan',
-                                    color: Colors.black54),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
-                                ),
-                              ),
-                            ),
-                          ),
-                          phoneNumberStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
-                                ),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0xffCFCFCF),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          const Text("Business location",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff292929),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            controller: enterYourAddresscontriller,
-                            onChanged: (value) {
-                              enterYourAddressStatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Enter Your Address",
-                              hintStyle:
-                                  const TextStyle(color: Color(0xff000000)),
-                              prefixIcon: SizedBox(
-                                width: 70,
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              mapscreen = true;
-                                            });
-                                            print("stu==$mapscreen");
-                                            // Navigator.push(context, MaterialPageRoute(
-                                            //   builder: (context) {
-                                            //     return locaionAllow();
-                                            //   },
-                                            // ));
-                                          },
-                                          icon: const Icon(
-                                            Icons.location_on_rounded,
-                                            color: Color(0xff01635D),
-                                          )),
-                                      const Padding(
-                                        padding:
-                                            EdgeInsets.only(top: 5, bottom: 5),
-                                        child: VerticalDivider(
-                                          color: Color(0xff707070),
-                                          thickness: 1,
+                                    const TextStyle(color: Color(0xff000000)),
+                                prefixIcon: SizedBox(
+                                  width: 70,
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                mapscreen = true;
+                                              });
+                                              print("stu==$mapscreen");
+                                              // Navigator.push(context, MaterialPageRoute(
+                                              //   builder: (context) {
+                                              //     return locaionAllow();
+                                              //   },
+                                              // ));
+                                            },
+                                            icon: const Icon(
+                                              Icons.location_on_rounded,
+                                              color: Color(0xff01635D),
+                                            )),
+                                        const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 5, bottom: 5),
+                                          child: VerticalDivider(
+                                            color: Color(0xff707070),
+                                            thickness: 1,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan', color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          enterYourAddressStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
-                                ),
-                          TextField(
-                            controller: countrycontriller,
-                            onChanged: (value) {
-                              canadaStatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Canada",
-                              hintStyle:
-                                  const TextStyle(color: Color(0xff414141)),
-                              // prefixIcon:
-
-                              // CountryCodePicker(
-                              //   flagWidth: 25,
-                              //   showCountryOnly: true,
-                              //
-                              //   onChanged: (obj) {
-                              //     setState(() {
-                              //       _countryname = obj.name.toString();
-                              //       print("obj country  ${obj.name}");
-                              //     });
-                              //   },
-                              //   initialSelection: 'CANADA',
-                              //   enabled: true,
-                              //   favorite: ['CANADA'],
-                              //
-                              //   textStyle: TextStyle(
-                              //       fontSize: 10,
-                              //       color: Colors.black87),
-                              //
-                              //
-                              //   // optional. Shows only country name and flag when popup is closed.
-                              // //  showOnlyCountryWhenClosed: true,
-                              //   // optional. aligns the flag and the Text left
-                              //   alignLeft: false,
-                              // ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.all(8.0),
-                              //   child: Container(
-                              //     width: 5,
-                              //     height: 5,
-                              //     child: Image.asset("assets/images/canada 1.png"),
-                              //   ),
-                              // ),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan', color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          canadaStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
-                                ),
-                          DropdownButtonHideUnderline(
-                            child: Container(
-                              height: 48,
-                              width: width,
-                              padding: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                      color: const Color(0xff707070),
-                                      width: 1)),
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                hint: const Padding(
-                                  padding: EdgeInsets.only(left: 0),
-                                  child: Text(
-                                    'Province',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "spartan",
-                                      color: Color(0xff707070),
+                                      ],
                                     ),
                                   ),
                                 ),
-                                items: getProvince == null
-                                    ? []
-                                    : (getProvince!.data ?? []).map((items) {
-                                        return DropdownMenuItem(
-                                          value: items.id,
-                                          child: Text(
-                                            items.name ?? "",
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xff292929)),
-                                          ),
-                                        );
-                                      }).toList(),
-                                value: provinceValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    provinceValue = value.toString();
-                                    provinceStatus = true;
-                                  });
-                                },
-                                icon: (const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 30,
-                                  color: Color(0xff707070),
-                                )),
-                              ),
-                            ),
-                          ),
-                          // TextField(
-                          //   controller: provincecontriller,
-                          //   onChanged: (value) {
-                          //     provinceStatus = false;
-                          //   },
-                          //   decoration: InputDecoration(
-                          //     contentPadding: const EdgeInsets.only(left: 20),
-                          //     hintText: "Province",
-                          //     hintStyle: const TextStyle(color: Color(0xff414141)),
-                          //     labelStyle: const TextStyle(
-                          //         fontFamily: 'spartan', color: Colors.black54),
-                          //     focusedBorder: OutlineInputBorder(
-                          //       borderRadius: BorderRadius.circular(5),
-                          //       borderSide: const BorderSide(color: Colors.black38),
-                          //     ),
-                          //     border: OutlineInputBorder(
-                          //       borderRadius: BorderRadius.circular(5),
-                          //       borderSide: const BorderSide(color: Colors.black38),
-                          //     ),
-                          //   ),
-                          // ),
-                          provinceStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Colors.black54),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
                                 ),
-                          TextField(
-                            controller: streetAddresscontriller,
-                            onChanged: (value) {
-                              streetAddressStatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Street Address",
-                              hintStyle:
-                                  const TextStyle(color: Color(0xff414141)),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan', color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          streetAddressStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
                                 ),
-                          TextField(
-                            controller: apartmentStorecontriller,
-                            onChanged: (value) {
-                              apartmentStoreStatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Apartment/Store number",
-                              hintStyle:
-                                  const TextStyle(color: Color(0xff414141)),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan', color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          // apartmentStoreStatus
-                          //     ? Container(
-                          //         alignment: Alignment.topLeft,
-                          //         height: 30,
-                          //         child: Text(
-                          //           "$status",
-                          //           style: TextStyle(
-                          //               fontFamily: 'spartan',
-                          //               fontSize: 12,
-                          //               color: Colors.red),
-                          //         ),
-                          //       )
-                          //     : Container(
-                          //         height: 15,
-                          //       ),
-                          Container(
-                            child: TextField(
-                              controller: citycontriller,
+                            enterYourAddressStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            TextField(
+                              controller: countrycontriller,
                               onChanged: (value) {
-                                cityStatus = false;
+                                canadaStatus = false;
                               },
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.only(left: 20),
-                                hintText: "City",
+                                hintText: "Canada",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xff414141)),
+                                // prefixIcon:
+
+                                // CountryCodePicker(
+                                //   flagWidth: 25,
+                                //   showCountryOnly: true,
+                                //
+                                //   onChanged: (obj) {
+                                //     setState(() {
+                                //       _countryname = obj.name.toString();
+                                //       print("obj country  ${obj.name}");
+                                //     });
+                                //   },
+                                //   initialSelection: 'CANADA',
+                                //   enabled: true,
+                                //   favorite: ['CANADA'],
+                                //
+                                //   textStyle: TextStyle(
+                                //       fontSize: 10,
+                                //       color: Colors.black87),
+                                //
+                                //
+                                //   // optional. Shows only country name and flag when popup is closed.
+                                // //  showOnlyCountryWhenClosed: true,
+                                //   // optional. aligns the flag and the Text left
+                                //   alignLeft: false,
+                                // ),
+
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: Container(
+                                //     width: 5,
+                                //     height: 5,
+                                //     child: Image.asset("assets/images/canada 1.png"),
+                                //   ),
+                                // ),
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Colors.black54),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                              ),
+                            ),
+                            canadaStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            DropdownButtonHideUnderline(
+                              child: Container(
+                                height: 48,
+                                width: width,
+                                padding: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: const Color(0xff707070),
+                                        width: 1)),
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  hint: const Padding(
+                                    padding: EdgeInsets.only(left: 0),
+                                    child: Text(
+                                      'Province',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: "spartan",
+                                        color: Color(0xff707070),
+                                      ),
+                                    ),
+                                  ),
+                                  items: getProvince == null
+                                      ? []
+                                      : (getProvince!.data ?? []).map((items) {
+                                          return DropdownMenuItem(
+                                            value: items.id,
+                                            child: Text(
+                                              items.name ?? "",
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xff292929)),
+                                            ),
+                                          );
+                                        }).toList(),
+                                  value: provinceValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      provinceValue = value.toString();
+                                      provinceStatus = true;
+                                    });
+                                  },
+                                  icon: (const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 30,
+                                    color: Color(0xff707070),
+                                  )),
+                                ),
+                              ),
+                            ),
+                            // TextField(
+                            //   controller: provincecontriller,
+                            //   onChanged: (value) {
+                            //     provinceStatus = false;
+                            //   },
+                            //   decoration: InputDecoration(
+                            //     contentPadding: const EdgeInsets.only(left: 20),
+                            //     hintText: "Province",
+                            //     hintStyle: const TextStyle(color: Color(0xff414141)),
+                            //     labelStyle: const TextStyle(
+                            //         fontFamily: 'spartan', color: Colors.black54),
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5),
+                            //       borderSide: const BorderSide(color: Colors.black38),
+                            //     ),
+                            //     border: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5),
+                            //       borderSide: const BorderSide(color: Colors.black38),
+                            //     ),
+                            //   ),
+                            // ),
+                            provinceStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    margin: EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            TextField(
+                              controller: streetAddresscontriller,
+                              onChanged: (value) {
+                                streetAddressStatus = false;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(left: 20),
+                                hintText: "Street Address",
                                 hintStyle:
                                     const TextStyle(color: Color(0xff414141)),
                                 labelStyle: const TextStyle(
@@ -691,150 +617,246 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
                                 ),
                               ),
                             ),
-                          ),
-                          cityStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
+                            streetAddressStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    margin: EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
                                   ),
-                                )
-                              : Container(
-                                  height: 15,
-                                ),
-                          TextField(
-                            keyboardType: TextInputType.number,
-                            controller: postalCodecontriller,
-                            onChanged: (value) {
-                              postalCodeStatus = false;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Postal Code",
-                              hintStyle:
-                                  const TextStyle(color: Color(0xff414141)),
-                              labelStyle: const TextStyle(
-                                  fontFamily: 'spartan', color: Colors.black54),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                            ),
-                          ),
-                          postalCodeStatus
-                              ? Container(
-                                  alignment: Alignment.topLeft,
-                                  height: 30,
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                        fontFamily: 'spartan',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  ),
-                                )
-                              : Container(
-                                  height: 15,
-                                ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              String businessName = businessnamecontriller.text;
-                              String businessNumber =
-                                  phoneNumbercontriller.text;
-                              String address = enterYourAddresscontriller.text;
-                              String country = countrycontriller.text;
-                              String? province = provinceValue;
-                              String street_address =
-                                  streetAddresscontriller.text;
-                              String apartment = apartmentStorecontriller.text;
-                              String city = citycontriller.text;
-                              String post_code = postalCodecontriller.text;
-                              bool contactValid =
-                                  RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
-                                      .hasMatch(businessNumber);
-
-                              setState(() {
-                                if (businessName.isEmpty) {
-                                  businessnamestatus = true;
-                                  provinceStatus = false;
-                                  status = "Please Enter Business Name";
-                                } else if (businessNumber.isEmpty) {
-                                  phoneNumberStatus = true;
-                                  status = "Please Enter PhoneNumber";
-                                } else if (!contactValid) {
-                                  phoneNumberStatus = true;
-                                  status = "Please Enter Correct Phone Number";
-                                } else if (address.isEmpty) {
-                                  enterYourAddressStatus = true;
-                                  status = "Please Enter Address";
-                                } else if (country.isEmpty) {
-                                  canadaStatus = true;
-                                  status = "Please Enter country";
-                                } else if (provinceValue == null) {
-                                  provinceStatus = true;
-                                  status = "Please Enter province";
-                                } else if (street_address.isEmpty) {
-                                  provinceStatus = false;
-                                  streetAddressStatus = true;
-                                  status = "Please Enter street address";
-                                } else if (city.isEmpty) {
-                                  cityStatus = true;
-                                  status = "Please Enter city";
-                                } else if (post_code.isEmpty) {
-                                  postalCodeStatus = true;
-                                  status = "Please Enter Post Code";
-                                } else {
-                                  addBusinessDetail(
-                                      businessName,
-                                      businessNumber,
-                                      address,
-                                      country,
-                                      province!,
-                                      street_address,
-                                      apartment,
-                                      city,
-                                      post_code,
-                                      lat,
-                                      long);
-                                }
-                              });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: width,
-                              height: height * 0.06,
-                              decoration: BoxDecoration(
+                            TextField(
+                              controller: apartmentStorecontriller,
+                              onChanged: (value) {
+                                apartmentStoreStatus = false;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(left: 20),
+                                hintText: "Apartment/Store number",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xff414141)),
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Colors.black54),
+                                focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: const Color(0xff01635D)),
-                              child: const Text("CONTINUE",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: "spartan",
-                                      color: Colors.white)),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            // apartmentStoreStatus
+                            //     ? Container(
+                            //         alignment: Alignment.topLeft,
+                            //         height: 30,
+                            //         child: Text(
+                            //           "$status",
+                            //           style: TextStyle(
+                            //               fontFamily: 'spartan',
+                            //               fontSize: 12,
+                            //               color: Colors.red),
+                            //         ),
+                            //       )
+                            //     : Container(
+                            //         height: 15,
+                            //       ),
+                            Container(
+                              child: TextField(
+                                controller: citycontriller,
+                                onChanged: (value) {
+                                  cityStatus = false;
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  hintText: "City",
+                                  hintStyle:
+                                      const TextStyle(color: Color(0xff414141)),
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            cityStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            TextField(
+                              keyboardType: TextInputType.number,
+                              controller: postalCodecontriller,
+                              onChanged: (value) {
+                                postalCodeStatus = false;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(left: 20),
+                                hintText: "Postal Code",
+                                hintStyle:
+                                    const TextStyle(color: Color(0xff414141)),
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Colors.black54),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                              ),
+                            ),
+                            postalCodeStatus
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    height: 30,
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 15,
+                                  ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                String businessName =
+                                    businessnamecontriller.text;
+                                String businessNumber =
+                                    phoneNumbercontriller.text;
+                                String address =
+                                    enterYourAddresscontriller.text;
+                                String country = countrycontriller.text;
+                                String? province = provinceValue;
+                                String street_address =
+                                    streetAddresscontriller.text;
+                                String apartment =
+                                    apartmentStorecontriller.text;
+                                String city = citycontriller.text;
+                                String post_code = postalCodecontriller.text;
+                                bool contactValid =
+                                    RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                                        .hasMatch(businessNumber);
+
+                                setState(() {
+                                  if (businessName.isEmpty) {
+                                    businessnamestatus = true;
+                                    provinceStatus = false;
+                                    status = "Please Enter Business Name";
+                                  } else if (businessNumber.isEmpty) {
+                                    phoneNumberStatus = true;
+                                    status = "Please Enter PhoneNumber";
+                                  } else if (!contactValid) {
+                                    phoneNumberStatus = true;
+                                    status =
+                                        "Please Enter Correct Phone Number";
+                                  } else if (address.isEmpty) {
+                                    enterYourAddressStatus = true;
+                                    status = "Please Enter Address";
+                                  } else if (country.isEmpty) {
+                                    canadaStatus = true;
+                                    status = "Please Enter country";
+                                  } else if (provinceValue == null) {
+                                    provinceStatus = true;
+                                    status = "Please Enter province";
+                                  } else if (street_address.isEmpty) {
+                                    provinceStatus = false;
+                                    streetAddressStatus = true;
+                                    status = "Please Enter street address";
+                                  } else if (city.isEmpty) {
+                                    cityStatus = true;
+                                    status = "Please Enter city";
+                                  } else if (post_code.isEmpty) {
+                                    postalCodeStatus = true;
+                                    status = "Please Enter Post Code";
+                                  } else {
+                                    addBusinessDetail(
+                                        businessName,
+                                        businessNumber,
+                                        address,
+                                        country,
+                                        province!,
+                                        street_address,
+                                        apartment,
+                                        city,
+                                        post_code,
+                                        lat,
+                                        long);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: width,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: const Color(0xff01635D)),
+                                child: Center(
+                                  child: const Text(
+                                    "CONTINUE",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "spartan",
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.25,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-          );
+            ),
+    );
   }
 
   Widget mapView() {

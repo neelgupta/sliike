@@ -192,8 +192,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                singleServiceData.serviceType!
-                                                    .serviceTypeName!,
+                                                singleServiceData
+                                                    .serviceCategory!
+                                                    .serviceCategoryName!,
                                                 style: TextStyle(
                                                   fontFamily: 'spartan',
                                                   color: AppColors.blackColor,
@@ -256,8 +257,8 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                                 children: [
                                                   Text(
                                                     txtSearch.text.isEmpty
-                                                        ? "${getServiceDetailsData!.data![index].serviceCategory!.serviceCategoryName ?? ""}"
-                                                        : "${localSearchData[index].serviceCategory!.serviceCategoryName ?? ""}",
+                                                        ? "${getServiceDetailsData!.data![index].serviceType!.serviceTypeName ?? ""}"
+                                                        : "${localSearchData[index].serviceType!.serviceTypeName ?? ""}",
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
@@ -269,8 +270,7 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: height * 0.01,
-                                                  ),
+                                                      height: height * 0.01),
                                                   Text(
                                                     txtSearch.text.isEmpty
                                                         ? "\$${getServiceDetailsData!.data![index].price ?? ""} for ${getServiceDetailsData!.data![index].duration ?? ""}"

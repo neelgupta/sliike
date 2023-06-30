@@ -51,24 +51,23 @@ class _locaionAllowState extends State<locaionAllow> {
     super.initState();
     getLocation();
   }
+
   getlatitude(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat,long);
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
     Placemark places = placemarks[0];
     //get pl// ace name from lat and lang
-      print("placemarks---$placemarks");
+    print("placemarks---$placemarks");
 
-      tempsadress =
-      "${places.country}Street Address===${places.street}City===${places.locality}\tsubAdministrativeArea===${places.subAdministrativeArea}\tpostalCode===${places.postalCode}\tsubLocality===${places.subLocality}\t${places.name}\t${places.subThoroughfare}";
-      citypostlcode =
-      "${placemarks.first.subAdministrativeArea},${placemarks.first.postalCode}";
-      tempscountry = "${placemarks.first.country}";
-      tempslocation = places.administrativeArea.toString();
-      tempsstreetadress = places.street.toString();
-      tempscity = places.locality.toString();
-      tempspostalcode = places.postalCode.toString();
-
+    tempsadress =
+        "${places.country}Street Address===${places.street}City===${places.locality}\tsubAdministrativeArea===${places.subAdministrativeArea}\tpostalCode===${places.postalCode}\tsubLocality===${places.subLocality}\t${places.name}\t${places.subThoroughfare}";
+    citypostlcode =
+        "${placemarks.first.subAdministrativeArea},${placemarks.first.postalCode}";
+    tempscountry = "${placemarks.first.country}";
+    tempslocation = places.administrativeArea.toString();
+    tempsstreetadress = places.street.toString();
+    tempscity = places.locality.toString();
+    tempspostalcode = places.postalCode.toString();
   }
-
 
   final Set<Marker> markers = {};
   Map<PolylineId, Polyline> polylines = {};
@@ -119,15 +118,12 @@ class _locaionAllowState extends State<locaionAllow> {
       // showLocation =  LatLng(lati!, longi!);
       _initialLocation = CameraPosition(target: startLocation, zoom: 20);
       print(" _initialLocation=$_initialLocation");
-       getlatitude(p!.latitude,p!.longitude);
+      getlatitude(p!.latitude, p!.longitude);
       setState(() {});
-
     }
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +263,6 @@ class _locaionAllowState extends State<locaionAllow> {
                       zoomGesturesEnabled: true,
                       polylines: Set<Polyline>.of(polylines.values),
                       markers: Set.from(markers),
-
                     ),
                   ),
                   Align(

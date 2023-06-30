@@ -57,7 +57,7 @@ class _searchScreenState extends State<searchScreen> {
   String yearlyv = '2022';
   ServicesFilter? sf;
   bool isLoading = true;
-  List<Datum> datum = [];
+  List<ServiceDModel> servicesList = [];
   MyFavorites? mf;
   String beauticianId = "";
   String businessName = "";
@@ -105,7 +105,7 @@ class _searchScreenState extends State<searchScreen> {
                   color: Color(0xffDD6A03),
                 ),
               )
-            : datum.isNotEmpty
+            : servicesList.isNotEmpty
                 ? Column(
                     children: [
                       widget.isAdvanced ?? false
@@ -374,14 +374,14 @@ class _searchScreenState extends State<searchScreen> {
                               ),
                             ),
                       const SizedBox(height: 10),
-                      if (datum.isNotEmpty)
+                      if (servicesList.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 15),
                           child: Container(
                             alignment: Alignment.centerLeft,
-                            child: datum.length <= 1
+                            child: servicesList.length <= 1
                                 ? Text(
-                                    "${datum.length} Result Found",
+                                    "${servicesList.length} Result Found",
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -390,7 +390,7 @@ class _searchScreenState extends State<searchScreen> {
                                     ),
                                   )
                                 : Text(
-                                    "${datum.length} Results Found",
+                                    "${servicesList.length} Results Found",
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -404,10 +404,10 @@ class _searchScreenState extends State<searchScreen> {
                       Expanded(
                         child: Stack(
                           children: [
-                            datum.isNotEmpty
+                            servicesList.isNotEmpty
                                 ? ListView.separated(
                                     shrinkWrap: true,
-                                    itemCount: datum.length,
+                                    itemCount: servicesList.length,
                                     padding: EdgeInsets.symmetric(
                                         vertical: 15, horizontal: 15),
                                     physics: BouncingScrollPhysics(),
@@ -415,27 +415,30 @@ class _searchScreenState extends State<searchScreen> {
                                       return SizedBox(height: 12);
                                     },
                                     itemBuilder: (context, index) {
-                                      beauticianId = datum[index].id;
-                                      businessName = datum[index].businessName;
-                                      businessAddress = datum[index].address;
-                                      like = datum[index].isFav!;
+                                      beauticianId = servicesList[index].id;
+                                      businessName =
+                                          servicesList[index].businessName;
+                                      businessAddress =
+                                          servicesList[index].address;
+                                      like = servicesList[index].isFav!;
                                       return GestureDetector(
                                         onTap: () {
-                                          // print("data =====> ${datum[index].id}");
+                                          // print("data =====> ${servicesList[index].id}");
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) {
                                                 return services(
                                                     beauticianId:
-                                                        datum[index].id,
-                                                    businessName: datum[index]
-                                                        .businessName);
+                                                        servicesList[index].id,
+                                                    businessName:
+                                                        servicesList[index]
+                                                            .businessName);
                                               },
                                             ),
                                           );
                                           print(
-                                              "selectedFavoritesId ======> ${datum[index]}");
+                                              "selectedFavoritesId ======> ${servicesList[index]}");
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
@@ -456,7 +459,8 @@ class _searchScreenState extends State<searchScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CachedNetworkImage(
-                                                imageUrl: datum[index].logoPath,
+                                                imageUrl: servicesList[index]
+                                                    .logoPath,
                                                 imageBuilder:
                                                     (context, imageProvider) =>
                                                         Container(
@@ -533,7 +537,8 @@ class _searchScreenState extends State<searchScreen> {
                                                             alignment: Alignment
                                                                 .topLeft,
                                                             child: Text(
-                                                              datum[index]
+                                                              servicesList[
+                                                                      index]
                                                                   .businessName,
                                                               style:
                                                                   const TextStyle(
@@ -548,7 +553,8 @@ class _searchScreenState extends State<searchScreen> {
                                                               ),
                                                             ),
                                                           ),
-                                                          if (datum[index]
+                                                          if (servicesList[
+                                                                      index]
                                                                   .isLicensed ==
                                                               "1")
                                                             Padding(
@@ -563,7 +569,8 @@ class _searchScreenState extends State<searchScreen> {
                                                                 width: 20,
                                                               ),
                                                             ),
-                                                          if (datum[index]
+                                                          if (servicesList[
+                                                                      index]
                                                                   .hasShop ==
                                                               0)
                                                             Padding(
@@ -581,31 +588,36 @@ class _searchScreenState extends State<searchScreen> {
                                                           const Spacer(),
                                                           GestureDetector(
                                                             onTap: () {
-                                                              if (datum[index]
+                                                              if (servicesList[
+                                                                      index]
                                                                   .isFav!) {
                                                                 setState(() {
-                                                                  datum[index]
-                                                                      .isFav = !datum[
+                                                                  servicesList[
+                                                                          index]
+                                                                      .isFav = !servicesList[
                                                                           index]
                                                                       .isFav!;
                                                                   removeFromMyFavorites(
-                                                                      datum[index]
+                                                                      servicesList[
+                                                                              index]
                                                                           .id);
                                                                 });
                                                               } else {
                                                                 setState(() {
-                                                                  datum[index]
-                                                                      .isFav = !datum[
+                                                                  servicesList[
+                                                                          index]
+                                                                      .isFav = !servicesList[
                                                                           index]
                                                                       .isFav!;
                                                                   addToMyFavorites(
-                                                                      datum[index]
+                                                                      servicesList[
+                                                                              index]
                                                                           .id);
                                                                 });
                                                               }
                                                             },
                                                             child: Icon(
-                                                                datum[
+                                                                servicesList[
                                                                             index]
                                                                         .isFav!
                                                                     ? Icons
@@ -614,7 +626,7 @@ class _searchScreenState extends State<searchScreen> {
                                                                         .favorite_border_outlined,
                                                                 color: const Color(
                                                                     0xFFDD5103),
-                                                                size: 30),
+                                                                size: 25),
                                                           ),
                                                           SizedBox(
                                                               width:
@@ -622,12 +634,12 @@ class _searchScreenState extends State<searchScreen> {
                                                         ],
                                                       ),
                                                       const SizedBox(height: 5),
-                                                      datum[index]
+                                                      servicesList[index]
                                                               .address
                                                               .isEmpty
                                                           ? const SizedBox()
                                                           : Text(
-                                                              "${datum[index].address[0].apartment} ${datum[index].address[0].city} ${datum[index].address[0].zipCode}",
+                                                              "${servicesList[index].address[0].apartment} ${servicesList[index].address[0].city} ${servicesList[index].address[0].zipCode}",
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .black,
@@ -637,9 +649,10 @@ class _searchScreenState extends State<searchScreen> {
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
-                                                      if (datum[index].rating !=
+                                                      if (servicesList[index]
+                                                                  .rating !=
                                                               "0" &&
-                                                          datum[index]
+                                                          servicesList[index]
                                                                   .noOfReviews !=
                                                               "0")
                                                         Row(
@@ -659,7 +672,7 @@ class _searchScreenState extends State<searchScreen> {
                                                                   Alignment
                                                                       .topLeft,
                                                               child: Text(
-                                                                  "${datum[index].rating} Ratings",
+                                                                  "${servicesList[index].rating} Ratings",
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .black,
@@ -675,7 +688,7 @@ class _searchScreenState extends State<searchScreen> {
                                                                   Alignment
                                                                       .topLeft,
                                                               child: Text(
-                                                                  "${datum[index].noOfReviews} reviews",
+                                                                  "${servicesList[index].noOfReviews} reviews",
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .grey,
@@ -700,10 +713,10 @@ class _searchScreenState extends State<searchScreen> {
                                 : const Center(
                                     child: Text("No Data Found!!!"),
                                   ),
-                            if (datum.isNotEmpty)
+                            if (servicesList.isNotEmpty)
                               Positioned(
-                                right: 10,
-                                top: 150,
+                                right: 15,
+                                bottom: 55,
                                 child: SizedBox(
                                   height: height * 0.10,
                                   width: width * 0.20,
@@ -716,7 +729,7 @@ class _searchScreenState extends State<searchScreen> {
                                               MaterialPageRoute(
                                             builder: (context) {
                                               return BeuticianLocation(
-                                                locationData: datum,
+                                                placesList: servicesList,
                                                 lat: double.parse(
                                                     widget.latitude!),
                                                 long: double.parse(
@@ -845,6 +858,7 @@ class _searchScreenState extends State<searchScreen> {
         "authorization":
             "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
+      log("headers ====> ${headers}");
       log("selectedService ====> ${widget.selectedService}");
       var bodydata = {
         "services": widget.selectedService ?? widget.searchService,
@@ -856,15 +870,15 @@ class _searchScreenState extends State<searchScreen> {
         "latitude": widget.latitude ?? "",
         "sortBy": widget.sortBy ?? ""
       };
-      print("addPersonalInfo url is ====> $posturi ");
+      print("findServices url is ====> $posturi ");
       log("req bodydata ====> $bodydata ");
       var response = await http.post(
         posturi,
         body: jsonEncode(bodydata),
         headers: headers,
       );
-      print("addPersonalInfo status code ====> ${response.statusCode}");
-      log(" addPersonalInfo res body is ====>  ${response.body}");
+      print("findServices status code ====> ${response.statusCode}");
+      log(" findServices res body is ====>  ${response.body}");
       if (response.statusCode == 200) {
         print("object");
         Map map = jsonDecode(response.body);
@@ -873,9 +887,9 @@ class _searchScreenState extends State<searchScreen> {
           setState(() {
             isLoading = false;
             sf = ServicesFilter.fromJson(jsonDecode(response.body));
-            datum = sf!.data.data;
+            servicesList = sf!.data.data;
             like;
-            print("like =====> $datum");
+            print("like =====> $servicesList");
           });
         } else if (response.statusCode == 401) {
           logoutdata();
@@ -931,7 +945,7 @@ class _searchScreenState extends State<searchScreen> {
       Navigator.push(context, MaterialPageRoute(
         builder: (context) {
           return BeuticianLocation(
-            locationData: datum,
+            placesList: servicesList,
             lat: double.parse(p.latitude.toString()),
             long: double.parse(p.longitude.toString()),
           );
@@ -944,8 +958,8 @@ class _searchScreenState extends State<searchScreen> {
 }
 
 class ServicesFilter {
-  int status;
-  Data data;
+  final int status;
+  final SData data;
 
   ServicesFilter({
     required this.status,
@@ -954,7 +968,7 @@ class ServicesFilter {
 
   factory ServicesFilter.fromJson(Map<String, dynamic> json) => ServicesFilter(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
+        data: SData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -963,18 +977,19 @@ class ServicesFilter {
       };
 }
 
-class Data {
+class SData {
   int count;
-  List<Datum> data;
+  List<ServiceDModel> data;
 
-  Data({
+  SData({
     required this.count,
     required this.data,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory SData.fromJson(Map<String, dynamic> json) => SData(
         count: json["count"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<ServiceDModel>.from(
+            (json["data"] ?? []).map((x) => ServiceDModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -983,7 +998,7 @@ class Data {
       };
 }
 
-class Datum {
+class ServiceDModel {
   String id;
   String userId;
   String uid;
@@ -1010,13 +1025,14 @@ class Datum {
   int businessNumber;
   String noOfReviews;
   String rating;
+  final Dis dis;
   String logoPath;
   Location? location;
   List<BeauticianServiceDetail> beauticianServiceDetails;
   List<Address> address;
   bool? isFav;
 
-  Datum({
+  ServiceDModel({
     required this.id,
     required this.userId,
     required this.uid,
@@ -1045,12 +1061,13 @@ class Datum {
     required this.rating,
     required this.logoPath,
     this.location,
+    required this.dis,
     required this.beauticianServiceDetails,
     required this.address,
     this.isFav,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory ServiceDModel.fromJson(Map<String, dynamic> json) => ServiceDModel(
       id: json["_id"] ?? "",
       userId: json["userId"] ?? "",
       uid: json["uid"] ?? "",
@@ -1086,6 +1103,7 @@ class Datum {
       beauticianServiceDetails: List<BeauticianServiceDetail>.from(
           json["beauticianServiceDetails"]
               .map((x) => BeauticianServiceDetail.fromJson(x))),
+      dis: Dis.fromMap(json["dis"] ?? {}),
       address:
           List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
       isFav: json["isFav"] ?? false);
@@ -1117,10 +1135,27 @@ class Datum {
         "isLicensed": isLicensed,
         "businessNumber": businessNumber,
         "location": location?.toJson(),
+        "dis": dis.toMap(),
         "beauticianServiceDetails":
             List<dynamic>.from(beauticianServiceDetails.map((x) => x.toJson())),
         "address": List<Address>.from(address.map((x) => x)),
         "isFav": isFav
+      };
+}
+
+class Dis {
+  final double calculated;
+
+  Dis({
+    required this.calculated,
+  });
+
+  factory Dis.fromMap(Map<String, dynamic> json) => Dis(
+        calculated: json["calculated"].toDouble(),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "calculated": calculated,
       };
 }
 

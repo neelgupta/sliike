@@ -42,7 +42,8 @@ class ApiUrlList {
   static String getAppointmentList =
       "${baseUrl}client/getAppointmentList?status=past";
   static String getRecentBeauticians = "${baseUrl}client/getRecentBeauticians";
-  static String getBusinessDeatils = "${baseUrl}client/getBusinessDeatils";
+  static String getBusinessDeatilsNew =
+      "${baseUrl}client/getBusinessDetailsNew";
   static String getRecomadedBeauticians =
       "${baseUrl}client/getRecomadedBeauticians";
   static String getSingleAppointmentData =
@@ -166,8 +167,8 @@ class ApiUrlList {
       "${baseUrl}beautician/updateServiceDetails/";
   static String updateSalonLocation =
       "${baseUrl}beautician/updateSalonLocation";
-  static String updateSalonLocationClient =
-      "${baseUrl}client/updateSalonLocation";
+  // static String updateSalonLocationClient =
+  //     "${baseUrl}client/updateSalonLocation";
 
   /// Card Services Endpoints (Client)///
   static String getCardDetails = "${baseUrl}client/getCardDetails";
@@ -188,11 +189,19 @@ class ApiUrlList {
   /// Appointment Services Endpoints ///
   static String getServiceDetails = "${baseUrl}beautician/getServiceDetails";
   static String getStaffData = "${baseUrl}beautician/getEmployeeList";
-  
+
   static String addBAppointment = "${baseUrl}beautician/addBAppointment";
-  static String getAppointmentPreDetails = "${baseUrl}beautician/getAppointmentPreDetails";
-  static String saveAppointmentDetails = "${baseUrl}beautician/saveAppointmentDetails";
+  static String getAppointmentPreDetails =
+      "${baseUrl}beautician/getAppointmentPreDetails";
+  static String saveAppointmentDetails =
+      "${baseUrl}beautician/saveAppointmentDetails";
+
   /// Invite Services Endpoints ///
   static String inviteContacts = "${baseUrl}beautician/inviteContacts";
-  static String getInvitedClientList = "${baseUrl}beautician/getInvitedClientList";
+  static String getInvitedClientList =
+      "${baseUrl}beautician/getInvitedClientList";
+
+  static String SendAppointmentReminder =
+      "${baseUrl}beautician/SendAppointmentReminder";
+  static String updateBAppointment = "${baseUrl}beautician/updateAppointment/";
 }

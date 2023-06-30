@@ -153,16 +153,16 @@ class _signInScreenState extends State<signInScreen> {
               child: Column(
                 children: [
                   Container(
-                    child: const Text("welcome_back",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold))
-                        .tr(),
+                    child: const Text(
+                      "welcome_back",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "spartan",
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ).tr(),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 5),
                   Container(
                     child: const Text("login_to_your_account",
                         style: TextStyle(
@@ -170,9 +170,7 @@ class _signInScreenState extends State<signInScreen> {
                           fontFamily: "spartan",
                         )).tr(),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
+                  const SizedBox(height: 25),
                   TextField(
                     controller: temail,
                     onTap: () {
@@ -331,7 +329,7 @@ class _signInScreenState extends State<signInScreen> {
                         if (email.isEmpty && password.isEmpty) {
                           emailstatus = true;
                           passwordstatus = true;
-                          emailError = "Please Enter Email ID";
+                          emailError = "Please Enter Email Address";
                           passwordError = "Please Enter Password";
                         } else if (!emailValid) {
                           emailstatus = true;
@@ -351,12 +349,16 @@ class _signInScreenState extends State<signInScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: const Color(0xFFDD6A03)),
-                      child: const Text("LOGIN",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "spartan",
-                                  color: Colors.white))
-                          .tr(),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "spartan",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.25,
+                        ),
+                      ).tr(),
                     ),
                   ),
                   SizedBox(
@@ -428,13 +430,15 @@ class _signInScreenState extends State<signInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('an_account',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: "spartan",
-                                  color: Colors.black,
-                                  letterSpacing: 1.1))
-                          .tr(),
+                      const Text(
+                        'an_account',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: "spartan",
+                          color: Colors.black,
+                          letterSpacing: 1.1,
+                        ),
+                      ).tr(),
                       InkWell(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(
@@ -445,19 +449,19 @@ class _signInScreenState extends State<signInScreen> {
                             },
                           ));
                         },
-                        child: const Text('sign_up',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: "spartan",
-                                    color: Color(0xFFDD6A03),
-                                    letterSpacing: 1.1))
-                            .tr(),
+                        child: const Text(
+                          'sign_up',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: "spartan",
+                            color: Color(0xFFDD6A03),
+                            letterSpacing: 1.1,
+                          ),
+                        ).tr(),
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: height * 0.020,
-                  ),
+                  SizedBox(height: height * 0.020),
                 ],
               ),
             )
@@ -556,14 +560,17 @@ class _signInScreenState extends State<signInScreen> {
 
   Future<void> loginApi(String email, String password) async {
     try {
-      Loader.show(context,
-          isSafeAreaOverlay: false,
-          overlayColor: Colors.black26,
-          progressIndicator: const CircularProgressIndicator(
-              backgroundColor: Color(0xffDD6A03)),
-          themeData: Theme.of(context).copyWith(
-              colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: const Color(0xff01635D))));
+      Loader.show(
+        context,
+        isSafeAreaOverlay: false,
+        overlayColor: Colors.black26,
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+        themeData: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(secondary: const Color(0xff01635D)),
+        ),
+      );
       var bodyDat = {
         'email': email,
         'password': password,

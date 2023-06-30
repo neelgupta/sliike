@@ -258,6 +258,8 @@ class _addServiceState extends State<addService> {
                                     child: ListView.separated(
                                       shrinkWrap: true,
                                       itemCount: categoryDataList.length,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
                                       separatorBuilder: (context, index) {
                                         return Divider(
                                           color: AppColors.greyColor
@@ -464,13 +466,12 @@ class _addServiceState extends State<addService> {
                                 height: 50,
                                 width: width,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: const Color(0xff707070),
-                                        width: 1)),
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: const Color(0xff707070), width: 1),
+                                ),
                                 child: DropdownButtonFormField2<TypesData>(
                                   isExpanded: true,
-
                                   hint: const Padding(
                                     padding:
                                         EdgeInsets.only(left: 20, bottom: 0),
@@ -524,6 +525,8 @@ class _addServiceState extends State<addService> {
                                       print('======>$selectedServiceIdValue');
                                       selectedServiceNameValue =
                                           value.serviceTypeName;
+                                      dropdown = false;
+                                      arrow = true;
                                     });
                                   },
                                   buttonHeight: 60,

@@ -12,6 +12,7 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart'
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
 
 import '../../utils/apiurllist.dart';
+import '../../utils/app_colors.dart';
 
 class filterpage extends StatefulWidget {
   const filterpage({Key? key}) : super(key: key);
@@ -81,227 +82,164 @@ class _filterpageState extends State<filterpage> {
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: height * 0.15, // Set this height
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                color: Color(0xFFFCF0E6),
-                image: DecorationImage(
-                    image: AssetImage("assets/images/bgappbar.png"),
-                    fit: BoxFit.fill)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 10, right: 20, bottom: 10),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: height * 0.15, // Set this height
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              color: Color(0xFFFCF0E6),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/bgappbar.png"),
+                  fit: BoxFit.fill)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 20, bottom: 10),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        height: height * 0.06,
                         child: Container(
-                          padding: const EdgeInsets.all(5),
-                          height: height * 0.06,
+                            padding: const EdgeInsets.all(5),
+                            child: const Image(
+                              image: AssetImage("assets/images/Group 55.png"),
+                              color: Colors.black,
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text("Filter",
+                            style: TextStyle(
+                                fontSize: 23,
+                                color: Colors.black,
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return const AdvancedSearch();
+                              },
+                            ));
+                          },
                           child: Container(
                               padding: const EdgeInsets.all(5),
-                              child: const Image(
-                                image: AssetImage("assets/images/Group 55.png"),
-                                color: Colors.black,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                border: Border.all(
+                                  color: const Color(0xFFDD5103),
+                                ),
+                              ),
+                              height: 48,
+                              width: width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image: const AssetImage(
+                                      "assets/images/search.png",
+                                    ),
+                                    color: const Color(0xFFDD5103),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "Go To Advanced Search",
+                                    style: TextStyle(
+                                      fontFamily: "spartan",
+                                      color: Color(0xFFDD5103),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.25,
+                                    ),
+                                  )
+                                ],
                               )),
                         ),
                       ),
-                      SizedBox(
-                        width: width * 0.30,
+                      const SizedBox(height: 40),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Location & Time",
+                            style: TextStyle(
+                              color: AppColors.blackColor,
+                              fontFamily: "spartan",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
+                            ),
+                          ),
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text("Filter",
-                              style: TextStyle(
-                                  fontSize: 23,
-                                  color: Colors.black,
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xffDD6A03),
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return const AdvancedSearch();
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return const NearYou();
+                                    },
+                                  )).then((value) {
+                                    if (value != null) {
+                                      latitude = value[0];
+                                      longitude = value[1];
+                                      address = value[2];
+                                      setState(() {});
+                                    }
+                                  });
                                 },
-                              ));
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(
-                                      color: const Color(0xFFDD5103)),
-                                ),
-                                height: 50,
-                                width: width,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image(
-                                      image: const AssetImage(
-                                        "assets/images/search.png",
-                                      ),
-                                      color: const Color(0xFFDD5103),
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    const Text(
-                                      "Go To Advanced Search",
-                                      style: TextStyle(
-                                        fontFamily: "spartan",
-                                        color: Color(0xFFDD5103),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                          ),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            child: const Text("Location & Time",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) {
-                                        return const NearYou();
-                                      },
-                                    )).then((value) {
-                                      if (value != null) {
-                                        latitude = value[0];
-                                        longitude = value[1];
-                                        address = value[2];
-                                        setState(() {});
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          border:
-                                              Border.all(color: Colors.grey)),
-                                      height: height * 0.06,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: Image(
-                                                image: const AssetImage(
-                                                  "assets/images/Group 71.png",
-                                                ),
-                                                color: const Color(0xFFDD5103),
-                                                height: height * 0.03),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              address.isEmpty
-                                                  ? "Near You"
-                                                  : address,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style:
-                                                  const TextStyle(fontSize: 12),
-                                            ),
-                                          ),
-                                          address.isEmpty
-                                              ? Container()
-                                              : InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      address = "";
-                                                      latitude = "";
-                                                      longitude = "";
-                                                    });
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.close,
-                                                    size: 20,
-                                                    color: Colors.black12,
-                                                  )),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
                                 child: Container(
-                                    padding: const EdgeInsets.all(5),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
                                     decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
@@ -311,55 +249,116 @@ class _filterpageState extends State<filterpage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 5),
-                                          child: Image(
-                                              image: const AssetImage(
-                                                "assets/images/note.png",
-                                              ),
-                                              color: const Color(0xFFDD5103),
-                                              height: height * 0.03),
+                                        Image.asset(
+                                          "assets/images/Group 71.png",
+                                          height: 24,
+                                          width: 24,
                                         ),
+                                        const SizedBox(width: 5),
+                                        Expanded(
+                                          child: Text(
+                                            address.isEmpty
+                                                ? "Near You"
+                                                : address,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                              letterSpacing: 0.25,
+                                              color: AppColors.blackTextColor,
+                                            ),
+                                          ),
+                                        ),
+                                        address.isEmpty
+                                            ? Container()
+                                            : InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    address = "";
+                                                    latitude = "";
+                                                    longitude = "";
+                                                  });
+                                                },
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  size: 20,
+                                                  color: Colors.black12,
+                                                )),
                                         const SizedBox(
                                           width: 5,
                                         ),
-                                        const Text(
-                                          "All Availabities",
-                                          style: TextStyle(fontSize: 12),
-                                        )
                                       ],
                                     )),
                               ),
-                            ],
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      border: Border.all(color: Colors.grey)),
+                                  height: height * 0.06,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/note.png",
+                                        color: const Color(0xFFDD5103),
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Expanded(
+                                        child: Text(
+                                          "All Availabities",
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            overflow: TextOverflow.fade,
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 0.25,
+                                            color: AppColors.blackTextColor,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: const Text(
+                            "Where do you want us to serve you?",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "spartan",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                          ),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            child: const Text(
-                                "Where do you want us to serve you?",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Wrap(
+                      ),
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Wrap(
                           alignment: WrapAlignment.start,
-                          runSpacing: 10,
-                          spacing: 10,
+                          runAlignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          runSpacing: 15,
+                          spacing: 15,
                           children: [
                             for (int i = 0; i < preferenceName.length; i++)
                               GestureDetector(
@@ -394,683 +393,731 @@ class _filterpageState extends State<filterpage> {
                                       border: Border.all(
                                           color: preferenceName[i].isSelected
                                               ? const Color(0xFFDD5103)
-                                              : Colors.black45),
+                                              : AppColors.blackTextColor),
                                       color: preferenceName[i].isSelected
                                           ? const Color(0xFFDD5103)
                                           : Colors.transparent),
-                                  child: Text(
-                                    preferenceName[i].prefenceName,
-                                    style: TextStyle(
-                                      fontFamily: "spartan",
-                                      fontSize: 15,
-                                      color: preferenceName[i].isSelected
-                                          ? Colors.white
-                                          : Colors.black54,
-                                    ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        preferenceName[i].prefenceName,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: "spartan",
+                                          // fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 0.25,
+                                          color: preferenceName[i].isSelected
+                                              ? Colors.white
+                                              : AppColors.blackTextColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               )
                           ],
                         ),
-                        SizedBox(height: 10),
-                        const Divider(
-                          indent: 10,
-                          endIndent: 10,
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                          ),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            child: const Text(
-                              "Services",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                          ),
-                          child: Wrap(
-                            alignment: WrapAlignment.start,
-                            runSpacing: 10,
-                            spacing: 10,
-                            children: [
-                              for (int i = 0; i < serviceName.length; i++)
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      serviceName[i].isSelected =
-                                          !serviceName[i].isSelected;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(28),
-                                        border: Border.all(
-                                            color: serviceName[i].isSelected
-                                                ? const Color(0xFFDD5103)
-                                                : Colors.black45),
-                                        color: serviceName[i].isSelected
-                                            ? const Color(0xFFDD5103)
-                                            : Colors.transparent),
-                                    child: Text(
-                                      "${serviceName[i].serviceCategoryName}",
-                                      style: TextStyle(
-                                        fontFamily: "spartan",
-                                        fontSize: 15,
-                                        color: serviceName[i].isSelected
-                                            ? Colors.white
-                                            : Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        const Divider(indent: 10, endIndent: 10),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            child: const Text(
-                              "Demography",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Wrap(
-                            alignment: WrapAlignment.start,
-                            runSpacing: 10,
-                            spacing: 10,
-                            children: [
-                              for (int i = 0; i < demographyName.length; i++)
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      demographyName[i].isSelected =
-                                          !demographyName[i].isSelected;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(28),
-                                        border: Border.all(
-                                            color: demographyName[i].isSelected
-                                                ? const Color(0xFFDD5103)
-                                                : Colors.black45),
-                                        color: demographyName[i].isSelected
-                                            ? const Color(0xFFDD5103)
-                                            : Colors.transparent),
-                                    child: Text(
-                                      "${demographyName[i].demographyName}",
-                                      style: TextStyle(
-                                        fontFamily: "spartan",
-                                        fontSize: 15,
-                                        color: demographyName[i].isSelected
-                                            ? Colors.white
-                                            : Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        const Divider(indent: 10, endIndent: 10),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            child: const Text(
-                              "Sort By",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RadioListTile(
-                                visualDensity: const VisualDensity(
-                                    horizontal: 0, vertical: 0),
-                                activeColor: const Color(0xFFDD5103),
-                                value: "forYou",
-                                groupValue: character,
-                                onChanged: (value) {
-                                  setState(() {
-                                    character = value.toString();
-                                  });
-                                },
-                                title: Text(
-                                  "Recommended For You",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                  ),
-                                ),
-                              ),
-                              RadioListTile(
-                                visualDensity: const VisualDensity(
-                                    horizontal: 0, vertical: 0),
-                                activeColor: const Color(0xFFDD5103),
-                                value: "myfavorite",
-                                groupValue: character,
-                                onChanged: (value) {
-                                  setState(() {
-                                    character = value.toString();
-                                  });
-                                },
-                                title: Text(
-                                  "My Favorites",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                  ),
-                                ),
-                              ),
-                              RadioListTile(
-                                visualDensity: const VisualDensity(
-                                    horizontal: 0, vertical: 0),
-                                activeColor: const Color(0xFFDD5103),
-                                value: "topRated",
-                                groupValue: character,
-                                onChanged: (value) {
-                                  setState(() {
-                                    character = value.toString();
-                                  });
-                                },
-                                title: Text(
-                                  "Top Rated",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          indent: 10,
-                          endIndent: 10,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                    Container(
-                      height: height * 0.06,
-                      color: const Color(0xffF3F3F3),
-                      child: Padding(
+                      ),
+                      SizedBox(height: 16),
+                      const Divider(
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              "Filters",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.w600,
+                        child: const Text(
+                          "Services",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "spartan",
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          runAlignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          runSpacing: 15,
+                          spacing: 15,
+                          children: [
+                            for (int i = 0; i < serviceName.length; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    serviceName[i].isSelected =
+                                        !serviceName[i].isSelected;
+                                  });
+                                },
+                                child: Container(
+                                  height: 40,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(28),
+                                      border: Border.all(
+                                          color: serviceName[i].isSelected
+                                              ? const Color(0xFFDD5103)
+                                              : AppColors.blackTextColor),
+                                      color: serviceName[i].isSelected
+                                          ? const Color(0xFFDD5103)
+                                          : Colors.transparent),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${serviceName[i].serviceCategoryName}",
+                                        style: TextStyle(
+                                          fontFamily: "spartan",
+                                          // fontSize: 15,
+                                          color: serviceName[i].isSelected
+                                              ? Colors.white
+                                              : AppColors.blackTextColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      const Divider(indent: 10, endIndent: 10),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: const Text(
+                            "Demography",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          runAlignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          runSpacing: 15,
+                          spacing: 15,
+                          children: [
+                            for (int i = 0; i < demographyName.length; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    demographyName[i].isSelected =
+                                        !demographyName[i].isSelected;
+                                  });
+                                },
+                                child: Container(
+                                  height: 40,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(28),
+                                      border: Border.all(
+                                          color: demographyName[i].isSelected
+                                              ? const Color(0xFFDD5103)
+                                              : AppColors.blackTextColor),
+                                      color: demographyName[i].isSelected
+                                          ? const Color(0xFFDD5103)
+                                          : Colors.transparent),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${demographyName[i].demographyName}",
+                                        style: TextStyle(
+                                          fontFamily: "spartan",
+                                          // fontSize: 15,
+                                          color: demographyName[i].isSelected
+                                              ? Colors.white
+                                              : AppColors.blackTextColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      const Divider(indent: 10, endIndent: 10),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: const Text(
+                          "Sort By",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              visualDensity: const VisualDensity(
+                                  horizontal: 0, vertical: 0),
+                              activeColor: const Color(0xFFDD5103),
+                              value: "forYou",
+                              groupValue: character,
+                              onChanged: (value) {
+                                setState(() {
+                                  character = value.toString();
+                                });
+                              },
+                              title: Text(
+                                "Recommended For You",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.25,
+                                ),
                               ),
                             ),
-                            Text(
-                              "Clear All",
-                              style: TextStyle(
-                                color: Color(0xFFDD5103),
-                                fontSize: 14,
-                                fontFamily: "spartan",
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              visualDensity: const VisualDensity(
+                                  horizontal: 0, vertical: 0),
+                              activeColor: const Color(0xFFDD5103),
+                              value: "myfavorite",
+                              groupValue: character,
+                              onChanged: (value) {
+                                setState(() {
+                                  character = value.toString();
+                                });
+                              },
+                              title: Text(
+                                "My Favorites",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.25,
+                                ),
+                              ),
+                            ),
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              visualDensity: const VisualDensity(
+                                  horizontal: 0, vertical: 0),
+                              activeColor: const Color(0xFFDD5103),
+                              value: "topRated",
+                              groupValue: character,
+                              onChanged: (value) {
+                                setState(() {
+                                  character = value.toString();
+                                });
+                              },
+                              title: Text(
+                                "Top Rated",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.25,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  "Gender",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    value: "Male",
-                                    groupValue: gender,
-                                    activeColor: const Color(0xFFDD5103),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value.toString();
-                                      });
-                                    },
-                                  ),
-                                  const Text(
-                                    "Male",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "spartan",
-                                    ),
-                                  ),
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    value: "Female",
-                                    groupValue: gender,
-                                    activeColor: const Color(0xFFDD5103),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value.toString();
-                                      });
-                                    },
-                                  ),
-                                  const Text(
-                                    "Female",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "spartan",
-                                    ),
-                                  ),
-                                  Radio(
-                                    visualDensity: const VisualDensity(
-                                        horizontal: 0, vertical: 0),
-                                    value: "Other",
-                                    groupValue: gender,
-                                    activeColor: const Color(0xFFDD5103),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value.toString();
-                                      });
-                                    },
-                                  ),
-                                  const Text(
-                                    "Other",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: "spartan",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              const SizedBox(height: 10),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  "Price Range",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: "spartan",
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        price = true;
-                                        price1 = false;
-                                        price2 = false;
-                                        price3 = false;
-                                        priceValue = 10;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1,
-                                            color: const Color(0xffA0A0A0)),
-                                        color: price
-                                            ? const Color(0xff292929)
-                                            : Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: textComoon(
-                                          "\$20",
-                                          10,
-                                          price ? Colors.white : Colors.black,
-                                          FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 5),
-                                      child: Container(
-                                        height: 1,
-                                        width: width * 0.15,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        price = true;
-                                        price1 = true;
-                                        price2 = false;
-                                        price3 = false;
-                                        priceValue = 100;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1,
-                                            color: const Color(0xffA0A0A0)),
-                                        color: price1
-                                            ? const Color(0xff292929)
-                                            : Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                          child: textComoon(
-                                              "\$99",
-                                              10,
-                                              price1
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              FontWeight.w500)),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 5),
-                                      child: Container(
-                                        height: 1,
-                                        width: width * 0.15,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        price = true;
-                                        price1 = true;
-                                        price2 = true;
-                                        price3 = false;
-                                        priceValue = 1000;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1,
-                                            color: const Color(0xffA0A0A0)),
-                                        color: price2
-                                            ? const Color(0xff292929)
-                                            : Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                          child: textComoon(
-                                              "\$100",
-                                              10,
-                                              price2
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              FontWeight.w500)),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 5),
-                                      child: Container(
-                                        height: 1,
-                                        width: width * 0.15,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        price = true;
-                                        price1 = true;
-                                        price2 = true;
-                                        price3 = true;
-                                        priceValue = 10000;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 35,
-                                      width: 35,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1,
-                                            color: const Color(0xffA0A0A0)),
-                                        color: price3
-                                            ? const Color(0xff292929)
-                                            : Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: textComoon(
-                                          "\$1000",
-                                          8,
-                                          price3 ? Colors.white : Colors.black,
-                                          FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: height * 0.01),
-                              const Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "Distance",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      "${_startValue.toStringAsFixed(1)} - ${_endValue.toStringAsFixed(1)} km",
-                                      style: TextStyle(
-                                        color: Color(0xff414141),
-                                        fontSize: 12,
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              RangeSlider(
-                                onChangeStart: (value) {
-                                  _startValue = value.start;
-                                },
-                                onChangeEnd: (value) {
-                                  _endValue = value.end;
-                                },
-                                min: 0.0,
-                                max: 200.0,
-                                inactiveColor: const Color(0xffCFCFCF),
-                                activeColor: const Color(0xffDD6A03),
-                                values: RangeValues(_startValue, _endValue),
-                                labels: RangeLabels(_startValue.toString(),
-                                    _endValue.toString()),
-                                onChanged: (values) {
-                                  setState(() {
-                                    _startValue = values.start;
-                                    _endValue = values.end;
-                                  });
-                                },
-                              ),
-                              const Divider(),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: height * 0.07,
-                                      width: width * 0.4,
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5))),
-                                      child: const Text("Clear All"),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(
-                                        () {
-                                          for (var item in serviceName) {
-                                            if (item.isSelected) {
-                                              selectedService.add(item.id!);
-                                            }
-                                          }
-                                          for (var item in demographyName) {
-                                            if (item.isSelected) {
-                                              selectedDemography.add(item.id!);
-                                            }
-                                          }
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                            builder: (context) {
-                                              return searchScreen(
-                                                myPlace: myPlace,
-                                                selectedService:
-                                                    selectedService,
-                                                selectedDemography:
-                                                    selectedDemography,
-                                                gender: gender,
-                                                sortBy: character,
-                                                priceValue: priceValue,
-                                                latitude: latitude,
-                                                longitude: longitude,
-                                              );
-                                            },
-                                          ));
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: height * 0.07,
-                                      width: width * 0.4,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(0xFFDD5103)),
-                                        color: const Color(0xFFDD5103),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                      child: const Text(
-                                        "APPLY",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 30),
-                            ],
+                      const SizedBox(height: 10),
+                      const Divider(
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                  Container(
+                    height: height * 0.06,
+                    color: const Color(0xffF3F3F3),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            "Filters",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "spartan",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
+                            ),
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ));
+                          Text(
+                            "Clear All",
+                            style: TextStyle(
+                              color: Color(0xFFDD5103),
+                              fontFamily: "spartan",
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.25,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child: const Text(
+                                "Gender",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.25,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Radio(
+                                  visualDensity: const VisualDensity(
+                                      horizontal: 0, vertical: 0),
+                                  value: "Male",
+                                  groupValue: gender,
+                                  activeColor: const Color(0xFFDD5103),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      gender = value.toString();
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  "Male",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.2,
+                                  ),
+                                ),
+                                Radio(
+                                  visualDensity: const VisualDensity(
+                                      horizontal: 0, vertical: 0),
+                                  value: "Female",
+                                  groupValue: gender,
+                                  activeColor: const Color(0xFFDD5103),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      gender = value.toString();
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  "Female",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.2,
+                                  ),
+                                ),
+                                Radio(
+                                  visualDensity: const VisualDensity(
+                                      horizontal: 0, vertical: 0),
+                                  value: "Other",
+                                  groupValue: gender,
+                                  activeColor: const Color(0xFFDD5103),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      gender = value.toString();
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  "Other",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.2,
+                                    fontFamily: "spartan",
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            const SizedBox(height: 10),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child: const Text(
+                                "Price Range",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.25,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      price = true;
+                                      price1 = false;
+                                      price2 = false;
+                                      price3 = false;
+                                      priceValue = 10;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color: const Color(0xffA0A0A0)),
+                                      color: price
+                                          ? const Color(0xff292929)
+                                          : Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: textComoon(
+                                        "\$20",
+                                        10,
+                                        price ? Colors.white : Colors.black,
+                                        FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5),
+                                    child: Container(
+                                      height: 1,
+                                      width: width * 0.15,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      price = true;
+                                      price1 = true;
+                                      price2 = false;
+                                      price3 = false;
+                                      priceValue = 100;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color: const Color(0xffA0A0A0)),
+                                      color: price1
+                                          ? const Color(0xff292929)
+                                          : Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: textComoon(
+                                            "\$99",
+                                            10,
+                                            price1
+                                                ? Colors.white
+                                                : Colors.black,
+                                            FontWeight.w500)),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5),
+                                    child: Container(
+                                      height: 1,
+                                      width: width * 0.15,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      price = true;
+                                      price1 = true;
+                                      price2 = true;
+                                      price3 = false;
+                                      priceValue = 1000;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color: const Color(0xffA0A0A0)),
+                                      color: price2
+                                          ? const Color(0xff292929)
+                                          : Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: textComoon(
+                                            "\$100",
+                                            10,
+                                            price2
+                                                ? Colors.white
+                                                : Colors.black,
+                                            FontWeight.w500)),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5),
+                                    child: Container(
+                                      height: 1,
+                                      width: width * 0.15,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      price = true;
+                                      price1 = true;
+                                      price2 = true;
+                                      price3 = true;
+                                      priceValue = 10000;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1,
+                                          color: const Color(0xffA0A0A0)),
+                                      color: price3
+                                          ? const Color(0xff292929)
+                                          : Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: textComoon(
+                                        "\$1000",
+                                        8,
+                                        price3 ? Colors.white : Colors.black,
+                                        FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: height * 0.01),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    "Distance",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "spartan",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.25,
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    "${_startValue.toStringAsFixed(1)} - ${_endValue.toStringAsFixed(1)} km",
+                                    style: TextStyle(
+                                      color: Color(0xff414141),
+                                      fontFamily: "spartan",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            RangeSlider(
+                              onChangeStart: (value) {
+                                _startValue = value.start;
+                              },
+                              onChangeEnd: (value) {
+                                _endValue = value.end;
+                              },
+                              min: 0.0,
+                              max: 200.0,
+                              inactiveColor: const Color(0xffCFCFCF),
+                              activeColor: const Color(0xffDD6A03),
+                              values: RangeValues(_startValue, _endValue),
+                              labels: RangeLabels(
+                                  _startValue.toString(), _endValue.toString()),
+                              onChanged: (values) {
+                                setState(() {
+                                  _startValue = values.start;
+                                  _endValue = values.end;
+                                });
+                              },
+                            ),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: height * 0.07,
+                                    width: width * 0.4,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5))),
+                                    child: Text(
+                                      "CLEAR ALL",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.25,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        for (var item in serviceName) {
+                                          if (item.isSelected) {
+                                            selectedService.add(item.id!);
+                                          }
+                                        }
+                                        for (var item in demographyName) {
+                                          if (item.isSelected) {
+                                            selectedDemography.add(item.id!);
+                                          }
+                                        }
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                          builder: (context) {
+                                            return searchScreen(
+                                              myPlace: myPlace,
+                                              selectedService: selectedService,
+                                              selectedDemography:
+                                                  selectedDemography,
+                                              gender: gender,
+                                              sortBy: character,
+                                              priceValue: priceValue,
+                                              latitude: latitude,
+                                              longitude: longitude,
+                                            );
+                                          },
+                                        ));
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: height * 0.07,
+                                    width: width * 0.4,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xFFDD5103)),
+                                      color: const Color(0xFFDD5103),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5)),
+                                    ),
+                                    child: Text(
+                                      "APPLY",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.25,
+                                        color: AppColors.whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+    );
   }
 
   fetchServiceCategories() async {
