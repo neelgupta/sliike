@@ -15,6 +15,8 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
+import '../../utils/app_colors.dart';
+
 class booking_summary_paymentconfirm extends StatefulWidget {
   String bookingId;
   booking_summary_paymentconfirm({Key? key, required this.bookingId})
@@ -152,74 +154,80 @@ class _booking_summary_paymentconfirmState
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: const Text("appointment_details",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "spartan",
-                                      color: Colors.black))
-                              .tr(),
+                          child: const Text(
+                            "appointment_details",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "spartan",
+                              color: Colors.black,
+                            ),
+                          ).tr(),
                         ),
-                        SizedBox(
-                          height: height * 0.01,
-                        ),
+                        SizedBox(height: 10),
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Divider(
                             color: Colors.black54,
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
+                        SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: appointment[0].beauticianDetails.logo,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  padding: const EdgeInsets.all(10),
-                                  height: height * 0.15,
-                                  width: width * 0.30,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.fill)),
-                                  margin: const EdgeInsets.all(5),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.greyColor.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                progressIndicatorBuilder:
-                                    (context, url, process) => Container(
-                                        height: height * 0.15,
-                                        width: width * 0.30,
-                                        margin: const EdgeInsets.all(5),
-                                        child: const Center(
-                                            child:
-                                                CircularProgressIndicator())),
-                                errorWidget: (context, url, error) => Container(
-                                    height: height * 0.15,
-                                    width: width * 0.30,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      appointment[0].beauticianDetails.logo,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    padding: const EdgeInsets.all(10),
+                                    height: 77,
+                                    width: 87,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill)),
+                                    margin: const EdgeInsets.all(5),
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, process) => Container(
+                                    height: 77,
+                                    width: 87,
+                                    margin: const EdgeInsets.all(5),
+                                    child: const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    height: 77,
+                                    width: 87,
                                     margin: const EdgeInsets.all(5),
                                     alignment: Alignment.center,
                                     child: Center(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(Icons.error),
-                                        SizedBox(
-                                          height: height * 0.02,
-                                        ),
-                                        const Text("No Image")
-                                      ],
-                                    ))),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(Icons.error),
+                                          SizedBox(height: 10),
+                                          const Text("No Image")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              SizedBox(
-                                width: width * 0.04,
-                              ),
+                              SizedBox(width: 12),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,25 +235,27 @@ class _booking_summary_paymentconfirmState
                                     Row(
                                       children: [
                                         Text(
-                                            appointment[0]
-                                                .beauticianDetails
-                                                .businessName,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontFamily: "spartan",
-                                                color: Colors.black)),
-                                        SizedBox(
-                                          width: width * 0.12,
+                                          appointment[0]
+                                              .beauticianDetails
+                                              .businessName,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
                                         ),
+                                        SizedBox(width: 10),
                                       ],
                                     ),
                                     appointment[0].beauticianDetails != null
                                         ? Text(
                                             "${appointment[0].beauticianDetails.address.address} \n ${appointment[0].beauticianDetails.address.city} ${appointment[0].beauticianDetails.address.zipCode}",
                                             style: const TextStyle(
-                                                fontSize: 13,
-                                                fontFamily: "spartan",
-                                                color: Colors.blue))
+                                              fontSize: 13,
+                                              fontFamily: "spartan",
+                                              color: Colors.blue,
+                                            ),
+                                          )
                                         : Container(),
                                   ],
                                 ),
@@ -253,44 +263,50 @@ class _booking_summary_paymentconfirmState
                             ],
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Divider(
-                            color: Colors.black54,
-                          ),
+                        SizedBox(height: 10),
+                        Divider(
+                          color: Colors.black54,
+                          indent: 20,
+                          endIndent: 20,
                         ),
-                        SizedBox(
-                          height: height * 0.50,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: appointment[0].appointmentDetails.length,
-                            itemBuilder: (context, index) {
-                              var startData = DateFormat('dd MMM,yyyy  |  h:mm')
-                                  .format(DateTime.parse(
-                                      '${appointment[0].appointmentDetails[index].dateTime}'));
-                              var endData = DateFormat('h:mm').format(
-                                  DateTime.parse(
-                                      '${appointment[0].appointmentDetails[index].endDateTime}'));
-                              if (appointment[0]
-                                      .appointmentDetails[index]
-                                      .place ==
-                                  0) {
-                                place = "Beautician's place";
-                              } else {
-                                place = "At my place";
-                              }
-                              return Column(
+                        ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: appointment[0].appointmentDetails.length,
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              color: Colors.black54,
+                              height: 10,
+                              thickness: 1,
+                              indent: 20,
+                              endIndent: 20,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            var startData = DateFormat('dd MMM,yyyy  |  h:mm')
+                                .format(DateTime.parse(
+                                    '${appointment[0].appointmentDetails[index].dateTime}'));
+                            var endData = DateFormat('h:mm').format(DateTime.parse(
+                                '${appointment[0].appointmentDetails[index].endDateTime}'));
+                            if (appointment[0]
+                                    .appointmentDetails[index]
+                                    .place ==
+                                0) {
+                              place = "Beautician's place";
+                            } else {
+                              place = "At my place";
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 15),
+                              child: Column(
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
                                     child: Column(
                                       children: [
-                                        SizedBox(
-                                          height: height * 0.03,
-                                        ),
+                                        SizedBox(height: 15),
                                         Row(
                                           children: [
                                             Text(
@@ -303,9 +319,7 @@ class _booking_summary_paymentconfirmState
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: height * 0.03,
-                                        ),
+                                        SizedBox(height: 10),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
@@ -449,6 +463,7 @@ class _booking_summary_paymentconfirmState
                                       color: Colors.black54,
                                     ),
                                   ),
+                                  SizedBox(height: 10),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
@@ -505,15 +520,13 @@ class _booking_summary_paymentconfirmState
                                         ],
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                        SizedBox(
-                          height: height * 0.04,
-                        ),
+                        SizedBox(height: 10),
                         Container(
                           height: height * 0.06,
                           color: const Color(0xFFF3F3F3),
@@ -602,15 +615,15 @@ class _booking_summary_paymentconfirmState
                                       height: height * 0.05,
                                       width: width * 0.05,
                                     ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    const Text("view_receipt",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: "spartan",
-                                                color: Colors.white))
-                                        .tr(),
+                                    SizedBox(width: width * 0.02),
+                                    const Text(
+                                      "view_receipt",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: "spartan",
+                                        color: Colors.white,
+                                      ),
+                                    ).tr(),
                                   ],
                                 )),
                           ),
@@ -762,11 +775,15 @@ class Datum {
   String id;
   int subTotal;
   int discount;
-  String gstORhst;
-  String pstORqst;
+  String gst;
+  String hst;
+  String qst;
+  String pst;
   String totalPrice;
-  int gstORhstInPer;
-  int pstORqstInPer;
+  int gstInPer;
+  int qstInPer;
+  int hstInPer;
+  int pstInPer;
   int total;
   String bookingId;
   int paymentStatus;
@@ -779,11 +796,15 @@ class Datum {
     required this.id,
     required this.subTotal,
     required this.discount,
-    required this.gstORhst,
-    required this.pstORqst,
+    required this.gst,
+    required this.hst,
+    required this.qst,
+    required this.pst,
     required this.totalPrice,
-    required this.gstORhstInPer,
-    required this.pstORqstInPer,
+    required this.gstInPer,
+    required this.qstInPer,
+    required this.hstInPer,
+    required this.pstInPer,
     required this.total,
     required this.bookingId,
     required this.paymentStatus,
@@ -796,12 +817,16 @@ class Datum {
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         id: json["_id"] ?? "",
         subTotal: json["subTotal"] ?? 0,
-        discount: json["discount"],
-        gstORhst: json["gstORhst"],
-        pstORqst: json["pstORqst"],
+        discount: json["discount"] ?? "",
+        gst: json["GST"] ?? "",
+        hst: json["HST"] ?? "",
+        qst: json["QST"] ?? "",
+        pst: json["PST"] ?? "",
         totalPrice: json["TotalPrice"],
-        gstORhstInPer: json["gstORhstInPer"],
-        pstORqstInPer: json["pstORqstInPer"],
+        gstInPer: json["GstInPer"] ?? "",
+        qstInPer: json["QstInPer"] ?? "",
+        hstInPer: json["HstInPer"] ?? "",
+        pstInPer: json["PstInPer"] ?? "",
         total: json["total"],
         bookingId: json["BookingId"],
         paymentStatus: json["paymentStatus"],
@@ -823,11 +848,15 @@ class Datum {
         "_id": id,
         "subTotal": subTotal,
         "discount": discount,
-        "gstORhst": gstORhst,
-        "pstORqst": pstORqst,
+        "GST": gst,
+        "HST": hst,
+        "QST": qst,
+        "PST": pst,
         "TotalPrice": totalPrice,
-        "gstORhstInPer": gstORhstInPer,
-        "pstORqstInPer": pstORqstInPer,
+        "GstInPer": gstInPer,
+        "QstInPer": qstInPer,
+        "HstInPer": hstInPer,
+        "PstInPer": pstInPer,
         "total": total,
         "BookingId": bookingId,
         "paymentStatus": paymentStatus,

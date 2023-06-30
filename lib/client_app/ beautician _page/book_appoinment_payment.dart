@@ -365,71 +365,141 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: height * 0.01),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Text("gst/hst",
+                            paymentDetail!.data!.gst == "0.00"
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "gst",
                                           style: TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: "spartan",
-                                              color: Colors.black))
-                                      .tr(),
-                                  const Spacer(),
-                                  Text("\$${paymentDetail!.data!.gstORhst}",
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "spartan",
-                                          color: Colors.black)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "pst/qst",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "spartan",
-                                      color: Colors.black,
-                                    ),
-                                  ).tr(),
-                                  const Spacer(),
-                                  Text(
-                                    "\$${paymentDetail!.data!.pstORqst}",
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "spartan",
-                                      color: Colors.black,
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ).tr(),
+                                        const Spacer(),
+                                        Text(
+                                          "\$${paymentDetail!.data!.gst}",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
+                            // SizedBox(height: height * 0.01),
+                            paymentDetail!.data!.hst == "0.00"
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "hst",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ).tr(),
+                                        const Spacer(),
+                                        Text(
+                                          "\$${paymentDetail!.data!.hst}",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            // SizedBox(height: height * 0.01),
+                            paymentDetail!.data!.pst == "0.00"
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "pst/qst",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ).tr(),
+                                        const Spacer(),
+                                        Text(
+                                          "\$${paymentDetail!.data!.pst}",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            // SizedBox(height: height * 0.01),
+                            paymentDetail!.data!.qst == "0.00"
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "qst",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ).tr(),
+                                        const Spacer(),
+                                        Text(
+                                          "\$${paymentDetail!.data!.qst}",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            SizedBox(height: height * 0.01),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Divider(
                                 color: Colors.black54,
                               ),
                             ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
+                            SizedBox(height: height * 0.02),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
@@ -557,10 +627,12 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
       "cardCVC": cvvController.text,
       "subTotal": paymentDetail!.data!.subTotal,
       "discount": paymentDetail!.data!.discount,
-      "gstORhstInPer": paymentDetail!.data!.gstORhstInPer,
-      "pstORqstInPer": paymentDetail!.data!.pstORqstInPer,
       "total": paymentDetail!.data!.total,
-      "addressId": widget.addressId
+      "addressId": widget.addressId,
+      "GstInPer": paymentDetail!.data!.gstInPer,
+      "HstInPer": paymentDetail!.data!.hstInPer,
+      "PstInPer": paymentDetail!.data!.pstInPer,
+      "QstInPer": paymentDetail!.data!.qstInPer,
     };
 
     log("body ===> $body");
