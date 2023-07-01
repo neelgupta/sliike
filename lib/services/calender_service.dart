@@ -236,6 +236,7 @@ class CalenderService {
         "appoId": appointmentId,
         "newStatus": newStatus // accept only "no-show" or "delivered"
       };
+      log("Body ==> $body");
       var response = await http.put(
         geturi,
         body: jsonEncode(body),
@@ -324,6 +325,59 @@ class CalenderService {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      rethrow;
+      // return null;
+    }
+    return false;
+  }
+
+  Future<bool> SendAppointmentReminder({required String appointmentId}) async {
+    var geturi = Uri.parse("${ApiUrlList.SendAppointmentReminder}/$appointmentId");
+    try {
+      var headers = {
+        'Content-Type': "application/json; charset=utf-8",
+        "authorization":
+        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+      };
+      var response = await http.post(
+        geturi,
+        headers: headers,
+      );
+
+      var map = jsonDecode(response.body);
+      log("SendAppointmentReminder response.body ==> ${response.body}");
+      log("SendAppointmentReminder status code ==> ${response.statusCode}");
+      if (response.statusCode == 200) {
+        // Map map = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 6,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
+        return true;
+        // if (getProfileModel.status == 200) {
+        //   profileData = getProfileModel.data;
+        //   if (getProfileModel.data.address.isNotEmpty) {
+        //     addressData = getProfileModel.data.address.first;
+        //   }
+        // }
+      } else {
+        Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 6,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0,

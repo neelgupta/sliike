@@ -68,18 +68,18 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height * 0.06,
                         child: Container(
                             padding: const EdgeInsets.all(5),
                             child: const Image(
-                              image: AssetImage("assets/images/Group 55.png"),
+                              image: AssetImage("assets/images/back.png"),
                               color: Colors.black,
                             )),
                       ),
                     ),
                     SizedBox(
-                      width: width * 0.20,
+                      width: width * 0.13,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

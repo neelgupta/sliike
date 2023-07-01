@@ -70,7 +70,9 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children:  [
+                            InkWell(onTap:() => Navigator.pop(context),child: Icon(Icons.arrow_circle_left_outlined,color: Colors.white,size: 40)),
+                            const SizedBox(height: 05,),
                             Text("Professional Licence",
                                 style: TextStyle(
                                     fontSize: 17,
@@ -387,6 +389,7 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
         }
         setState(() {
           data!.data!.isLicensed==0?selected="No":"Yes";
+          isLicensed = data!.data!.isLicensed;
           print(isLicensed);
         });
         Fluttertoast.showToast(

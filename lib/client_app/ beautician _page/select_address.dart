@@ -51,25 +51,25 @@ class _SelectAddressState extends State<SelectAddress> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height * 0.06,
                         child: Container(
                             padding: const EdgeInsets.all(5),
                             child: const Image(
-                              image: AssetImage("assets/images/Group 55.png"),
+                              image: AssetImage("assets/images/back.png"),
                               color: Colors.black,
                             )),
                       ),
                     ),
                     SizedBox(
-                      width: width * 0.15,
+                      width: width * 0.13,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("select_address",
                             style: TextStyle(
-                                fontSize: 23,
+                                fontSize: 20,
                                 color: Colors.black,
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.bold))
@@ -99,6 +99,7 @@ class _SelectAddressState extends State<SelectAddress> {
                 ),
                 child: Row(
                   children: [
+                    const SizedBox(width: 10,),
                     Text("${getProfile!.data.address[index].addressId.address}, ${getProfile!.data.address[index].addressId.apartment}"),
                     const Spacer(),
                     Radio<String>(

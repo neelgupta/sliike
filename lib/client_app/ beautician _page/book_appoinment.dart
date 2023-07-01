@@ -251,12 +251,12 @@ class _book_appoinmentState extends State<book_appoinment> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height * 0.06,
                         child: Container(
                             padding: const EdgeInsets.all(5),
                             child: const Image(
-                              image: AssetImage("assets/images/Group 55.png"),
+                              image: AssetImage("assets/images/back.png"),
                               color: Colors.black,
                             )),
                       ),
@@ -269,7 +269,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                       children: [
                         const Text("set_appointment",
                                 style: TextStyle(
-                                    fontSize: 23,
+                                    fontSize: 20,
                                     color: Colors.black,
                                     fontFamily: "spartan",
                                     fontWeight: FontWeight.bold))
@@ -371,7 +371,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('$_text $calenderTime',
+                            Text(_text!= "" && calenderTime!=""? '$_text $calenderTime' : "Select Date & time",
                                 style: const TextStyle(
                                   fontSize: 12,
                                   overflow: TextOverflow.ellipsis,
@@ -463,7 +463,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                                   size: 30),
                             ],
                           ),
-                          hint: const Text('No Preference'),
+                          hint: const Text('No Preference',style: TextStyle(fontSize: 12)),
                           // Not necessary for Option 1
                           value: _selectedLocation,
                           onChanged: (newValue) {
@@ -568,7 +568,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                                   overflow: TextOverflow.ellipsis,
                                   color: Color(0xff111111),
                                   fontFamily: "spartan",
-                                  fontWeight: FontWeight.w500))
+                                  fontWeight: FontWeight.w700))
                           .tr(),
                     ),
                   ),
@@ -617,7 +617,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.16,
+                    height: height * 0.10,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -701,6 +701,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                           SizedBox(
                             height: height * 0.38,
                             child: SfCalendar(
+                                minDate: DateTime.now(),
                                 controller: _controller,
                                 viewNavigationMode: ViewNavigationMode.none,
                                 onSelectionChanged: (details) {},
@@ -736,7 +737,7 @@ class _book_appoinmentState extends State<book_appoinment> {
                                     dayTextStyle:
                                         TextStyle(color: Color(0xFFDD6A03))),
                                 selectionDecoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  shape: BoxShape.rectangle,
                                   border: Border.all(
                                       color: const Color(0xFFDD6A03)),
                                 ),

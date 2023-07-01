@@ -741,14 +741,15 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     startTime = time[startTimeIndex];
     endTime = timeend[endTimeIndex];
     if (!widget.secondflow) {
-      selectedValue = widget.Day!;
-      startTime = widget.startTime!;
-      endTime = widget.endTime!;
-      Onoff = widget.isOpen!;
+      selectedValue = widget.Day ?? "";
+      startTime = widget.startTime ?? "";
+      endTime = widget.endTime ?? "" ;
+      breakstartTime = widget.breakstartTime ?? "" ;
+      breakendTime = widget.breakendTime ?? "" ;
+      Onoff = widget.isOpen ?? false;
       for (var i in dayDetailsList) {
         i.isOpen = widget.isOpen;
         setState(() {});

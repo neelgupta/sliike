@@ -143,6 +143,7 @@ class _allow_locationState extends State<allow_location> {
                   onTap: (calendarTapDetails) {
                     pickeddate = calendarTapDetails.date;
                     log("pickeddate :; $pickeddate");
+
                     Navigator.pop(context, calendarTapDetails.date);
                   },
                   selectionDecoration: const BoxDecoration(

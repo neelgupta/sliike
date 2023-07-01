@@ -133,6 +133,30 @@ class _BreakTimeSelectState extends State<BreakTimeSelect> {
   @override
   void initState() {
     super.initState();
+
+
+    // for (int i = 0; i < breakTime.length; i++) {
+    //   if (breakStartTime == time[i]) {
+    //     startTimeIndex = i;
+    //
+    //     _scrollWheelController = FixedExtentScrollController(
+    //       initialItem: startTimeIndex,
+    //     );
+    //     print(startTimeIndex);
+    //   }
+    // }
+    // for (int i = 0; i < timeend.length; i++) {
+    //   if (endTime == timeend[i]) {
+    //     endTimeIndex = i;
+    //
+    //     _scrollControllerEndTime = FixedExtentScrollController(
+    //       initialItem: endTimeIndex,
+    //     );
+    //     print(startTimeIndex);
+    //   }
+    // }
+
+
     log("startTime :: ${widget.startTime}");
     log("endTime :: ${widget.endTime}");
 
@@ -161,6 +185,7 @@ class _BreakTimeSelectState extends State<BreakTimeSelect> {
     breakTime.add(secondDate.toLocal());
     log("breakTime :: ${breakTime.toString()}");
   }
+
 
   @override
   Widget build(BuildContext context) {

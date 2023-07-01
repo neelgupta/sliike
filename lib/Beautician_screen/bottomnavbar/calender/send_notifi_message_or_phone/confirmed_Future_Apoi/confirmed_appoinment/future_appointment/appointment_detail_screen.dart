@@ -1,14 +1,15 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/calender_screen/calender.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-
 import '../../../../../../../services/calender_service.dart';
 import '../../../../../../../utils/util.dart';
 import '../../../../../../b_model/appointment_details_model.dart';
+import '../../../new_appoinment/new_appoinment.dart';
 import '../../../payment_detail/payment_details_screen.dart';
+import 'edit_apoinment/edit_add_service.dart';
 
 class AppointmentDetailScreen extends StatefulWidget {
   const AppointmentDetailScreen({
@@ -129,6 +130,29 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     });
   }
 
+
+  SendAppointmentReminderById(String appoId) async {
+    setState(() {
+      isloading = true;
+    });
+
+    // var date = DateFormat('yyyy-MM-dd').format(selectedDate);
+    bool callStatus = await calenderService.SendAppointmentReminder(
+      appointmentId: appointmentDetails!.data.id,
+    );
+
+    if (callStatus) {
+      Navigator.pop(context, true);
+
+      // if (appointDataList.isNotEmpty) {
+      //   getAppointDataSource();
+      // }
+    }
+    setState(() {
+      isloading = false;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -149,22 +173,38 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
             //   },
             // ));
           },
-          child: Row(
-            children: [
-              SizedBox(
-                height: 30,
-                child: Image.asset("assets/images/edit.png"),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              textComoon(
-                "Edit appointment",
-                14,
-                const Color(0xff111111),
-                FontWeight.w500,
-              ),
-            ],
+          child: InkWell(
+            onTap: (){
+              if(appointmentDetails?.data.status==0){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return  edit_add_service(appointmentDetails!.data.clientData.customerId,data: appointmentDetails!.data,status:appointmentDetails!.data.status);
+                    },
+                  ),
+                );
+              }else{
+                Fluttertoast.showToast(msg: "Confirmed appointment cannot be edited");
+              }
+            },
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 30,
+                  child: Image.asset("assets/images/edit.png"),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                textComoon(
+                  "Edit appointment",
+                  14,
+                  const Color(0xff111111),
+                  FontWeight.w500,
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -174,10 +214,10 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           onTap: () {
             setState(() {
               Navigator.pop(context);
-              // canceldialog();
-              cancelAppointmentById(
-                appointmentDetails!.data.id,
-              );
+              canceldialog();
+              // cancelAppointmentById(
+              //   appointmentDetails!.data.id,
+              // );
             });
           },
           child: Row(
@@ -233,6 +273,15 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
               //     return const dlivered();
               //   },
               // ));
+              appointmentDetails?.data.status==2 || appointmentDetails!.data.status==5?
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return  edit_add_service(appointmentDetails!.data.clientData.customerId,data: appointmentDetails!.data,status:appointmentDetails!.data.status);
+                  },
+                ),
+              ):
               handlePastAppointmentChangeStatus(
                 appointmentDetails!.data.id,
                 "delivered",
@@ -241,7 +290,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           },
           child: Row(
             children: [
-              SizedBox(
+              appointmentDetails?.data.status==2 || appointmentDetails!.data.status==5? Icon(Icons.refresh) :  SizedBox(
                 height: 30,
                 child: Image.asset(
                   "assets/images/Group 12079.png",
@@ -251,7 +300,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
               ),
               const SizedBox(width: 18),
               textComoon(
-                "Mark as delivered",
+                appointmentDetails?.data.status==2 || appointmentDetails!.data.status==5? "Rebook Appointment" : "Mark as delivered",
                 14,
                 const Color(0xff111111),
                 FontWeight.w500,
@@ -265,11 +314,11 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         InkWell(
           onTap: () {
             Navigator.pop(context);
-            // Navigator.push(context, MaterialPageRoute(
-            //   builder: (context) {
-            //     return const no_Show();
-            //   },
-            // ));
+            appointmentDetails!.data.status==5?
+            handlePastAppointmentChangeStatus(
+              appointmentDetails!.data.id,
+              "delivered",
+            ):
             handlePastAppointmentChangeStatus(
               appointmentDetails!.data.id,
               "no-show",
@@ -277,6 +326,15 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           },
           child: Row(
             children: [
+              appointmentDetails!.data.status==5?
+              SizedBox(
+                height: 30,
+                child: Image.asset(
+                  "assets/images/Group 12079.png",
+                  height: 20,
+                  width: 20,
+                ),
+              ):
               SizedBox(
                 height: 30,
                 child: Image.asset(
@@ -287,7 +345,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
               ),
               const SizedBox(width: 18),
               textComoon(
-                "Mark as no show",
+                appointmentDetails!.data.status==5? "Mark as delivered"  :   "Mark as no show",
                 14,
                 const Color(0xff111111),
                 FontWeight.w500,
@@ -330,46 +388,42 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20, bottom: 20, right: 10),
+                          left: 20, bottom: 20, right: 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
                             onTap: () {
                               Navigator.pop(context);
                             },
                             child: Container(
-                              padding: const EdgeInsets.all(8),
+                              // padding: const EdgeInsets.all(8),
                               height: height * 0.06,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.white)),
                               child: Center(
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   child: const Image(
                                     image: AssetImage(
-                                      "assets/images/backwhite.png",
+                                      "assets/images/cancel1.png",
                                     ),
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          //  SizedBox(width: width/5,),
+                          Spacer(),
                           Text(
                             appointmentStatus,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 16,
                               overflow: TextOverflow.ellipsis,
-                              color: Colors.white,
+                              color: Colors.black,
                               fontFamily: "spartan",
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-
+                          Spacer(),
                           Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: InkWell(
@@ -404,7 +458,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                 child: const Icon(
                                   Icons.more_vert,
                                   size: 30,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -492,7 +546,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const Text(
-                                        "Date",
+                                        "Time",
                                         style: TextStyle(
                                             fontSize: 10,
                                             color: Color(0xff707070),
@@ -694,7 +748,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: textComoon("Payments", 14,
-                              const Color(0xff01635D), FontWeight.w600),
+                              Colors.black, FontWeight.w600),
                         )),
                     SizedBox(
                       height: height * 0.03,
@@ -703,16 +757,10 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PaymentDetailScreen(
-                                  appointmentId: appointmentDetails!.data.id,
-                                );
-                              },
-                            ),
-                          );
+                          if(appointmentDetails!.data.status!=0){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return PaymentDetailScreen(appointmentId: appointmentDetails!.data.id,);},),);
+                          }
                         },
                         child: Container(
                           child: Column(
@@ -751,12 +799,8 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                               const EdgeInsets.only(top: 5),
                                           child: Container(
                                             child: textComoon(
-                                              appointmentDetails!
-                                                          .data
-                                                          .paymentDetails
-                                                          .paymentStatus ==
-                                                      0
-                                                  ? "Pending"
+                                              appointmentDetails!.data.paymentDetails.paymentStatus == 0
+                                                  ? "Not Paid"
                                                   : appointmentDetails!
                                                               .data
                                                               .paymentDetails
@@ -771,7 +815,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                                           ? "Failed"
                                                           : "Paid",
                                               10,
-                                              const Color(0xff219653),
+                                                appointmentDetails!.data.paymentDetails.paymentStatus == 0? Color(0xffF2C94C) : Color(0xff219653),
                                               FontWeight.w600,
                                             ),
                                           ),
@@ -784,7 +828,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                     children: [
                                       Container(
                                         child: textComoon(
-                                            "\$${appointmentDetails!.data.paymentDetails.totalPrice}.00",
+                                            "\$${appointmentDetails!.data.serviceDetails.price}.00",
                                             12,
                                             const Color(0xff01635D),
                                             FontWeight.w700),
@@ -822,36 +866,65 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: CommonButton(
                         context,
+                        appointmentDetails!.data.status==0?
+                        "SEND REMINDER" :
                         widget.isFuture
                             ? "EDIT APPOINTMENT"
-                            : "MARK AS DELIVERED",
+                            : appointmentDetails!.data.status==2 || appointmentDetails!.data.status==5?
+                              "REBOOK APPOINTMENT":
+                               "MARK AS DELIVERED",
                         12,
                         FontWeight.w600,
                         Colors.white,
                         () {
-                          // if (widget.isFuture) {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) {
-                          //         return const edit_add_service();
-                          //       },
-                          //     ),
-                          //   );
-                          // } else {
-                          //   handlePastAppointmentChangeStatus(
-                          //     appointmentDetails!.data.id,
-                          //     "delivered",
-                          //   );
-                          //   // Navigator.push(
-                          //   //   context,
-                          //   //   MaterialPageRoute(
-                          //   //     builder: (context) {
-                          //   //       return const PaymentDetailScreen();
-                          //   //     },
-                          //   //   ),
-                          //   // );
-                          // }
+                          if(appointmentDetails!.data.status==0){
+                            SendAppointmentReminderById(appointmentDetails!.data.id);
+                          }
+                          else if (widget.isFuture) {
+                            if(appointmentDetails?.data.status==0){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return  edit_add_service(appointmentDetails!.data.clientData.customerId,data: appointmentDetails!.data,status:appointmentDetails!.data.status);
+                                  },
+                                ),
+                              );
+                            }else{
+                              Fluttertoast.showToast(msg: "Confirmed appointment cannot be edited");
+                            }
+
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) {
+                            //       return  edit_add_service(appointmentDetails!.data.clientData.customerId,data: appointmentDetails!.data,status:appointmentDetails!.data.status);
+                            //     },
+                            //   ),
+                            // );
+                          } else {
+                            appointmentDetails!.data.status==2 ||  appointmentDetails!.data.status==5?
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return  edit_add_service(appointmentDetails!.data.clientData.customerId,data: appointmentDetails!.data,status:appointmentDetails!.data.status);
+                                },
+                              ),
+                            ):
+                            handlePastAppointmentChangeStatus(
+                              appointmentDetails!.data.id,
+                              "delivered",
+                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) {
+                            //       return const PaymentDetailScreen();
+                            //     },
+                            //   ),
+                            // );
+                          }
                         },
                       ),
                     ),
@@ -948,12 +1021,10 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
+                            cancelAppointmentById(
+                              appointmentDetails!.data.id,
+                            );
                             Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return const calender();
-                              },
-                            ));
                           },
                           child: Container(
                             decoration: BoxDecoration(

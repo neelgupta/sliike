@@ -688,7 +688,7 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                   Fluttertoast.showToast(msg: "Please enter valid email address !");
                 }else if(timeformatvalue!.isEmpty){
                   Fluttertoast.showToast(msg: "Please select time format !");
-                }else if(mounthvalue!.isEmpty){
+                }else if(mounthvalue == ""){
                   Fluttertoast.showToast(msg: "Please select start week !");
                 }else if(languagevalue.isEmpty){
                   Fluttertoast.showToast(msg: "Please select any language !");
@@ -798,9 +798,9 @@ class _business_Name_InfoState extends State<business_Name_Info> {
           businessname.text = getmodelProfile!.data!.businessName!;
           phonernumber.text = getmodelProfile!.data!.userId!.phoneNumber.toString();
           email.text = getmodelProfile!.data!.userId!.email!;
-          Description.text = getmodelProfile!.data!.description!;
-          mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
-          languagevalue = getmodelProfile!.data!.language!;
+          // Description.text = getmodelProfile!.data!.description! ?? "";
+          // mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
+          // languagevalue = getmodelProfile!.data!.language!;
           Instagram.text = getmodelProfile!.data!.instagramUrl!;
           Facebook.text = getmodelProfile!.data!.facebookUrl!;
           Website.text = getmodelProfile!.data!.website!;
@@ -935,47 +935,47 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["_id"],
+    id: json["_id"] ?? "",
     userId: json["userId"] == null ? null : UserId.fromJson(json["userId"]),
-    uid: json["uid"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
+    uid: json["uid"] ?? "",
+    firstName: json["firstName"] ?? "",
+    lastName: json["lastName"] ?? "",
     workSpaceImgs: json["workSpaceImgs"] == null ? [] : List<String>.from(json["workSpaceImgs"]!.map((x) => x)),
-    country: json["country"],
-    countryCode: json["country_code"],
+    country: json["country"] ?? "",
+    countryCode: json["country_code"] ?? "",
     beauticianServiceId: json["beauticianServiceId"] == null ? [] : List<String>.from(json["beauticianServiceId"]!.map((x) => x)),
-    isProvideService: json["isProvideService"],
-    isProvideProduct: json["isProvideProduct"],
-    isRecommended: json["isRecommended"],
-    totalEmployee: json["totalEmployee"],
+    isProvideService: json["isProvideService"] ?? 0,
+    isProvideProduct: json["isProvideProduct"] ?? 0,
+    isRecommended: json["isRecommended"] ?? 0,
+    totalEmployee: json["totalEmployee"] ?? 0,
     demographicIds: json["demographicIds"] == null ? [] : List<String>.from(json["demographicIds"]!.map((x) => x)),
     amenityIds: json["amenityIds"] == null ? [] : List<String>.from(json["amenityIds"]!.map((x) => x)),
     healthSafety: json["healthSafety"] == null ? null : HealthSafety.fromJson(json["healthSafety"]),
-    hasShop: json["hasShop"],
-    isLicensed: json["isLicensed"],
-    isServeAtClient: json["IsServeAtClient"],
-    isServeAtOwnPlace: json["IsServeAtOwnPlace"],
+    hasShop: json["hasShop"] ?? 0,
+    isLicensed: json["isLicensed"] ?? 0,
+    isServeAtClient: json["IsServeAtClient"] ?? 0,
+    isServeAtOwnPlace: json["IsServeAtOwnPlace"] ?? 0,
     screenStatus: json["screenStatus"],
-    isDeleted: json["isDeleted"],
+    isDeleted: json["isDeleted"] ?? 0,
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
+    v: json["__v"] ?? 0,
     address: json["address"] == null ? null : Address.fromJson(json["address"]),
-    businessName: json["businessName"],
-    businessNumber: json["businessNumber"],
+    businessName: json["businessName"] ?? "",
+    businessNumber: json["businessNumber"] ?? 0,
     location: json["location"] == null ? null : Location.fromJson(json["location"]),
-    calenderSetting: json["calenderSetting"] == null ? null : CalenderSetting.fromJson(json["calenderSetting"]),
-    description: json["description"],
-    facebookUrl: json["facebookUrl"],
-    instagramUrl: json["instagramUrl"],
-    language: json["language"],
-    website: json["website"],
-    logo: json["logo"],
-    licenseImage: json["licenseImage"],
-    cancelProtection: json["cancelProtection"],
-    noShowProtection: json["noShowProtection"],
-    profileImage: json["profileImage"],
-    isStripeSetUp: json["isStripeSetUp"],
+    calenderSetting:  CalenderSetting.fromJson(json["calenderSetting"] ?? {}),
+    description: json["description"] ?? "",
+    facebookUrl: json["facebookUrl"] ?? "",
+    instagramUrl: json["instagramUrl"] ?? "",
+    language: json["language"] ?? "",
+    website: json["website"] ?? "",
+    logo: json["logo"] ?? "",
+    licenseImage: json["licenseImage"] ?? "",
+    cancelProtection: json["cancelProtection"] ?? 0,
+    noShowProtection: json["noShowProtection"] ?? 0,
+    profileImage: json["profileImage"] ?? "",
+    isStripeSetUp: json["isStripeSetUp"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {

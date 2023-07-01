@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/b_model/appointment_details_model.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
@@ -15,7 +17,9 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class edit_add_service extends StatefulWidget {
   String clientID;
-   edit_add_service(this.clientID, {Key? key}) : super(key: key);
+  AData ? data;
+  int ? status;
+   edit_add_service(this.clientID,{Key? key,this.data,this.status}) : super(key: key);
 
   @override
   State<edit_add_service> createState() => _add_SreviceState();
@@ -227,6 +231,7 @@ class _add_SreviceState extends State<edit_add_service> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.clientID);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       getServiceDetailsModel =  await _appointmentService.getServiceDetails(context);
       getStaffDataModel = await _appointmentService.getStaffData(context);
@@ -236,6 +241,24 @@ class _add_SreviceState extends State<edit_add_service> {
       }
       log("staffValuesList :: ${staffValuesList}");
     });
+
+    if(widget.status==2 || widget.status==5 || widget.status==1 || widget.status==0){
+      setState(() {
+        duration = widget.data?.serviceDetails.duration ?? "";
+        serviceId = widget.data?.serviceDetails.serviceId ?? "";
+        selectdradioValue = widget.data?.serviceDetails.serviceName ?? "";
+        _serviceName = widget.data?.serviceDetails.serviceName ?? "";
+        _duration = Util().formatMinuteDuration(
+          hour: widget.data?.serviceDetails.duration.split(':')[0] ?? "",
+          min: widget.data?.serviceDetails.duration.split(':')[1] ?? "",
+        );
+        widget.data?.serviceDetails.duration ?? "";
+        _price =  widget.data?.serviceDetails.price.toString() ?? "";
+        _text = DateFormat('dd, MMMM').format(widget.data!.dateTime).toString();
+        pickedtime = DateFormat("HH:mm").format(widget.data!.dateTime);
+        _date = "${date+" "+pickedtime}";
+      });
+    }
   }
 
   @override
@@ -290,7 +313,7 @@ class _add_SreviceState extends State<edit_add_service> {
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              child: Text("Add Service",
+                              child: Text(widget.status==2 || widget.status==5 ? "Rebook Appointment" : widget.status==1 || widget.status==0? "Edit Appointment" : "Add Service",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -615,15 +638,34 @@ class _add_SreviceState extends State<edit_add_service> {
                       "recurringOpt" : RecurringVal,
                     };
                     log("Body :: ${Body}");
-                    await _appointmentService.addBAppointment(context, Body);
-                    setState(() {
-                      selectdradioValue = "";
-                      _date = "";
-                      _duration = "";
-                      recurringOptionsRadio = "";
-                      _text = "";
-                      pickedtime = "";
-                    });
+                    if(widget.status==2 || widget.status==5  || widget.status==0){
+                      print("Update");
+                      await _appointmentService.updateAppointment(context, Body,widget.data!.id).then((value){
+                        setState(() {
+                          // selectdradioValue = "";
+                          // _date = "";
+                          // _duration = "";
+                          // recurringOptionsRadio = "";
+                          // _text = "";
+                          // pickedtime = "";
+                        });
+                      });
+                    }else{
+                      print("Create");
+                         await _appointmentService.addBAppointment(context, Body).then((value){
+                           if(value!=null){
+                             // setState(() {
+                             //   selectdradioValue = "";
+                             //   _date = "";
+                             //   _duration = "";
+                             //   recurringOptionsRadio = "";
+                             //   _text = "";
+                             //   pickedtime = "";
+                             //   serviceId = "";
+                             // });
+                           }
+                      });
+                    }
                     // _appointmentService.appointmentIds.clear();
                   }
                   // Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -648,198 +690,203 @@ class _add_SreviceState extends State<edit_add_service> {
     return  showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          insetPadding: EdgeInsets.all(10),
-          child: Container(
-            height: height - 60,
-            width: width - 40,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 15, right: 15, top: 20),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Text("Set Service",
-                        style: TextStyle(
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                            color: Color(0xff292929),
-                            fontFamily: "spartan",
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Container(
-                    child: TextField(
-                      controller: search,
-                      onChanged: (value) {
-                        if(value.isEmpty){
-                          setState((){
-                            isLocalSearch = false;
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(
-                        contentPadding:
-                        EdgeInsets.only(left: 20),
-                        hintText: "Search service",
-                        hintStyle:
-                        TextStyle(color: Color(0xff707070)),
-                        suffixIcon: InkWell(
-                          onTap: (){
-                            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              insetPadding: EdgeInsets.all(10),
+              child: Container(
+                height: height - 60,
+                width: width - 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 20),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: Text("Set Service",
+                            style: TextStyle(
+                                fontSize: 16,
+                                overflow: TextOverflow.ellipsis,
+                                color: Color(0xff292929),
+                                fontFamily: "spartan",
+                                fontWeight: FontWeight.w700)),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Container(
+                        child: TextField(
+                          controller: search,
+                          onChanged: (value) {
+                            if(value.isEmpty){
                               setState((){
-                                searchService(search.text);
+                                isLocalSearch = false;
                               });
-                            });
+                            }
                           },
-                          child: Container(
-                            width: width * 0.2,
-                            color: Color(0xff01635D),
-                            height: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Image.asset(
-                                  "assets/images/search-whitenormal.png"),
+                          decoration: InputDecoration(
+                            contentPadding:
+                            EdgeInsets.only(left: 20),
+                            hintText: "Search service",
+                            hintStyle:
+                            TextStyle(color: Color(0xff707070)),
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                  setState((){
+                                    searchService(search.text);
+                                  });
+                                });
+                              },
+                              child: Container(
+                                width: width * 0.2,
+                                color: Color(0xff01635D),
+                                height: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Image.asset(
+                                      "assets/images/search-whitenormal.png"),
+                                ),
+                              ),
+                            ),
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan',
+                                color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(5),
+                              borderSide:
+                              BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(5),
+                              borderSide:
+                              BorderSide(color: Colors.black38),
                             ),
                           ),
                         ),
-                        labelStyle: TextStyle(
-                            fontFamily: 'spartan',
-                            color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(5),
-                          borderSide:
-                          BorderSide(color: Colors.black38),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(5),
-                          borderSide:
-                          BorderSide(color: Colors.black38),
-                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: isLocalSearch? localSearchData.length : getServiceDetailsModel!.data!.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                Navigator.pop(context);
-                              });
-                            },
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: isLocalSearch? localSearchData.length : getServiceDetailsModel!.data!.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: Container(
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 60,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                           isLocalSearch ? "${localSearchData[index].serviceType!.serviceTypeName!}" : "${getServiceDetailsModel!.data![index].serviceType!.serviceTypeName}",
-                                              style: TextStyle(fontFamily: 'spartan',
-                                                  color: Color(0xff292929),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  isLocalSearch ? "${localSearchData[index].serviceType!.serviceTypeName!}" : "${getServiceDetailsModel!.data![index].serviceType!.serviceTypeName}",
+                                                  style: TextStyle(fontFamily: 'spartan',
+                                                      color: Color(0xff292929),
+                                                      fontWeight: FontWeight.w700,
+                                                      fontSize: 16),
+                                                ),
+                                                isLocalSearch ?  Text(
+                                                  "\$${localSearchData[index].price} for ${Util().formatMinuteDuration(
+                                                    hour: localSearchData[index].duration!.split(':')[0],
+                                                    min: localSearchData[index].duration!.split(':')[1],
+                                                  )}",
+                                                  style: TextStyle(fontFamily: 'spartan',
+                                                      color: Color(0xff414141),
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 10),
+                                                ) :  Text(
+                                                  "\$${getServiceDetailsModel!.data![index].price} for ${Util().formatMinuteDuration(
+                                                    hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
+                                                    min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
+                                                  )}",
+                                                  style: TextStyle(fontFamily: 'spartan',
+                                                      color: Color(0xff414141),
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 10),
+                                                )
+                                              ],
                                             ),
-                                            isLocalSearch ?  Text(
-                                              "\$${localSearchData[index].price} for ${Util().formatMinuteDuration(
-                                                hour: localSearchData[index].duration!.split(':')[0],
-                                                min: localSearchData[index].duration!.split(':')[1],
-                                              )}",
-                                              style: TextStyle(fontFamily: 'spartan',
-                                                  color: Color(0xff414141),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 10),
-                                            ) :  Text(
-                                              "\$${getServiceDetailsModel!.data![index].price} for ${Util().formatMinuteDuration(
-                                                hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
-                                                min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
-                                              )}",
-                                              style: TextStyle(fontFamily: 'spartan',
-                                                  color: Color(0xff414141),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 10),
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          Spacer(),
+                                          isLocalSearch ? Radio<String>(
+                                            value: localSearchData[index].serviceType!.serviceTypeName!,
+                                            activeColor:
+                                            Color(0xff01635D),
+                                            groupValue: selectdradioValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectdradioValue = value.toString();
+                                                serviceId = getServiceDetailsModel!.data![index].id!;
+                                                _serviceName = getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!;
+                                                duration = getServiceDetailsModel!.data![index].duration!;
+                                                _duration = Util().formatMinuteDuration(
+                                                  hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
+                                                  min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
+                                                );
+                                                _price = getServiceDetailsModel!.data![index].price!.toString();
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                          ) : Radio<String>(
+                                            value: getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!,
+                                            activeColor:
+                                            Color(0xff01635D),
+                                            groupValue: selectdradioValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectdradioValue = value.toString();
+                                                serviceId = getServiceDetailsModel!.data![index].id!;
+                                                _serviceName = getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!;
+                                                duration = getServiceDetailsModel!.data![index].duration!;
+                                                _duration = Util().formatMinuteDuration(
+                                                  hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
+                                                  min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
+                                                );
+                                                _price = getServiceDetailsModel!.data![index].price!.toString();
+                                                print(selectdradioValue);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                          )
+                                        ],
                                       ),
-                                      Spacer(),
-                                      isLocalSearch ? Radio<String>(
-                                        value: localSearchData[index].serviceType!.serviceTypeName!,
-                                        activeColor:
-                                        Color(0xff01635D),
-                                        groupValue: selectdradioValue,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectdradioValue = value.toString();
-                                            serviceId = getServiceDetailsModel!.data![index].id!;
-                                            _serviceName = getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!;
-                                            duration = getServiceDetailsModel!.data![index].duration!;
-                                            _duration = Util().formatMinuteDuration(
-                                              hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
-                                              min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
-                                            );
-                                            _price = getServiceDetailsModel!.data![index].price!.toString();
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                      ) : Radio<String>(
-                                        value: getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!,
-                                        activeColor:
-                                        Color(0xff01635D),
-                                        groupValue: selectdradioValue,
-                                        onChanged: (value) {
-                                            setState(() {
-                                              selectdradioValue = value.toString();
-                                              serviceId = getServiceDetailsModel!.data![index].id!;
-                                              _serviceName = getServiceDetailsModel!.data![index].serviceType!.serviceTypeName!;
-                                              duration = getServiceDetailsModel!.data![index].duration!;
-                                              _duration = Util().formatMinuteDuration(
-                                                hour: getServiceDetailsModel!.data![index].duration!.split(':')[0],
-                                                min: getServiceDetailsModel!.data![index].duration!.split(':')[1],
-                                              );
-                                              _price = getServiceDetailsModel!.data![index].price!.toString();
-                                              Navigator.pop(context);
-                                            });
-                                        },
-                                      )
+                                      Divider(thickness: 1, color: Color(0xffCFCFCF),),
                                     ],
                                   ),
-                                  Divider(thickness: 1, color: Color(0xffCFCFCF),),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -1181,6 +1228,7 @@ class _add_SreviceState extends State<edit_add_service> {
                                     CalendarView.timelineMonth
                                   ],
                                   controller: _controller,
+                                  minDate: DateTime.now(),
                                   viewNavigationMode: ViewNavigationMode.none,
                                   onSelectionChanged:  (details) {
                                     if (_controller.view == CalendarView.month ||

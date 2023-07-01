@@ -7,11 +7,15 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/client_list/client_list.dart';
 
+import '../../../../b_model/appointment_details_model.dart';
+
 
 
 class newAppointment extends StatefulWidget {
-
-   newAppointment({Key? key}) : super(key: key);
+   String clientID;
+   AData ? data;
+   bool ? isUpdate;
+   newAppointment(this.clientID,{Key? key,this.data,this.isUpdate}) : super(key: key);
 
   @override
   State<newAppointment> createState() => _newAppointmentState();
@@ -26,15 +30,29 @@ class _newAppointmentState extends State<newAppointment> {
   String clientName = "";
   String clientID = "";
   fetchContacts() async{
-    contacts = await FlutterContacts.getContacts(withProperties: true);
-    setState(() => contacts = contacts);
+    if (!await FlutterContacts.requestPermission(
+        readonly: true)) {
+      setState(() => permissionDenied = true);
+      // ignore: use_build_context_synchronously
+    } else {
+      contacts = await FlutterContacts.getContacts(withProperties: true);
+      setState(() => contacts = contacts);
+      // ignore: use_build_context_synchronously
+    }
+    // contacts = await FlutterContacts.getContacts(withProperties: true);
+    // setState(() => contacts = contacts);
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchContacts();
-
+    if(widget.clientID!=""){
+      setState(() {
+        clientName = widget.data?.clientData.firstName ?? "";
+        clientID = widget.data?.clientData.customerId ?? "";
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -129,9 +147,11 @@ class _newAppointmentState extends State<newAppointment> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return clientListContact(contacts,false);
                       },)).then((value){
-                        clientName = value[0];
-                        clientID = value[1];
-                        setState(() {});
+                        if(value!=null){
+                          clientName = value[0];
+                          clientID = value[1];
+                          setState(() {});
+                        }
                       });
                     },
                     child: Container(
@@ -162,7 +182,7 @@ class _newAppointmentState extends State<newAppointment> {
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return edit_add_service(clientID);
+                        return edit_add_service(clientID,data: widget.data,);
                       },));
                     },
                     child: Container(

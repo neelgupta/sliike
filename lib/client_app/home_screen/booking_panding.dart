@@ -10,6 +10,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/select_address.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/app_colors.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import '../ beautician _page/manage_appoinment.dart';
 
@@ -104,9 +105,21 @@ class _booking_pandingState extends State<booking_panding> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    InkWell(onTap: () {
-                      Navigator.pop(context);
-                    },child: const Icon(Icons.arrow_back_sharp,size: 35,)),
+                    // InkWell(onTap: () {
+                    //   Navigator.pop(context);
+                    // },child: const Icon(Icons.arrow_back_sharp,size: 35,)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 20,
+                          // padding: const EdgeInsets.all(),
+                          child: const Image(
+                            image: AssetImage("assets/images/back.png"),
+                            color: Colors.black,
+                          )),
+                    ),
                     const Spacer(),
                     Container(
                       alignment: Alignment.center,
@@ -118,28 +131,25 @@ class _booking_pandingState extends State<booking_panding> {
                       ),
                       child: const Text("pending",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontFamily: "spartan",
-                              color: Colors.black)).tr(),
+                              color: Colors.black,fontWeight: FontWeight.w600)).tr(),
                     )
                   ],
                 ),
               ),
-              SizedBox(height: height*0.05,),
+              SizedBox(height: height*0.03,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: const Text("appointment_details",
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: "spartan",
-                        color: Colors.black)).tr(),
+                        color: Colors.black,fontWeight: FontWeight.w600)).tr(),
               ),
               SizedBox(height: height*0.01,),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: Colors.black54,),
-              ),
-              SizedBox(height: height*0.02,),
+              Divider(color: Colors.black54,endIndent: 20,indent: 20,),
+              // SizedBox(height: height*0.02,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
@@ -180,8 +190,9 @@ class _booking_pandingState extends State<booking_panding> {
                           ))
                       ),
                     ),
-                    SizedBox(width: width*0.04,),
+                    SizedBox(width: width*0.02,),
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
@@ -190,8 +201,8 @@ class _booking_pandingState extends State<booking_panding> {
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "spartan",
-                                    color: Colors.black)),
-                            SizedBox(width: width*0.20,),
+                                    color: Colors.black,fontWeight: FontWeight.w500)),
+                            // SizedBox(height: width*0.20,),
                             // Image(image: const AssetImage("assets/images/Star 1.png"),height: height*0.04,width: width*0.04,),
                             // SizedBox(width: width*0.01,),
                             // const Text("4.0",
@@ -201,11 +212,12 @@ class _booking_pandingState extends State<booking_panding> {
                             //         color: Colors.black)),
                           ],
                         ),
+                        const SizedBox(height: 10,),
                         Text("${onlyonemodal!.data!.beauticianId!.address!.apartment} ${onlyonemodal!.data!.beauticianId!.address!.city} ${onlyonemodal!.data!.beauticianId!.address!.zipCode}",
-                            style: const TextStyle(
+                            style:  TextStyle(
                                 fontSize: 10,
                                 fontFamily: "spartan",
-                                color: Colors.black54)),
+                                color:  AppColors.blueColor)),
                         // Row(
                         //   children: [
                         //     Image(image: const AssetImage("assets/images/Map pin.png"),height: height*0.04,width: width*0.04,),
@@ -217,30 +229,27 @@ class _booking_pandingState extends State<booking_panding> {
                         //             color: Colors.black)),
                         //   ],
                         // )
+                        SizedBox(height: width*0.10,),
                       ],
                     )
                   ],
                 ),
               ),
-              SizedBox(height: height*0.02,),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: Colors.black54,),
-              ),
+              Divider(color: Colors.black54,endIndent: 20,indent: 20),
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        SizedBox(height: height * 0.03,),
+                        SizedBox(height: height * 0.01,),
                         Row(
                           children: [
                             Text("$startData - $endData",
                                 style: const TextStyle(
                                     fontSize: 18,
                                     fontFamily: "spartan",
-                                    color: Colors.black)),
+                                    color: Colors.black,fontWeight: FontWeight.w600)),
                           ],
                         ),
                         SizedBox(height: height * 0.03,),
@@ -250,13 +259,13 @@ class _booking_pandingState extends State<booking_panding> {
                           children: [
                             Text("${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}",
                                 style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontFamily: "spartan",
                                     color: Colors.black)),
                             const Spacer(),
                             Text("\$${onlyonemodal!.data!.serviceId!.price}",
                                 style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontFamily: "spartan",
                                     color: Colors.black)),
                           ],
@@ -268,7 +277,7 @@ class _booking_pandingState extends State<booking_panding> {
                           children: [
                             Text("for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}",
                                 style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontFamily: "spartan",
                                     color: Colors.black54)),
                           ],
@@ -316,10 +325,7 @@ class _booking_pandingState extends State<booking_panding> {
                   //     )
                   // ),
                   // SizedBox(height: height * 0.01,),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(color: Colors.black54,),
-                  ),
+                  Divider(color: Colors.black54,indent: 20,endIndent: 20),
                   SizedBox(height: height * 0.01,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -340,10 +346,8 @@ class _booking_pandingState extends State<booking_panding> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(color: Colors.black54,),
-                  ),
+                  SizedBox(height: height * 0.01,),
+                  Divider(color: Colors.black54,endIndent: 20,indent: 20,),
                   if(widget.isPast ?? true)GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -369,7 +373,7 @@ class _booking_pandingState extends State<booking_panding> {
                                   fontFamily: "spartan",
                                   color: Color(0xffDD6A03))).tr(),
                           SizedBox(width: width*0.02,),
-                          const Icon(Icons.arrow_forward_ios_sharp,size: 25,color: Color(0xffDD6A03),)
+                          const Icon(Icons.arrow_forward_ios_sharp,size: 20,color: Color(0xffDD6A03),)
                         ],
                       ),
                     ),

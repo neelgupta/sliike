@@ -92,7 +92,7 @@ class _pendind_apoinmentState extends State<pendind_apoinment> {
                                           onTap: (){
                                             Navigator.pop(context);
                                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                              return edit_add_service();
+                                              return edit_add_service("");
                                             },));
                                           },
                                           child: Row(

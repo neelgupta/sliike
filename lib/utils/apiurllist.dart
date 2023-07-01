@@ -124,6 +124,11 @@ class ApiUrlList {
   static String addFeedbackClient = "${baseUrl}help/addFeedback/client";
   //beautician//
   static String addFeedbackBeauty = "${baseUrl}help/addFeedback/beautician";
+  static String SendAppointmentReminder = "${baseUrl}beautician/SendAppointmentReminder";
+
+  static String updateBAppointment = "${baseUrl}beautician/updateAppointment/";
+
+
 
   /// Update Buisness Details //
   static String updateBusinessDetails =

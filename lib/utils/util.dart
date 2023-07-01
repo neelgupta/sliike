@@ -38,7 +38,7 @@ class Util {
   final DateFormat formatter = DateFormat('dd-mm-yyyy');
   final DateFormat eMMMdformatter = DateFormat('E, MMM d');
   final DateFormat hhmmaformatter = DateFormat('hh:mm a');
-  final DateFormat MDEAformatter = DateFormat('MMM d . h:a');
+  final DateFormat MDEAformatter = DateFormat('MMM d . h:m a');
   final DateFormat eMMMdYYYYhaformatter = DateFormat('E, MMM d, yyyy. ');
   final DateFormat haformatter = DateFormat('ha');
   final DateFormat mmmDformatter = DateFormat('MMM d');

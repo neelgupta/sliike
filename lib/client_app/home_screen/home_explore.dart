@@ -563,7 +563,7 @@ class _home_exploreState extends State<home_explore> {
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                if (recommended[
+                                                                if (recentList[
                                                                             index]
                                                                         .isLicensed ==
                                                                     "1")
@@ -580,7 +580,7 @@ class _home_exploreState extends State<home_explore> {
                                                                       width: 20,
                                                                     ),
                                                                   ),
-                                                                if (recommended[
+                                                                if (recentList[
                                                                             index]
                                                                         .hasShop ==
                                                                     0)
@@ -888,7 +888,7 @@ class _home_exploreState extends State<home_explore> {
                                                                           fontWeight:
                                                                               FontWeight.w600)),
                                                                 ),
-                                                                if (recommended[
+                                                                if (recentList[
                                                                             index]
                                                                         .isLicensed ==
                                                                     "1")
@@ -905,7 +905,7 @@ class _home_exploreState extends State<home_explore> {
                                                                       width: 20,
                                                                     ),
                                                                   ),
-                                                                if (recommended[
+                                                                if (recentList[
                                                                             index]
                                                                         .hasShop ==
                                                                     0)

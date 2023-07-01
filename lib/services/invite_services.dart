@@ -44,7 +44,7 @@ class InviteServices {
     }
   }
 
-  inviteContacts(BuildContext context,String contactDetails) async {
+  Future inviteContacts(BuildContext context,String contactDetails) async {
     // Loader.show(
     //   context,
     //   isSafeAreaOverlay: false,
@@ -66,8 +66,9 @@ class InviteServices {
       },
       headers: Headers,
     );
-    log("addBAppointment Code : ${response.statusCode}");
-    log("addBAppointment Body : ${response.body}");
+    log("inviteContacts Code : ${response.statusCode}");
+    log("inviteContacts PayLoad : ${contactDetails}");
+    log("inviteContacts Body : ${response.body}");
     Map map = jsonDecode(response.body);
     if(response.statusCode == 201 || response.statusCode==200) {
       // return GetAddBAppointment.fromJson(jsonDecode(response.body));
@@ -77,7 +78,7 @@ class InviteServices {
     // return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
 
-  getInvitedClientList(BuildContext context) async {
+  Future getInvitedClientList(BuildContext context) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
@@ -98,6 +99,7 @@ class InviteServices {
     );
     log("getInvitedClientList Code : ${response.statusCode}");
     log("getInvitedClientList Body : ${response.body}");
+    log("getInvitedClientList Headers : ${Headers}");
     Map map = jsonDecode(response.body);
     if(response.statusCode == 201 || response.statusCode==200) {
       Loader.hide();

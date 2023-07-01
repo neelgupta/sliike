@@ -34,17 +34,21 @@ class GetAppointmentPreDetailsData {
 
 class Data {
   List<AppointmentDatum>? appointmentData;
+  int ? totalPrice;
 
   Data({
     this.appointmentData,
+    this.totalPrice
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    appointmentData: json["appointmentData"] == null ? [] : List<AppointmentDatum>.from(json["appointmentData"]!.map((x) => AppointmentDatum.fromJson(x))),
+    appointmentData: List<AppointmentDatum>.from(json["appointmentData"]!.map((x) => AppointmentDatum.fromJson(x)) ?? []),
+      totalPrice: json["totalPrice"] ?? 0
   );
 
   Map<String, dynamic> toJson() => {
-    "appointmentData": appointmentData == null ? [] : List<dynamic>.from(appointmentData!.map((x) => x.toJson())),
+    "appointmentData": List<dynamic>.from(appointmentData!.map((x) => x.toJson())),
+    "totalPrice" : totalPrice
   };
 }
 

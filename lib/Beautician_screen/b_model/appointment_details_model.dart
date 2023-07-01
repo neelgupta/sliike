@@ -72,12 +72,14 @@ class AData {
 }
 
 class ClientData {
+  String customerId;
   String firstName;
   String lastName;
   String countryCode;
   int phoneNumber;
 
   ClientData({
+    required this.customerId,
     required this.firstName,
     required this.lastName,
     required this.countryCode,
@@ -85,6 +87,7 @@ class ClientData {
   });
 
   factory ClientData.fromJson(Map<String, dynamic> json) => ClientData(
+        customerId: json["customerId"] ?? "",
         firstName: json["firstName"] ?? "",
         lastName: json["lastName"] ?? "",
         countryCode: json["country_code"] ?? "",
@@ -92,6 +95,7 @@ class ClientData {
       );
 
   Map<String, dynamic> toJson() => {
+        "customerId" : customerId,
         "firstName": firstName,
         "lastName": lastName,
         "country_code": countryCode,
@@ -124,23 +128,27 @@ class PaymentDetails {
 }
 
 class ServiceData {
+  String serviceId;
   String serviceName;
   int price;
   String duration;
 
   ServiceData({
+    required this.serviceId,
     required this.serviceName,
     required this.price,
     required this.duration,
   });
 
   factory ServiceData.fromJson(Map<String, dynamic> json) => ServiceData(
+         serviceId: json["serviceId"] ?? "",
         serviceName: json["serviceName"] ?? "",
         price: json["price"] ?? 0,
         duration: json["duration"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
+        "serviceId" : serviceId,
         "serviceName": serviceName,
         "price": price,
         "duration": duration,

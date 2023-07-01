@@ -93,8 +93,10 @@ class PaymentInfo {
   DateTime paymentDate;
   double subTotal;
   double discount;
-  double gstORhst;
-  double pstORqst;
+  double GST;
+  double HST;
+  double PST;
+  double QST;
   double total;
 
   PaymentInfo({
@@ -102,8 +104,10 @@ class PaymentInfo {
     required this.paymentDate,
     required this.subTotal,
     required this.discount,
-    required this.gstORhst,
-    required this.pstORqst,
+    required this.GST,
+    required this.HST,
+    required this.PST,
+    required this.QST,
     required this.total,
   });
 
@@ -112,8 +116,10 @@ class PaymentInfo {
         paymentDate: DateTime.parse(json["paymentDate"]),
         subTotal: double.parse((json["subTotal"] ?? 0).toString()),
         discount: double.parse((json["discount"] ?? 0).toString()),
-        gstORhst: double.parse((json["gstORhst"] ?? 0).toString()),
-        pstORqst: double.parse((json["pstORqst"] ?? 0).toString()),
+        GST: double.parse((json["GST"] ?? 0).toString()),
+        HST: double.parse((json["HST"] ?? 0).toString()),
+        PST: double.parse((json["PST"] ?? 0).toString()),
+        QST: double.parse((json["QST"] ?? 0).toString()),
         total: double.parse((json["total"] ?? 0).toString()),
       );
 
@@ -122,8 +128,10 @@ class PaymentInfo {
         "paymentDate": paymentDate.toIso8601String(),
         "subTotal": subTotal,
         "discount": discount,
-        "gstORhst": gstORhst,
-        "pstORqst": pstORqst,
+        "GST": GST,
+        "HST": HST,
+        "PST": PST,
+        "QST": QST,
         "total": total,
       };
 }

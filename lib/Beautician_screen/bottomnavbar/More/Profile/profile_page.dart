@@ -681,6 +681,14 @@ class _profilePageState extends State<profilePage> {
                     onChanged: (String? newValue) {
                       setState(() {
                         gendervalue = newValue!;
+                        print(gendervalue);
+                        // for(var i in genderitems){
+                        //   if(gendervalue == i){
+                        //     gendervalue = "Other";
+                        //     setState(() {});
+                        //     print(gendervalue);
+                        //   }
+                        // }
                       });
                     },
                   ),

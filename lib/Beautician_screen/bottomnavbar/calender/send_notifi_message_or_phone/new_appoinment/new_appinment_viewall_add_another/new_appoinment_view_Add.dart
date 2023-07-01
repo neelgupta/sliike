@@ -36,6 +36,8 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
   //   await launch('$link');
   // }
 
+  String total = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -121,7 +123,7 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
           ),
         ),
       ),
-      body: Container(
+      body:  Container(
         height: height,
         width: width,
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -151,76 +153,76 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
                           overflow: TextOverflow.ellipsis,
                           color: Color(0xff01635D),
                           fontFamily: "spartan",
-                          fontWeight: FontWeight.w600)),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                    showDialog(context: context, builder: (context) {
-                      return AlertDialog(
-                        alignment: Alignment.bottomCenter,
-                        titlePadding: EdgeInsets.only(top: 12, left: 24, right: 12),
-                        contentPadding: EdgeInsets.only(top: 12, left: 24, bottom: 20),
-                        insetPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
-                        title: StatefulBuilder(
-                          builder: (context, setState) {
-                            return Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: height * 0.03,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "View client profile",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xff292929),
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.02,
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                  color: Color(0xffCFCFCF),
-                                ),
-                                SizedBox(
-                                  height: height * 0.02,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Remove from appointment",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xffEB5757),
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.04,
-                                ),
-                                commonButtonborder(context,"CLOSE",12,FontWeight.w600,Color(0xff01635D),(){
-                                    Navigator.pop(context);
-                                }),
-                                SizedBox(
-                                  height: height * 0.03,
-                                ),
-
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    },);
-                    },
-                    child: Icon(Icons.more_vert, color: Color(0xff414141)),
-                  ),
+                          fontWeight: FontWeight.w600))
+                  // Spacer(),
+                  // InkWell(
+                  //   onTap: () {
+                  //   showDialog(context: context, builder: (context) {
+                  //     return AlertDialog(
+                  //       alignment: Alignment.bottomCenter,
+                  //       titlePadding: EdgeInsets.only(top: 12, left: 24, right: 12),
+                  //       contentPadding: EdgeInsets.only(top: 12, left: 24, bottom: 20),
+                  //       insetPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(Radius.circular(10))),
+                  //       title: StatefulBuilder(
+                  //         builder: (context, setState) {
+                  //           return Column(
+                  //             children: <Widget>[
+                  //               SizedBox(
+                  //                 height: height * 0.03,
+                  //               ),
+                  //               Container(
+                  //                 alignment: Alignment.center,
+                  //                 child: Text(
+                  //                   "View client profile",
+                  //                   style: TextStyle(
+                  //                       fontSize: 14,
+                  //                       color: Color(0xff292929),
+                  //                       fontFamily: "spartan",
+                  //                       fontWeight: FontWeight.w600),
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: height * 0.02,
+                  //               ),
+                  //               Divider(
+                  //                 thickness: 1,
+                  //                 color: Color(0xffCFCFCF),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: height * 0.02,
+                  //               ),
+                  //               Container(
+                  //                 alignment: Alignment.center,
+                  //                 child: Text(
+                  //                   "Remove from appointment",
+                  //                   style: TextStyle(
+                  //                       fontSize: 14,
+                  //                       color: Color(0xffEB5757),
+                  //                       fontFamily: "spartan",
+                  //                       fontWeight: FontWeight.w600),
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: height * 0.04,
+                  //               ),
+                  //               commonButtonborder(context,"CLOSE",12,FontWeight.w600,Color(0xff01635D),(){
+                  //                   Navigator.pop(context);
+                  //               }),
+                  //               SizedBox(
+                  //                 height: height * 0.03,
+                  //               ),
+                  //
+                  //             ],
+                  //           );
+                  //         },
+                  //       ),
+                  //     );
+                  //   },);
+                  //   },
+                  //   child: Icon(Icons.more_vert, color: Color(0xff414141)),
+                  // ),
                 ],
               ),
               SizedBox(
@@ -233,10 +235,10 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
               SizedBox(
                 height: height * 0.01,
               ),
-              if(getAppointmentPreDetailsData?.data?.appointmentData!=null)Container(
+              Container(
                 // color: Colors.red,
-                height: height * 0.56,
                 child : ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: getAppointmentPreDetailsData!.data!.appointmentData!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
@@ -472,13 +474,13 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Divider(
-                thickness: 1,
-                color: Color(0xffCFCFCF),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
+              // Divider(
+              //   thickness: 1,
+              //   color: Color(0xffCFCFCF),
+              // ),
+              // SizedBox(
+              //   height: height * 0.02,
+              // ),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
@@ -695,7 +697,7 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
                           color: Color(0xff707070),
                           fontFamily: "spartan",
                           fontWeight: FontWeight.w500)),
-                  Text("\$11.00",
+                  Text("\$${getAppointmentPreDetailsData?.data?.totalPrice ?? 0}",
                       style: TextStyle(
                           fontSize: 14,
                           overflow: TextOverflow.ellipsis,
@@ -723,7 +725,7 @@ class _newAppoinment_Viwe_AddState extends State<newAppoinment_Viwe_Add> {
             ],
           ),
         ),
-      ),
+      )
     );
   }
 }

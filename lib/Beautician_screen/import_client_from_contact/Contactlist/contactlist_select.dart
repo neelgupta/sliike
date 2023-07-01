@@ -26,6 +26,8 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
 
   TextEditingController search = TextEditingController();
 
+  List<Contact> localSearchData = [];
+
   String _name = "";
   String _number = "";
 
@@ -162,7 +164,11 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                 ),
                 TextField(
                   controller: search,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    setState(() {
+                      searchService(value);
+                    });
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(left: 20),
                     hintText: "Search service",
@@ -228,7 +234,7 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: widget.contacts!.length,
+                    itemCount: search.text.isNotEmpty ? localSearchData.length : widget.contacts!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 6, bottom: 2),
@@ -236,7 +242,25 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                           children: [
                             Row(
                               children: [
-                                Custom_Checkbox(
+                                search.text.isNotEmpty ? Custom_Checkbox(
+                                  isChecked: checkboxvalue![index],
+                                  onChange: (value) {
+                                    print(widget.contacts);
+                                    setState(() {
+                                      checkboxvalue![index] = value;
+                                      _name = localSearchData[index].displayName;
+                                      _number =  localSearchData[index].phones.first.number;
+                                      print(_name);
+                                      print(_number);
+                                    });
+                                  },
+                                  backgroundColor: const Color(0xff01635D),
+                                  borderColor: const Color(0xff01635D),
+                                  icon: Icons.check,
+                                  iconColor: Colors.white,
+                                  size: 24,
+                                  iconSize: 20,
+                                ) : Custom_Checkbox(
                                   isChecked: checkboxvalue![index],
                                   onChange: (value) {
                                     print(widget.contacts);
@@ -274,7 +298,7 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    widget.contacts![index].displayName,
+                                    search.text.isNotEmpty ? localSearchData[index].displayName :  widget.contacts![index].displayName,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 12,
@@ -312,9 +336,10 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                                 "Click here to accept my invite and go to your app store or  ${"www.sliike.com"} to download the app.";
                             if(_name!=""){
                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-                              await whatsapp(_number,message).then((value){
-                                _inviteServices.inviteContacts(context, _number);
+                              await whatsapp(_number,message).then((value) async {
+                                await  _inviteServices.inviteContacts(context, _number).then((value){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => clientListContact(widget.contacts,widget.isADD),));
+                                });
                               });
                              });
                             }else{
@@ -350,6 +375,18 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
     );
   }
 
+  searchService(String value) {
+    if (value.isNotEmpty) {
+      localSearchData.clear();
+      for (int i = 0; i < widget.contacts!.length; i++) {
+        if (widget.contacts![i].displayName.toLowerCase().contains(value.toLowerCase())) {
+          localSearchData.add(widget.contacts![i]);
+          setState(() {});
+        }
+      }
+      // log("localSearchData :: ${localSearchData}");
+    }
+  }
 
 }
 

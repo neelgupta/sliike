@@ -159,22 +159,17 @@ class _home_appointmentsState extends State<home_appointments> {
                       ],
                     ),
                   ),
-                  upcoming
-                      ? datalist.isNotEmpty
-                          ? Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.05),
+                  upcoming ? datalist.isNotEmpty ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    height: height * 0.02,
-                                  ),
+                                  SizedBox(height: height * 0.02,),
                                   const Text("upcoming_appointments",
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               fontFamily: "spartan",
-                                              color: Colors.black))
+                                              color: Colors.black,fontWeight: FontWeight.w600))
                                       .tr(),
                                   SizedBox(
                                     height: height * 0.02,
@@ -306,7 +301,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                   fontFamily:
                                                                       "spartan",
                                                                   color: Colors
-                                                                      .black)),
+                                                                      .black,fontWeight: FontWeight.w600)),
                                                           const Spacer(),
                                                           Container(
                                                               alignment:

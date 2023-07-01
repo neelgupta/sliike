@@ -49,7 +49,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["_id"],
-    clientId: json["clientId"],
+    clientId: json["clientId"] ?? "",
     phoneNubWithFormat: json["phoneNubWithFormat"],
     phoneNumber: json["phoneNumber"],
     status: json["status"],

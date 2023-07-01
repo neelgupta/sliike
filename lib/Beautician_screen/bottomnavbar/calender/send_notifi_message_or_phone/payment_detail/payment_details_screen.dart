@@ -161,11 +161,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                           ),
                           const Spacer(),
                           textComoon(
-                            Util()
-                                .MDEAformatter
-                                .format(paymentData!.paymentInfo.paymentDate
-                                    .toLocal())
-                                .toString(),
+                            Util().MDEAformatter.format(paymentData?.paymentInfo.paymentDate.toLocal() ?? DateTime.now()).toString(),
                             // "Mar 17 . 11:AM",
                             12,
                             const Color(0xff292929),
@@ -387,7 +383,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Row(
+                      if(paymentData!.paymentInfo.HST!=0)Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           textComoon(
@@ -404,7 +400,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.gstORhst}",
+                              "\$${paymentData!.paymentInfo.HST}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,
@@ -415,7 +411,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Row(
+                      if(paymentData!.paymentInfo.PST!=0)Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           textComoon(
@@ -432,7 +428,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             width: width * 0.2,
                             alignment: Alignment.topRight,
                             child: textComoon(
-                              "\$${paymentData!.paymentInfo.pstORqst}",
+                              "\$${paymentData!.paymentInfo.PST}",
                               12,
                               const Color(0xff292929),
                               FontWeight.w500,

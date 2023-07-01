@@ -169,74 +169,74 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
                   ],
                 ),
               ),
-              Container(
-                width: width,
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(//mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                        Radio(
-                          value: 2,
-                          groupValue: noShowValue,
-
-                          activeColor: Color(0xff01635D),
-                          fillColor: MaterialStateColor.resolveWith(
-                                  (states) => Color(0xff01635D)),
-                          onChanged: (value) {
-                            setState(() {
-                              noShowValue = value as int;
-                              print(noShowValue);
-
-                            });
-                          },
-                        ),
-                        textComoon("Relax",14,Color(0xff111111), FontWeight.w700),
-                      ],
-                    ),
-                   // SizedBox(height: height*0.01,),
-                    textComoonfade("70% refund to client.",12,Color(0xff414141), FontWeight.w500),
-                  ],
-                ),
-              ),
-              Container(
-                width: width,
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(//mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                        Radio(
-                          value: 3,
-                          groupValue: noShowValue,
-
-                          activeColor: Color(0xff01635D),
-                          fillColor: MaterialStateColor.resolveWith(
-                                  (states) => Color(0xff01635D)),
-                          onChanged: (value) {
-                            setState(() {
-                              noShowValue = value as int;
-                              print(noShowValue);
-
-                            });
-                          },
-                        ),
-                        textComoon("Strict",14,Color(0xff111111), FontWeight.w700),
-                      ],
-                    ),
-                   // SizedBox(height: height*0.01,),
-                    textComoonfade("20% refund to client.",12,Color(0xff414141), FontWeight.w500),
-                  ],
-                ),
-              ),
+              // Container(
+              //   width: width,
+              //   padding: EdgeInsets.symmetric(vertical: 12,),
+              //   decoration: BoxDecoration(
+              //       border: Border(bottom: BorderSide(color: Colors.black12))
+              //   ),
+              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //      //  Row(//mainAxisAlignment: MainAxisAlignment.start,
+              //      //    children: [
+              //      //
+              //      //      Radio(
+              //      //        value: 2,
+              //      //        groupValue: noShowValue,
+              //      //
+              //      //        activeColor: Color(0xff01635D),
+              //      //        fillColor: MaterialStateColor.resolveWith(
+              //      //                (states) => Color(0xff01635D)),
+              //      //        onChanged: (value) {
+              //      //          setState(() {
+              //      //            noShowValue = value as int;
+              //      //            print(noShowValue);
+              //      //
+              //      //          });
+              //      //        },
+              //      //      ),
+              //      //      textComoon("Relax",14,Color(0xff111111), FontWeight.w700),
+              //      //    ],
+              //      //  ),
+              //      // // SizedBox(height: height*0.01,),
+              //      //  textComoonfade("70% refund to client.",12,Color(0xff414141), FontWeight.w500),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   width: width,
+              //   padding: EdgeInsets.symmetric(vertical: 12,),
+              //   decoration: BoxDecoration(
+              //       border: Border(bottom: BorderSide(color: Colors.black12))
+              //   ),
+              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Row(//mainAxisAlignment: MainAxisAlignment.start,
+              //         children: [
+              //
+              //           Radio(
+              //             value: 3,
+              //             groupValue: noShowValue,
+              //
+              //             activeColor: Color(0xff01635D),
+              //             fillColor: MaterialStateColor.resolveWith(
+              //                     (states) => Color(0xff01635D)),
+              //             onChanged: (value) {
+              //               setState(() {
+              //                 noShowValue = value as int;
+              //                 print(noShowValue);
+              //
+              //               });
+              //             },
+              //           ),
+              //           textComoon("Strict",14,Color(0xff111111), FontWeight.w700),
+              //         ],
+              //       ),
+              //      // SizedBox(height: height*0.01,),
+              //       textComoonfade("20% refund to client.",12,Color(0xff414141), FontWeight.w500),
+              //     ],
+              //   ),
+              // ),
               Container(
                   alignment: Alignment.topLeft,
                 width: width,

@@ -4,9 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getAppointmentDetailsModel.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appinment_viewall_add_another/new_appoinment_view_Add.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appoinment.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -15,7 +13,6 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../../services/calender_service.dart';
 import '../../../../b_model/employee_get_list.dart';
-import '../../../../b_model/get_appointment_details_model.dart';
 import '../confirmed_Future_Apoi/confirmed_appoinment/future_appointment/appointment_detail_screen.dart';
 import 'allow_location.dart';
 import 'appointment_data_source.dart';
@@ -209,9 +206,9 @@ class _calenderState extends State<calender> {
       isAppointmentsLoading = true;
     });
 
-    getDates(pickeddate);
-
     appointDataList.clear();
+
+    getDates(pickeddate);
 
     var date = DateFormat('yyyy-MM-dd').format(selectedDate);
     var day = DateFormat('EEEE').format(selectedDate);
@@ -223,7 +220,10 @@ class _calenderState extends State<calender> {
 
     if (appointMentDetails != null) {
       if (appointMentDetails!.data!.appointmentData!.isNotEmpty) {
+        setState(() {
         appointDataList.addAll(appointMentDetails!.data!.appointmentData!);
+          log("appointDataList :: ${appointDataList.length}");
+        });
       } else {
         // appointDataList.clear();
       }
@@ -243,6 +243,11 @@ class _calenderState extends State<calender> {
     List<Appointment> meetings = <Appointment>[];
     DateTime today = DateTime.now();
     DateTime startTime = DateTime.now();
+
+    setState(() {
+      isLoading = true;
+    });
+
     DateTime endTime = startTime.add(
       const Duration(hours: 2),
     );
@@ -253,39 +258,41 @@ class _calenderState extends State<calender> {
       meetings = [];
     } else {
       for (int i = 0; i < appointDataList.length; i++) {
-        var singleData = appointDataList[i];
+        setState(() {
+          var singleData = appointDataList[i];
 
-        // startTimeZoneName = singleData.dateTime.timeZoneName;
-        // endTimeZoneName = singleData.endDateTime.timeZoneName;
-        startTime = DateTime(
-          singleData.dateTime!.year,
-          singleData.dateTime!.month,
-          singleData.dateTime!.day,
-          singleData.dateTime!.hour,
-          singleData.dateTime!.minute,
-          singleData.dateTime!.second,
-        );
-        endTime = DateTime(
-          singleData.endDateTime!.year,
-          singleData.endDateTime!.month,
-          singleData.endDateTime!.day,
-          singleData.endDateTime!.hour,
-          singleData.endDateTime!.minute,
-          singleData.endDateTime!.second,
-        );
-        meetings.add(
-          Appointment(
-            isAllDay: false,
-            id: singleData.id,
-            subject: "${singleData.clientData?.firstName} ${singleData.clientData?.lastName}(${singleData.serviceDetails?.serviceTypeName})",
-            startTime: startTime.toLocal(),
-            endTime: endTime.toLocal(),
-            // startTimeZone: startTimeZoneName,
-            // endTimeZone: endTimeZoneName,
-            color: const Color(0xFF005874),
-            // isAllDay: false,
-          ),
-        );
+          // startTimeZoneName = singleData.dateTime.timeZoneName;
+          // endTimeZoneName = singleData.endDateTime.timeZoneName;
+          startTime = DateTime(
+            singleData.dateTime!.year,
+            singleData.dateTime!.month,
+            singleData.dateTime!.day,
+            singleData.dateTime!.hour,
+            singleData.dateTime!.minute,
+            singleData.dateTime!.second,
+          );
+          endTime = DateTime(
+            singleData.endDateTime!.year,
+            singleData.endDateTime!.month,
+            singleData.endDateTime!.day,
+            singleData.endDateTime!.hour,
+            singleData.endDateTime!.minute,
+            singleData.endDateTime!.second,
+          );
+          meetings.add(
+            Appointment(
+              isAllDay: false,
+              id: singleData.id,
+              subject: "${singleData.clientData?.firstName} ${singleData.clientData?.lastName}(${singleData.serviceDetails?.serviceTypeName})",
+              startTime: startTime.toLocal(),
+              endTime: endTime.toLocal(),
+              // startTimeZone: startTimeZoneName,
+              // endTimeZone: endTimeZoneName,
+              color: const Color(0xFF005874),
+              // isAllDay: false,
+            ),
+          );
+        });
       }
     }
     setState(() {
@@ -352,25 +359,34 @@ class _calenderState extends State<calender> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () async {
-                        DateTime date = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return allow_location(
-                                getDate: pickeddate,
-                              );
-                            },
-                          ),
-                        );
-                        print(date);
-
-                        setState(() {
-                          pickeddate = date;
-                          highlight = true;
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => allow_location(getDate: pickeddate),)).then((value){
+                          if(value!=null){
+                            setState(() {
+                              highlight = true;
+                              getCalendarAppointments2(value);
+                            });
+                          }
                         });
-                        getCalendarAppointments2(pickeddate);
                       },
+                      // onTap: () async {
+                      //   DateTime date = await Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) {
+                      //         return allow_location(
+                      //           getDate: pickeddate,
+                      //         );
+                      //       },
+                      //     ),
+                      //   );
+                      //   print(date);
+                      //   setState(() {
+                      //     pickeddate = date;
+                      //     highlight = true;
+                      //     getCalendarAppointments2(pickeddate);
+                      //   });
+                      // },
                       child: Row(
                         children: [
                           Text(
@@ -447,6 +463,8 @@ class _calenderState extends State<calender> {
                 isOpen: appointMentDetails?.data?.timingOfDay?.isOpen,
                 startTime: appointMentDetails?.data?.timingOfDay?.startTime,
                 endTime: appointMentDetails?.data?.timingOfDay?.endTime,
+                breakstartTime: appointMentDetails?.data?.timingOfDay?.breakStartTime,
+                breakendTime: appointMentDetails?.data?.timingOfDay?.breakEndTime,
               ),)).then((value){
                 var displayDate = DateFormat('yyyy-MM-dd').format(pickeddate);
                 Map<String ,dynamic> body = {
@@ -468,7 +486,7 @@ class _calenderState extends State<calender> {
           SpeedDialChild(
               onTap: (){
                 // Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppoinment_Viwe_Add(),));
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppointment(),));
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppointment("")));
               },
               child: Center(child: Image(image: AssetImage("assets/images/calender.png"),height: 20,color: Colors.white,)),
               backgroundColor: Color(0xffDD6A03),

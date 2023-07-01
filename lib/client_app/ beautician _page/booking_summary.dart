@@ -133,18 +133,19 @@ class _booking_summaryState extends State<booking_summary> {
                             ), (route) => false);
                           },
                           child: Container(
-                            padding: const EdgeInsets.all(5),
+                            // color: Colors.red,
+                            padding: const EdgeInsets.all(12),
                             height: height * 0.06,
                             child: Container(
                                 padding: const EdgeInsets.all(5),
                                 child: const Image(
                                   image:
-                                      AssetImage("assets/images/Group 55.png"),
+                                      AssetImage("assets/images/back.png"),
                                   color: Colors.black,
                                 )),
                           ),
                         ),
-                        SizedBox(width: width * 0.10),
+                        SizedBox(width: width * 0.06),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -174,16 +175,12 @@ class _booking_summaryState extends State<booking_summary> {
                   ? SingleChildScrollView(
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
+                          const SizedBox(height: 20,),
+                          Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Row(
                               children: [
                                 CachedNetworkImage(
-                                  imageUrl: appointmentData[0]
-                                          .beauticianId!
-                                          .logoPath ??
-                                      '',
+                                  imageUrl: appointmentData[0].beauticianId!.logoPath ??'',
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     padding: const EdgeInsets.all(10),
@@ -234,44 +231,31 @@ class _booking_summaryState extends State<booking_summary> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                SizedBox(width: 06),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "${appointmentData[0].beauticianId!.businessName}",
-                                          maxLines: null,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: "spartan",
-                                            color: Colors.black,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        // SizedBox(width: width * 0.12),
-                                        // Image(image: const AssetImage(
-                                        //     "assets/images/Star 1.png"),
-                                        //   height: height * 0.04,
-                                        //   width: width * 0.04,),
-                                        // SizedBox(width: width * 0.01,),
-                                        // Text("",
-                                        //     style: const TextStyle(
-                                        //         fontSize: 14,
-                                        //         fontFamily: "spartan",
-                                        //         color: Colors.black)),
-                                      ],
+                                    Text(
+                                      "${appointmentData[0].beauticianId!.businessName}",
+                                      maxLines: null,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "spartan",
+                                        color: Colors.black,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.w500
+                                      ),
                                     ),
-                                    SizedBox(height: 4),
+                                    SizedBox(height: 10),
                                     Text(
                                       "${appointmentData[0].beauticianId!.address!.apartment} ${appointmentData[0].beauticianId!.address!.city} ${appointmentData[0].beauticianId!.address!.zipCode}",
                                       style: const TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         fontFamily: "spartan",
                                         color: Colors.black54,
                                       ),
                                     ),
+                                    SizedBox(height: 08),
                                     Row(
                                       children: [
                                         Image(
@@ -280,28 +264,28 @@ class _booking_summaryState extends State<booking_summary> {
                                           height: height * 0.04,
                                           width: width * 0.04,
                                         ),
-                                        SizedBox(width: 10),
+                                        SizedBox(width: 5),
                                         Text(
                                           "${appointmentData[0].beauticianId!.distance}km",
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontFamily: "spartan",
-                                            color: Colors.black,
+                                            color: Colors.black87,
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                    SizedBox(height: 26),
                                   ],
                                 )
                               ],
                             ),
                           ),
-                          SizedBox(height: height * 0.02),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Divider(
-                              color: Colors.black54,
-                            ),
+                          const SizedBox(height: 05,),
+                          Divider(
+                            endIndent: 25,
+                            indent: 25,
+                            color: Colors.black54,
                           ),
                           ListView.builder(
                             shrinkWrap: true,
@@ -338,9 +322,10 @@ class _booking_summaryState extends State<booking_summary> {
                                             Text(
                                               "$startData - $endData",
                                               style: const TextStyle(
-                                                fontSize: 17,
+                                                fontSize: 16,
                                                 fontFamily: "spartan",
                                                 color: Colors.black,
+                                                fontWeight: FontWeight.w700
                                               ),
                                             ),
                                           ],
@@ -357,20 +342,20 @@ class _booking_summaryState extends State<booking_summary> {
                                             Text(
                                                 "${appointmentData[index].serviceId!.serviceType!.serviceTypeName}",
                                                 style: const TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     fontFamily: "spartan",
-                                                    color: Colors.black)),
+                                                    color: Colors.black,fontWeight: FontWeight.w600)),
                                             const Spacer(),
                                             Text(
                                                 "\$${appointmentData[index].serviceId!.price}",
                                                 style: const TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     fontFamily: "spartan",
-                                                    color: Colors.black)),
+                                                    color: Colors.black,fontWeight: FontWeight.w600)),
                                           ],
                                         ),
                                         SizedBox(
-                                          height: height * 0.01,
+                                          height: height * 0.005,
                                         ),
                                         Row(
                                           crossAxisAlignment:
@@ -381,7 +366,7 @@ class _booking_summaryState extends State<booking_summary> {
                                             Text(
                                                 "for ${getTimeFormatedValue(appointmentData[index].serviceId!.duration.toString())}",
                                                 style: const TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     fontFamily: "spartan",
                                                     color: Colors.black54)),
                                           ],
@@ -392,34 +377,27 @@ class _booking_summaryState extends State<booking_summary> {
                                       ],
                                     ),
                                   ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Divider(
-                                      color: Colors.black54,
-                                    ),
+                                  Divider(
+                                    indent: 22,
+                                    endIndent: 22,
+                                    color: Colors.black54,
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            height: height * 0.01,
+                                            height: height * 0.04,
                                           ),
                                           const Text("stylist",
                                                   style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 14,
                                                       fontFamily: "spartan",
-                                                      color: Colors.black54))
-                                              .tr(),
+                                                      color: Colors.black54)).tr(),
                                           SizedBox(
                                             width: width * 0.02,
                                           ),
-                                          appointmentData[index]
-                                                      .stylistID!
-                                                      .firstName !=
-                                                  ""
+                                          appointmentData[index].stylistID!.firstName != ""
                                               ? Row(
                                                   children: [
                                                     Image(
@@ -434,7 +412,7 @@ class _booking_summaryState extends State<booking_summary> {
                                                     Text(
                                                       "${appointmentData[index].stylistID!.firstName} ${appointmentData[index].stylistID!.lastName}",
                                                       style: const TextStyle(
-                                                        fontSize: 16,
+                                                        fontSize: 15,
                                                         fontFamily: "spartan",
                                                         color: Colors.black,
                                                       ),
@@ -444,28 +422,22 @@ class _booking_summaryState extends State<booking_summary> {
                                               : const Text(
                                                   "No Preference",
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 15,
                                                     fontFamily: "spartan",
-                                                    color: Colors.black,
+                                                    color: Colors.black87,
                                                   ),
                                                 ),
                                         ],
                                       )),
-                                  SizedBox(height: height * 0.01),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Divider(
-                                      color: Colors.black54,
-                                    ),
+                                  Divider(
+                                    indent: 22,
+                                    endIndent: 22,
+                                    color: Colors.black54,
                                   ),
-                                  SizedBox(height: height * 0.01),
+                                  const SizedBox(height: 05,),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: Row(crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           "Preferred place of service:",
@@ -481,18 +453,18 @@ class _booking_summaryState extends State<booking_summary> {
                                           style: const TextStyle(
                                               fontSize: 14,
                                               fontFamily: "spartan",
-                                              color: Colors.black),
+                                              color: Colors.black87),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 4),
-                                    child: Divider(
-                                      color: Colors.black54,
-                                    ),
+                                  const SizedBox(height: 05,),
+                                  Divider(
+                                    indent: 22,
+                                    endIndent: 22,
+                                    color: Colors.black54,
                                   ),
+                                  const SizedBox(height: 05,),
                                 ],
                               );
                             },
@@ -526,7 +498,7 @@ class _booking_summaryState extends State<booking_summary> {
                                   const Text(
                                     "add_another_service",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 15,
                                       fontFamily: "spartan",
                                       color: Color(0xffDD6A03),
                                     ),

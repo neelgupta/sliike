@@ -103,9 +103,21 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  InkWell(onTap: () {
-                    Navigator.pop(context);
-                  },child: const Icon(Icons.arrow_back_sharp,size: 30,)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        height: 20,
+                        // padding: const EdgeInsets.all(),
+                        child: const Image(
+                          image: AssetImage("assets/images/back.png"),
+                          color: Colors.black,
+                        )),
+                  ),
+                  // InkWell(onTap: () {
+                  //   Navigator.pop(context);
+                  // },child: const Icon(Icons.arrow_back_sharp,size: 30,)),
                   const Spacer(),
                   Container(
                     alignment: Alignment.center,
@@ -119,26 +131,22 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                         style: TextStyle(
                             fontSize: 16,
                             fontFamily: "spartan",
-                            color: Colors.white)).tr(),
+                            color: Colors.white,fontWeight: FontWeight.w600)).tr(),
                   )
                 ],
               ),
             ),
-            SizedBox(height: height*0.05,),
+            SizedBox(height: height*0.03,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: const Text("appointment_details",
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: "spartan",
-                      color: Colors.black)).tr(),
+                      color: Colors.black,fontWeight: FontWeight.w600)).tr(),
             ),
             SizedBox(height: height*0.01,),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(color: Colors.black54,),
-            ),
-            SizedBox(height: height*0.02,),
+            Divider(color: Colors.black54,endIndent: 20,indent: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -179,7 +187,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                         ))
                     ),
                   ),
-                  SizedBox(width: width*0.04,),
+                  SizedBox(width: width*0.02,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -187,22 +195,21 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                           style: const TextStyle(
                               fontSize: 16,
                               fontFamily: "spartan",
-                              color: Colors.black)),
+                              color: Colors.black,fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 10,),
                       Text("${onlyonemodal!.data!.beauticianId!.address!.apartment} ${onlyonemodal!.data!.beauticianId!.address!.city} ${onlyonemodal!.data!.beauticianId!.address!.zipCode}",
                           style: const TextStyle(
                               fontSize: 10,
                               fontFamily: "spartan",
                               color: Colors.blue)),
+                      SizedBox(height: width*0.10,),
                     ],
                   )
                 ],
               ),
             ),
-            SizedBox(height: height*0.02,),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(color: Colors.black54,),
-            ),
+            // SizedBox(height: height*0.02,),
+            Divider(color: Colors.black54,indent: 20,endIndent: 20),
             Column(
               children: [
                 Padding(
@@ -216,7 +223,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                               style: const TextStyle(
                                   fontSize: 18,
                                   fontFamily: "spartan",
-                                  color: Colors.black)),
+                                  color: Colors.black,fontWeight: FontWeight.w600)),
                         ],
                       ),
                       SizedBox(height: height * 0.03,),
@@ -226,13 +233,13 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                         children: [
                           Text("${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}",
                               style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontFamily: "spartan",
                                   color: Colors.black)),
                           const Spacer(),
                           Text("\$${onlyonemodal!.data!.serviceId!.price}",
                               style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   fontFamily: "spartan",
                                   color: Colors.black)),
                         ],
@@ -244,7 +251,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                         children: [
                           Text("for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}",
                               style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   fontFamily: "spartan",
                                   color: Colors.black54)),
                         ],
@@ -292,10 +299,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                 //     )
                 // ),
                 // SizedBox(height: height * 0.01,),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(color: Colors.black54,),
-                ),
+                Divider(color: Colors.black54,endIndent: 20,indent: 20),
                 SizedBox(height: height * 0.01,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -316,10 +320,8 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(color: Colors.black54,),
-                ),
+                SizedBox(height: height * 0.01,),
+                Divider(color: Colors.black54,indent: 20,endIndent: 20),
               ],
             ),
             if(widget.isPast ?? false)Padding(
