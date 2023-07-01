@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -11,11 +12,9 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class emailVeriFication extends StatefulWidget {
-
   String vemail;
   String userid;
   emailVeriFication(this.vemail, this.userid, {Key? key}) : super(key: key);
@@ -101,12 +100,14 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                           },
                           icon: const Icon(Icons.keyboard_backspace)),
                       const Center(
-                        child: Text("Email Verification",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold)),
+                        child: Text(
+                          "Email Verification",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                       SizedBox(
                         height: height * 0.01,
@@ -129,6 +130,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                           numberOfFields: 6,
                           borderColor: Colors.black45,
                           //set to true to show as box or false to show as dash
+
                           showFieldAsBox: true,
                           onSubmit: (String verificationCode) {
                             setState(() {
@@ -149,16 +151,18 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                       const SizedBox(
                         height: 20,
                       ),
-                      !enableResend?Center(
-                        child: Text(
-                          "00:$secondsRemaining",
-                          style: const TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14,
-                              fontFamily: "spartan",
-                              fontWeight: FontWeight.w200),
-                        ),
-                      ) : SizedBox(),
+                      !enableResend
+                          ? Center(
+                              child: Text(
+                                "00:$secondsRemaining",
+                                style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.w200),
+                              ),
+                            )
+                          : SizedBox(),
                       const SizedBox(
                         height: 30,
                       ),
@@ -180,7 +184,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
                       Center(
                         child: InkWell(
                             onTap: () {
-                              if(enableResend){
+                              if (enableResend) {
                                 _resendCode();
                               }
                               // setState(() {
@@ -254,7 +258,8 @@ class _emailVeriFicationState extends State<emailVeriFication> {
         'Content-Type': "application/json; charset=utf-8",
       };
 
-      var respnce = await http.post(Uri.parse(ApiUrlList.verifyOtp), body: jsonEncode(bodydata), headers: headers);
+      var respnce = await http.post(Uri.parse(ApiUrlList.verifyOtp),
+          body: jsonEncode(bodydata), headers: headers);
       print('verifyOtp status : ${respnce.statusCode}');
       print('verifyOtp body :${respnce.body}');
       var map = jsonDecode(respnce.body);
@@ -269,11 +274,15 @@ class _emailVeriFicationState extends State<emailVeriFication> {
             textColor: Colors.white,
             fontSize: 16.0);
         Helper.prefs!.setString(UserPrefs.keyutoken, verifyotpmodel!.token!);
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) {
-            return emailVeriSuceesful();
-          },
-        ),(route) => false,);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return emailVeriSuceesful();
+            },
+          ),
+          (route) => false,
+        );
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
@@ -291,9 +300,8 @@ class _emailVeriFicationState extends State<emailVeriFication> {
     }
   }
 
-
   /// Resend otp gen
- // ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   ReSendOtp() async {
     try {
       Loader.show(context,
@@ -328,12 +336,14 @@ class _emailVeriFicationState extends State<emailVeriFication> {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else if(responce.statusCode == 401){
+      } else if (responce.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
-      }else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
             toastLength: Toast.LENGTH_SHORT,

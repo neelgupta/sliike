@@ -1,20 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:flutter_html/flutter_html.dart';
 
-class TeamsAndCondition extends StatefulWidget {
-  const TeamsAndCondition({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+
+import '../../../utils/app_colors.dart';
+
+class TermsAndCondition extends StatefulWidget {
+  const TermsAndCondition({Key? key}) : super(key: key);
 
   @override
-  State<TeamsAndCondition> createState() => _TeamsAndConditionState();
+  State<TermsAndCondition> createState() => _TermsAndConditionState();
 }
 
-class _TeamsAndConditionState extends State<TeamsAndCondition> {
+class _TermsAndConditionState extends State<TermsAndCondition> {
   bool isLoading = false;
-  TeamsAndConditions? tac;
+  TermsAndConditions? tac;
   List<Datum> teamsList = [];
 
   @override
@@ -26,18 +29,65 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: const Color(0xffDD6A03),
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios)),
-          title: const Text("Terms & Condition",
-              style: TextStyle(
-                  fontSize: 20, fontFamily: "spartan", color: Colors.white)),
+          elevation: 1,
+          toolbarHeight: 85,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.whiteColor,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              color: AppColors.whiteColor,
+              // image: DecorationImage(
+              //     image: AssetImage("assets/images/Rectangle 28.png"),
+              //     fit: BoxFit.fill),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 25, right: 20, bottom: 20),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 25,
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                      SizedBox(width: width * 0.15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Terms of Service",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "spartan",
+                              color: AppColors.blackColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         body: isLoading
             ? const Center(
@@ -52,7 +102,7 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
                       child: Column(
                         children: [
                           Html(
-                            data: teamsList[0].policy,
+                            data: teamsList[0].terms,
                           )
                         ],
                       ),
@@ -94,7 +144,7 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
-          tac = TeamsAndConditions.fromJson(jsonDecode(response.body));
+          tac = TermsAndConditions.fromJson(jsonDecode(response.body));
           teamsList = tac!.data;
         }
         setState(() {
@@ -109,19 +159,19 @@ class _TeamsAndConditionState extends State<TeamsAndCondition> {
   }
 }
 
-class TeamsAndConditions {
+class TermsAndConditions {
   int status;
   bool success;
   List<Datum> data;
 
-  TeamsAndConditions({
+  TermsAndConditions({
     required this.status,
     required this.success,
     required this.data,
   });
 
-  factory TeamsAndConditions.fromJson(Map<String, dynamic> json) =>
-      TeamsAndConditions(
+  factory TermsAndConditions.fromJson(Map<String, dynamic> json) =>
+      TermsAndConditions(
         status: json["status"],
         success: json["success"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),

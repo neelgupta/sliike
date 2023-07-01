@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +23,7 @@ class MaskedTextInputFormatter extends TextInputFormatter {
             mask[newValue.text.length - 1] == separator) {
           return TextEditingValue(
             text:
-            '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
+                '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
             selection: TextSelection.collapsed(
               offset: newValue.selection.end + 1,
             ),
@@ -43,6 +42,7 @@ abstract class StringValidator {
 class RegexValidator implements StringValidator {
   RegexValidator({this.regexSource});
   final String? regexSource;
+
   /// value: the input string
   /// returns: true if the input string is a full match for regexSource
   @override
@@ -68,10 +68,42 @@ class CreditNumberSubmitRegexValidator extends RegexValidator {
   CreditNumberSubmitRegexValidator()
       : super(regexSource: r'^\d{4}\s\d{4}\s\d{4}\s\d{4}$');
 }
+
 class CreditExpirySubmitRegexValidator extends RegexValidator {
   CreditExpirySubmitRegexValidator()
       : super(regexSource: r'^(0[1-9]|1[0-2])\/?[0-2][0-9]|3[0-1]$');
 }
+
 class CreditCvvSubmitRegexValidator extends RegexValidator {
   CreditCvvSubmitRegexValidator() : super(regexSource: r'^[0-9]{3,4}$');
+}
+
+class Validators {
+  String? addressValidator(String? content) {
+    if (content != null || content == " ") {
+      return "Please Enter Address";
+    }
+    return null;
+  }
+
+  String? cityValidator(String? content) {
+    if (content != null || content == " ") {
+      return "Please Enter City Name";
+    }
+    return null;
+  }
+
+  String? postalCodeValidator(String? content) {
+    if (content != null || content == " ") {
+      return "Please Enter Postal Code";
+    }
+    return null;
+  }
+
+  String? countryValidator(String? content) {
+    if (content != null || content == " ") {
+      return "Please Enter Country";
+    }
+    return null;
+  }
 }

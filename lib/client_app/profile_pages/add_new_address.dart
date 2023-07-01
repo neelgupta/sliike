@@ -1,19 +1,20 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names, must_be_immutable
 
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/services/address_service.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:http/http.dart' as http;
 
 import '../../utils/preferences.dart';
 
@@ -75,12 +76,12 @@ class _add_new_addressState extends State<add_new_address> {
     if (widget.Zip_Code != "") {
       zip_code.text = widget.Zip_Code;
     }
-    if(widget.addressValue != false){
-      if(home = true){
+    if (widget.addressValue != false) {
+      if (home = true) {
         home = widget.addressValue;
-      }else if(work = true){
+      } else if (work = true) {
         work = widget.addressValue;
-      }else{
+      } else {
         other = widget.addressValue;
       }
     }
@@ -130,197 +131,226 @@ class _add_new_addressState extends State<add_new_address> {
                                   )),
                             ),
                           ),
-                          SizedBox(
-                            width: width * 0.18,
-                          ),
+                          SizedBox(width: width * 0.18),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Text("Add New Address",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                "Add New Address",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(height: height * 0.02),
                     SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Stack(children: [
-                      home == true
-                          ? Positioned(
-                              top: 2,
-                              left: 80,
-                              child: Image.asset(
-                                "assets/images/Group 12660.png",
-                                height: height * 0.04,
-                              ))
-                          : work == true
-                              ? Positioned(
-                                  top: 2,
-                                  left: 190,
-                                  child: Image.asset(
-                                    "assets/images/Group 12660.png",
-                                    height: height * 0.04,
-                                  ))
-                              : Positioned(
-                                  top: 2,
-                                  right: 0,
-                                  child: Image.asset(
-                                    "assets/images/Group 12660.png",
-                                    height: height * 0.04,
-                                  )),
-                      SizedBox(
-                        height: height * 0.18,
+                      height: height * 0.18,
+                      width: double.infinity,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  home = true;
-                                  work = false;
-                                  other = false;
-                                });
-                              },
-                              child: Container(
-                                height: height * 0.14,
-                                width: width * 0.28,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: home == true
-                                          ? const Color(0xFFDD6A03)
-                                          : Colors.black),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/home-2.png",
-                                      height: height * 0.04,
+                            Stack(
+                              children: [
+                                home == true
+                                    ? Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Image.asset(
+                                          "assets/images/Group 12660.png",
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      home = true;
+                                      work = false;
+                                      other = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 9, right: 7),
+                                    height: height * 0.14,
+                                    width: width * 0.28,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: home == true
+                                              ? const Color(0xFFDD6A03)
+                                              : Colors.black),
                                     ),
-                                    SizedBox(
-                                      height: height * 0.01,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/home-2.png",
+                                          height: height * 0.04,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        const Text("Home",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: "spartan",
+                                              color: Colors.black,
+                                            )),
+                                      ],
                                     ),
-                                    const Text("Home",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "spartan",
-                                          color: Colors.black,
-                                        )),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            SizedBox(
-                              width: width * 0.03,
+                            SizedBox(width: 5),
+                            Stack(
+                              children: [
+                                work == true
+                                    ? Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Image.asset(
+                                          "assets/images/Group 12660.png",
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      home = false;
+                                      work = true;
+                                      other = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 9, right: 7),
+                                    height: height * 0.14,
+                                    width: width * 0.28,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: work == true
+                                              ? const Color(0xFFDD6A03)
+                                              : Colors.black),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/briefcase.png",
+                                          height: height * 0.04,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        const Text("Work",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: "spartan",
+                                              color: Colors.black,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  home = false;
-                                  work = true;
-                                  other = false;
-                                });
-                              },
-                              child: Container(
-                                height: height * 0.14,
-                                width: width * 0.28,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: work == true
-                                          ? const Color(0xFFDD6A03)
-                                          : Colors.black),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/briefcase.png",
-                                      height: height * 0.04,
+                            SizedBox(width: 5),
+                            Stack(
+                              children: [
+                                other == true
+                                    ? Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Image.asset(
+                                          "assets/images/Group 12660.png",
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      )
+                                    : SizedBox(),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      home = false;
+                                      work = false;
+                                      other = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 9, right: 7),
+                                    height: height * 0.14,
+                                    width: width * 0.28,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: other == true
+                                              ? const Color(0xFFDD6A03)
+                                              : Colors.black),
                                     ),
-                                    SizedBox(
-                                      height: height * 0.01,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/element-3.png",
+                                          height: height * 0.04,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        const Text(
+                                          "Other",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "spartan",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const Text("Work",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "spartan",
-                                          color: Colors.black,
-                                        )),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.03,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  home = false;
-                                  work = false;
-                                  other = true;
-                                });
-                              },
-                              child: Container(
-                                height: height * 0.14,
-                                width: width * 0.28,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: other == true
-                                          ? const Color(0xFFDD6A03)
-                                          : Colors.black),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/element-3.png",
-                                      height: height * 0.04,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.01,
-                                    ),
-                                    const Text("Other",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "spartan",
-                                          color: Colors.black,
-                                        )),
-                                  ],
-                                ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                    ]),
-                    SizedBox(
-                      height: height * 0.02,
                     ),
-                    const Text("Address Name",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontFamily: "spartan",
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: height * 0.02,
+                    SizedBox(height: height * 0.02),
+                    const Text(
+                      "Address Name",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "spartan",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
+                    SizedBox(height: height * 0.02),
                     TextField(
-                      onTap: () async {
-                          _handlePressButton();
-                      },
+                      // onTap: () async {
+                      //   _handlePressButton();
+                      // },
                       controller: Address_home,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -344,16 +374,20 @@ class _add_new_addressState extends State<add_new_address> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    const Text("Address",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontFamily: "spartan",
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: height * 0.02,
+                    const Text(
+                      "Address",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "spartan",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
+                    SizedBox(height: height * 0.02),
                     TextField(
+                      onTap: () async {
+                        _handlePressButton();
+                      },
                       controller: Address,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -392,9 +426,7 @@ class _add_new_addressState extends State<add_new_address> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
+                    SizedBox(height: height * 0.03),
                     TextField(
                       controller: apartment,
                       cursorColor: Colors.black,
@@ -447,7 +479,8 @@ class _add_new_addressState extends State<add_new_address> {
                         padding: const EdgeInsets.only(left: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xff707070), width: 1)),
+                            border: Border.all(
+                                color: const Color(0xff707070), width: 1)),
                         child: DropdownButton<String>(
                           isExpanded: true,
                           hint: const Padding(
@@ -461,15 +494,19 @@ class _add_new_addressState extends State<add_new_address> {
                               ),
                             ),
                           ),
-                          items: getProvince==null?[]:(getProvince!.data ?? []).map((items) {
-                            return DropdownMenuItem(
-                              value: items.id,
-                              child: Text(
-                                items.name ?? "",
-                                style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
-                              ),
-                            );
-                          }).toList(),
+                          items: getProvince == null
+                              ? []
+                              : (getProvince!.data ?? []).map((items) {
+                                  return DropdownMenuItem(
+                                    value: items.id,
+                                    child: Text(
+                                      items.name ?? "",
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff292929)),
+                                    ),
+                                  );
+                                }).toList(),
                           value: province,
                           onChanged: (value) {
                             setState(() {
@@ -588,7 +625,11 @@ class _add_new_addressState extends State<add_new_address> {
         ),
       ),
       components: [
-        Component(Component.country, "usa"),Component(Component.country, "in"),Component(Component.country, "pk"),Component(Component.country, "cn"),Component(Component.country, "ca")
+        Component(Component.country, "usa"),
+        Component(Component.country, "in"),
+        Component(Component.country, "pk"),
+        Component(Component.country, "cn"),
+        Component(Component.country, "ca")
         // Component(Component.country, "usa"),Component(Component.country, "in"),Component(Component.country, "pk"),Component(Component.country, "af"),Component(Component.country, "au"),Component(Component.country, "at"),Component(Component.country, "bd"),Component(Component.country, "ca"),Component(Component.country, "cn"),Component(Component.country, "fr"),
         // Component(Component.country, "de"),Component(Component.country, "hk"),Component(Component.country, "ir"),Component(Component.country, "iq"),Component(Component.country, "id"),Component(Component.country, "ie"),Component(Component.country, "it"),Component(Component.country, "jp"),Component(Component.country, "ke"),Component(Component.country, "lv"),
         // Component(Component.country, "lt"),Component(Component.country, "my"),Component(Component.country, "mv"),Component(Component.country, "mx"),Component(Component.country, "ma"),Component(Component.country, "mm"),Component(Component.country, "na"),Component(Component.country, "np"),Component(Component.country, "nz"),Component(Component.country, "om"),
@@ -607,7 +648,7 @@ class _add_new_addressState extends State<add_new_address> {
         apiHeaders: await const GoogleApiHeaders().getHeaders(),
       );
       PlacesDetailsResponse detail =
-      await _places.getDetailsByPlaceId(p.placeId!);
+          await _places.getDetailsByPlaceId(p.placeId!);
       final latitude = detail.result.geometry!.location.lat;
       final longitude = detail.result.geometry!.location.lng;
       getlatitude(latitude, longitude);
@@ -618,8 +659,8 @@ class _add_new_addressState extends State<add_new_address> {
     Loader.show(context,
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xffDD6A03)),
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
         themeData: Theme.of(context).copyWith(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(secondary: const Color(0xff01635D))));
@@ -628,9 +669,11 @@ class _add_new_addressState extends State<add_new_address> {
     Placemark places = placemarks[0];
 
     print(places);
-    Address_home.text = places.street!.isEmpty ?  widget.Address_Name : "${places.street}";
-    apartment.text = "${places.country}";
-    Address.text = "${places.locality}";
+    // Address_home.text =
+    //     places.street!.isEmpty ? widget.Address_Name : "${places.street}";
+    Address.text = "${places.name}";
+    apartment.text =
+        "${places.street}, ${places.subLocality}, ${places.locality}";
     zip_code.text = "${places.postalCode}";
     latitude = lat.toString();
     longitude = long.toString();
@@ -696,12 +739,14 @@ class _add_new_addressState extends State<add_new_address> {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else if(response.statusCode == 401){
+        } else if (response.statusCode == 401) {
           logoutdata();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-            return signInScreen();
-          },), (route) => false);
-        }else {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return signInScreen();
+            },
+          ), (route) => false);
+        } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
               toastLength: Toast.LENGTH_SHORT,
@@ -727,7 +772,6 @@ class _add_new_addressState extends State<add_new_address> {
     setState(() {});
   }
 }
-
 
 class ClientAddress {
   int? status;

@@ -131,7 +131,7 @@ class _addWork_Save_or_NoThanks_PageState
           padding: const EdgeInsets.only(left: 18, right: 18),
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: widget.secondflow == true
@@ -141,19 +141,21 @@ class _addWork_Save_or_NoThanks_PageState
                           Text(
                             "4/",
                             style: TextStyle(
-                              fontSize: 12,
                               color: Color(0xff292929),
                               fontFamily: "spartan",
-                              fontWeight: FontWeight.w300,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
                             ),
                           ),
                           Text(
                             "4",
                             style: TextStyle(
-                              fontSize: 12,
                               color: Color(0xff111111),
                               fontFamily: "spartan",
-                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
                             ),
                           ),
                         ],
@@ -182,10 +184,11 @@ class _addWork_Save_or_NoThanks_PageState
                         ],
                       ),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 24),
 
               ListView.separated(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: widget.dayDetailsList.length,
                 separatorBuilder: (BuildContext context, int index) => Divider(
                   color: AppColors.greyColor,
@@ -206,17 +209,16 @@ class _addWork_Save_or_NoThanks_PageState
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              width: 20,
-                            ),
+                            const SizedBox(width: 10),
                             Text(
                               "${widget.dayDetailsList[index].day}",
                               style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Color(0xff292929),
-                                  fontWeight: FontWeight.w300,
-                                  fontFamily: "spartan",
-                                  fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                                color: Color(0xff292929),
+                                fontWeight: FontWeight.w300,
+                                fontFamily: "spartan",
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -357,16 +359,16 @@ class _addWork_Save_or_NoThanks_PageState
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: const Color(0xff01635D)),
-                  child: const Text("CONTINUE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "spartan",
-                          color: Colors.white)),
+                  child: const Text(
+                    "CONTINUE",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "spartan",
+                        color: Colors.white),
+                  ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
+              SizedBox(height: height * 0.05),
             ],
           ),
         ),
@@ -443,11 +445,13 @@ class _addWork_Save_or_NoThanks_PageState
             fontSize: 16.0);
 
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return const conGraTuLation();
-          },
-        ));
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => conGraTuLation(),
+          ),
+          (route) => false,
+        );
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",

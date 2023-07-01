@@ -31,8 +31,12 @@ class _NearYouState extends State<NearYou> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.right - MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -54,17 +58,16 @@ class _NearYouState extends State<NearYou> {
                           },
                           child: Center(
                             child: Container(
-                              height: 30,
+                                height: 30,
                                 padding: const EdgeInsets.all(5),
                                 child: const Image(
-                                  image:
-                                  AssetImage("assets/images/cancel.png"),
+                                  image: AssetImage("assets/images/cancel.png"),
                                   color: Color(0xff414141),
                                 )),
                           ),
                         ),
                         SizedBox(
-                          width: width/4,
+                          width: width / 4,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -91,69 +94,134 @@ class _NearYouState extends State<NearYou> {
           ),
         ),
       ),
-      body: isLoading?const Center(child: CircularProgressIndicator()):
-      Padding(
-        padding: const EdgeInsets.only(left: 15,right: 15),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: height*0.025,),
-            textComoon("Current Location", 14, const Color(0xff111111),
-                FontWeight.w600),
-            SizedBox(height: height*0.025,),
-            Card(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: const Color(0xffFAFAFA),
-                  border: Border.all(width: 1,color: const Color(0xffE7E7E7))
-                ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 15),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: height * 0.025),
+                  textComoon("Current Location", 14, const Color(0xff111111),
+                      FontWeight.w600),
+                  SizedBox(height: height * 0.025),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: 1,
+                  //   itemBuilder: (context, index) {
+                  //     return
+                  //   },
+                  // ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, [latitude, longitude, address]);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color(0xffFAFAFA),
+                        border: Border.all(
+                          width: 1,
+                          color: const Color(0xffE7E7E7),
+                        ),
+                      ),
                       child: Row(
                         children: [
                           Expanded(
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    textComoon("Address :  ", 12, const Color(0xff111111),
-                                        FontWeight.w600),
-                                    textComoon(address, 12, const Color(0xff707070),
-                                        FontWeight.w600),
-                                  ],
-                                ),
-                                SizedBox(height: height*0.02,),
-                                Row(
-                                  children: [
-                                    textComoon("City :  ", 12, const Color(0xff111111),
-                                        FontWeight.w600),
-                                    textComoon(city, 12, const Color(0xff707070),
-                                        FontWeight.w600),
-                                  ],
-                                ),
-                                SizedBox(height: height*0.02,),
-                                Row(
-                                  children: [
-                                    textComoon("State/province/area :  ", 12, const Color(0xff111111),
-                                        FontWeight.w600),
-                                    Flexible(
-                                      child: textComoon("British Col", 12, const Color(0xff707070),
-                                          FontWeight.w600),
+                                    textComoon(
+                                      "Address :  ",
+                                      12,
+                                      const Color(0xff111111),
+                                      FontWeight.w600,
                                     ),
-
+                                    Expanded(
+                                      child: Text(
+                                        address,
+                                        maxLines: 3,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: const Color(0xff707070),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                SizedBox(height: height*0.02,),
+                                SizedBox(height: 10),
                                 Row(
                                   children: [
-                                    textComoon("Postal Code :  ", 12, const Color(0xff111111),
+                                    textComoon(
+                                      "City :  ",
+                                      12,
+                                      const Color(0xff111111),
+                                      FontWeight.w600,
+                                    ),
+                                    textComoon(
+                                      city,
+                                      12,
+                                      const Color(0xff707070),
+                                      FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    textComoon(
+                                      "State/province/area :  ",
+                                      12,
+                                      const Color(0xff111111),
+                                      FontWeight.w600,
+                                    ),
+                                    Flexible(
+                                      child: textComoon(
+                                        province,
+                                        // "British Col",
+                                        12,
+                                        const Color(0xff707070),
+                                        FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    textComoon(
+                                        "Postal Code :  ",
+                                        12,
+                                        const Color(0xff111111),
                                         FontWeight.w600),
-                                    textComoon(postalCode, 12, const Color(0xff707070),
+                                    textComoon(
+                                      postalCode,
+                                      12,
+                                      const Color(0xff707070),
+                                      FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    textComoon(
+                                        "Country :  ",
+                                        12,
+                                        const Color(0xff111111),
                                         FontWeight.w600),
+                                    textComoon(
+                                      country,
+                                      12,
+                                      const Color(0xff707070),
+                                      FontWeight.w600,
+                                    ),
                                   ],
                                 ),
                               ],
@@ -161,24 +229,41 @@ class _NearYouState extends State<NearYou> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(left: 5),
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.end,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 InkWell(
-                                  onTap: (){
-                                    List data = [latitude,longitude,address,city,province,postalCode,country];
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return editLocation(data: data,);
-                                    },)).then((value) {
+                                  onTap: () {
+                                    List data = [
+                                      latitude,
+                                      longitude,
+                                      address,
+                                      city,
+                                      province,
+                                      postalCode,
+                                      country
+                                    ];
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return editLocation(
+                                            data: data,
+                                          );
+                                        },
+                                      ),
+                                    ).then((value) {
                                       print(value);
-                                      if(value!=null) {
-                                        latitude = value[5];
-                                        longitude = value[6];
-                                        province = value[2];
-                                        address = value[0];
-                                        country = value[4];
-                                        city = value[1];
-                                        postalCode = value[3];
-                                        setState(() {});
+                                      if (value != null) {
+                                        setState(() {
+                                          latitude = value[0];
+                                          longitude = value[1];
+                                          address = value[2];
+                                          city = value[3];
+                                          province = value[4];
+                                          postalCode = value[5];
+                                          country = value[6];
+                                        });
                                       }
                                     });
                                   },
@@ -186,82 +271,78 @@ class _NearYouState extends State<NearYou> {
                                     padding: const EdgeInsets.all(12),
                                     height: height * 0.06,
                                     decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                       color: Color(0xffDD6A03),
+                                      shape: BoxShape.circle,
+                                      color: Color(0xffDD6A03),
                                     ),
                                     child: Center(
                                       child: Container(
                                           padding: const EdgeInsets.all(4),
                                           child: const Image(
-                                            image:
-                                            AssetImage("assets/images/righticon.png"),
+                                            image: AssetImage(
+                                                "assets/images/righticon.png"),
                                             color: Colors.white,
                                           )),
                                     ),
                                   ),
                                 ),
-                               // Icon(Icons.keyboard_arrow_right),
+                                // Icon(Icons.keyboard_arrow_right),
                               ],
                             ),
                           )
                         ],
                       ),
-                    );
-                  },
-
-                ),
+                    ),
+                  ),
+                  SizedBox(height: height * 0.05),
+                  // InkWell(
+                  //   onTap: (){
+                  //
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     width: width,
+                  //     height: height * 0.06,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(5),
+                  //         color: const Color(0xffDD6A03)),
+                  //     child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         const SizedBox(
+                  //             height: 20,
+                  //             child: Image(
+                  //               image:
+                  //               AssetImage("assets/images/loctionicon.png"),
+                  //
+                  //             )),
+                  //         SizedBox(width: width*0.1,),
+                  //         textComoon("ADD NEW LOCATION", 12,Colors.white,
+                  //             FontWeight.w600),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // )
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context, [latitude, longitude, address]);
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     width: width,
+                  //     height: height * 0.06,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(5),
+                  //         color: const Color(0xffDD6A03)),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         textComoon("SAVE", 12, Colors.white, FontWeight.w600),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // )
+                ],
               ),
             ),
-            SizedBox(height: height*0.05,),
-            // InkWell(
-            //   onTap: (){
-            //
-            //   },
-            //   child: Container(
-            //     alignment: Alignment.center,
-            //     width: width,
-            //     height: height * 0.06,
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(5),
-            //         color: const Color(0xffDD6A03)),
-            //     child: Row(mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         const SizedBox(
-            //             height: 20,
-            //             child: Image(
-            //               image:
-            //               AssetImage("assets/images/loctionicon.png"),
-            //
-            //             )),
-            //         SizedBox(width: width*0.1,),
-            //         textComoon("ADD NEW LOCATION", 12,Colors.white,
-            //             FontWeight.w600),
-            //       ],
-            //     ),
-            //   ),
-            // )
-            InkWell(
-              onTap: (){
-                Navigator.pop(context, [latitude,longitude,address]);
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: width,
-                height: height * 0.06,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: const Color(0xffDD6A03)),
-                child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    textComoon("SAVE", 12,Colors.white,
-                        FontWeight.w600),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -298,14 +379,18 @@ class _NearYouState extends State<NearYou> {
   }
 
   getlatitude(double lat, double long) async {
-    Loader.show(context,
-        isSafeAreaOverlay: false,
-        overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xffDD6A03)),
-        themeData: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.fromSwatch()
-                .copyWith(secondary: const Color(0xff01635D))));
+    Loader.show(
+      context,
+      isSafeAreaOverlay: false,
+      overlayColor: Colors.black26,
+      progressIndicator:
+          const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+      themeData: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: const Color(0xff01635D),
+        ),
+      ),
+    );
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
 
     Placemark places = placemarks[0];

@@ -441,7 +441,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                           MainAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "pst/qst",
+                                          "pst",
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontFamily: "spartan",

@@ -13,7 +13,6 @@ class SelectAddress extends StatefulWidget {
 }
 
 class _SelectAddressState extends State<SelectAddress> {
-
   AddressService addressService = AddressService();
   bool isLoading = true;
   GetProfileModel? getProfile;
@@ -25,10 +24,15 @@ class _SelectAddressState extends State<SelectAddress> {
     super.initState();
     getAddress();
   }
+
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.right - MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -68,11 +72,11 @@ class _SelectAddressState extends State<SelectAddress> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("select_address",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold))
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold))
                             .tr(),
                       ],
                     ),
@@ -83,86 +87,122 @@ class _SelectAddressState extends State<SelectAddress> {
           ),
         ),
       ),
-      body: isLoading?const Center(child: const CircularProgressIndicator()):Container(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Expanded(child: getProfile!=null?ListView.builder(
-              itemCount: getProfile!.data.address.length,
-              itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.black38)
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 10,),
-                    Text("${getProfile!.data.address[index].addressId.address}, ${getProfile!.data.address[index].addressId.apartment}"),
-                    const Spacer(),
-                    Radio<String>(
-                      activeColor: const Color(0xffDD6A03),
-                      value: getProfile!.data.address[index].addressId.id,
-                      groupValue: addressId,
-                      onChanged: (value) {
-                      setState(() {
-                        addressId = getProfile!.data.address[index].addressId.id;
-                      });
-                    },)
-                  ],
-                ),
-              );
-            },):Container()),
-            InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return add_new_address(Address_Name: "",Apartment_suite: "",Location: "",Province_name: "",Zip_Code: "",addressValue: false,);
-                  },
-                )).then((value) {
-                  getAddress();
-                });
-              },
-              child: Row(
+      body: isLoading
+          ? const Center(child: const CircularProgressIndicator())
+          : Container(
+              padding: const EdgeInsets.all(15),
+              child: Column(
                 children: [
-                  const Icon(Icons.add_circle_outline,color: Color(0xffDD6A03),size: 20,),
-                  SizedBox(width: width*0.01),
-                  const Text("add_new_address",style: TextStyle(fontSize: 15,color: Color(0xffDD6A03)),).tr()
+                  Expanded(
+                      child: getProfile != null
+                          ? ListView.builder(
+                              itemCount: getProfile!.data.address.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border:
+                                          Border.all(color: Colors.black38)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                            "${getProfile!.data.address[index].addressId.address}, ${getProfile!.data.address[index].addressId.apartment}"),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // Spacer(),
+                                      Radio<String>(
+                                        activeColor: const Color(0xffDD6A03),
+                                        value: getProfile!
+                                            .data.address[index].addressId.id,
+                                        groupValue: addressId,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            addressId = getProfile!.data
+                                                .address[index].addressId.id;
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : Container()),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return add_new_address(
+                            Address_Name: "",
+                            Apartment_suite: "",
+                            Location: "",
+                            Province_name: "",
+                            Zip_Code: "",
+                            addressValue: false,
+                          );
+                        },
+                      )).then((value) {
+                        getAddress();
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.add_circle_outline,
+                          color: Color(0xffDD6A03),
+                          size: 20,
+                        ),
+                        SizedBox(width: width * 0.01),
+                        const Text(
+                          "add_new_address",
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xffDD6A03)),
+                        ).tr()
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (addressId.isNotEmpty) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return book_appoinment_payment(
+                                addressId: addressId);
+                          },
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Please Select Address")));
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: width,
+                      height: height * 0.06,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xffDD6A03)),
+                      child: const Text("continue",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "spartan",
+                                  color: Colors.white))
+                          .tr(),
+                    ),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              onTap: () {
-                if(addressId.isNotEmpty) {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                    return book_appoinment_payment(addressId: addressId);
-                  },));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please Select Address")));
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: width,
-                height: height * 0.06,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: const Color(0xffDD6A03)),
-                child: const Text("continue",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "spartan",
-                        color: Colors.white)).tr(),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -171,8 +211,8 @@ class _SelectAddressState extends State<SelectAddress> {
       isLoading = true;
     });
     getProfile = await addressService.getAddressList();
-      isLoading = false;
-      addressId = "";
+    isLoading = false;
+    addressId = "";
     setState(() {});
   }
 }

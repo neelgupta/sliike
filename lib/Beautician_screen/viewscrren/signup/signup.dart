@@ -333,9 +333,9 @@ class _signUpState extends State<signUp> {
                   Column(
                     children: [
                       TextField(
-                        // inputFormatters: [
-                        // FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                        // ],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                         controller: tname,
                         onChanged: (value) {
                           setState(() {
@@ -375,9 +375,9 @@ class _signUpState extends State<signUp> {
                               height: 20,
                             ),
                       TextField(
-                        // inputFormatters: [
-                        //   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
-                        // ],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                         controller: tlastname,
                         onChanged: (value) {
                           lastnamestatus = false;
@@ -781,7 +781,7 @@ class _signUpState extends State<signUp> {
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
-                              return const TeamsAndCondition();
+                              return const TermsAndCondition();
                             },
                           ));
                         },
@@ -807,13 +807,16 @@ class _signUpState extends State<signUp> {
                             },
                           ));
                         },
-                        child: const Text('Privacy Policy',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xffDD6A03),
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.1,
-                                height: 1.3)),
+                        child: const Text(
+                          'Privacy Policy',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xffDD6A03),
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.1,
+                            height: 1.3,
+                          ),
+                        ),
                       ),
                     ],
                   ),

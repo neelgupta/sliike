@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+
+import '../../../utils/app_colors.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({Key? key}) : super(key: key);
@@ -28,47 +31,95 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: const Color(0xffDD6A03),
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios)),
-          title: const Text("Privacy Policy",
-              style: TextStyle(
-                  fontSize: 20, fontFamily: "spartan", color: Colors.white)),
-        ),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xffDD6A03),
-                ),
-              )
-            : teamsList.isNotEmpty
-                ? SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Html(
-                            data: teamsList[0].policy,
-                          )
-                        ],
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 1,
+        toolbarHeight: 85,
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.whiteColor,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: AppColors.whiteColor,
+            // image: DecorationImage(
+            //     image: AssetImage("assets/images/Rectangle 28.png"),
+            //     fit: BoxFit.fill),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 20, bottom: 20),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 25,
+                        color: AppColors.blackColor,
                       ),
                     ),
-                  )
-                : const Center(
-                    child: Text(
-                      "No Data Found!!",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: "spartan",
-                          color: Colors.black),
+                    SizedBox(width: width * 0.18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: "spartan",
+                            color: AppColors.blackColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ),
-                  ));
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
+              ),
+            )
+          : teamsList.isNotEmpty
+              ? SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: Column(
+                      children: [
+                        Html(
+                          data: teamsList[0].policy,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: Text(
+                    "No Data Found!!",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "spartan",
+                        color: Colors.black),
+                  ),
+                ),
+    );
   }
 
   getTerms() async {
@@ -86,7 +137,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       var bodydata = {"id": "English", "type": "policy"};
 
       print("getTerms url is ====> $geturi ");
-      log("getTerms bodydata is ====> $bodydata ");
+      log("getTerms bodydata is ====> $bodydata");
       var response = await http.post(
         geturi,
         body: bodydata,

@@ -5,7 +5,6 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_cen
 
 import '../../../custom_widget/textcommon/textcommon.dart';
 
-
 class help_center_beauti extends StatefulWidget {
   const help_center_beauti({Key? key}) : super(key: key);
 
@@ -16,18 +15,23 @@ class help_center_beauti extends StatefulWidget {
 class _help_center_beautiState extends State<help_center_beauti> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, // Set this height
-        flexibleSpace: Container(color: Color(0xffFFFFFF),
+        flexibleSpace: Container(
+          color: Color(0xffFFFFFF),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 20,bottom: 10),
+                padding: const EdgeInsets.only(left: 10, right: 20, bottom: 10),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -44,13 +48,14 @@ class _help_center_beautiState extends State<help_center_beauti> {
                           child: Container(
                               padding: EdgeInsets.all(5),
                               child: Image(
-                                image:
-                                AssetImage("assets/images/Group 55.png"),
+                                image: AssetImage("assets/images/Group 55.png"),
                               )),
                         ),
                       ),
                     ),
-                    SizedBox(width: width*0.20,),
+                    SizedBox(
+                      width: width * 0.20,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -74,12 +79,13 @@ class _help_center_beautiState extends State<help_center_beauti> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              SizedBox(height:height*0.04,),
+              SizedBox(
+                height: height * 0.04,
+              ),
               RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                      text:
-                      'Welcome to ',
+                      text: 'Welcome to ',
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'spartan',
@@ -100,11 +106,11 @@ class _help_center_beautiState extends State<help_center_beauti> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 color: Color(0xff414141))),
-
-
                       ])),
 
-              SizedBox(height:height*0.02,),
+              SizedBox(
+                height: height * 0.02,
+              ),
               // Container(
               //     alignment: Alignment.center,
               //     width: width,
@@ -126,21 +132,27 @@ class _help_center_beautiState extends State<help_center_beauti> {
               //       ],
               //     )
               // ),
-              SizedBox(height:height*0.04,),
+              SizedBox(
+                height: height * 0.04,
+              ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return faq_beauty();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return faq_beauty();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("FAQ",16,Color(0xff414141), FontWeight.w500),
+                      textComoon("FAQ", 16, Color(0xff414141), FontWeight.w500),
                       Spacer(),
                       Container(
                         height: 15,
@@ -153,18 +165,23 @@ class _help_center_beautiState extends State<help_center_beauti> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return feedback_beauty();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return feedback_beauty();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Feedback",16,Color(0xff414141), FontWeight.w500),
+                      textComoon(
+                          "Feedback", 16, Color(0xff414141), FontWeight.w500),
                       Spacer(),
                       Container(
                         height: 15,
@@ -177,18 +194,23 @@ class _help_center_beautiState extends State<help_center_beauti> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return contact_us_beauty();
-                  },));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return contact_us_beauty();
+                    },
+                  ));
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 17,),
-                  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.black12))
+                  padding: EdgeInsets.symmetric(
+                    vertical: 17,
                   ),
+                  decoration: BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
                   child: Row(
                     children: [
-                      textComoon("Contact Us",16,Color(0xff414141), FontWeight.w500),
+                      textComoon(
+                          "Contact Us", 16, Color(0xff414141), FontWeight.w500),
                       Spacer(),
                       Container(
                         height: 15,
@@ -199,7 +221,6 @@ class _help_center_beautiState extends State<help_center_beauti> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

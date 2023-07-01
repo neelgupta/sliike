@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/contact_us.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/faq_page.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/feedback.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/privacy_policy.dart';
-import 'package:new_sliikeapps_apps/client_app/profile_pages/terms_of_service.dart';
+import 'package:new_sliikeapps_apps/utils/app_colors.dart';
 
 import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import '../../Beautician_screen/viewscrren/signup/privcy_policy.dart';
+import '../../Beautician_screen/viewscrren/signup/teams_and_condition.dart';
 
 class help_center extends StatefulWidget {
   const help_center({Key? key}) : super(key: key);
@@ -28,13 +29,15 @@ class _help_centerState extends State<help_center> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: height * 0.13, // Set this height
+        toolbarHeight: 100, // Set this height
+        elevation: 1,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              color: Color(0xFFFCF0E6),
-              image: DecorationImage(
-                  image: AssetImage("assets/images/Rectangle 28.png"),
-                  fit: BoxFit.fill)),
+          decoration: BoxDecoration(
+            color: AppColors.whiteColor,
+            // image: DecorationImage(
+            //     image: AssetImage("assets/images/Rectangle 28.png"),
+            //     fit: BoxFit.fill),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -57,18 +60,19 @@ class _help_centerState extends State<help_center> {
                             )),
                       ),
                     ),
-                    SizedBox(
-                      width: width * 0.20,
-                    ),
+                    SizedBox(width: width * 0.20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
-                        Text("Help Center",
-                            style: TextStyle(
-                                fontSize: 23,
-                                color: Colors.black,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold)),
+                        Text(
+                          "Help Center",
+                          style: TextStyle(
+                            fontSize: 23,
+                            color: Colors.black,
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -208,9 +212,15 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(
+                  //   builder: (context) {
+                  //     return const privacy_policy();
+                  //   },
+                  // ));
+
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return const privacy_policy();
+                      return const PrivacyPolicy();
                     },
                   ));
                 },
@@ -219,12 +229,16 @@ class _help_centerState extends State<help_center> {
                     vertical: 17,
                   ),
                   decoration: const BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
+                    border: Border(bottom: BorderSide(color: Colors.black12)),
+                  ),
                   child: Row(
                     children: [
-                      textComoon("Privacy Policy", 16, const Color(0xff414141),
-                          FontWeight.w500),
+                      textComoon(
+                        "Privacy Policy",
+                        16,
+                        const Color(0xff414141),
+                        FontWeight.w500,
+                      ),
                       const Spacer(),
                       SizedBox(
                         height: 15,
@@ -237,9 +251,14 @@ class _help_centerState extends State<help_center> {
               ),
               GestureDetector(
                 onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(
+                  //   builder: (context) {
+                  //     return const TermsOfService();
+                  //   },
+                  // ));
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return const TermsOfService();
+                      return const TermsAndCondition();
                     },
                   ));
                 },
