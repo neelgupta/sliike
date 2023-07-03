@@ -178,6 +178,7 @@ class _signInScreenState extends State<signInScreen> {
                         emailstatus = false;
                       });
                     },
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(left: 20),
                       hintText: "Enter Email Address",
@@ -655,8 +656,8 @@ class _signInScreenState extends State<signInScreen> {
             Loader.hide();
             Fluttertoast.showToast(
                 msg: "${map['message']}",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.TOP,
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
@@ -678,8 +679,8 @@ class _signInScreenState extends State<signInScreen> {
         Loader.hide();
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -725,8 +726,8 @@ class _signInScreenState extends State<signInScreen> {
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

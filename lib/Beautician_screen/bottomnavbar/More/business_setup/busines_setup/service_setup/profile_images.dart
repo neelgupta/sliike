@@ -1119,8 +1119,8 @@ class _Profile_ImagesState extends State<Profile_Images> {
         setState(() {});
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1129,8 +1129,8 @@ class _Profile_ImagesState extends State<Profile_Images> {
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

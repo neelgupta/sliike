@@ -2,8 +2,9 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
@@ -47,96 +48,109 @@ class _searchservicesState extends State<searchservices> {
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return WillPopScope(
-        onWillPop: () async {
-      if(searchbyservice) {
-        setState(() {
-          searchbyservice = false;
-        });
-        return false;
-      } else {
-        Navigator.pop(context);
-        return true;
-      }
-    },
+      onWillPop: () async {
+        if (searchbyservice) {
+          setState(() {
+            searchbyservice = false;
+          });
+          return false;
+        } else {
+          Navigator.pop(context);
+          return true;
+        }
+      },
       child: Scaffold(
-        body: isLoading
-            ? const Center(
-            child: CircularProgressIndicator(
-            color: Color(0xffDD6A03),
-          ),
-        ) :
-         SafeArea(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: width*0.03,vertical: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: (){
-                      if(searchbyservice) {
-                        setState(() {
-                          searchbyservice = false;
-                        });
-                      } else {Navigator.pop(context);}
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Image.asset(height:height*0.03 ,"assets/images/Group 55.png",),
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xffDD6A03),
+                  ),
+                )
+              : SafeArea(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.03, vertical: 10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if (searchbyservice) {
+                                setState(() {
+                                  searchbyservice = false;
+                                });
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Image.asset(
+                                height: height * 0.03,
+                                "assets/images/Group 55.png",
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (!searchbyservice) {
+                                setState(() {
+                                  searchbyservice = true;
+                                });
+                              }
+                              print(searchbyservice);
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              height: height * 0.07,
+                              width: width,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: TextField(
+                                controller: searchCotroller,
+                                readOnly: !searchbyservice,
+                                onTap: () {
+                                  if (!searchbyservice) {
+                                    setState(() {
+                                      searchbyservice = true;
+                                    });
+                                  }
+                                },
+                                onEditingComplete: () {
+                                  setState(() {
+                                    searchServiceType();
+                                  });
+                                },
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Search for services or stylist",
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          searchbyservice ? serviceSearch() : search()
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20,),
-                  InkWell(
-                    onTap: () {
-                        if(!searchbyservice) {
-                          setState(() {
-                            searchbyservice = true;
-                          });
-                        }
-                        print(searchbyservice);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      height: height*0.07,
-                      width: width,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)
-                      ),
-                      child: TextField(
-                        controller: searchCotroller,
-                        readOnly: !searchbyservice,
-                        onTap: () {
-                          if(!searchbyservice) {
-                            setState(() {
-                              searchbyservice = true;
-                            });
-                          }
-                        },
-                        onEditingComplete: () {
-                            setState(() {
-                              searchServiceType();
-                            });
-                        },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Search for services or stylist",
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20,),
-                  searchbyservice?serviceSearch():search()
-                ],
-              ),
-            ),
-          ),
-        )
-      ),
+                )),
     );
   }
 
@@ -168,21 +182,17 @@ class _searchservicesState extends State<searchservices> {
                     });
                   },
                   child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                              Radius.circular(10)),
-                          border:
-                          Border.all(color: Colors.grey)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.grey)),
                       height: height * 0.06,
                       child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:
-                            const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: Image(
                                 image: const AssetImage(
                                   "assets/images/Group 71.png",
@@ -195,30 +205,27 @@ class _searchservicesState extends State<searchservices> {
                           ),
                           Expanded(
                             child: Text(
-                              address.isEmpty
-                                  ? "Near You"
-                                  : address,
+                              address.isEmpty ? "Near You" : address,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style:
-                              const TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ),
                           address.isEmpty
                               ? Container()
                               : InkWell(
-                              onTap: () {
-                                setState(() {
-                                  address = "";
-                                  latitude = "";
-                                  longitude = "";
-                                });
-                              },
-                              child: const Icon(
-                                Icons.close,
-                                size: 20,
-                                color: Colors.black12,
-                              )),
+                                  onTap: () {
+                                    setState(() {
+                                      address = "";
+                                      latitude = "";
+                                      longitude = "";
+                                    });
+                                  },
+                                  child: const Icon(
+                                    Icons.close,
+                                    size: 20,
+                                    color: Colors.black12,
+                                  )),
                           const SizedBox(
                             width: 5,
                           ),
@@ -233,17 +240,15 @@ class _searchservicesState extends State<searchservices> {
                 child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(color: Colors.grey)),
                     height: height * 0.06,
                     child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding:
-                          const EdgeInsets.only(left: 5),
+                          padding: const EdgeInsets.only(left: 5),
                           child: Image(
                               image: const AssetImage(
                                 "assets/images/note.png",
@@ -278,13 +283,14 @@ class _searchservicesState extends State<searchservices> {
                   ShowServiceName = "";
                   setState(() {
                     serviceName[i].isSelected = !serviceName[i].isSelected;
-                    ShowServiceName  = serviceName[i].serviceCategoryName!;
+                    ShowServiceName = serviceName[i].serviceCategoryName!;
                   });
                   print(ShowServiceName);
                 },
                 child: Container(
                   height: height * 0.06,
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -307,7 +313,9 @@ class _searchservicesState extends State<searchservices> {
               )
           ],
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
         GestureDetector(
           onTap: () {
             selectedService.clear();
@@ -316,15 +324,18 @@ class _searchservicesState extends State<searchservices> {
                 selectedService.add(item.id!);
               }
             }
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return searchScreen(
-                selectedService: selectedService,
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return searchScreen(
+                  selectedService: selectedService,
                   serviceName: ShowServiceName,
-                latitude: latitude,
-                longitude: longitude,
-                isMultipleSearched: selectedService.length == 1 ?false : true,
-              );
-            },));
+                  latitude: latitude,
+                  longitude: longitude,
+                  isMultipleSearched:
+                      selectedService.length == 1 ? false : true,
+                );
+              },
+            ));
           },
           child: Container(
             alignment: Alignment.center,
@@ -333,153 +344,235 @@ class _searchservicesState extends State<searchservices> {
             decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xFFDD5103)),
                 color: const Color(0xFFDD5103),
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(5)
-                )
-            ),
+                borderRadius: const BorderRadius.all(Radius.circular(5))),
             child: const Text(
               "APPLY",
               style: TextStyle(color: Colors.white),
             ),
           ),
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
         Container(
           alignment: Alignment.topLeft,
-          child: const Text("Recent searches",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: "spartan",fontWeight: FontWeight.w600)),
+          child: const Text("Recent searches",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontFamily: "spartan",
+                  fontWeight: FontWeight.w600)),
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         SizedBox(
-          height: height*0.6,
-          child: const Center(child: Text("No data Found!!",style: TextStyle(color: Colors.black,fontSize: 15,fontFamily: "spartan")))
-          // ListView.builder(itemCount: 5,itemBuilder: (context, index) {
-          //   return Container(
-          //     margin: const EdgeInsets.symmetric(vertical: 5),
-          //     child: Row(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         Container(
-          //           width: width*0.15,
-          //           height: width*0.15,
-          //           decoration: BoxDecoration(
-          //               image: const DecorationImage(
-          //                 image: AssetImage("assets/images/Group 12006.jpg"),
-          //                 fit: BoxFit.fill
-          //               ),
-          //               borderRadius: BorderRadius.circular(5)
-          //           ),
-          //         ),
-          //         SizedBox(
-          //           width: width*0.02,
-          //         ),
-          //         Column(
-          //           mainAxisAlignment: MainAxisAlignment.start,
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             SizedBox(width: width*0.75,child: const Text("Queens Palace",style: TextStyle(fontSize: 13,fontFamily: "spartan",color: Colors.black45),)),
-          //             SizedBox(width: width*0.75,child: const Text("Route Du 3e-rang,Collingwood, qc, Canada",style: TextStyle(fontSize: 12,fontFamily: "spartan",color: Color(0xFF1571ED))))
-          //           ],
-          //         )
-          //       ],
-          //     ),
-          //   );
-          // },),
-        )
+            height: height * 0.6,
+            child: const Center(
+                child: Text("No data Found!!",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontFamily: "spartan")))
+            // ListView.builder(itemCount: 5,itemBuilder: (context, index) {
+            //   return Container(
+            //     margin: const EdgeInsets.symmetric(vertical: 5),
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Container(
+            //           width: width*0.15,
+            //           height: width*0.15,
+            //           decoration: BoxDecoration(
+            //               image: const DecorationImage(
+            //                 image: AssetImage("assets/images/Group 12006.jpg"),
+            //                 fit: BoxFit.fill
+            //               ),
+            //               borderRadius: BorderRadius.circular(5)
+            //           ),
+            //         ),
+            //         SizedBox(
+            //           width: width*0.02,
+            //         ),
+            //         Column(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             SizedBox(width: width*0.75,child: const Text("Queens Palace",style: TextStyle(fontSize: 13,fontFamily: "spartan",color: Colors.black45),)),
+            //             SizedBox(width: width*0.75,child: const Text("Route Du 3e-rang,Collingwood, qc, Canada",style: TextStyle(fontSize: 12,fontFamily: "spartan",color: Color(0xFF1571ED))))
+            //           ],
+            //         )
+            //       ],
+            //     ),
+            //   );
+            // },),
+            )
       ],
     );
   }
 
   Widget serviceSearch() {
-    height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
+    height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
     return isLoading
         ? const Center(
-      child: CircularProgressIndicator(
-        color: Color(0xffDD6A03),
-      ),
-    ) :
-    searchData.isNotEmpty ? Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        searchData.isNotEmpty?const Text("Services",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
-        searchData.isNotEmpty?SizedBox(height: height*0.03,):Container(),
-        searchData.isNotEmpty?ListView.builder(
-          shrinkWrap: true,
-          itemCount: searchData.length,
-          itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: height*0.007),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return searchScreen(
-                    searchService: [searchData[index].serviceCategoryId!],
-                  );
-                },));
-              },
-              child: Row(
-                children: [
-                  Container(
-                    height: width*0.08,
-                    width: width*0.08,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFFF2994A)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Image.asset("assets/images/search.png",height: width*0.04,color: const Color(0xFFF2994A),),
-                  ),
-                  SizedBox(width: width*0.02,),
-                  Text("${searchData[index].serviceTypeName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
-                ],
-              ),
+            child: CircularProgressIndicator(
+              color: Color(0xffDD6A03),
             ),
-          );
-        },):Container(),
-        searchData.isNotEmpty?SizedBox(height: height*0.02,):Container(),
-        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?const Text("Beutician",style: TextStyle(fontFamily: "spartan",fontWeight: FontWeight.bold,fontSize: 18),):Container(),
-        SizedBox(height: height*0.03,),
-        ss!=null &&  ss!.data!=null&&  (ss!.data!.beuticianTypes ?? []).isNotEmpty?ListView.builder(
-          shrinkWrap: true,
-          itemCount: ss!.data!.beuticianTypes!.length,
-          itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return services(
-                  beauticianId: "${ss!.data!.beuticianTypes![index].id}",
-                  businessName: ss!.data!.beuticianTypes![index].businessName,
-                );
-              },));
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: height*0.007),
-              child: Row(
+          )
+        : searchData.isNotEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: width*0.08,
-                    width: width*0.08,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      image: const DecorationImage(
-                        image: AssetImage("assets/images/Group 12006.jpg"),
-                        fit: BoxFit.fill
-                      )
-                    ),
+                  searchData.isNotEmpty
+                      ? const Text(
+                          "Services",
+                          style: TextStyle(
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        )
+                      : Container(),
+                  searchData.isNotEmpty
+                      ? SizedBox(
+                          height: height * 0.03,
+                        )
+                      : Container(),
+                  searchData.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: searchData.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: height * 0.007),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return searchScreen(
+                                        searchService: [
+                                          searchData[index].serviceCategoryId!
+                                        ],
+                                      );
+                                    },
+                                  ));
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: width * 0.08,
+                                      width: width * 0.08,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xFFF2994A)),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Image.asset(
+                                        "assets/images/search.png",
+                                        height: width * 0.04,
+                                        color: const Color(0xFFF2994A),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    Text(
+                                      "${searchData[index].serviceTypeName}",
+                                      style: const TextStyle(
+                                          fontFamily: "spartan",
+                                          color: Colors.black,
+                                          fontSize: 12),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Container(),
+                  searchData.isNotEmpty
+                      ? SizedBox(
+                          height: height * 0.02,
+                        )
+                      : Container(),
+                  ss != null &&
+                          ss!.data != null &&
+                          (ss!.data!.beuticianTypes ?? []).isNotEmpty
+                      ? const Text(
+                          "Beutician",
+                          style: TextStyle(
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: height * 0.03,
                   ),
-                  SizedBox(width: width*0.02,),
-                  Text("${ss!.data!.beuticianTypes![index].businessName}",style: const TextStyle(fontFamily: "spartan",color: Colors.black,fontSize: 12),)
+                  ss != null &&
+                          ss!.data != null &&
+                          (ss!.data!.beuticianTypes ?? []).isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: ss!.data!.beuticianTypes!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return services(
+                                      beauticianId:
+                                          "${ss!.data!.beuticianTypes![index].id}",
+                                      businessName: ss!.data!
+                                          .beuticianTypes![index].businessName,
+                                    );
+                                  },
+                                ));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: height * 0.007),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: width * 0.08,
+                                      width: width * 0.08,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          image: const DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/Group 12006.jpg"),
+                                              fit: BoxFit.fill)),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    Text(
+                                      "${ss!.data!.beuticianTypes![index].businessName}",
+                                      style: const TextStyle(
+                                          fontFamily: "spartan",
+                                          color: Colors.black,
+                                          fontSize: 12),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Container(),
                 ],
-              ),
-            ),
-          );
-        },):Container(),
-      ],
-    ):
-    searchCotroller.text.isEmpty ? Container() :
-    Container(
-    height: height *0.75,
-      child: const Center(
-        child: Text("Not yet available. More beauty experience coming soon.")
-      ));
+              )
+            : searchCotroller.text.isEmpty
+                ? Container()
+                : Container(
+                    height: height * 0.75,
+                    child: const Center(
+                        child: Text(
+                            "Not yet available. More beauty experience coming soon.")));
   }
 
   fetchServiceCategories() async {
@@ -499,11 +592,13 @@ class _searchservicesState extends State<searchservices> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -515,7 +610,8 @@ class _searchservicesState extends State<searchservices> {
   }
 
   searchServiceType() async {
-    var geturi = Uri.parse("https://sliike-server.onrender.com/api/v1/client/searchServiceType?search=${searchCotroller.text}");
+    var geturi = Uri.parse(
+        "https://sliike-server.onrender.com/api/v1/client/searchServiceType?search=${searchCotroller.text}");
     try {
       setState(() {
         isLoading = true;
@@ -531,11 +627,13 @@ class _searchservicesState extends State<searchservices> {
           ss = SearchService.fromjson(map);
           searchData = ss!.data!.serviceTypes!;
         }
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -558,7 +656,7 @@ class ServiceCategories {
   factory ServiceCategories.fromjson(Map<dynamic, dynamic> map) {
     List list = map['data'] ?? "";
     List<ServiceCategorieData> data =
-    list.map((e) => ServiceCategorieData.fromjson(e)).toList();
+        list.map((e) => ServiceCategorieData.fromjson(e)).toList();
     return ServiceCategories(
       status: map['status'] ?? 0,
       success: map['success'] ?? false,
@@ -584,13 +682,12 @@ class ServiceCategorieData {
   }
 }
 
-
-class SearchService{
+class SearchService {
   int? status;
   Data? data;
 
-  SearchService({this.status,this.data});
-  factory SearchService.fromjson(Map<dynamic, dynamic>map){
+  SearchService({this.status, this.data});
+  factory SearchService.fromjson(Map<dynamic, dynamic> map) {
     return SearchService(
       status: map['status'] ?? 0,
       data: Data.fromjson(map['data'] ?? {}),
@@ -598,16 +695,18 @@ class SearchService{
   }
 }
 
-class Data{
+class Data {
   List<ServiceTypes>? serviceTypes;
   List<BeuticianTypes>? beuticianTypes;
 
-  Data({this.serviceTypes,this.beuticianTypes});
-  factory Data.fromjson(Map<dynamic,dynamic>map){
+  Data({this.serviceTypes, this.beuticianTypes});
+  factory Data.fromjson(Map<dynamic, dynamic> map) {
     List list = map['serviceTypes'];
     List list1 = map['beuticianTypes'];
-    List<ServiceTypes> serviceTypes = list.map((e) => ServiceTypes.fromjson(e)).toList();
-    List<BeuticianTypes> beuticianTypes = list1.map((e) => BeuticianTypes.fromjson(e)).toList();
+    List<ServiceTypes> serviceTypes =
+        list.map((e) => ServiceTypes.fromjson(e)).toList();
+    List<BeuticianTypes> beuticianTypes =
+        list1.map((e) => BeuticianTypes.fromjson(e)).toList();
     return Data(
       serviceTypes: serviceTypes,
       beuticianTypes: beuticianTypes,
@@ -615,14 +714,18 @@ class Data{
   }
 }
 
-class ServiceTypes{
+class ServiceTypes {
   String? id;
   String? serviceCategoryId;
   String? serviceTypeName;
   bool isSelected;
 
-  ServiceTypes({this.id,this.serviceCategoryId,this.serviceTypeName,this.isSelected = false});
-  factory ServiceTypes.fromjson(Map<dynamic,dynamic>map1){
+  ServiceTypes(
+      {this.id,
+      this.serviceCategoryId,
+      this.serviceTypeName,
+      this.isSelected = false});
+  factory ServiceTypes.fromjson(Map<dynamic, dynamic> map1) {
     return ServiceTypes(
       id: map1['_id'] ?? '',
       serviceCategoryId: map1['serviceCategoryId'] ?? '',
@@ -631,12 +734,12 @@ class ServiceTypes{
   }
 }
 
-class BeuticianTypes{
+class BeuticianTypes {
   String? id;
   String? businessName;
 
-  BeuticianTypes({this.id,this.businessName});
-  factory BeuticianTypes.fromjson(Map<dynamic,dynamic>map){
+  BeuticianTypes({this.id, this.businessName});
+  factory BeuticianTypes.fromjson(Map<dynamic, dynamic> map) {
     return BeuticianTypes(
       id: map['_id'],
       businessName: map['businessName'],

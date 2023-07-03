@@ -1140,8 +1140,8 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
         addBusinessDetailModel = AddBusinessDetailModel.fromJson(map);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1161,8 +1161,8 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

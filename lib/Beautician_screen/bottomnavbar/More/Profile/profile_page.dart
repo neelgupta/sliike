@@ -954,8 +954,8 @@ class _profilePageState extends State<profilePage> {
                     if (firstname.text.isEmpty) {
                       Fluttertoast.showToast(
                           msg: "Please Entar Frist Name",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -963,8 +963,8 @@ class _profilePageState extends State<profilePage> {
                     } else if (lastname.text.isEmpty) {
                       Fluttertoast.showToast(
                           msg: "Please Entar Last Name",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -972,8 +972,8 @@ class _profilePageState extends State<profilePage> {
                     } else if (email.text.isEmpty) {
                       Fluttertoast.showToast(
                           msg: "Please Entar Email",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -981,8 +981,8 @@ class _profilePageState extends State<profilePage> {
                     } else if (phonernumber.text.isEmpty) {
                       Fluttertoast.showToast(
                           msg: "Please Entar PhoneNumbar",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -990,8 +990,8 @@ class _profilePageState extends State<profilePage> {
                     } else if (d1 == "" || m1 == "" || y1 == "") {
                       Fluttertoast.showToast(
                           msg: "Enter Your Dob",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -999,8 +999,8 @@ class _profilePageState extends State<profilePage> {
                     } else if (gendervalue == "") {
                       Fluttertoast.showToast(
                           msg: "Select Your Gender",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black,
                           textColor: Colors.white,
@@ -1182,8 +1182,8 @@ class _profilePageState extends State<profilePage> {
         getBeauticianProfile();
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1191,8 +1191,8 @@ class _profilePageState extends State<profilePage> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

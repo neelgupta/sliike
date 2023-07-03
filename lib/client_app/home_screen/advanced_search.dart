@@ -172,40 +172,41 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                               SizedBox(width: 15),
                               Expanded(
                                 child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        border: Border.all(color: Colors.grey),
-                                        color: Colors.white),
-                                    height: height * 0.06,
-                                    width: double.infinity,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Image(
-                                              image: const AssetImage(
-                                                "assets/images/note.png",
-                                              ),
-                                              color: const Color(0xFFDD5103),
-                                              height: width * 0.05),
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      border: Border.all(color: Colors.grey),
+                                      color: Colors.white),
+                                  height: height * 0.06,
+                                  width: double.infinity,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Image(
+                                            image: const AssetImage(
+                                              "assets/images/note.png",
+                                            ),
+                                            color: const Color(0xFFDD5103),
+                                            height: width * 0.05),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.02,
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.32,
+                                        child: const Text(
+                                          "When?",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: "spartan"),
                                         ),
-                                        SizedBox(
-                                          width: width * 0.02,
-                                        ),
-                                        SizedBox(
-                                            width: width * 0.32,
-                                            child: const Text(
-                                              "When?",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: "spartan"),
-                                            ))
-                                      ],
-                                    )),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -302,7 +303,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                                   ),
                                 ),
                               )
-                            : datum.isEmpty
+                            : datum.isEmpty || selectedServiceIds.isEmpty
                                 ? SizedBox(
                                     height: 200,
                                     width: double.infinity,
@@ -768,8 +769,8 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
           mf = MyFavorites.fromjson(map);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -777,8 +778,8 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -824,8 +825,8 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
           mf = MyFavorites.fromjson(map);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -833,8 +834,8 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,

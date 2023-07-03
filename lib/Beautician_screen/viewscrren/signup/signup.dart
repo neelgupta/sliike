@@ -298,6 +298,7 @@ class _signUpState extends State<signUp> {
                         onChanged: (value) {
                           veriyemailAdressstatus = false;
                         },
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "Email Address",
@@ -419,6 +420,7 @@ class _signUpState extends State<signUp> {
                         onChanged: (value) {
                           emailAdressstatus = false;
                         },
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(left: 20),
                           hintText: "Email Address",
@@ -974,8 +976,8 @@ class _signUpState extends State<signUp> {
         Helper.prefs!.setString(UserPrefs.password, password);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -986,8 +988,8 @@ class _signUpState extends State<signUp> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1119,8 +1121,8 @@ class _signUpState extends State<signUp> {
 
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1139,8 +1141,8 @@ class _signUpState extends State<signUp> {
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

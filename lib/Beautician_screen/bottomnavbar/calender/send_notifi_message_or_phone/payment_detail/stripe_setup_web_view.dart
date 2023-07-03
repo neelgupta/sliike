@@ -1,7 +1,8 @@
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -9,7 +10,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class StripeWebViews extends StatefulWidget {
   final String email;
-  const StripeWebViews({Key? key,required this.email}) : super(key: key);
+  const StripeWebViews({Key? key, required this.email}) : super(key: key);
 
   @override
   State<StripeWebViews> createState() => _StripeWebViewsState();
@@ -27,9 +28,8 @@ class _StripeWebViewsState extends State<StripeWebViews> {
 
     params = const PlatformWebViewControllerCreationParams();
 
-
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params);
+        WebViewController.fromPlatformCreationParams(params);
     // #enddocregion platform_features
 
     controller
@@ -59,7 +59,8 @@ Page resource error:
           ''');
           },
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://connect.stripe.com/connect/default/oauth/test?code=')) {
+            if (request.url.startsWith(
+                'https://connect.stripe.com/connect/default/oauth/test?code=')) {
               addStripeToken(request.url);
               debugPrint('blocking navigation to ${request.url}');
               return NavigationDecision.prevent;
@@ -69,35 +70,37 @@ Page resource error:
           },
         ),
       )
-      ..addJavaScriptChannel(
-          'Toaster',
+      ..addJavaScriptChannel('Toaster',
           onMessageReceived: (JavaScriptMessage message) {
-            print("212121 ${message.message}");
+        print("212121 ${message.message}");
 
-            if (
-            message.message.contains('Congrats, you\'ve almost finished setting')
-                || message.message.contains('Congrats, you\'re almost done setting up your application')
-            ) {
-              print("121212 ${message.message}");
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(content: Text(message.message)),
-              // );
-            }
-          }
-      )
-      ..loadRequest(Uri.parse('https://connect.stripe.com/express/oauth/v2/authorize?response_type=code&client_id=ca_NkQ7Gkmm99MkOCt1mMuv1ZognhdUMVDr&scope=read_write&stripe_user[email]=${widget.email}'));
-
-
+        if (message.message
+                .contains('Congrats, you\'ve almost finished setting') ||
+            message.message.contains(
+                'Congrats, you\'re almost done setting up your application')) {
+          print("121212 ${message.message}");
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(content: Text(message.message)),
+          // );
+        }
+      })
+      ..loadRequest(Uri.parse(
+          'https://connect.stripe.com/express/oauth/v2/authorize?response_type=code&client_id=ca_NkQ7Gkmm99MkOCt1mMuv1ZognhdUMVDr&scope=read_write&stripe_user[email]=${widget.email}'));
 
     _controller = controller;
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: isLoading?const Center(child: CircularProgressIndicator(),):WebViewWidget(
-          controller: _controller,
-        ),
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : WebViewWidget(
+                controller: _controller,
+              ),
       ),
     );
   }
@@ -105,9 +108,7 @@ Page resource error:
   addStripeToken(String url) async {
     print(url);
     print(url.split("code=").last);
-    var bodyDat = {
-      'accountID': url.split("code=").last
-    };
+    var bodyDat = {'accountID': url.split("code=").last};
 
     var headers = {
       'Content-Type': "application/json; charset=utf-8",
@@ -122,19 +123,17 @@ Page resource error:
     print("Webview response code : ${response.statusCode}");
     print("Webview response body : ${response.body}");
 
-    if(response.statusCode==200 || response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
       Fluttertoast.showToast(
           msg: "Stripe Setup Done!!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
-    } else {
-
-    }
+    } else {}
   }
 }

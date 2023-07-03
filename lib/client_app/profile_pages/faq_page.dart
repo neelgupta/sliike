@@ -14,10 +14,9 @@ class faq_page extends StatefulWidget {
 }
 
 class _faq_pageState extends State<faq_page> {
-
-  Header ? faq;
+  Header? faq;
   bool isLoading = true;
-  List<bool> ? isExpand;
+  List<bool>? isExpand;
   @override
   void initState() {
     // TODO: implement initState
@@ -27,109 +26,158 @@ class _faq_pageState extends State<faq_page> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: height * 0.13, // Set this height
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 20,bottom: 10),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        height: height*0.06,
-                        child:Container(
-                            padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
-                      ),
-                    ),
-                    SizedBox(width: width*0.30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text("FAQ",
-                            style: TextStyle(
-                                fontSize: 23,
-                                color: Colors.black,
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: isLoading ? Center(child: CircularProgressIndicator(color: Color(0xffDD6A03))):
-      faq!=null && faq!.data.length!=0 ? SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: [
-              // const TextField(
-              //   style: TextStyle(fontFamily: "spartan",fontSize: 12),
-              //   decoration: InputDecoration(
-              //     border: OutlineInputBorder(),
-              //     hintText: "Describe your issue"
-              //   ),
-              // ),
-              SizedBox(height: height*0.02,),
-              Container(
-                // color: Colors.red,
-                height: height*0.80,
-                child: ListView.builder(
-                  itemCount: faq!.data.length,
-                  itemBuilder: (context, index) {
-                  return Column(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: height * 0.13, // Set this height
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/Rectangle 28.png"),
+                    fit: BoxFit.fill)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 20, bottom: 10),
+                  child: Row(
                     children: [
-                      InkWell(
-                        onTap: (){
-                          setState(() {
-                            isExpand![index] = !isExpand![index];
-                          });
-                          print(isExpand![index]);
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
                         },
-                        child: Row(
-                          children:  [
-                            Text("${faq!.data[index].question}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black)),
-                            Spacer(),
-                            isExpand![index]?
-                            Icon(Icons.keyboard_arrow_up_rounded,size: 30,):
-                            Icon(Icons.keyboard_arrow_down_rounded,size: 30,)
-                          ],),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          height: height * 0.06,
+                          child: Container(
+                              padding: const EdgeInsets.all(5),
+                              child: const Image(
+                                image: AssetImage("assets/images/Group 55.png"),
+                                color: Colors.black,
+                              )),
+                        ),
                       ),
-                      const SizedBox(height: 05,),
-                      isExpand![index]?SizedBox() : const Divider(color: Colors.black54,),
-                      isExpand![index]?
+                      SizedBox(width: width * 0.30),
                       Row(
-                        children:  [
-                          SizedBox(width: width*0.9,child: Text("Answer - ${faq!.data[index].answer}", style: TextStyle(fontSize: 14, fontFamily: "spartan", color: Colors.black))),
-                        ],):SizedBox(),
-                      isExpand![index]?const Divider(color: Colors.black54,) : SizedBox(),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text("FAQ",
+                              style: TextStyle(
+                                  fontSize: 23,
+                                  color: Colors.black,
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                     ],
-                  );
-                },),
-              )
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ):
-      Center(child: Text("No FAQ's Available !!"))
-    );
+        body: isLoading
+            ? Center(child: CircularProgressIndicator(color: Color(0xffDD6A03)))
+            : faq != null && faq!.data.length != 0
+                ? SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        children: [
+                          // const TextField(
+                          //   style: TextStyle(fontFamily: "spartan",fontSize: 12),
+                          //   decoration: InputDecoration(
+                          //     border: OutlineInputBorder(),
+                          //     hintText: "Describe your issue"
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          Container(
+                            // color: Colors.red,
+                            height: height * 0.80,
+                            child: ListView.builder(
+                              itemCount: faq!.data.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isExpand![index] = !isExpand![index];
+                                        });
+                                        print(isExpand![index]);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text("${faq!.data[index].question}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: "spartan",
+                                                  color: Colors.black)),
+                                          Spacer(),
+                                          isExpand![index]
+                                              ? Icon(
+                                                  Icons
+                                                      .keyboard_arrow_up_rounded,
+                                                  size: 30,
+                                                )
+                                              : Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  size: 30,
+                                                )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 05,
+                                    ),
+                                    isExpand![index]
+                                        ? SizedBox()
+                                        : const Divider(
+                                            color: Colors.black54,
+                                          ),
+                                    isExpand![index]
+                                        ? Row(
+                                            children: [
+                                              SizedBox(
+                                                  width: width * 0.9,
+                                                  child: Text(
+                                                      "Answer - ${faq!.data[index].answer}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: "spartan",
+                                                          color:
+                                                              Colors.black))),
+                                            ],
+                                          )
+                                        : SizedBox(),
+                                    isExpand![index]
+                                        ? const Divider(
+                                            color: Colors.black54,
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : Center(child: Text("No FAQ's Available !!")));
   }
+
   getClientFAQList() async {
     var postUri = Uri.parse(ApiUrlList.getClientFAQList);
     var request = http.MultipartRequest("GET", postUri);
@@ -141,22 +189,21 @@ class _faq_pageState extends State<faq_page> {
 
     log('getClientFAQList Body ====>>> ${res.body}');
     Map map = jsonDecode(res.body);
-    if(map['status']==200){
+    if (map['status'] == 200) {
       setState(() {
         faq = Header.fromjson(map);
         isLoading = false;
         isExpand = List.generate(faq!.data.length, (index) => false);
       });
-    }else{
+    } else {
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       setState(() {
         faq = null;
         isLoading = false;
@@ -165,26 +212,27 @@ class _faq_pageState extends State<faq_page> {
   }
 }
 
-class Header{
+class Header {
   int status;
   String message;
   List<Data> data;
-  Header(this.status, this.message,this.data);
+  Header(this.status, this.message, this.data);
 
-  factory Header.fromjson(Map<dynamic,dynamic>map){
+  factory Header.fromjson(Map<dynamic, dynamic> map) {
     List list = map["data"];
     List<Data> d = list.map((e) => Data.fromjson(e)).toList();
-    return Header(map['status'], map['message'],d);
+    return Header(map['status'], map['message'], d);
   }
 }
-class Data{
+
+class Data {
   // String _id;
   String useFor;
   String question;
   String answer;
   Data(this.useFor, this.question, this.answer);
 
-  factory Data.fromjson(Map<dynamic,dynamic>map){
+  factory Data.fromjson(Map<dynamic, dynamic> map) {
     return Data(map["useFor"], map["question"], map["answer"]);
   }
 }

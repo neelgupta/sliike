@@ -19,7 +19,7 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 class booking_delivered extends StatefulWidget {
   String? id;
   bool isPast = false;
-  booking_delivered({Key? key,this.id,this.isPast = false}) : super(key: key);
+  booking_delivered({Key? key, this.id, this.isPast = false}) : super(key: key);
 
   @override
   State<booking_delivered> createState() => _booking_deliveredState();
@@ -32,7 +32,7 @@ class _booking_deliveredState extends State<booking_delivered> {
   OnlyoneModal? onlyonemodal;
   String beauticianId = "";
   String place = "";
-  double  ? ratingValue;
+  double? ratingValue;
   getTimeFormatedValue(String minute) {
     String formatedTime = "";
     switch (minute) {
@@ -90,153 +90,376 @@ class _booking_deliveredState extends State<booking_delivered> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    var startData = onlyonemodal != null ? DateFormat('dd MMM,yyyy  |  h:mm').format(DateTime.parse('${onlyonemodal!.data!.dateTime}')):const SizedBox();
-    var endData = onlyonemodal != null ? DateFormat('h:mm').format(DateTime.parse('${onlyonemodal!.data!.endDateTime}')):const SizedBox();
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    var startData = onlyonemodal != null
+        ? DateFormat('dd MMM,yyyy  |  h:mm')
+            .format(DateTime.parse('${onlyonemodal!.data!.dateTime}'))
+        : const SizedBox();
+    var endData = onlyonemodal != null
+        ? DateFormat('h:mm')
+            .format(DateTime.parse('${onlyonemodal!.data!.endDateTime}'))
+        : const SizedBox();
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
-        body: isLoading
-            ? const Center(
-          child: CircularProgressIndicator(
-            color: Color(0xffDD6A03),
-          ),
-        ) : onlyonemodal != null ? SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: height*0.08,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
+              ),
+            )
+          : onlyonemodal != null
+              ? SingleChildScrollView(
+                  child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(onTap: () {
-                      Navigator.pop(context);
-                    },child: const Icon(Icons.arrow_back_sharp,size: 35,)),
-                    const Spacer(),
-                    Container(
-                      alignment: Alignment.center,
-                      width: width*0.35,
-                      height: height*0.05,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue
-                      ),
-                      child: const Text("delivered",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Colors.black)).tr(),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: height*0.05,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: const Text("appointment_details",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "spartan",
-                        color: Colors.black)).tr(),
-              ),
-              SizedBox(height: height*0.01,),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: Colors.black54,),
-              ),
-              SizedBox(height: height*0.02,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: onlyonemodal!.data!.beauticianId!.logoPath ?? '',
-                      imageBuilder: (context, imageProvider) => Container(
-                        padding:
-                        const EdgeInsets.all(10),
-                        height: height * 0.15,
-                        width: width * 0.30,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(8),
-                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
-                        ),
-                        margin: const EdgeInsets.all(5),
-                      ),
-                      progressIndicatorBuilder: (context, url, process) => Container(
-                          height: height * 0.15,
-                          width: width * 0.30,
-                          margin: const EdgeInsets.all(5),
-                          child: const Center(child: CircularProgressIndicator())
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                          height: height * 0.15,
-                          width: width * 0.30,
-                          margin: const EdgeInsets.all(5),
-                          alignment: Alignment.center,
-                          child: Center(child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.error),
-                              SizedBox(height: height*0.02,),
-                              const Text("No Image")
-                            ],
-                          ))
+                    SizedBox(
+                      height: height * 0.08,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(
+                                Icons.arrow_back_sharp,
+                                size: 35,
+                              )),
+                          const Spacer(),
+                          Container(
+                            alignment: Alignment.center,
+                            width: width * 0.35,
+                            height: height * 0.05,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.blue),
+                            child: const Text("delivered",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "spartan",
+                                        color: Colors.black))
+                                .tr(),
+                          )
+                        ],
                       ),
                     ),
-                    SizedBox(width: width*0.04,),
+                    SizedBox(
+                      height: height * 0.05,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Text("appointment_details",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "spartan",
+                                  color: Colors.black))
+                          .tr(),
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(
+                        color: Colors.black54,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                onlyonemodal!.data!.beauticianId!.logoPath ??
+                                    '',
+                            imageBuilder: (context, imageProvider) => Container(
+                              padding: const EdgeInsets.all(10),
+                              height: height * 0.15,
+                              width: width * 0.30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.fill)),
+                              margin: const EdgeInsets.all(5),
+                            ),
+                            progressIndicatorBuilder: (context, url, process) =>
+                                Container(
+                                    height: height * 0.15,
+                                    width: width * 0.30,
+                                    margin: const EdgeInsets.all(5),
+                                    child: const Center(
+                                        child: CircularProgressIndicator())),
+                            errorWidget: (context, url, error) => Container(
+                                height: height * 0.15,
+                                width: width * 0.30,
+                                margin: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                child: Center(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.error),
+                                    SizedBox(
+                                      height: height * 0.02,
+                                    ),
+                                    const Text("No Image")
+                                  ],
+                                ))),
+                          ),
+                          SizedBox(
+                            width: width * 0.04,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${onlyonemodal!.data!.beauticianId!.businessName}",
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black)),
+                              Text(
+                                  "${onlyonemodal!.data!.beauticianId!.address!.apartment} ${onlyonemodal!.data!.beauticianId!.address!.city} ${onlyonemodal!.data!.beauticianId!.address!.zipCode}",
+                                  style: const TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: "spartan",
+                                      color: Colors.blue)),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(
+                        color: Colors.black54,
+                      ),
+                    ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${onlyonemodal!.data!.beauticianId!.businessName}",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: "spartan",
-                                color: Colors.black)),
-                        Text("${onlyonemodal!.data!.beauticianId!.address!.apartment} ${onlyonemodal!.data!.beauticianId!.address!.city} ${onlyonemodal!.data!.beauticianId!.address!.zipCode}",
-                            style: const TextStyle(
-                                fontSize: 10,
-                                fontFamily: "spartan",
-                                color: Colors.blue)),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: height*0.02,),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: Colors.black54,),
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        SizedBox(height: height * 0.03,),
-                        Row(
-                          children: [
-                            Text("$startData - $endData",
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    color: Colors.black)),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                              Row(
+                                children: [
+                                  Text("$startData - $endData",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                  const Spacer(),
+                                  Text(
+                                      "\$${onlyonemodal!.data!.serviceId!.price}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      "for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: height * 0.03,),
-                        Row(
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20),
+                        //   child: Divider(color: Colors.black54,),
+                        // ),
+                        // Padding(
+                        //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                        //     child: Row(
+                        //       children: [
+                        //         SizedBox(height: height * 0.01,),
+                        //         const Text("stylist",
+                        //             style: TextStyle(
+                        //                 fontSize: 16,
+                        //                 fontFamily: "spartan",
+                        //                 color: Colors.black54)).tr(),
+                        //         SizedBox(width: width * 0.02,),
+                        //         onlyonemodal!.data!.stylistID!.firstName != ""?Row(
+                        //           children: [
+                        //             Image(
+                        //               image: const AssetImage("assets/images/Ellipse 150.png"),
+                        //               height: height * 0.04,
+                        //               width: width * 0.06,),
+                        //             SizedBox(width: width * 0.02,),
+                        //             Text("${appointmentData[index].stylistID!.firstName} ${appointmentData[index].stylistID!.lastName}",
+                        //                 style: const TextStyle(
+                        //                     fontSize: 16,
+                        //                     fontFamily: "spartan",
+                        //                     color: Colors.black
+                        //                 )
+                        //             ),
+                        //           ],
+                        //         ): const Text("No Preference",
+                        //             style: TextStyle(
+                        //                 fontSize: 16,
+                        //                 fontFamily: "spartan",
+                        //                 color: Colors.black)),
+                        //       ],
+                        //     )
+                        // ),
+                        // SizedBox(height: height * 0.01,),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(
+                            color: Colors.black54,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Preferred place of service:",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "spartan",
+                                      color: Colors.black54)),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                              Text(place,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "spartan",
+                                      color: Colors.black)),
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: InkWell(
+                          onTap: () {
+                            Helper.serviceId.clear();
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return book_appoinment(
+                                    bookingId: widget.id,
+                                    serviceDuration:
+                                        onlyonemodal!.data!.serviceId!.duration,
+                                    serviceId:
+                                        onlyonemodal!.data!.serviceId!.id,
+                                    beauticianId: onlyonemodal!
+                                        .data!.serviceId!.beauticianId,
+                                    price:
+                                        "${onlyonemodal!.data!.serviceId!.price}");
+                              },
+                            ));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: width,
+                            height: height * 0.06,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(0xffDD6A03)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image(
+                                  image: const AssetImage(
+                                      "assets/images/note.png"),
+                                  height: height * 0.03,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: width * 0.02),
+                                const Text("rebook_appointment",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "spartan",
+                                            color: Colors.white))
+                                    .tr(),
+                              ],
+                            ),
+                          )),
+                    ),
+
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: height * 0.06,
+                      color: const Color(0xFFF3F3F3),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("${onlyonemodal!.data!.serviceId!.serviceType!.serviceTypeName}",
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    color: Colors.black)),
+                            const Text("total",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: "spartan",
+                                        color: Colors.black))
+                                .tr(),
                             const Spacer(),
                             Text("\$${onlyonemodal!.data!.serviceId!.price}",
                                 style: const TextStyle(
@@ -245,329 +468,208 @@ class _booking_deliveredState extends State<booking_delivered> {
                                     color: Colors.black)),
                           ],
                         ),
-                        SizedBox(height: height * 0.01,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text("for ${getTimeFormatedValue(onlyonemodal!.data!.serviceId!.duration.toString())}",
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.02,),
-                      ],
+                      ),
                     ),
-                  ),
-                  // const Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 20),
-                  //   child: Divider(color: Colors.black54,),
-                  // ),
-                  // Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //     child: Row(
-                  //       children: [
-                  //         SizedBox(height: height * 0.01,),
-                  //         const Text("stylist",
-                  //             style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontFamily: "spartan",
-                  //                 color: Colors.black54)).tr(),
-                  //         SizedBox(width: width * 0.02,),
-                  //         onlyonemodal!.data!.stylistID!.firstName != ""?Row(
-                  //           children: [
-                  //             Image(
-                  //               image: const AssetImage("assets/images/Ellipse 150.png"),
-                  //               height: height * 0.04,
-                  //               width: width * 0.06,),
-                  //             SizedBox(width: width * 0.02,),
-                  //             Text("${appointmentData[index].stylistID!.firstName} ${appointmentData[index].stylistID!.lastName}",
-                  //                 style: const TextStyle(
-                  //                     fontSize: 16,
-                  //                     fontFamily: "spartan",
-                  //                     color: Colors.black
-                  //                 )
-                  //             ),
-                  //           ],
-                  //         ): const Text("No Preference",
-                  //             style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontFamily: "spartan",
-                  //                 color: Colors.black)),
-                  //       ],
-                  //     )
-                  // ),
-                  // SizedBox(height: height * 0.01,),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(color: Colors.black54,),
-                  ),
-                  SizedBox(height: height * 0.01,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Preferred place of service:",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "spartan",
-                                color: Colors.black54)),
-                        SizedBox(width: width*0.01,),
-                        Text(place,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontFamily: "spartan",
-                                color: Colors.black)),
-                      ],
+                    SizedBox(
+                      height: height * 0.04,
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(color: Colors.black54,),
-                  ),
-                ],
-              ),
-              SizedBox(height: height*0.01,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                    onTap: () {
-                      Helper.serviceId.clear();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return book_appoinment(
-                            bookingId: widget.id,
-                            serviceDuration: onlyonemodal!.data!.serviceId!.duration,
-                            serviceId: onlyonemodal!.data!.serviceId!.id,
-                            beauticianId: onlyonemodal!.data!.serviceId!.beauticianId,
-                            price: "${onlyonemodal!.data!.serviceId!.price}"
-                        );
-                      },));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width,
-                      height: height * 0.06,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: const Color(0xffDD6A03)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image(image: const AssetImage("assets/images/note.png"),height: height*0.03,color: Colors.white,),
-                          SizedBox(width: width*0.02),
-                          const Text("rebook_appointment",
-                              style: TextStyle(
-                                  fontSize: 14,
+                          const Text("booking_id",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "spartan",
+                                      color: Colors.black54))
+                              .tr(),
+                          SizedBox(
+                            width: width * 0.02,
+                          ),
+                          Text(onlyonemodal!.data!.paymentDetails!.bookingId,
+                              style: const TextStyle(
+                                  fontSize: 15,
                                   fontFamily: "spartan",
-                                  color: Colors.white)).tr(),
+                                  color: Colors.black54)),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: height * 0.05,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Helper.serviceId.clear();
+                        Helper.serviceId.add(widget.id);
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return booking_receipt(
+                                bookingId: onlyonemodal!
+                                    .data!.paymentDetails!.bookingId
+                                    .toString());
+                          },
+                        ));
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image(
+                                image: const AssetImage(
+                                    "assets/images/message-text.png"),
+                                height: height * 0.04,
+                                width: width * 0.08,
+                                color: const Color(0xffDD6A03),
+                              ),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              const Text("view_receipt",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "spartan",
+                                          color: Color(0xffDD6A03)))
+                                  .tr(),
+                              const Spacer(),
+                              const Icon(
+                                Icons.arrow_forward_ios_sharp,
+                                size: 25,
+                                color: Color(0xffDD6A03),
+                              )
+                            ],
+                          )),
+                    ),
+                    SizedBox(
+                      height: height * 0.05,
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: Container(
+                    //     height: onlyonemodal?.data?.ratingData?.rating == null ? height*0.58 : height*0.30,
+                    //     width: width,
+                    //     decoration: BoxDecoration(
+                    //         color: const Color(0xFFE7E7E7),
+                    //         borderRadius: BorderRadius.circular(10),
+                    //         border: Border.all(color: Colors.black12)
+                    //     ),
+                    //     child: Column(
+                    //       children: [
+                    //         SizedBox(height: height*0.03,),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate",
+                    //             style: TextStyle(
+                    //                 fontSize: 22,
+                    //                 fontFamily: "spartan",
+                    //                 color: Colors.black)).tr() : Text("My Ratings",style: TextStyle(
+                    //                 fontSize: 22,
+                    //                 fontFamily: "spartan",
+                    //                 color: Colors.black)),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? SizedBox(height: height*0.04,) : SizedBox(),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate_info",
+                    //             style: TextStyle(
+                    //                 fontSize: 12,
+                    //                 fontFamily: "spartan",
+                    //                 color: Colors.black)).tr() : SizedBox(),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? Text("you",
+                    //             style: TextStyle(
+                    //                 fontSize: 12,
+                    //                 fontFamily: "spartan",
+                    //                 color: Colors.black)).tr() : SizedBox(),
+                    //         SizedBox(height: height*0.04,),
+                    //         RatingBar.builder(
+                    //           initialRating: ratingValue ?? 0.0,
+                    //           direction: Axis.horizontal,
+                    //           allowHalfRating: true,
+                    //           updateOnDrag: true,
+                    //           itemCount: 5,
+                    //           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    //           itemBuilder: (context, _) => const Icon(
+                    //             Icons.star,
+                    //             color: Colors.amber,
+                    //           ),
+                    //           onRatingUpdate: (rating) {
+                    //             setState(() {
+                    //               ratingValue = rating;
+                    //             });
+                    //             print(rating);
+                    //           },
+                    //         ),
+                    //         SizedBox(height: height*0.04,),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? Padding(
+                    //           padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //           child: TextField(
+                    //             controller: txtreviews,
+                    //             style: const TextStyle(fontFamily: "spartan",fontSize: 12),
+                    //             maxLines: 3,
+                    //             decoration: InputDecoration(
+                    //               border: const OutlineInputBorder(),
+                    //               hintText: 'describe'.tr(),
+                    //             ),
+                    //           ),
+                    //         ) : SizedBox(),
+                    //         onlyonemodal?.data?.ratingData?.reviews != null ? Padding(
+                    //           padding: EdgeInsets.only(right: width * 0.48),
+                    //           child: Text("My Review:",style: TextStyle(
+                    //               fontSize: 13,
+                    //               fontFamily: "spartan",
+                    //               fontWeight: FontWeight.w500,
+                    //               color: Colors.black)),
+                    //         ) : SizedBox(),
+                    //         onlyonemodal?.data?.ratingData?.reviews != null ? Container(
+                    //           // color: Colors.red,
+                    //           width: width*0.69,
+                    //           child: Text("${onlyonemodal?.data?.ratingData?.reviews}",style: TextStyle(
+                    //               fontSize: 15,
+                    //               fontFamily: "spartan",
+                    //               fontWeight: FontWeight.w500,
+                    //               color: Colors.black)),
+                    //         ) : SizedBox(),
+                    //         SizedBox(height: height*0.04,),
+                    //         onlyonemodal?.data?.ratingData?.rating == null ? GestureDetector(
+                    //           onTap: () {
+                    //           },
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //             child: Row(
+                    //               children: [
+                    //                 const Spacer(),
+                    //                 InkWell(
+                    //                   onTap: (){
+                    //                     if(ratingValue == null){
+                    //                       Fluttertoast.showToast(msg: "Please give rating");
+                    //                     }else{
+                    //                       addRating();
+                    //                     }
+                    //                   },
+                    //                   child: Container(alignment: Alignment.center,
+                    //                     height: height*0.07,
+                    //                     width: width*0.3,
+                    //                     decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
+                    //                     child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ) : SizedBox()
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: height * 0.05,
                     )
-                ),
-              ),
-
-              SizedBox(height: height*0.04,),
-              Container(
-                alignment: Alignment.center,
-                height: height*0.06,
-                color: const Color(0xFFF3F3F3),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Text("total",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "spartan",
-                              color: Colors.black)).tr(),
-                      const Spacer(),
-                      Text("\$${onlyonemodal!.data!.serviceId!.price}",
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontFamily: "spartan",
-                              color: Colors.black)),
-                    ],
+                  ],
+                ))
+              : const Center(
+                  child: Text(
+                    "No Data Found!!!",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: "spartan",
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: height*0.04,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    const Text("booking_id",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: "spartan",
-                            color: Colors.black54)).tr(),
-                    SizedBox(width: width*0.02,),
-                    Text(onlyonemodal!.data!.paymentDetails!.bookingId,
-                        style: const TextStyle(
-                            fontSize: 15,
-                            fontFamily: "spartan",
-                            color: Colors.black54)),
-                  ],
-                ),
-              ),
-              SizedBox(height: height*0.05,),
-              InkWell(
-                onTap: () {
-                  Helper.serviceId.clear();
-                  Helper.serviceId.add(widget.id);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return booking_receipt(bookingId: onlyonemodal!.data!.paymentDetails!.bookingId.toString());
-                  },));
-                },
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image(image: const AssetImage("assets/images/message-text.png"),height: height*0.04,width: width*0.08,color: const Color(0xffDD6A03),),
-                        SizedBox(width: width*0.02,),
-                        const Text("view_receipt",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "spartan",
-                                color: Color(0xffDD6A03))).tr(),
-                        const Spacer(),
-                        const Icon(Icons.arrow_forward_ios_sharp,size: 25,color: Color(0xffDD6A03),)
-                      ],
-                    )
-                ),
-              ),
-              SizedBox(height: height*0.05,),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 20),
-              //   child: Container(
-              //     height: onlyonemodal?.data?.ratingData?.rating == null ? height*0.58 : height*0.30,
-              //     width: width,
-              //     decoration: BoxDecoration(
-              //         color: const Color(0xFFE7E7E7),
-              //         borderRadius: BorderRadius.circular(10),
-              //         border: Border.all(color: Colors.black12)
-              //     ),
-              //     child: Column(
-              //       children: [
-              //         SizedBox(height: height*0.03,),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate",
-              //             style: TextStyle(
-              //                 fontSize: 22,
-              //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr() : Text("My Ratings",style: TextStyle(
-              //                 fontSize: 22,
-              //                 fontFamily: "spartan",
-              //                 color: Colors.black)),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? SizedBox(height: height*0.04,) : SizedBox(),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("rate_info",
-              //             style: TextStyle(
-              //                 fontSize: 12,
-              //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr() : SizedBox(),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? Text("you",
-              //             style: TextStyle(
-              //                 fontSize: 12,
-              //                 fontFamily: "spartan",
-              //                 color: Colors.black)).tr() : SizedBox(),
-              //         SizedBox(height: height*0.04,),
-              //         RatingBar.builder(
-              //           initialRating: ratingValue ?? 0.0,
-              //           direction: Axis.horizontal,
-              //           allowHalfRating: true,
-              //           updateOnDrag: true,
-              //           itemCount: 5,
-              //           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-              //           itemBuilder: (context, _) => const Icon(
-              //             Icons.star,
-              //             color: Colors.amber,
-              //           ),
-              //           onRatingUpdate: (rating) {
-              //             setState(() {
-              //               ratingValue = rating;
-              //             });
-              //             print(rating);
-              //           },
-              //         ),
-              //         SizedBox(height: height*0.04,),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? Padding(
-              //           padding: const EdgeInsets.symmetric(horizontal: 20),
-              //           child: TextField(
-              //             controller: txtreviews,
-              //             style: const TextStyle(fontFamily: "spartan",fontSize: 12),
-              //             maxLines: 3,
-              //             decoration: InputDecoration(
-              //               border: const OutlineInputBorder(),
-              //               hintText: 'describe'.tr(),
-              //             ),
-              //           ),
-              //         ) : SizedBox(),
-              //         onlyonemodal?.data?.ratingData?.reviews != null ? Padding(
-              //           padding: EdgeInsets.only(right: width * 0.48),
-              //           child: Text("My Review:",style: TextStyle(
-              //               fontSize: 13,
-              //               fontFamily: "spartan",
-              //               fontWeight: FontWeight.w500,
-              //               color: Colors.black)),
-              //         ) : SizedBox(),
-              //         onlyonemodal?.data?.ratingData?.reviews != null ? Container(
-              //           // color: Colors.red,
-              //           width: width*0.69,
-              //           child: Text("${onlyonemodal?.data?.ratingData?.reviews}",style: TextStyle(
-              //               fontSize: 15,
-              //               fontFamily: "spartan",
-              //               fontWeight: FontWeight.w500,
-              //               color: Colors.black)),
-              //         ) : SizedBox(),
-              //         SizedBox(height: height*0.04,),
-              //         onlyonemodal?.data?.ratingData?.rating == null ? GestureDetector(
-              //           onTap: () {
-              //           },
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(horizontal: 20),
-              //             child: Row(
-              //               children: [
-              //                 const Spacer(),
-              //                 InkWell(
-              //                   onTap: (){
-              //                     if(ratingValue == null){
-              //                       Fluttertoast.showToast(msg: "Please give rating");
-              //                     }else{
-              //                       addRating();
-              //                     }
-              //                   },
-              //                   child: Container(alignment: Alignment.center,
-              //                     height: height*0.07,
-              //                     width: width*0.3,
-              //                     decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03)),borderRadius: const BorderRadius.all(Radius.circular(5))),
-              //                     child: const Text("submit",style: TextStyle(color: Color(0xffDD6A03)),).tr(),),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ) : SizedBox()
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: height*0.05,)
-            ],
-          )
-        ): const Center(
-    child: Text(
-    "No Data Found!!!",
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 14,
-        fontFamily: "spartan",
-      ),
-    ),
-    ),
     );
   }
 
@@ -581,7 +683,7 @@ class _booking_deliveredState extends State<booking_delivered> {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");
@@ -594,22 +696,24 @@ class _booking_deliveredState extends State<booking_delivered> {
       Map map = jsonDecode(response.body);
       if (map["status"] == 200) {
         onlyonemodal = OnlyoneModal.fromJson(jsonDecode(response.body));
-        if(onlyonemodal!.data!.place == 0){
+        if (onlyonemodal!.data!.place == 0) {
           setState(() {
             place = "Beautician’s place";
             ratingValue = onlyonemodal?.data?.ratingData?.rating;
           });
-        }else{
+        } else {
           setState(() {
             place = "At my place";
           });
         }
         setState(() {});
-      }else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -620,7 +724,6 @@ class _booking_deliveredState extends State<booking_delivered> {
     }
   }
 
-
   addRating() async {
     setState(() {
       isLoading = true;
@@ -630,9 +733,9 @@ class _booking_deliveredState extends State<booking_delivered> {
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
     var Body = {
-      "appointmentId" : widget.id,
-      "rating" : ratingValue,
-      "reviews" : txtreviews.text,
+      "appointmentId": widget.id,
+      "rating": ratingValue,
+      "reviews": txtreviews.text,
     };
     var response = await http.post(
       Uri.parse(ApiUrlList.addRating),
@@ -643,15 +746,15 @@ class _booking_deliveredState extends State<booking_delivered> {
     log("addRating Body : ${response.body}");
     log("addRating PayLoad : ${Body}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       getAppointmentPastList(widget.id);
       // setState(() {
       //   isLoading = false;
       // });
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -662,13 +765,12 @@ class _booking_deliveredState extends State<booking_delivered> {
       });
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
     }
   }
-
 }

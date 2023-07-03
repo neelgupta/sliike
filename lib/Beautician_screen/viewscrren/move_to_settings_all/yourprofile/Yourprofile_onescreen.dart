@@ -12,10 +12,11 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
 class yourProfile_One extends StatefulWidget {
-  int ? hasShop;
-  int ? isServe;
-  int ? isOwn;
-  yourProfile_One({Key? key,this.hasShop,this.isServe,this.isOwn}) : super(key: key);
+  int? hasShop;
+  int? isServe;
+  int? isOwn;
+  yourProfile_One({Key? key, this.hasShop, this.isServe, this.isOwn})
+      : super(key: key);
 
   @override
   State<yourProfile_One> createState() => _yourProfile_OneState();
@@ -38,12 +39,12 @@ class _yourProfile_OneState extends State<yourProfile_One> {
     _selected = widget.hasShop.toString();
     IsServeAtClient = widget.isServe.toString();
     IsServeAtOwnPlace = widget.isOwn.toString();
-    if(IsServeAtClient=="1"){
+    if (IsServeAtClient == "1") {
       clientsLocation = true;
       // atMySalon = true;
       setState(() {});
     }
-    if(IsServeAtOwnPlace=="1"){
+    if (IsServeAtOwnPlace == "1") {
       atMySalon = true;
       // atMySalon = true;
       setState(() {});
@@ -136,538 +137,584 @@ class _yourProfile_OneState extends State<yourProfile_One> {
           ),
         ),
       ),
-      body: isLoading ?
-          Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 60,),
-            InkWell(
-              onTap: () {
-                if(_selected == "1"){
-                  Salon = !Salon;
-                  atMySalon = true;
-                  IsServeAtOwnPlace = "1";
-                  IsServeAtClient = "0";
-                  Independent = false;
-                  setState(() {});
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                    color: const Color(0xffCFCFCF),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(color: Color(0xff01635D)),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 60,
                   ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10, bottom: 10, right: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                              value: "1",
-                              activeColor: const Color(0xff01635D),
-                              groupValue: _selected,
-                              onChanged: (value) {
-                                setState(() {
-                                  print(value);
-                                  _selected = value as String;
-                                  Independent = false;
-                                  atMySalon = true;
-                                  IsServeAtOwnPlace = "1";
-                                  IsServeAtClient = "0";
-                                });
-                              }),
-                          const Text(
-                            "I own a salon",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'spartan',
-                                color: Color(0xff414141)),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              if(_selected == "1"){
-                                Salon = !Salon;
-                                Independent = false;
-                                atMySalon = true;
-                                IsServeAtOwnPlace = "1";
-                                IsServeAtClient = "0";
-                                setState(() {});
-                              }
-                              // Salon = !Salon;
-                              // setState(() {});
-                            },
-                            child: Salon
-                                ? const Icon(
-                                    Icons.keyboard_arrow_up,
-                                    size: 30,
-                                    color: Color(0xff707070),
-                                  )
-                                : const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 30,
-                                    color: Color(0xff707070),
-                                  ),
-                          )
-                        ],
+                  InkWell(
+                    onTap: () {
+                      if (_selected == "1") {
+                        Salon = !Salon;
+                        atMySalon = true;
+                        IsServeAtOwnPlace = "1";
+                        IsServeAtClient = "0";
+                        Independent = false;
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: const Color(0xffCFCFCF),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Salon
-                          ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 15),
-                              // color: Colors.red,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 05,
-                                  ),
-                                  const Divider(
-                                    thickness: 02,
-                                  ),
-                                  const SizedBox(
-                                    height: 05,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: 'How do you work :',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 15,
-                                          color: Colors.black,
-                                          fontFamily: "spartan"),
-                                      children: const <TextSpan>[
-                                        TextSpan(
-                                            text: ' client\'s come to your ',
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 10, right: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio(
+                                    value: "1",
+                                    activeColor: const Color(0xff01635D),
+                                    groupValue: _selected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        print(value);
+                                        _selected = value as String;
+                                        Independent = false;
+                                        atMySalon = true;
+                                        IsServeAtOwnPlace = "1";
+                                        IsServeAtClient = "0";
+                                      });
+                                    }),
+                                const Text(
+                                  "I own a salon",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'spartan',
+                                      color: Color(0xff414141)),
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    if (_selected == "1") {
+                                      Salon = !Salon;
+                                      Independent = false;
+                                      atMySalon = true;
+                                      IsServeAtOwnPlace = "1";
+                                      IsServeAtClient = "0";
+                                      setState(() {});
+                                    }
+                                    // Salon = !Salon;
+                                    // setState(() {});
+                                  },
+                                  child: Salon
+                                      ? const Icon(
+                                          Icons.keyboard_arrow_up,
+                                          size: 30,
+                                          color: Color(0xff707070),
+                                        )
+                                      : const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 30,
+                                          color: Color(0xff707070),
+                                        ),
+                                )
+                              ],
+                            ),
+                            Salon
+                                ? Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    // color: Colors.red,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 05,
+                                        ),
+                                        const Divider(
+                                          thickness: 02,
+                                        ),
+                                        const SizedBox(
+                                          height: 05,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'How do you work :',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                                fontFamily: "spartan"),
+                                            children: const <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                      ' client\'s come to your ',
+                                                  style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan")),
+                                              // TextSpan(text: ' world!'),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                            "salon. Do you go to client\'s's location?",
                                             style: TextStyle(
                                                 letterSpacing: 0.5,
                                                 fontWeight: FontWeight.w400,
-                                                fontSize: 15,
+                                                fontSize: 13,
                                                 color: Colors.black54,
                                                 fontFamily: "spartan")),
-                                        // TextSpan(text: ' world!'),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 05),
+                                              child: Custom_Checkbox(
+                                                isChecked: atMySalon,
+                                                onChange: (value) {
+                                                  if (_selected == "1") {
+                                                    Salon = !Salon;
+                                                    Independent = false;
+                                                    atMySalon = true;
+                                                    IsServeAtOwnPlace = "1";
+                                                    IsServeAtClient = "0";
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                backgroundColor: Colors.grey,
+                                                borderColor: Colors.grey,
+                                                icon: Icons.check,
+                                                iconColor: Colors.white,
+                                                size: 22,
+                                                iconSize: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("At my salon",
+                                                      style: TextStyle(
+                                                          letterSpacing: 0.5,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 17,
+                                                          color: Colors.black54,
+                                                          fontFamily:
+                                                              "spartan")),
+                                                  Text(
+                                                    "Clients come to me. I work in a salon/beauty"
+                                                    " shop alongside other beauticians",
+                                                    maxLines: null,
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 05),
+                                              child: Custom_Checkbox(
+                                                isChecked: clientsLocation,
+                                                onChange: (value) {
+                                                  setState(() {
+                                                    clientsLocation = value;
+                                                    if (value) {
+                                                      IsServeAtClient = "1";
+                                                    } else {
+                                                      IsServeAtClient = "0";
+                                                    }
+                                                    print(IsServeAtClient);
+                                                  });
+                                                },
+                                                backgroundColor:
+                                                    Color(0xff01635D),
+                                                borderColor: Color(0xff01635D),
+                                                icon: Icons.check,
+                                                iconColor: Colors.white,
+                                                size: 22,
+                                                iconSize: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      "Yes, I go to client's location",
+                                                      style: TextStyle(
+                                                          letterSpacing: 0.5,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 17,
+                                                          color: clientsLocation
+                                                              ? Colors.black54
+                                                              : Colors.black,
+                                                          fontFamily:
+                                                              "spartan")),
+                                                  Text(
+                                                    "I go to client's location to perform my services",
+                                                    maxLines: null,
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Text(
-                                      "salon. Do you go to client\'s's location?",
-                                      style: TextStyle(
-                                          letterSpacing: 0.5,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: Colors.black54,
-                                          fontFamily: "spartan")),
-                                  const SizedBox(height: 25),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(padding: EdgeInsets.only(top: 05),
-                                        child: Custom_Checkbox(
-                                          isChecked: atMySalon,
-                                          onChange: (value){
-                                            if(_selected == "1"){
-                                              Salon = !Salon;
-                                              Independent = false;
-                                              atMySalon = true;
-                                              IsServeAtOwnPlace = "1";
-                                              IsServeAtClient = "0";
-                                              setState(() {});
-                                            }
-                                          },
-                                          backgroundColor: Colors.grey,
-                                          borderColor: Colors.grey,
-                                          icon: Icons.check,
-                                          iconColor: Colors.white,
-                                          size: 22,
-                                          iconSize: 20,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("At my salon",
-                                                style: TextStyle(
-                                                    letterSpacing: 0.5,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 17,
-                                                    color: Colors.black54,
-                                                    fontFamily: "spartan")),
-                                            Text(
-                                              "Clients come to me. I work in a salon/beauty"
-                                              " shop alongside other beauticians",
-                                              maxLines: null,
-                                              style: TextStyle(
-                                                letterSpacing: 0.5,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 13,
-
-                                                color: Colors.black54,
-                                                fontFamily: "spartan",
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 25),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(padding: EdgeInsets.only(top: 05),
-                                        child: Custom_Checkbox(
-                                          isChecked: clientsLocation,
-                                          onChange: (value) {
-                                            setState(() {
-                                              clientsLocation = value;
-                                              if(value){
-                                                IsServeAtClient = "1";
-                                              }else{
-                                                IsServeAtClient = "0";
-                                              }
-                                              print(IsServeAtClient);
-                                            });
-                                          },
-                                          backgroundColor: Color(0xff01635D),
-                                          borderColor: Color(0xff01635D),
-                                          icon: Icons.check,
-                                          iconColor: Colors.white,
-                                          size: 22,
-                                          iconSize: 20,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Yes, I go to client's location",
-                                                style: TextStyle(
-                                                    letterSpacing: 0.5,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 17,
-                                                    color: clientsLocation? Colors.black54 : Colors.black,
-                                                    fontFamily: "spartan")),
-                                            Text(
-                                              "I go to client's location to perform my services",
-                                              maxLines: null,
-                                              style: TextStyle(
-                                                letterSpacing: 0.5,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 13,
-
-                                                color: Colors.black54,
-                                                fontFamily: "spartan",
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          : const SizedBox()
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20,),
-            InkWell(
-              onTap: () {
-                  if(_selected == "0"){
-                    Independent = !Independent;
-                       clientsLocation = true;
-                       IsServeAtClient = "1";
-                       IsServeAtOwnPlace = "0";
-                       Salon = false;
-                      setState(() {});
-                  }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                    color: const Color(0xffCFCFCF),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding:
-                  const EdgeInsets.only(top: 10, bottom: 10, right: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                              value: "0",
-                              activeColor: const Color(0xff01635D),
-                              groupValue: _selected,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selected = value as String;
-                                  if(_selected == "0"){
-                                    Independent = !Independent;
-                                    clientsLocation = true;
-                                    IsServeAtClient = "1";
-                                    IsServeAtOwnPlace = "0";
-                                    Salon = false;
-                                    setState(() {});
-                                  }
-                                });
-                              }),
-                          const Text(
-                            "I am independent",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'spartan',
-                                color: Color(0xff414141)),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              if(_selected == "0"){
-                                Independent = !Independent;
-                                clientsLocation = true;
-                                IsServeAtClient = "1";
-                                IsServeAtOwnPlace = "0";
-                                Salon = false;
-                                setState(() {});
-                              }
-                              // Independent = !Independent;
-                              // setState(() {});
-                            },
-                            child: Independent
-                                ? const Icon(
-                              Icons.keyboard_arrow_up,
-                              size: 30,
-                              color: Color(0xff707070),
-                            )
-                                : const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                              color: Color(0xff707070),
-                            ),
-                          )
-                        ],
-                      ),
-                      Independent
-                          ? Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15),
-                        // color: Colors.red,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            const Divider(
-                              thickness: 02,
-                            ),
-                            const SizedBox(
-                              height: 05,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: 'How do you work :',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontFamily: "spartan"),
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: ' you go to client\'s',
-                                      style: TextStyle(
-                                          letterSpacing: 0.5,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 15,
-                                          color: Colors.black54,
-                                          fontFamily: "spartan")),
-                                  // TextSpan(text: ' world!'),
-                                ],
-                              ),
-                            ),
-                            Text(
-                                "location. Do client\'s also come to your place?",
-                                style: TextStyle(
-                                    letterSpacing: 0.5,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                    color: Colors.black54,
-                                    fontFamily: "spartan")),
-                            const SizedBox(height: 25),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.only(top: 05),
-                                  child: Custom_Checkbox(
-                                    isChecked: clientsLocation,
-                                    onChange: (value) {
-                                      setState(() {
-
-                                      });
-                                    },
-                                    backgroundColor: Colors.grey,
-                                    borderColor: Colors.grey,
-                                    icon: Icons.check,
-                                    iconColor: Colors.white,
-                                    size: 22,
-                                    iconSize: 20,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("At client\'s location",
-                                          style: TextStyle(
-                                              letterSpacing: 0.5,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 17,
-                                              color: Colors.black54,
-                                              fontFamily: "spartan")),
-                                      Text(
-                                        "I go to the client’s location to perform my services",
-                                        maxLines: null,
-                                        style: TextStyle(
-                                          letterSpacing: 0.5,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-
-                                          color: Colors.black54,
-                                          fontFamily: "spartan",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 25),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.only(top: 05),
-                                  child: Custom_Checkbox(
-                                    isChecked: atMySalon,
-                                    onChange: (value) {
-                                      setState(() {
-                                        atMySalon = value;
-                                         if(value){
-                                           IsServeAtOwnPlace = "1";
-                                         }else{
-                                           IsServeAtOwnPlace = "0";
-                                         }
-                                         print(IsServeAtOwnPlace);
-                                      });
-                                    },
-                                    backgroundColor: Color(0xff01635D),
-                                    borderColor: Color(0xff01635D),
-                                    icon: Icons.check,
-                                    iconColor: Colors.white,
-                                    size: 22,
-                                    iconSize: 20,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Yes, Clients come to my place",
-                                          style: TextStyle(
-                                              letterSpacing: 0.5,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 17,
-                                              color: clientsLocation? Colors.black54 : Colors.black,
-                                              fontFamily: "spartan")),
-                                      Text(
-                                        "Clients come to me. I work in a salon/beauty shop alongside other beauticians",
-                                        maxLines: null,
-                                        style: TextStyle(
-                                          letterSpacing: 0.5,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-
-                                          color: Colors.black54,
-                                          fontFamily: "spartan",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                                  )
+                                : const SizedBox()
                           ],
                         ),
-                      )
-                          : const SizedBox()
-                    ],
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (_selected == "0") {
+                        Independent = !Independent;
+                        clientsLocation = true;
+                        IsServeAtClient = "1";
+                        IsServeAtOwnPlace = "0";
+                        Salon = false;
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: const Color(0xffCFCFCF),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 10, right: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio(
+                                    value: "0",
+                                    activeColor: const Color(0xff01635D),
+                                    groupValue: _selected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selected = value as String;
+                                        if (_selected == "0") {
+                                          Independent = !Independent;
+                                          clientsLocation = true;
+                                          IsServeAtClient = "1";
+                                          IsServeAtOwnPlace = "0";
+                                          Salon = false;
+                                          setState(() {});
+                                        }
+                                      });
+                                    }),
+                                const Text(
+                                  "I am independent",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'spartan',
+                                      color: Color(0xff414141)),
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    if (_selected == "0") {
+                                      Independent = !Independent;
+                                      clientsLocation = true;
+                                      IsServeAtClient = "1";
+                                      IsServeAtOwnPlace = "0";
+                                      Salon = false;
+                                      setState(() {});
+                                    }
+                                    // Independent = !Independent;
+                                    // setState(() {});
+                                  },
+                                  child: Independent
+                                      ? const Icon(
+                                          Icons.keyboard_arrow_up,
+                                          size: 30,
+                                          color: Color(0xff707070),
+                                        )
+                                      : const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 30,
+                                          color: Color(0xff707070),
+                                        ),
+                                )
+                              ],
+                            ),
+                            Independent
+                                ? Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    // color: Colors.red,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 05,
+                                        ),
+                                        const Divider(
+                                          thickness: 02,
+                                        ),
+                                        const SizedBox(
+                                          height: 05,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'How do you work :',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                                fontFamily: "spartan"),
+                                            children: const <TextSpan>[
+                                              TextSpan(
+                                                  text: ' you go to client\'s',
+                                                  style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan")),
+                                              // TextSpan(text: ' world!'),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                            "location. Do client\'s also come to your place?",
+                                            style: TextStyle(
+                                                letterSpacing: 0.5,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 13,
+                                                color: Colors.black54,
+                                                fontFamily: "spartan")),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 05),
+                                              child: Custom_Checkbox(
+                                                isChecked: clientsLocation,
+                                                onChange: (value) {
+                                                  setState(() {});
+                                                },
+                                                backgroundColor: Colors.grey,
+                                                borderColor: Colors.grey,
+                                                icon: Icons.check,
+                                                iconColor: Colors.white,
+                                                size: 22,
+                                                iconSize: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("At client\'s location",
+                                                      style: TextStyle(
+                                                          letterSpacing: 0.5,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 17,
+                                                          color: Colors.black54,
+                                                          fontFamily:
+                                                              "spartan")),
+                                                  Text(
+                                                    "I go to the client’s location to perform my services",
+                                                    maxLines: null,
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 05),
+                                              child: Custom_Checkbox(
+                                                isChecked: atMySalon,
+                                                onChange: (value) {
+                                                  setState(() {
+                                                    atMySalon = value;
+                                                    if (value) {
+                                                      IsServeAtOwnPlace = "1";
+                                                    } else {
+                                                      IsServeAtOwnPlace = "0";
+                                                    }
+                                                    print(IsServeAtOwnPlace);
+                                                  });
+                                                },
+                                                backgroundColor:
+                                                    Color(0xff01635D),
+                                                borderColor: Color(0xff01635D),
+                                                icon: Icons.check,
+                                                iconColor: Colors.white,
+                                                size: 22,
+                                                iconSize: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      "Yes, Clients come to my place",
+                                                      style: TextStyle(
+                                                          letterSpacing: 0.5,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 17,
+                                                          color: clientsLocation
+                                                              ? Colors.black54
+                                                              : Colors.black,
+                                                          fontFamily:
+                                                              "spartan")),
+                                                  Text(
+                                                    "Clients come to me. I work in a salon/beauty shop alongside other beauticians",
+                                                    maxLines: null,
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.5,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13,
+                                                      color: Colors.black54,
+                                                      fontFamily: "spartan",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : const SizedBox()
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {
+                      if (_selected.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please select any one option");
+                      } else if (_selected == 1 && IsServeAtOwnPlace.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please select options from I own a salon");
+                        Salon = true;
+                        setState(() {});
+                      } else if (_selected == 0 && IsServeAtClient.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please select options from I am independent");
+                        Independent = true;
+                        setState(() {});
+                      } else {
+                        addBeauticianServiceMethod();
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: width,
+                      height: height * 0.06,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xff01635D)),
+                      child: const Text("SAVE",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "spartan",
+                              color: Colors.white)),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
-            InkWell(
-              onTap: () {
-                if(_selected.isEmpty){
-                  Fluttertoast.showToast(msg: "Please select any one option");
-                }else if(_selected == 1 && IsServeAtOwnPlace.isEmpty){
-                  Fluttertoast.showToast(msg: "Please select options from I own a salon");
-                  Salon = true;
-                  setState(() {});
-                }else if(_selected == 0 && IsServeAtClient.isEmpty){
-                  Fluttertoast.showToast(msg: "Please select options from I am independent");
-                  Independent = true;
-                  setState(() {});
-                }else{
-                  addBeauticianServiceMethod();
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: width,
-                height: height * 0.06,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: const Color(0xff01635D)),
-                child: const Text("SAVE",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "spartan",
-                        color: Colors.white)),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -679,12 +726,13 @@ class _yourProfile_OneState extends State<yourProfile_One> {
       });
       var Headers = {
         'Content-Type': "application/json",
-        "Authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var Body = {
-        "hasShop":int.parse(_selected),
-        "IsServeAtClient":int.parse(IsServeAtClient),
-        "IsServeAtOwnPlace":int.parse(IsServeAtOwnPlace),
+        "hasShop": int.parse(_selected),
+        "IsServeAtClient": int.parse(IsServeAtClient),
+        "IsServeAtOwnPlace": int.parse(IsServeAtOwnPlace),
       };
       log("addBeauticianServiceMethod PayLoad ====> $Body");
       var response = await http.post(
@@ -702,21 +750,21 @@ class _yourProfile_OneState extends State<yourProfile_One> {
           });
           Fluttertoast.showToast(
               msg: map['message'],
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.pop(context);
-        }else{
+        } else {
           setState(() {
             isLoading = false;
           });
           Fluttertoast.showToast(
               msg: map['message'],
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -732,5 +780,4 @@ class _yourProfile_OneState extends State<yourProfile_One> {
       // });
     }
   }
-
 }

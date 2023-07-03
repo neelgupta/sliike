@@ -12,10 +12,7 @@ import 'package:http/http.dart' as http;
 
 import '../client_app/profile_pages/payments.dart';
 
-
-class cardServices{
-
-
+class cardServices {
   getCardDetails(BuildContext context) async {
     var getUri = Uri.parse(ApiUrlList.getCardDetails);
     try {
@@ -24,7 +21,7 @@ class cardServices{
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
         progressIndicator:
-        const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+            const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
         themeData: Theme.of(context).copyWith(
           colorScheme: ColorScheme.fromSwatch().copyWith(
             secondary: const Color(0xff01635D),
@@ -33,7 +30,8 @@ class cardServices{
       );
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var response = await http.get(
         getUri,
@@ -43,10 +41,12 @@ class cardServices{
       log("getCardDetails Code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         return GetCardDetailsData.fromJson(jsonDecode(response.body));
-      }else if(response.statusCode == 401){
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+      } else if (response.statusCode == 401) {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -55,15 +55,13 @@ class cardServices{
     }
   }
 
-
-
-  addCardDetails(BuildContext context,Body) async {
+  addCardDetails(BuildContext context, Body) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
       themeData: Theme.of(context).copyWith(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: const Color(0xff01635D),
@@ -83,13 +81,17 @@ class cardServices{
     log("addMyDemographics Body : ${response.body}");
     log("addMyDemographics PayLoad : ${Body}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       Loader.hide();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const payments(),));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const payments(),
+          ));
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -98,14 +100,12 @@ class cardServices{
       Loader.hide();
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
     }
   }
-
-
 }

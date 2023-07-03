@@ -12,9 +12,9 @@ import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/booking_sum
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
-import '../../Beautician_screen/bottomnavbar/More/help_center/contact_us_help.dart';
 import '../../commonClass.dart';
 import '../../utils/app_colors.dart';
+import '../profile_pages/contact_us.dart';
 
 class booking_receipt extends StatefulWidget {
   final String bookingId;
@@ -181,7 +181,8 @@ class _booking_receiptState extends State<booking_receipt> {
                                         color: Colors.black))
                                 .tr(),
                             const Spacer(),
-                            Text("\$${appointment[0].subTotal}",
+                            Text(
+                                "\$${double.parse(appointment[0].subTotal.toString()).toStringAsFixed(2)}",
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "spartan",
@@ -906,7 +907,7 @@ class _booking_receiptState extends State<booking_receipt> {
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return contact_us_beauty();
+                                return contact_us();
                               },
                             ));
                           },

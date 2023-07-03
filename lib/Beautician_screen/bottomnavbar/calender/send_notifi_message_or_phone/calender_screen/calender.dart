@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getAppointmentDetailsModel.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/calender/send_notifi_message_or_phone/new_appoinment/new_appoinment.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
@@ -11,12 +13,12 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 import '../../../../../services/calender_service.dart';
 import '../../../../b_model/employee_get_list.dart';
 import '../confirmed_Future_Apoi/confirmed_appoinment/future_appointment/appointment_detail_screen.dart';
 import 'allow_location.dart';
 import 'appointment_data_source.dart';
-import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class calender extends StatefulWidget {
@@ -51,7 +53,6 @@ class _calenderState extends State<calender> {
 
   int Index = 0;
 
-
   getDates(DateTime date) {
     setState(() {
       dates.clear();
@@ -64,34 +65,40 @@ class _calenderState extends State<calender> {
       ).duration.inDays;
       for (int i = 1; i <= noOfDays; i++) {
         log("Index ${Index}");
-        dates.add(DateTime(date.year, date.month, i),
+        dates.add(
+          DateTime(date.year, date.month, i),
         );
       }
       if (_scrollController.hasClients) {
-        for(int i =0; i< dates.length;i++){
-
+        for (int i = 0; i < dates.length; i++) {
           // log("pickeddate == dates[i] : ${pickeddate == dates[i]}");
-        if(pickeddate == dates[i]){
-          log("pickeddate == dates[i] : ${pickeddate == dates[i]}");
-          log("dates[i] : ${dates[i]}");
-          log("i.toDouble() : ${i.toDouble()}");
+          if (pickeddate == dates[i]) {
+            log("pickeddate == dates[i] : ${pickeddate == dates[i]}");
+            log("dates[i] : ${dates[i]}");
+            log("i.toDouble() : ${i.toDouble()}");
 
-        setState(() {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent/
-            (dates.length-6) * i);
-
-        });
+            setState(() {
+              _scrollController.jumpTo(
+                  _scrollController.position.maxScrollExtent /
+                      (dates.length - 6) *
+                      i);
+            });
+          }
         }
       }
-        }
     });
   }
 
   List<TimeRegion> _getTimeRegions() {
     final List<TimeRegion> regions = <TimeRegion>[];
-    if(appointMentDetails?.data?.timingOfDay?.breakStartTime!= ""&& appointMentDetails?.data?.timingOfDay?.breakEndTime!=""){
-      String bsHour = appointMentDetails?.data?.timingOfDay?.breakStartTime?.split(":")[0] ?? "00";
-      String bsMinute = appointMentDetails?.data?.timingOfDay?.breakStartTime?.split(":")[1] ?? "00";
+    if (appointMentDetails?.data?.timingOfDay?.breakStartTime != "" &&
+        appointMentDetails?.data?.timingOfDay?.breakEndTime != "") {
+      String bsHour = appointMentDetails?.data?.timingOfDay?.breakStartTime
+              ?.split(":")[0] ??
+          "00";
+      String bsMinute = appointMentDetails?.data?.timingOfDay?.breakStartTime
+              ?.split(":")[1] ??
+          "00";
       var now = DateTime.now();
       DateTime startBreakDateTime = DateTime(
           pickeddate.year,
@@ -101,10 +108,13 @@ class _calenderState extends State<calender> {
           // appointMentDetails?.data?.appointmentData?[0].dateTime!.month ?? now.month,
           // appointMentDetails?.data?.appointmentData?[0].dateTime!.day ?? now.day,
           int.parse(bsHour),
-          int.parse(bsMinute)
-      );
-      String beHour = appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[0] ?? "00";
-      String beMinute = appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[1] ?? "00";
+          int.parse(bsMinute));
+      String beHour =
+          appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[0] ??
+              "00";
+      String beMinute =
+          appointMentDetails?.data?.timingOfDay?.breakEndTime?.split(":")[1] ??
+              "00";
       DateTime endBreakDateTime = DateTime(
           pickeddate.year,
           pickeddate.month,
@@ -113,8 +123,7 @@ class _calenderState extends State<calender> {
           // appointMentDetails?.data?.appointmentData?[0].endDateTime!.month ?? now.month,
           // appointMentDetails?.data?.appointmentData?[0].endDateTime!.day ?? now.day,
           int.parse(beHour),
-          int.parse(beMinute)
-      );
+          int.parse(beMinute));
       log("startBreakDateTime ${startBreakDateTime}");
       log("endBreakDateTime ${endBreakDateTime}");
       regions.add(TimeRegion(
@@ -123,7 +132,6 @@ class _calenderState extends State<calender> {
           enablePointerInteraction: false,
           color: Colors.grey.withOpacity(0.2),
           text: 'Break'));
-
     }
     return regions;
   }
@@ -161,7 +169,6 @@ class _calenderState extends State<calender> {
     super.initState();
     getCalendarAppointments2(pickeddate);
     print(pickeddate);
-
   }
 
   // getCalendarAppointments(selectedDate, {String? stylishId}) async {
@@ -199,7 +206,7 @@ class _calenderState extends State<calender> {
   //   });
   // }
 
-  getCalendarAppointments2(selectedDate,{String? stylishId}) async {
+  getCalendarAppointments2(selectedDate, {String? stylishId}) async {
     setState(() {
       pickeddate = selectedDate;
       // isAppointmentLoading = true;
@@ -213,15 +220,12 @@ class _calenderState extends State<calender> {
     var date = DateFormat('yyyy-MM-dd').format(selectedDate);
     var day = DateFormat('EEEE').format(selectedDate);
     appointMentDetails = await calenderService.getAppointmentDetailByDate2(
-      selectedDate: date,
-      stylishId: stylishId,
-      selectedDay: day
-    );
+        selectedDate: date, stylishId: stylishId, selectedDay: day);
 
     if (appointMentDetails != null) {
       if (appointMentDetails!.data!.appointmentData!.isNotEmpty) {
         setState(() {
-        appointDataList.addAll(appointMentDetails!.data!.appointmentData!);
+          appointDataList.addAll(appointMentDetails!.data!.appointmentData!);
           log("appointDataList :: ${appointDataList.length}");
         });
       } else {
@@ -237,7 +241,6 @@ class _calenderState extends State<calender> {
       isAppointmentsLoading = false;
     });
   }
-
 
   AppointmentDataSource getAppointDataSource() {
     List<Appointment> meetings = <Appointment>[];
@@ -283,7 +286,8 @@ class _calenderState extends State<calender> {
             Appointment(
               isAllDay: false,
               id: singleData.id,
-              subject: "${singleData.clientData?.firstName} ${singleData.clientData?.lastName}(${singleData.serviceDetails?.serviceTypeName})",
+              subject:
+                  "${singleData.clientData?.firstName} ${singleData.clientData?.lastName}(${singleData.serviceDetails?.serviceTypeName})",
               startTime: startTime.toLocal(),
               endTime: endTime.toLocal(),
               // startTimeZone: startTimeZoneName,
@@ -331,9 +335,6 @@ class _calenderState extends State<calender> {
         ),
       );
 
-
-
-
   @override
   Widget build(BuildContext context) {
     var displayDate = DateFormat('E, d MMM yyyy').format(pickeddate);
@@ -360,8 +361,13 @@ class _calenderState extends State<calender> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => allow_location(getDate: pickeddate),)).then((value){
-                          if(value!=null){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  allow_location(getDate: pickeddate),
+                            )).then((value) {
+                          if (value != null) {
                             setState(() {
                               highlight = true;
                               getCalendarAppointments2(value);
@@ -456,41 +462,58 @@ class _calenderState extends State<calender> {
         closeDialOnPop: true,
         children: [
           SpeedDialChild(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  add_Your_Work_Hours(
-                secondflow: false,
-                Day: appointMentDetails?.data?.timingOfDay?.day,
-                isOpen: appointMentDetails?.data?.timingOfDay?.isOpen,
-                startTime: appointMentDetails?.data?.timingOfDay?.startTime,
-                endTime: appointMentDetails?.data?.timingOfDay?.endTime,
-                breakstartTime: appointMentDetails?.data?.timingOfDay?.breakStartTime,
-                breakendTime: appointMentDetails?.data?.timingOfDay?.breakEndTime,
-              ),)).then((value){
-                var displayDate = DateFormat('yyyy-MM-dd').format(pickeddate);
-                Map<String ,dynamic> body = {
-                  "day": value["day"],
-                  "date" : displayDate,
-                  "startTime": value["startTime"],
-                  "endTime": value["endTime"],
-                  "breakStartTime": value["breakStartTime"],
-                  "breakEndTime": value["breakEndTime"],
-                  "isOpen": value["isOpen"]
-                };
-                saveCalenderAdjustment(body);
-              });
-            },
-            child: Center(child: Image(image: AssetImage("assets/images/clock.png"),height: 20,color: Colors.white,)),
-            backgroundColor: Color(0xffDD6A03),
-            label: "New Break Time"
-          ),
-          SpeedDialChild(
-              onTap: (){
-                // Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppoinment_Viwe_Add(),));
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppointment("")));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => add_Your_Work_Hours(
+                        secondflow: false,
+                        Day: appointMentDetails?.data?.timingOfDay?.day,
+                        isOpen: appointMentDetails?.data?.timingOfDay?.isOpen,
+                        startTime:
+                            appointMentDetails?.data?.timingOfDay?.startTime,
+                        endTime: appointMentDetails?.data?.timingOfDay?.endTime,
+                        breakstartTime: appointMentDetails
+                            ?.data?.timingOfDay?.breakStartTime,
+                        breakendTime:
+                            appointMentDetails?.data?.timingOfDay?.breakEndTime,
+                      ),
+                    )).then((value) {
+                  var displayDate = DateFormat('yyyy-MM-dd').format(pickeddate);
+                  Map<String, dynamic> body = {
+                    "day": value["day"],
+                    "date": displayDate,
+                    "startTime": value["startTime"],
+                    "endTime": value["endTime"],
+                    "breakStartTime": value["breakStartTime"],
+                    "breakEndTime": value["breakEndTime"],
+                    "isOpen": value["isOpen"]
+                  };
+                  saveCalenderAdjustment(body);
+                });
               },
-              child: Center(child: Image(image: AssetImage("assets/images/calender.png"),height: 20,color: Colors.white,)),
+              child: Center(
+                  child: Image(
+                image: AssetImage("assets/images/clock.png"),
+                height: 20,
+                color: Colors.white,
+              )),
               backgroundColor: Color(0xffDD6A03),
-              label: "New Appointment",
+              label: "New Break Time"),
+          SpeedDialChild(
+            onTap: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (context) =>  newAppoinment_Viwe_Add(),));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => newAppointment("")));
+            },
+            child: Center(
+                child: Image(
+              image: AssetImage("assets/images/calender.png"),
+              height: 20,
+              color: Colors.white,
+            )),
+            backgroundColor: Color(0xffDD6A03),
+            label: "New Appointment",
           ),
         ],
       ),
@@ -750,7 +773,7 @@ class _calenderState extends State<calender> {
                       //   ),
                       // ),
                     ),
-                    Stack(
+                  Stack(
                     children: [
                       Container(
                         // color: Colors.red
@@ -758,7 +781,8 @@ class _calenderState extends State<calender> {
                         height: height * 0.7,
                         width: double.infinity,
                         child: SfCalendar(
-                          monthViewSettings: const MonthViewSettings(showAgenda: true),
+                          monthViewSettings:
+                              const MonthViewSettings(showAgenda: true),
                           showCurrentTimeIndicator: true,
                           showWeekNumber: true,
                           specialRegions: _getTimeRegions(),
@@ -770,7 +794,8 @@ class _calenderState extends State<calender> {
                           initialSelectedDate: pickeddate,
                           initialDisplayDate: pickeddate,
                           controller: calendarcontroller,
-                          loadMoreWidgetBuilder: (context, loadMoreAppointments) {
+                          loadMoreWidgetBuilder:
+                              (context, loadMoreAppointments) {
                             return isAppointmentsLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(),
@@ -783,12 +808,14 @@ class _calenderState extends State<calender> {
                             log("viewChangedDetails.visibleDates year :: ${viewChangedDetails.visibleDates.first.year.toString()}    pickeddate.month  ${pickeddate.year}");
                             log("viewChangedDetails.visibleDates month :: ${viewChangedDetails.visibleDates.first.month.toString()} ,,  pickeddate.month ${pickeddate.month}");
                             log("viewChangedDetails.visibleDates  :: ${viewChangedDetails.visibleDates.first.toString()} ,,  pickeddate $pickeddate");
-                            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                              getCalendarAppointments2(viewChangedDetails.visibleDates.first);
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((timeStamp) {
+                              getCalendarAppointments2(
+                                  viewChangedDetails.visibleDates.first);
                             });
                           },
                           dataSource: getAppointDataSource(),
-                          timeSlotViewSettings:  TimeSlotViewSettings(
+                          timeSlotViewSettings: TimeSlotViewSettings(
                             numberOfDaysInView: -1,
                             timeIntervalWidth: 50,
                             startHour: 0,
@@ -796,10 +823,15 @@ class _calenderState extends State<calender> {
                             timeRulerSize: 50,
                             timeInterval: Duration(minutes: 15),
                             timelineAppointmentHeight: 50,
-                            timeFormat: appointMentDetails?.data?.calenderSetting?.formate==12? 'h:mm a' : 'HH:mm',
+                            timeFormat: appointMentDetails
+                                        ?.data?.calenderSetting?.formate ==
+                                    12
+                                ? 'h:mm a'
+                                : 'HH:mm',
                             timeIntervalHeight: 35,
                           ),
-                          appointmentBuilder: (context, CalendarAppointmentDetails appoDetails) {
+                          appointmentBuilder: (context,
+                              CalendarAppointmentDetails appoDetails) {
                             // log("appointment.subject :${appoDetails.appointments.first.subject}");
                             // log("appointment.startTime :${appoDetails.appointments.first.startTime}");
                             // log("appointment.endTime  :${appoDetails.appointments.first.endTime}");
@@ -812,15 +844,34 @@ class _calenderState extends State<calender> {
                               // onLongPressEnd: (details) =>
                               //     popupDialog?.remove(),
                               onTap: () {
-                                if (DateTime.now().isAfter(appoDetails.appointments.first.startTime)) {
-                                  Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => AppointmentDetailScreen(appointmentId: appoDetails.appointments.first.id, isFuture: false,),),);
+                                if (DateTime.now().isAfter(
+                                    appoDetails.appointments.first.startTime)) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppointmentDetailScreen(
+                                        appointmentId:
+                                            appoDetails.appointments.first.id,
+                                        isFuture: false,
+                                      ),
+                                    ),
+                                  );
                                   // log("value is : $value");
                                   // if (value as bool == true) {
                                   //   getCalenderAppointsApis();
                                   // }
                                 } else {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AppointmentDetailScreen(appointmentId: appoDetails.appointments.first.id,isFuture: true,),));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AppointmentDetailScreen(
+                                          appointmentId:
+                                              appoDetails.appointments.first.id,
+                                          isFuture: true,
+                                        ),
+                                      ));
                                   // log("value is : $value");
                                   // if (value as bool) {
                                   //   getCalenderAppointsApis();
@@ -1062,7 +1113,7 @@ class _calenderState extends State<calender> {
     );
   }
 
-  saveCalenderAdjustment(Map<String,dynamic> body) async {
+  saveCalenderAdjustment(Map<String, dynamic> body) async {
     setState(() {
       isLoading = true;
     });
@@ -1080,7 +1131,7 @@ class _calenderState extends State<calender> {
     log("saveCalenderAdjustment Code : ${response.statusCode}");
     log("saveCalenderAdjustment Body : ${response.body}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       setState(() {
         isLoading = false;
       });
@@ -1093,8 +1144,8 @@ class _calenderState extends State<calender> {
       // });
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -1105,13 +1156,12 @@ class _calenderState extends State<calender> {
       });
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
     }
   }
-
 }

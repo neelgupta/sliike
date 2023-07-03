@@ -82,12 +82,15 @@ class _edit_addressState extends State<edit_address> {
               SizedBox(
                 height: height * 0.04,
               ),
-              const Text("Edit Address",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontFamily: "spartan",
-                      fontWeight: FontWeight.bold)),
+              const Text(
+                "Edit Address",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "spartan",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(
                 height: height * 0.03,
               ),

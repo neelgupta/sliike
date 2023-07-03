@@ -208,14 +208,20 @@ class _servicesState extends State<services> {
                               child: Swiper(
                                 autoplay: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Beauticiandata[0].workSpaceImgs!.isNotEmpty
+                                  return Beauticiandata[0]
+                                          .workSpaceImgs!
+                                          .isNotEmpty
                                       ? CachedNetworkImage(
-                                          imageUrl: Beauticiandata[0].workSpaceImgs![index],
-                                          imageBuilder: (context, imageProvider) {
+                                          imageUrl: Beauticiandata[0]
+                                              .workSpaceImgs![index],
+                                          imageBuilder:
+                                              (context, imageProvider) {
                                             return Container(
                                               height: height * 0.13,
                                               width: width,
-                                              decoration: BoxDecoration(image: DecorationImage(image: imageProvider)),
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider)),
                                             );
                                           },
                                           progressIndicatorBuilder: (context,
@@ -272,7 +278,9 @@ class _servicesState extends State<services> {
                                             ],
                                           )));
                                 },
-                                itemCount: Beauticiandata[0].workSpaceImgs!.isNotEmpty
+                                itemCount: Beauticiandata[0]
+                                        .workSpaceImgs!
+                                        .isNotEmpty
                                     ? Beauticiandata[0].workSpaceImgs!.length
                                     : 1,
                                 pagination: const SwiperPagination(
@@ -300,12 +308,15 @@ class _servicesState extends State<services> {
                             //   ),
                             // ),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pop(context);
                               },
                               child: Padding(
-                                 padding: EdgeInsets.only(left: 20,top: 10),
-                                child: Image.asset("assets/images/back.png",color: Color(0xFFDD6A03),height: 30,width: 30),
+                                padding: EdgeInsets.only(left: 20, top: 10),
+                                child: Image.asset("assets/images/back.png",
+                                    color: Color(0xFFDD6A03),
+                                    height: 30,
+                                    width: 30),
                               ),
                             ),
                             Positioned(
@@ -361,7 +372,8 @@ class _servicesState extends State<services> {
                             children: [
                               Container(
                                 // color: Colors.red,
-                                padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+                                padding: const EdgeInsets.only(
+                                    top: 20, bottom: 20, left: 20),
                                 width: width * 0.40,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,39 +445,32 @@ class _servicesState extends State<services> {
                               //       )),
                               if (Beauticiandata[0].isLicensed == 1)
                                 Padding(
-                                  padding: const EdgeInsets
-                                      .only(
-                                      left:
-                                      0,bottom: 35),
-                                  child: Image
-                                      .asset(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, bottom: 35),
+                                  child: Image.asset(
                                     "assets/images/Subtract (1).png",
-                                    height:
-                                    20,
+                                    height: 20,
                                     width: 20,
                                   ),
                                 ),
-                              SizedBox(width: 05,),
+                              SizedBox(
+                                width: 05,
+                              ),
                               if (Beauticiandata[0].hasShop == 0)
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     print(Beauticiandata[0].isLicensed);
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets
-                                        .only(
-                                        right:
-                                        30,bottom: 35),
-                                    child: Image
-                                        .asset(
+                                    padding: const EdgeInsets.only(
+                                        right: 30, bottom: 35),
+                                    child: Image.asset(
                                       "assets/images/independentmen.png",
-                                      height:
-                                      20,
+                                      height: 20,
                                       width: 20,
                                     ),
                                   ),
                                 )
-
                             ],
                           ),
                         ),
@@ -476,7 +481,7 @@ class _servicesState extends State<services> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 TabBar(
-                                     unselectedLabelColor: Colors.black,
+                                    unselectedLabelColor: Colors.black,
                                     labelColor: const Color(0xFFDD6A03),
                                     indicatorColor: const Color(0xFFDD6A03),
                                     tabs: [
@@ -587,60 +592,109 @@ class _servicesState extends State<services> {
                                               ),
                                             ),
                                             SizedBox(height: height * 0.02),
-                                            const Divider(color: Colors.black54),
+                                            const Divider(
+                                                color: Colors.black54),
                                             SizedBox(height: height * 0.02),
                                             Row(
                                               children: [
-                                                Padding(padding: const EdgeInsets.only(left: 20),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20),
                                                   child: Align(
-                                                    alignment: Alignment.centerLeft,
-                                                    child: const Text("services",
-                                                            style: TextStyle(fontSize: 20, fontFamily: "spartan", color: Colors.black)).tr(),
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: const Text(
+                                                            "services",
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "spartan",
+                                                                color: Colors
+                                                                    .black))
+                                                        .tr(),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 8),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8),
                                                   child: Align(
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
                                                         "(${search.text.isEmpty ? Beauticiandata[0].beauticianServiceId!.length : temp.length})",
-                                                        style: const TextStyle(fontSize: 18, fontFamily: "spartan", color: Colors.black54)),
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontFamily:
+                                                                "spartan",
+                                                            color: Colors
+                                                                .black54)),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                             Container(
-                                              height: ((Beauticiandata[0].beauticianServiceId!.length <= 5
-                                                          ? Beauticiandata[0].beauticianServiceId!.length
+                                              height: ((Beauticiandata[0]
+                                                                  .beauticianServiceId!
+                                                                  .length <=
+                                                              5
+                                                          ? Beauticiandata[0]
+                                                              .beauticianServiceId!
+                                                              .length
                                                           : viewMore
-                                                              ? Beauticiandata[0].beauticianServiceId!.length
-                                                              : 5) * 60) + 20,
+                                                              ? Beauticiandata[
+                                                                      0]
+                                                                  .beauticianServiceId!
+                                                                  .length
+                                                              : 5) *
+                                                      60) +
+                                                  20,
                                               child: ListView.builder(
                                                   shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  padding: const EdgeInsets.only(top: 20),
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 20),
                                                   // physics: const NeverScrollableScrollPhysics(),
-                                                  itemCount: search.text.isNotEmpty
+                                                  itemCount: search
+                                                          .text.isNotEmpty
                                                       ? temp.length
-                                                      : Beauticiandata[0].beauticianServiceId!.length <= 5
-                                                          ? Beauticiandata[0].beauticianServiceId!.length
+                                                      : Beauticiandata[0]
+                                                                  .beauticianServiceId!
+                                                                  .length <=
+                                                              5
+                                                          ? Beauticiandata[0]
+                                                              .beauticianServiceId!
+                                                              .length
                                                           : viewMore
-                                                              ? Beauticiandata[0].beauticianServiceId!.length : 5,
-                                                  itemBuilder: (context, index) {
+                                                              ? Beauticiandata[
+                                                                      0]
+                                                                  .beauticianServiceId!
+                                                                  .length
+                                                              : 5,
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     // if (index < 5) {
                                                     //   return serviceSingalItem(index);
                                                     // } else if (viewMore) {
-                                                    return search.text.isNotEmpty
+                                                    return search
+                                                            .text.isNotEmpty
                                                         ? showSearchItem(index)
-                                                        : serviceSingalItem(index);
+                                                        : serviceSingalItem(
+                                                            index);
                                                     // } else {
                                                     //   return const SizedBox();
                                                     // }
                                                   }),
                                             ),
                                             SizedBox(height: height * 0.02),
-                                            if (search.text.isEmpty)Beauticiandata[0].beauticianServiceId!.length > 5
+                                            if (search.text.isEmpty)
+                                              Beauticiandata[0]
+                                                          .beauticianServiceId!
+                                                          .length >
+                                                      5
                                                   ? viewMore
                                                       ? InkWell(
                                                           onTap: () {
@@ -650,10 +704,16 @@ class _servicesState extends State<services> {
                                                           },
                                                           child: Row(
                                                             children: [
-                                                              Padding(padding: const EdgeInsets.only(left: 20),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            20),
                                                                 child: Align(
                                                                   alignment:
-                                                                      Alignment.centerLeft,
+                                                                      Alignment
+                                                                          .centerLeft,
                                                                   child: const Text(
                                                                           "view_less",
                                                                           style: TextStyle(
@@ -731,7 +791,9 @@ class _servicesState extends State<services> {
                                                           ),
                                                         )
                                                   : const SizedBox(),
-                                            SizedBox(height: height * 0.04,)
+                                            SizedBox(
+                                              height: height * 0.04,
+                                            )
                                           ],
                                         ),
                                       ),
@@ -1568,41 +1630,69 @@ class _servicesState extends State<services> {
                                                         width: width,
                                                         child: GoogleMap(
                                                           onTap: (latLng) {
-                                                            lat = latLng.latitude.toString();
-                                                            long = latLng.longitude.toString();
+                                                            lat = latLng
+                                                                .latitude
+                                                                .toString();
+                                                            long = latLng
+                                                                .longitude
+                                                                .toString();
                                                           },
-                                                          mapToolbarEnabled: false,
-                                                          initialCameraPosition: _initialLocation,
-                                                          myLocationButtonEnabled: false,
-                                                          myLocationEnabled: true,
-                                                          mapType: MapType.normal,
-                                                          zoomControlsEnabled: false,
-                                                          zoomGesturesEnabled: true,
-                                                          markers: Set<Marker>.of(markers),
+                                                          mapToolbarEnabled:
+                                                              false,
+                                                          initialCameraPosition:
+                                                              _initialLocation,
+                                                          myLocationButtonEnabled:
+                                                              false,
+                                                          myLocationEnabled:
+                                                              true,
+                                                          mapType:
+                                                              MapType.normal,
+                                                          zoomControlsEnabled:
+                                                              false,
+                                                          zoomGesturesEnabled:
+                                                              true,
+                                                          markers:
+                                                              Set<Marker>.of(
+                                                                  markers),
                                                         ),
                                                       ),
                                                       Positioned(
                                                           left: 10,
                                                           bottom: 15,
                                                           child: Container(
-                                                            height: height * 0.12,
+                                                            height:
+                                                                height * 0.12,
                                                             width: width - 20,
-                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                                                                color: Colors.white),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                color: Colors
+                                                                    .white),
                                                             child: Padding(
-                                                              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      15,
+                                                                  vertical: 10),
                                                               child: Row(
                                                                 children: [
                                                                   Expanded(
                                                                     child:
                                                                         Column(
                                                                       crossAxisAlignment:
-                                                                          CrossAxisAlignment.start,
+                                                                          CrossAxisAlignment
+                                                                              .start,
                                                                       mainAxisAlignment:
-                                                                          MainAxisAlignment.center,
+                                                                          MainAxisAlignment
+                                                                              .center,
                                                                       children: [
-                                                                        Text(BeauticianDetails[0].businessName,
-                                                                            style: const TextStyle(
+                                                                        Text(
+                                                                            BeauticianDetails[0]
+                                                                                .businessName,
+                                                                            style:
+                                                                                const TextStyle(
                                                                               fontSize: 14,
                                                                               color: Colors.black,
                                                                               fontWeight: FontWeight.bold,
@@ -1624,13 +1714,24 @@ class _servicesState extends State<services> {
                                                                       ],
                                                                     ),
                                                                   ),
-                                                                  const SizedBox(width: 10,),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
                                                                   const Padding(
-                                                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                                                    child: VerticalDivider(color: Colors.black),),
-                                                                  const SizedBox(width: 10),
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            10),
+                                                                    child: VerticalDivider(
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          10),
                                                                   Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
                                                                     children: [
                                                                       InkWell(
                                                                         onTap:
@@ -1639,9 +1740,16 @@ class _servicesState extends State<services> {
                                                                               BeauticianDetails[0].location.coordinates[1],
                                                                               BeauticianDetails[0].location.coordinates[0]);
                                                                         },
-                                                                        child: SizedBox(
-                                                                          height: height * 0.05,
-                                                                          child: Image.asset("assets/images/Group 12665.png",fit: BoxFit.fill,),
+                                                                        child:
+                                                                            SizedBox(
+                                                                          height:
+                                                                              height * 0.05,
+                                                                          child:
+                                                                              Image.asset(
+                                                                            "assets/images/Group 12665.png",
+                                                                            fit:
+                                                                                BoxFit.fill,
+                                                                          ),
                                                                         ),
                                                                       )
                                                                     ],
@@ -1653,9 +1761,13 @@ class _servicesState extends State<services> {
                                                     ],
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 15),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         // SizedBox(
                                                         //   height: height * 0.04,
@@ -1762,36 +1874,56 @@ class _servicesState extends State<services> {
                                                         // const Divider(
                                                         //   color: Colors.black54,
                                                         // ),
-                                                        SizedBox(height: height * 0.02),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.02),
                                                         const Text(
                                                           "Contact",
                                                           style: TextStyle(
                                                             fontSize: 20,
-                                                            fontFamily: "spartan",
+                                                            fontFamily:
+                                                                "spartan",
                                                             color: Colors.black,
                                                           ),
                                                         ),
-                                                        SizedBox(height: height * 0.01),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.01),
                                                         InkWell(
                                                           onTap: () {},
                                                           child: Row(
                                                             children: [
                                                               CircleAvatar(
                                                                 radius: 30,
-                                                                backgroundColor: const Color(0xffF3F3F3),
-                                                                child: Image.asset("assets/images/contact_call.png", color: const Color(0xff707070),
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xffF3F3F3),
+                                                                child:
+                                                                    Image.asset(
+                                                                  "assets/images/contact_call.png",
+                                                                  color: const Color(
+                                                                      0xff707070),
                                                                   height: 20,
                                                                 ),
                                                               ),
-                                                              const SizedBox(width: 10,),
-                                                              textComoon("${BeauticianDetails[0].businessNumber}", 14,
-                                                                  const Color(0xff292929),
-                                                                  FontWeight.w600),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              textComoon(
+                                                                  "${BeauticianDetails[0].businessNumber}",
+                                                                  14,
+                                                                  const Color(
+                                                                      0xff292929),
+                                                                  FontWeight
+                                                                      .w600),
                                                               const Spacer(),
                                                               InkWell(
                                                                 onTap: () {
                                                                   _launchDailer(
-                                                                      BeauticianDetails[0].businessNumber.toString());
+                                                                      BeauticianDetails[
+                                                                              0]
+                                                                          .businessNumber
+                                                                          .toString());
                                                                 },
                                                                 child: Container(
                                                                     height: 35,
@@ -1822,7 +1954,9 @@ class _servicesState extends State<services> {
                                                             color: Colors.black,
                                                           ),
                                                         ),
-                                                        SizedBox(height: height * 0.02),
+                                                        SizedBox(
+                                                            height:
+                                                                height * 0.02),
                                                         // Row(
                                                         //   children:  [
                                                         //     const Text("Monday - Friday",
@@ -1860,7 +1994,8 @@ class _servicesState extends State<services> {
                                                               )
                                                             : Container(
                                                                 // color: Colors.red,
-                                                                height: height * 0.3,
+                                                                height: height *
+                                                                    0.3,
                                                                 child: ListView
                                                                     .builder(
                                                                   itemCount: BeauticianDetails[
@@ -2153,7 +2288,9 @@ class _servicesState extends State<services> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFDD6A03),
                     ),
-                    child: const Text("book", style: TextStyle(fontFamily: "spartan")).tr()),
+                    child: const Text("book",
+                            style: TextStyle(fontFamily: "spartan"))
+                        .tr()),
               ],
             ),
             const SizedBox(
@@ -2575,8 +2712,8 @@ class _servicesState extends State<services> {
         mf = MyFavorites.fromjson(map);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2585,8 +2722,8 @@ class _servicesState extends State<services> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2620,8 +2757,8 @@ class _servicesState extends State<services> {
         mf = MyFavorites.fromjson(map);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2629,8 +2766,8 @@ class _servicesState extends State<services> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2817,8 +2954,8 @@ class SingalBeauticianData {
   List? workSpaceImgs;
   Address? address;
   bool? isFav;
-  int ? isLicensed;
-  int ? hasShop;
+  int? isLicensed;
+  int? hasShop;
 
   SingalBeauticianData(
       {this.id,
@@ -2831,9 +2968,8 @@ class SingalBeauticianData {
       this.workSpaceImgs,
       this.address,
       this.isFav,
-        this.isLicensed,
-        this.hasShop
-      });
+      this.isLicensed,
+      this.hasShop});
 
   factory SingalBeauticianData.fromjson(Map<dynamic, dynamic> map1) {
     List list = map1['beauticianServiceId'] ?? [];

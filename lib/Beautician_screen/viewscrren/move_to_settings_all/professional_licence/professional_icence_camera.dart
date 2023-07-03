@@ -28,7 +28,7 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
   String imagePath = "";
   bool imageStatus = false;
   int? isLicensed;
-  getLicenseDetailsC ? data;
+  getLicenseDetailsC? data;
 
   _pickImage() async {
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -70,9 +70,14 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
-                            InkWell(onTap:() => Navigator.pop(context),child: Icon(Icons.arrow_circle_left_outlined,color: Colors.white,size: 40)),
-                            const SizedBox(height: 05,),
+                          children: [
+                            InkWell(
+                                onTap: () => Navigator.pop(context),
+                                child: Icon(Icons.arrow_circle_left_outlined,
+                                    color: Colors.white, size: 40)),
+                            const SizedBox(
+                              height: 05,
+                            ),
                             Text("Professional Licence",
                                 style: TextStyle(
                                     fontSize: 17,
@@ -251,13 +256,16 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                                             : SizedBox(
                                                 width: width * 0.5,
                                                 height: height * 0.16,
-                                                child: data?.data?.licenseImagePath==null?Image.asset(
-                                                    "assets/images/Rectangle 217.png",
-                                                    fit: BoxFit.fill):
-                                                Image.network(
-                                                    data!.data!.licenseImagePath!,
-                                                    fit: BoxFit.fill)
-                                              ),
+                                                child: data?.data
+                                                            ?.licenseImagePath ==
+                                                        null
+                                                    ? Image.asset(
+                                                        "assets/images/Rectangle 217.png",
+                                                        fit: BoxFit.fill)
+                                                    : Image.network(
+                                                        data!.data!
+                                                            .licenseImagePath!,
+                                                        fit: BoxFit.fill)),
                                         InkWell(
                                           onTap: () {
                                             _pickImage();
@@ -285,12 +293,12 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                       if(isLicensed == 1 && imagePath == ""){
-                         Fluttertoast.showToast(msg: "Please upload licence photo");
-                       }
-                       else{
-                         addBusinessLicense();
-                       }
+                      if (isLicensed == 1 && imagePath == "") {
+                        Fluttertoast.showToast(
+                            msg: "Please upload licence photo");
+                      } else {
+                        addBusinessLicense();
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -321,11 +329,12 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
       var postUri = Uri.parse(ApiUrlList.addBusinessLicense);
       var request = http.MultipartRequest("POST", postUri);
       request.fields["isLicensed"] = isLicensed.toString();
-      request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+      request.headers['Authorization'] =
+          "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
       log("Fileds :: ${request.fields}");
-      if(imagePath != "" && isLicensed == 1){
+      if (imagePath != "" && isLicensed == 1) {
         http.MultipartFile multipartFile =
-        await http.MultipartFile.fromPath('licenseImage', images!.path);
+            await http.MultipartFile.fromPath('licenseImage', images!.path);
         request.files.add(multipartFile);
       }
       http.StreamedResponse response = await request.send();
@@ -340,8 +349,8 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
         });
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -352,8 +361,8 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
         });
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -369,53 +378,53 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
   }
 
   getLicenseDetails() async {
-      setState(() {
-        isLoading = true;
-      });
-      var gettUri = Uri.parse(ApiUrlList.getLicenseDetails);
-      var headers = {
-        'Content-Type': "application/json; charset=utf-8",
-        "Authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
-      };
-      var response = await http.get(gettUri,headers: headers);
-      log("getLicenseDetails Body ==> ${response.body}");
-      log("getLicenseDetails Code ==> ${response.statusCode}");
-      Map map = jsonDecode(response.body);
-      if (map['status'] == 200) {
-        data = getLicenseDetailsC.fromJson(map);
-        if(data!.data!.licenseImagePath!=null){
-          isLicensed = 1;
-          setState(() {});
-        }
-        setState(() {
-          data!.data!.isLicensed==0?selected="No":"Yes";
-          isLicensed = data!.data!.isLicensed;
-          print(isLicensed);
-        });
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+    setState(() {
+      isLoading = true;
+    });
+    var gettUri = Uri.parse(ApiUrlList.getLicenseDetails);
+    var headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.get(gettUri, headers: headers);
+    log("getLicenseDetails Body ==> ${response.body}");
+    log("getLicenseDetails Code ==> ${response.statusCode}");
+    Map map = jsonDecode(response.body);
+    if (map['status'] == 200) {
+      data = getLicenseDetailsC.fromJson(map);
+      if (data!.data!.licenseImagePath != null) {
+        isLicensed = 1;
+        setState(() {});
       }
       setState(() {
-        isLoading = false;
+        data!.data!.isLicensed == 0 ? selected = "No" : "Yes";
+        isLicensed = data!.data!.isLicensed;
+        print(isLicensed);
       });
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
-
 }
+
 class getLicenseDetailsC {
   int? status;
   bool? success;
@@ -429,19 +438,20 @@ class getLicenseDetailsC {
     this.data,
   });
 
-  factory getLicenseDetailsC.fromJson(Map<dynamic, dynamic> json) => getLicenseDetailsC(
-    status: json["status"],
-    success: json["success"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory getLicenseDetailsC.fromJson(Map<dynamic, dynamic> json) =>
+      getLicenseDetailsC(
+        status: json["status"],
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "success": success,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -456,14 +466,14 @@ class Data {
   });
 
   factory Data.fromJson(Map<dynamic, dynamic> json) => Data(
-    id: json["_id"],
-    isLicensed: json["isLicensed"],
-    licenseImagePath: json["licenseImagePath"],
-  );
+        id: json["_id"],
+        isLicensed: json["isLicensed"],
+        licenseImagePath: json["licenseImagePath"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "isLicensed": isLicensed,
-    "licenseImagePath": licenseImagePath,
-  };
+        "_id": id,
+        "isLicensed": isLicensed,
+        "licenseImagePath": licenseImagePath,
+      };
 }

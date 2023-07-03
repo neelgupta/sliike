@@ -354,8 +354,8 @@ class _resetPassWordState extends State<resetPassWord> {
                           });
                         },
                         icon: const Icon(Icons.visibility_outlined)),
-                labelStyle:
-                    const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                labelStyle: const TextStyle(
+                    fontFamily: 'spartan', color: Colors.black54),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: const BorderSide(color: Colors.black38),
@@ -473,8 +473,9 @@ class _resetPassWordState extends State<resetPassWord> {
             height: height * 0.06,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color:
-                    isOtpShow == true ? const Color(0xffDD6A03) : Colors.transparent),
+                color: isOtpShow == true
+                    ? const Color(0xffDD6A03)
+                    : Colors.transparent),
             child: const Text("continue",
                     style: TextStyle(
                         fontSize: 14,
@@ -538,18 +539,17 @@ class _resetPassWordState extends State<resetPassWord> {
         ),
         InkWell(
           onTap: () {
-
             String email = emailContoller.text;
             bool emailValid = RegExp(
-                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                 .hasMatch(email);
             if (email.isEmpty) {
-              setState((){
-              emailstatus = true;
-              status = "Please Enter Email ID";
+              setState(() {
+                emailstatus = true;
+                status = "Please Enter Email ID";
               });
             } else if (!emailValid) {
-              setState((){
+              setState(() {
                 emailstatus = true;
                 status = "Please Enter Correct Email ID";
               });
@@ -650,8 +650,8 @@ class _resetPassWordState extends State<resetPassWord> {
       Loader.show(context,
           isSafeAreaOverlay: false,
           overlayColor: Colors.black26,
-          progressIndicator:
-              const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xffDD6A03)),
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
                   .copyWith(secondary: const Color(0xff01635D))));
@@ -677,8 +677,8 @@ class _resetPassWordState extends State<resetPassWord> {
 
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -686,16 +686,18 @@ class _resetPassWordState extends State<resetPassWord> {
         setState(() {
           _showdialog(context);
         });
-      } else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
-      }else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -715,10 +717,9 @@ class _resetPassWordState extends State<resetPassWord> {
     try {
       Loader.show(context,
           isSafeAreaOverlay: false,
-
           overlayColor: Colors.black26,
-          progressIndicator:
-              const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xffDD6A03)),
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
                   .copyWith(secondary: const Color(0xff01635D))));
@@ -746,8 +747,8 @@ class _resetPassWordState extends State<resetPassWord> {
         print("userid====$userid");
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -756,16 +757,18 @@ class _resetPassWordState extends State<resetPassWord> {
           isPasswordEnter = true;
         });
         print("preset===$isPasswordEnter");
-      } else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
-      }else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -789,8 +792,8 @@ class _resetPassWordState extends State<resetPassWord> {
       Loader.show(context,
           isSafeAreaOverlay: false,
           overlayColor: Colors.black26,
-          progressIndicator:
-              const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xffDD6A03)),
           themeData: Theme.of(context).copyWith(
               colorScheme: ColorScheme.fromSwatch()
                   .copyWith(secondary: const Color(0xff01635D))));
@@ -819,8 +822,8 @@ class _resetPassWordState extends State<resetPassWord> {
 
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -829,16 +832,18 @@ class _resetPassWordState extends State<resetPassWord> {
           isProcessDone = true;
         });
         print("........$isProcessDone");
-      } else if(response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         logoutdata();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
-      }else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -869,7 +874,7 @@ class ForgotPasswordModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['success'] = this.success;
     data['message'] = this.message;
@@ -947,7 +952,7 @@ class ResetPasswordModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['status'] = this.status;
     data['message'] = this.message;

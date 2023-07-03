@@ -192,13 +192,16 @@ class _addServiceState extends State<addService> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text("Add Service",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Color(0xff292929),
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.bold)),
+                              child: Text(
+                                "Add Service",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Color(0xff292929),
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -228,12 +231,15 @@ class _addServiceState extends State<addService> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: const Text("Choose service category",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color(0xff292929),
-                                fontFamily: "spartan",
-                                fontWeight: FontWeight.bold)),
+                        child: const Text(
+                          "Choose service category",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xff292929),
+                            fontFamily: "spartan",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         height: 15,
@@ -427,8 +433,9 @@ class _addServiceState extends State<addService> {
                         ),
                       ),
                       categoryStatus
-                          ? SizedBox(
+                          ? Container(
                               height: 30,
+                              margin: EdgeInsets.only(top: 7),
                               child: Text(
                                 status,
                                 style: TextStyle(
@@ -556,8 +563,11 @@ class _addServiceState extends State<addService> {
                                         color: const Color(0xffE7E7E7),
                                         width: 1)),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 18, right: 18, top: 10, bottom: 10),
+                                  padding: EdgeInsets.only(
+                                      left: 18,
+                                      right: 18,
+                                      top: 15,
+                                      bottom: arrow ? 20 : 10),
                                   child: Column(
                                     children: [
                                       InkWell(
@@ -843,8 +853,9 @@ class _addServiceState extends State<addService> {
                               ),
                             ),
                       serviceStatus || servicePriceStatus
-                          ? SizedBox(
+                          ? Container(
                               height: 30,
+                              margin: EdgeInsets.only(top: 7),
                               child: Text(
                                 status,
                                 style: TextStyle(
@@ -858,18 +869,24 @@ class _addServiceState extends State<addService> {
                             ),
                       Row(
                         children: [
-                          Text("Service Description ",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff292929),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold)),
-                          Text("(optional)",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff707070),
-                                  fontFamily: "spartan",
-                                  fontWeight: FontWeight.bold)),
+                          Text(
+                            "Service Description ",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff292929),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "(optional)",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff707070),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: 10),
@@ -1056,8 +1073,8 @@ class _addServiceState extends State<addService> {
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

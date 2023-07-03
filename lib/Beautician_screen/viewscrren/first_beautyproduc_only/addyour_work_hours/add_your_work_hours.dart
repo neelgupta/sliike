@@ -184,6 +184,9 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   String breakendTime = "";
   List time = [
     "00:00",
+    "00:15",
+    "00:30",
+    "00:45",
     "01:00",
     "01:15",
     "01:30",
@@ -746,9 +749,9 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
     if (!widget.secondflow) {
       selectedValue = widget.Day ?? "";
       startTime = widget.startTime ?? "";
-      endTime = widget.endTime ?? "" ;
-      breakstartTime = widget.breakstartTime ?? "" ;
-      breakendTime = widget.breakendTime ?? "" ;
+      endTime = widget.endTime ?? "";
+      breakstartTime = widget.breakstartTime ?? "";
+      breakendTime = widget.breakendTime ?? "";
       Onoff = widget.isOpen ?? false;
       for (var i in dayDetailsList) {
         i.isOpen = widget.isOpen;
@@ -839,13 +842,16 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: const [
-                              Text("Add Your Work Hours",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.white,
-                                      fontFamily: "spartan",
-                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                "Add Your Work Hours",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.white,
+                                  fontFamily: "spartan",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -1156,45 +1162,49 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
         bottomNavigationBar: InkWell(
           onTap: () {
             if (!widget.secondflow) {
-              if (endTime == startTime) {
-                Fluttertoast.showToast(msg: "Time cannot be same !");
-              } else if (startTimeIndex > endTimeIndex) {
-                Fluttertoast.showToast(msg: "Invalid selected time !");
-              } else if (selectedValue.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select day !");
-              } else if (startTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select start time !");
-              } else if (endTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select end time !");
-              } else if (breakstartTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select break start time !");
-              } else if (breakendTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select break end time !");
-              } else {
-                onDayendtimeChanged(endTime: time[endTimeIndex]);
-                Navigator.pop(context, {
-                  "day": selectedValue,
-                  "startTime": startTime,
-                  "endTime": endTime,
-                  "breakStartTime": breakstartTime,
-                  "breakEndTime": breakendTime,
-                  "isOpen": Onoff,
-                });
-                print("POp Data :  ${{
-                  "day": selectedValue,
-                  "startTime": startTime,
-                  "endTime": endTime,
-                  "breakStartTime": breakstartTime,
-                  "breakEndTime": breakendTime,
-                  "isOpen": Onoff,
-                }}");
+              if (Onoff) {
+                if (endTime == startTime) {
+                  Fluttertoast.showToast(
+                      msg: "Start Time and End Time cannot be same !");
+                } else if (startTimeIndex > endTimeIndex) {
+                  Fluttertoast.showToast(
+                      msg: "Choose Valid Selected Start And End time !");
+                } else if (selectedValue.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select week day !");
+                } else if (startTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select start time !");
+                } else if (endTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select end time !");
+                } else if (breakstartTime.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select break start time !");
+                } else if (breakendTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select break end time !");
+                } else {
+                  onDayendtimeChanged(endTime: time[endTimeIndex]);
+                  Navigator.pop(context, {
+                    "day": selectedValue,
+                    "startTime": startTime,
+                    "endTime": endTime,
+                    "breakStartTime": breakstartTime,
+                    "breakEndTime": breakendTime,
+                    "isOpen": Onoff,
+                  });
+                  print("POp Data :  ${{
+                    "day": selectedValue,
+                    "startTime": startTime,
+                    "endTime": endTime,
+                    "breakStartTime": breakstartTime,
+                    "breakEndTime": breakendTime,
+                    "isOpen": Onoff,
+                  }}");
+                }
               }
             } else {
-              // if (Onoff == false) {
               //   Fluttertoast.showToast(
               //     msg: "Please Open Switch. Shop Cant be close.",
-              //     toastLength: Toast.LENGTH_SHORT,
-              //     gravity: ToastGravity.BOTTOM,
+              //     toastLength: Toast.LENGTH_LONG,
+              //     gravity: ToastGravity.TOP,
               //     timeInSecForIosWeb: 1,
               //     backgroundColor: Colors.black,
               //     textColor: Colors.white,
@@ -1202,26 +1212,243 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
               //   );
               //   print("onofffalse=$Onoff");
               // } else
-              if (startTimeIndex == endTimeIndex) {
-                Fluttertoast.showToast(msg: "Time cannot be same");
-              } else if (startTimeIndex > endTimeIndex) {
-                Fluttertoast.showToast(msg: "Invaild selected time !");
-              }
-              // else {
-              //   onDayendtimeChanged(endTime: endTime);
-              // }
-              // else if (!emptystartendtime()) {
-              //   Fluttertoast.showToast(
-              //       msg: "Enter Your Start End Time",
-              //       toastLength: Toast.LENGTH_SHORT,
-              //       gravity: ToastGravity.BOTTOM,
-              //       timeInSecForIosWeb: 1,
-              //       backgroundColor: Colors.black,
-              //       textColor: Colors.white,
-              //       fontSize: 16.0);
-              //   print("startendtime=====");
-              // }
-              else {
+              if (Onoff) {
+                if (startTimeIndex == endTimeIndex) {
+                  Fluttertoast.showToast(
+                      msg: "Start Time and End Time can not be same");
+                } else if (startTimeIndex > endTimeIndex) {
+                  Fluttertoast.showToast(
+                      msg: "Please Select valid start and end time !");
+                } else {
+                  onDayendtimeChanged(endTime: endTime);
+                  if (isbottomSheet == true) {
+                    showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      )),
+                      builder: (BuildContext context) {
+                        return Container(
+                          height: height - height * 0.12,
+                          width: width,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 40),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: Container(
+                                        alignment: Alignment.topLeft,
+                                        child: const Text(
+                                          "Want To Copy Work Hours To\nOther Days?",
+                                          style: TextStyle(
+                                            color: Color(0xff292929),
+                                            fontFamily: "spartan",
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 0.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: Container(
+                                        alignment: Alignment.topLeft,
+                                        child: const Text(
+                                          "Would you like to apply the already setup working\n"
+                                          "hours to other days? If so, select days from the list.",
+                                          style: TextStyle(
+                                            color: Color(0xff414141),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400,
+                                            letterSpacing: 0.19,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.01),
+                                    const Divider(
+                                      thickness: 1,
+                                      color: Color(0xffCFCFCF),
+                                    ),
+                                    ListView.separated(
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: dayDetailsList.length,
+                                      separatorBuilder: (context, index) =>
+                                          Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: Divider(
+                                          color: AppColors.greyColor,
+                                        ),
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return Commoncheckbox(context,
+                                            dayDetailsList[index].isOpen,
+                                            (value) {
+                                          if (value) {
+                                            openOtherDaySelectChanged(
+                                              selectedDay:
+                                                  dayDetailsList[index].day!,
+                                              index: index,
+                                              value: value,
+                                            );
+                                            setState(() {
+                                              dayDetailsList[index].isOpen =
+                                                  value;
+                                            });
+                                          } else {
+                                            for (var item in dayDetailsList) {
+                                              if (item.day ==
+                                                  dayDetailsList[index].day!) {
+                                                item.startTime = "";
+                                                item.endTime = "";
+                                              }
+                                            }
+                                            setState(() {
+                                              dayDetailsList[index].isOpen =
+                                                  value;
+                                            });
+                                          }
+                                        },
+                                            dayDetailsList[index]
+                                                .day
+                                                .toString(),
+                                            dayDetailsList[index]
+                                                .startTime
+                                                .toString(),
+                                            dayDetailsList[index].isOpen!
+                                                ? "to"
+                                                : "",
+                                            dayDetailsList[index]
+                                                .endTime
+                                                .toString());
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.06,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          await navigtorbackshowdialodhide(
+                                              context);
+                                          // if(!widget.secondflow){
+                                          //   Navigator.pop(context);
+                                          //   Navigator.pop(context,dayDetailsList);
+                                          // }else{
+                                          // Navigator.pop(context);
+                                          // await navigtorbackshowdialodhide(context);
+                                          // }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: width,
+                                          height: height * 0.06,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: const Color(0xff01635D)),
+                                          child: const Text(
+                                            "SAVE",
+                                            style: TextStyle(
+                                              fontFamily: "spartan",
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.25,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.02,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          // Navigator.push(context,
+                                          //     MaterialPageRoute(
+                                          //   builder: (context) {
+                                          //     return addWork_Save_or_NoThanks_Page(
+                                          //         widget.secondflow);
+                                          //   },
+                                          // ));
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: width,
+                                          height: height * 0.06,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                                color: const Color(0xff01635D),
+                                                width: 1),
+                                          ),
+                                          child: const Text(
+                                            "No, Thanks",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: "spartan",
+                                              color: Color(0xff01635D),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.05),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    navigtorbackshowdialodhide(context);
+                  }
+                }
+              } else {
+                // else {
+                //   onDayendtimeChanged(endTime: endTime);
+                // }
+                // else if (!emptystartendtime()) {
+                //   Fluttertoast.showToast(
+                //       msg: "Enter Your Start End Time",
+                //       toastLength: Toast.LENGTH_LONG,
+                //       gravity: ToastGravity.TOP,
+                //       timeInSecForIosWeb: 1,
+                //       backgroundColor: Colors.black,
+                //       textColor: Colors.white,
+                //       fontSize: 16.0);
+                //   print("startendtime=====");
+                // }
+                // else {
                 onDayendtimeChanged(endTime: endTime);
                 if (isbottomSheet == true) {
                   showModalBottomSheet<void>(
@@ -1435,6 +1662,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                 print("onoffftrue=$Onoff");
               }
             }
+            // }
           },
           child: Padding(
             padding:
@@ -1479,30 +1707,31 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
             width: width * 0.5,
             child: InkWell(
               onTap: () async {
-                if (Onoff == false) {
-                  Fluttertoast.showToast(
-                    msg: "Please Open Switch. Shop Cant be close.",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
+                if (Onoff) {
+                  // Fluttertoast.showToast(
+                  //   msg: "Please Open Switch. Shop Cant be close.",
+                  //   toastLength: Toast.LENGTH_LONG,
+                  //   gravity: ToastGravity.TOP,
+                  //   timeInSecForIosWeb: 1,
+                  //   backgroundColor: Colors.black,
+                  //   textColor: Colors.white,
+                  //   fontSize: 16.0,
+                  // );
+                  if (endTime == startTime) {
+                    Fluttertoast.showToast(msg: "Time cannot be same");
+                  } else if (startTimeIndex > endTimeIndex) {
+                    Fluttertoast.showToast(msg: "Invaild selected time !");
+                  } else if (selectedValue.isEmpty) {
+                    Fluttertoast.showToast(msg: "Please select day");
+                  } else if (startTime.isEmpty) {
+                    Fluttertoast.showToast(msg: "Please select start time");
+                  } else if (endTime.isEmpty) {
+                    Fluttertoast.showToast(msg: "Please select end time");
+                  } else {
+                    await navigateBreakTimeScreen(context);
+                    setState(() {});
+                  }
                   print("onofffalse=$Onoff");
-                } else if (endTime == startTime) {
-                  Fluttertoast.showToast(msg: "Time cannot be same");
-                } else if (startTimeIndex > endTimeIndex) {
-                  Fluttertoast.showToast(msg: "Invaild selected time !");
-                } else if (selectedValue.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select day");
-                } else if (startTime.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select start time");
-                } else if (endTime.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select end time");
-                } else {
-                  await navigateBreakTimeScreen(context);
-                  setState(() {});
                 }
               },
               child: Row(

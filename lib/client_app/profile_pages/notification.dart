@@ -23,189 +23,224 @@ class _notificationState extends State<notification> {
   bool product = false;
   bool email = false;
   bool isLoading = false;
-  Notification ? n;
+  Notification? n;
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       body: isLoading
           ? const Center(
-        child: CircularProgressIndicator(
-          color: Color(0xffDD6A03),
-        ),
-      ) :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        height: height*0.06,
-                        child:Container(
-                            padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              height: height * 0.06,
+                              child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  child: const Image(
+                                    image: AssetImage(
+                                        "assets/images/Group 55.png"),
+                                    color: Colors.black,
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            width: width * 0.20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("notifications",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                          fontFamily: "spartan",
+                                          fontWeight: FontWeight.bold))
+                                  .tr(),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(width: width*0.20,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("notifications",
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    const Text("sliike_only",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontFamily: "spartan"))
+                        .tr(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    const Text("app_setting",
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
                                 fontFamily: "spartan",
-                                fontWeight: FontWeight.bold
-                            )
-                        ).tr(),
+                                fontWeight: FontWeight.bold))
+                        .tr(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    const Text("app_info",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontFamily: "spartan"))
+                        .tr(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        const Text("text_message",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold))
+                            .tr(),
+                        const Spacer(),
+                        FlutterSwitch(
+                          width: 50.0,
+                          height: 25.0,
+                          valueFontSize: 12.0,
+                          toggleSize: 18.0,
+                          activeColor: const Color(0xFFDD6A03),
+                          value: product,
+                          onToggle: (bool value) {
+                            setState(() {
+                              product = value;
+                              appointment = false;
+                              email = false;
+                              if (product = value) {
+                                setState(() {
+                                  saveNotification();
+                                });
+                              }
+                            });
+                          },
+                        )
                       ],
                     ),
+                    const Text("text_info",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontFamily: "spartan"))
+                        .tr(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        const Text("product",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold))
+                            .tr(),
+                        const Spacer(),
+                        FlutterSwitch(
+                          width: 50.0,
+                          height: 25.0,
+                          valueFontSize: 12.0,
+                          toggleSize: 18.0,
+                          activeColor: const Color(0xFFDD6A03),
+                          value: appointment,
+                          onToggle: (bool value) {
+                            setState(() {
+                              product = false;
+                              appointment = value;
+                              email = false;
+                              if (appointment = value) {
+                                setState(() {
+                                  saveNotification();
+                                });
+                              }
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    const Text("product_info",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontFamily: "spartan"))
+                        .tr(),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        const Text("email_market",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold))
+                            .tr(),
+                        const Spacer(),
+                        FlutterSwitch(
+                          width: 50.0,
+                          height: 25.0,
+                          valueFontSize: 12.0,
+                          toggleSize: 18.0,
+                          activeColor: const Color(0xFFDD6A03),
+                          value: email,
+                          onToggle: (bool value) {
+                            setState(() {
+                              product = false;
+                              appointment = false;
+                              email = value;
+                              if (email = value) {
+                                setState(() {
+                                  saveNotification();
+                                });
+                              }
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    const Text("market_info",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontFamily: "spartan"))
+                        .tr(),
                   ],
                 ),
               ),
-              SizedBox(height: height*0.04,),
-              const Text("sliike_only",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      fontFamily: "spartan")).tr(),
-              SizedBox(height: height*0.02,),
-              const Text("app_setting",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontFamily: "spartan",
-                      fontWeight: FontWeight.bold)).tr(),
-              SizedBox(height: height*0.02,),
-              const Text("app_info",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      fontFamily: "spartan")).tr(),
-              SizedBox(height: height*0.02,),
-              Row(
-                children: [
-                  const Text("text_message",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.bold)).tr(),
-                  const Spacer(),
-                  FlutterSwitch(
-                    width: 50.0,
-                    height: 25.0,
-                    valueFontSize: 12.0,
-                    toggleSize: 18.0,
-                    activeColor: const Color(0xFFDD6A03),
-                    value: product,
-                    onToggle: (bool value) {
-                      setState(() {
-                        product = value;
-                        appointment = false;
-                        email = false;
-                        if(product = value){
-                          setState(() {
-                            saveNotification();
-                          });
-                        }
-                      });
-                  },)
-                ],
-              ),
-              const Text("text_info",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      fontFamily: "spartan")).tr(),
-              SizedBox(height: height*0.02,),
-              Row(
-                children: [
-                  const Text("product",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.bold)).tr(),
-                  const Spacer(),
-                  FlutterSwitch(
-                    width: 50.0,
-                    height: 25.0,
-                    valueFontSize: 12.0,
-                    toggleSize: 18.0,
-                    activeColor: const Color(0xFFDD6A03),
-                    value: appointment,
-                    onToggle: (bool value) {
-                    setState(() {
-                      product = false;
-                      appointment = value;
-                      email = false;
-                      if(appointment = value){
-                        setState(() {
-                          saveNotification();
-                        });
-                      }
-                    });
-                  },)
-                ],
-              ),
-              const Text("product_info",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      fontFamily: "spartan")).tr(),
-              SizedBox(height: height*0.02,),
-              Row(
-                children: [
-                  const Text("email_market",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: "spartan",
-                          fontWeight: FontWeight.bold)).tr(),
-                  const Spacer(),
-                  FlutterSwitch(
-                    width: 50.0,
-                    height: 25.0,
-                    valueFontSize: 12.0,
-                    toggleSize: 18.0,
-                    activeColor: const Color(0xFFDD6A03),
-                    value: email,
-                    onToggle: (bool value) {
-                    setState(() {
-                      product = false;
-                      appointment =  false;
-                      email = value;
-                      if(email = value){
-                        setState(() {
-                          saveNotification();
-                        });
-                      }
-                    });
-                  },)
-                ],
-              ),
-              const Text("market_info",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      fontFamily: "spartan")).tr(),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
+
   saveNotification() async {
     var PostUri = Uri.parse(ApiUrlList.saveNotification);
     try {
@@ -214,12 +249,13 @@ class _notificationState extends State<notification> {
       });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
-        "appointmentText" : product,
-        "productText" : appointment,
+        "appointmentText": product,
+        "productText": appointment,
         "emailNotification": email
       };
 
@@ -240,8 +276,8 @@ class _notificationState extends State<notification> {
           n = Notification.fromjson(map);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -249,8 +285,8 @@ class _notificationState extends State<notification> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -267,18 +303,17 @@ class _notificationState extends State<notification> {
   }
 }
 
-class Notification{
+class Notification {
   int? status;
   bool? success;
   String? message;
 
-  Notification({this.status,this.success,this.message});
+  Notification({this.status, this.success, this.message});
 
-  factory Notification.fromjson(Map<dynamic, dynamic>map){
+  factory Notification.fromjson(Map<dynamic, dynamic> map) {
     return Notification(
-        status: map['status'] ,
+        status: map['status'],
         success: map['success'],
-        message: map['message']
-    );
+        message: map['message']);
   }
 }

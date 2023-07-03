@@ -17,16 +17,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../Beautician_screen/bottomnavbar/bottomnavbar.dart';
 
 class AppointmentService {
-
   List appointmentIds = [];
 
-  Future<GetServiceDetailsModel?> getServiceDetails(BuildContext context) async {
+  Future<GetServiceDetailsModel?> getServiceDetails(
+      BuildContext context) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: const Color(0xff01635D),
@@ -38,7 +38,7 @@ class AppointmentService {
       'Content-Type': "application/json; charset=utf-8",
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
-    var response = await http.get(getUri,headers: Headers);
+    var response = await http.get(getUri, headers: Headers);
     log("getServiceDetails Body ==> ${response.body}");
     log("getServiceDetails Code ==> ${response.statusCode}");
     log("token ==> ${Helper.prefs!.getString(UserPrefs.keyutoken)}");
@@ -50,8 +50,8 @@ class AppointmentService {
       Loader.hide();
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -67,7 +67,7 @@ class AppointmentService {
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: const Color(0xff01635D),
@@ -79,7 +79,7 @@ class AppointmentService {
       'Content-Type': "application/json; charset=utf-8",
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
-    var response = await http.get(getUri,headers: Headers);
+    var response = await http.get(getUri, headers: Headers);
     log("getStaffData Body ==> ${response.body}");
     log("getStaffData Code ==> ${response.statusCode}");
     log("token ==> ${Helper.prefs!.getString(UserPrefs.keyutoken)}");
@@ -91,8 +91,8 @@ class AppointmentService {
       Loader.hide();
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -102,15 +102,17 @@ class AppointmentService {
     return GetStaffDataModel.fromJson(jsonDecode(response.body));
   }
 
-  Future addBAppointment(BuildContext context,Map<String ,dynamic> Body) async {
+  Future addBAppointment(
+      BuildContext context, Map<String, dynamic> Body) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: const Color(0xff01635D)),
       ),
     );
     var Headers = {
@@ -127,15 +129,19 @@ class AppointmentService {
     log("addBAppointment PayLoad : ${Body}");
     log("addBAppointment PayLoad : ${Headers}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 201) {
+    if (response.statusCode == 201) {
       Loader.hide();
       appointmentIds.add(map["data"]["appointmentId"].toString());
       log("appointmentIds : ${appointmentIds}");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => newAppoinment_Viwe_Add(appointmentIds),));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => newAppoinment_Viwe_Add(appointmentIds),
+          ));
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -145,8 +151,8 @@ class AppointmentService {
       Loader.hide();
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -155,15 +161,17 @@ class AppointmentService {
     return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
 
-  Future updateAppointment(BuildContext context,Map<String ,dynamic> Body,String appointmentId) async {
+  Future updateAppointment(BuildContext context, Map<String, dynamic> Body,
+      String appointmentId) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: const Color(0xff01635D)),
       ),
     );
     var Headers = {
@@ -171,25 +179,29 @@ class AppointmentService {
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
     var response = await http.post(
-      Uri.parse(ApiUrlList.updateBAppointment+"$appointmentId"),
+      Uri.parse(ApiUrlList.updateBAppointment + "$appointmentId"),
       body: jsonEncode(Body),
       headers: Headers,
     );
     log("updateAppointment Code : ${response.statusCode}");
     log("updateAppointment Body : ${response.body}");
     log("updateAppointment PayLoad : ${Body}");
-    log("updateAppointment PayLoad : ${ApiUrlList.updateBAppointment+"$appointmentId"}");
+    log("updateAppointment PayLoad : ${ApiUrlList.updateBAppointment + "$appointmentId"}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 201) {
+    if (response.statusCode == 201) {
       Loader.hide();
       Navigator.pop(context);
       appointmentIds.add(map["data"]["appointmentId"].toString());
       log("appointmentIds : ${appointmentIds}");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => newAppoinment_Viwe_Add(appointmentIds),));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => newAppoinment_Viwe_Add(appointmentIds),
+          ));
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -199,8 +211,8 @@ class AppointmentService {
       Loader.hide();
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -209,15 +221,17 @@ class AppointmentService {
     return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
 
-  Future<GetAppointmentPreDetailsData?> getAppointmentPreDetails(BuildContext context,data) async {
+  Future<GetAppointmentPreDetailsData?> getAppointmentPreDetails(
+      BuildContext context, data) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: const Color(0xff01635D)),
       ),
     );
     var Headers = {
@@ -225,7 +239,7 @@ class AppointmentService {
       "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
     };
     var Body = {
-      "appointmentIds" : data,
+      "appointmentIds": data,
     };
     log("addBAppointment PayLoad : ${Body}");
     var response = await http.post(
@@ -238,12 +252,12 @@ class AppointmentService {
     log("addBAppointment PayLoad : ${Body}");
     log("addBAppointment PayLoad : ${Headers}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 201 || response.statusCode == 200) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
       Loader.hide();
       // Fluttertoast.showToast(
       //     msg: map["message"],
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     gravity: ToastGravity.BOTTOM,
+      //     toastLength: Toast.LENGTH_LONG,
+      //     gravity: ToastGravity.TOP,
       //     timeInSecForIosWeb: 1,
       //     backgroundColor: Colors.black,
       //     textColor: Colors.white,
@@ -253,8 +267,8 @@ class AppointmentService {
       Loader.hide();
       // Fluttertoast.showToast(
       //     msg: map["message"],
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     gravity: ToastGravity.BOTTOM,
+      //     toastLength: Toast.LENGTH_LONG,
+      //     gravity: ToastGravity.TOP,
       //     timeInSecForIosWeb: 1,
       //     backgroundColor: Colors.black,
       //     textColor: Colors.white,
@@ -264,15 +278,17 @@ class AppointmentService {
     return GetAppointmentPreDetailsData.fromJson(jsonDecode(response.body));
   }
 
-  saveAppointmentDetails(BuildContext context,Map<String ,dynamic> Body,List appId) async {
+  saveAppointmentDetails(
+      BuildContext context, Map<String, dynamic> Body, List appId) async {
     Loader.show(
       context,
       isSafeAreaOverlay: false,
       overlayColor: Colors.black26,
       progressIndicator:
-      const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
       themeData: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: const Color(0xff01635D)),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: const Color(0xff01635D)),
       ),
     );
     var Headers = {
@@ -288,7 +304,7 @@ class AppointmentService {
     log("saveAppointmentDetails Body : ${response.body}");
     log("saveAppointmentDetails PayLoad : ${Body}");
     Map map = jsonDecode(response.body);
-    if(response.statusCode == 201 || response.statusCode == 200) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
       appId.clear();
       Loader.hide();
       Navigator.pop(context);
@@ -296,8 +312,8 @@ class AppointmentService {
       Navigator.pop(context);
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -307,8 +323,8 @@ class AppointmentService {
       Loader.hide();
       Fluttertoast.showToast(
           msg: map["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -316,5 +332,4 @@ class AppointmentService {
     }
     // return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
-
 }

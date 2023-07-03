@@ -1,33 +1,42 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_webservice/places.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/services/address_service.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
-
 const kGoogleApiKey = "AIzaSyCziqe1Q-d4HMC3D9ZyYDFkBtx8ZHrzGzM";
 
 class edit_Location extends StatefulWidget {
-  final String ? address;
-  final String ? city;
-  final String ? province;
-  final String ? pin;
-  final String ? country;
-  final String ? lat;
-  final String ? long;
-  const edit_Location({Key? key,this.address,this.city,this.province,this.pin,this.country,this.lat,this.long}) : super(key: key);
+  final String? address;
+  final String? city;
+  final String? province;
+  final String? pin;
+  final String? country;
+  final String? lat;
+  final String? long;
+  const edit_Location(
+      {Key? key,
+      this.address,
+      this.city,
+      this.province,
+      this.pin,
+      this.country,
+      this.lat,
+      this.long})
+      : super(key: key);
 
   @override
   State<edit_Location> createState() => _edit_LocationState();
@@ -57,7 +66,10 @@ class _edit_LocationState extends State<edit_Location> {
     // TODO: implement initState
     super.initState();
     getProvinceData();
-    if(widget.address != null && widget.city!=null && widget.pin !=null && widget.country!=null){
+    if (widget.address != null &&
+        widget.city != null &&
+        widget.pin != null &&
+        widget.country != null) {
       Address.text = widget.address!;
       City.text = widget.city!;
       PostalCode.text = widget.pin!;
@@ -66,6 +78,7 @@ class _edit_LocationState extends State<edit_Location> {
       longitude = widget.long!;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -87,7 +100,6 @@ class _edit_LocationState extends State<edit_Location> {
                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 10),
                 child: Container(
                   child: Row(
-
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -104,13 +116,14 @@ class _edit_LocationState extends State<edit_Location> {
                                 padding: EdgeInsets.all(5),
                                 child: Image(
                                   image:
-                                  AssetImage("assets/images/Group 55.png"),
-
+                                      AssetImage("assets/images/Group 55.png"),
                                 )),
                           ),
                         ),
                       ),
-                      SizedBox(width: width*0.15,),
+                      SizedBox(
+                        width: width * 0.15,
+                      ),
                       Container(
                         child: Text("Business Location",
                             textAlign: TextAlign.center,
@@ -121,8 +134,6 @@ class _edit_LocationState extends State<edit_Location> {
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.w700)),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -131,245 +142,323 @@ class _edit_LocationState extends State<edit_Location> {
           ),
         ),
       ),
-      body:
-      isLoading ?
-      Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
-      SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          height: height*0.8,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20,right: 20),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: height*0.02,),
-                textComoon("Edit Location", 14, Color(0xff292929), FontWeight.w600),
-                SizedBox(height: height*0.04,),
-                Container(
-                  child: TextField(
-                    onTap: (){
-                      _handlePressButton();
-                    },
-                    readOnly: true,
-                    controller: Address,
-                    style: TextStyle(color: Color(0xff292929),fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w500),
-                    onChanged: (value) {
-                      Addressstatus=false;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Address",
-                      labelText: "Address",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(color: Color(0xff01635D)),
+            )
+          : SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                height: height * 0.8,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: height * 0.02,
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
+                      textComoon("Edit Location", 14, Color(0xff292929),
+                          FontWeight.w600),
+                      SizedBox(
+                        height: height * 0.04,
                       ),
-                    ),
-                  ),
-                ),
-                Addressstatus?Container(
-                  height: 30,
-                  child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
-                ):Container(height: 20,),
-                Container(
-                  child: TextField(
-                    controller: City,
-                    style: TextStyle(color: Color(0xff292929),fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w500),
-                    onChanged: (value) {
-                      Citystatus=false;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "City",
-                      labelText: "City",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                    ),
-                  ),
-                ),
-                Citystatus?Container(
-                  height: 30,
-                  child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
-                ):Container(height: 25,),
-                if(getProvince?.data != null)DropdownButtonHideUnderline(
-                  child: Container(
-                    height: 48,
-                    width: width,
-                    padding: const EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color(0xff707070), width: 1)),
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      hint: const Padding(
-                        padding: EdgeInsets.only(left: 0),
-                        child: Text(
-                          'Province',
+                      Container(
+                        child: TextField(
+                          onTap: () {
+                            _handlePressButton();
+                          },
+                          readOnly: true,
+                          controller: Address,
                           style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: "spartan",
-                            color: Color(0xff707070),
+                              color: Color(0xff292929),
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w500),
+                          onChanged: (value) {
+                            Addressstatus = false;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20),
+                            hintText: "Address",
+                            labelText: "Address",
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan', color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
                           ),
                         ),
                       ),
-                      items: getProvince==null?[]:(getProvince!.data ?? []).map((items) {
-                        return DropdownMenuItem(
-                          value: items.id,
-                          child: Text(
-                            items.name ?? "",
-                            style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                      Addressstatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      Container(
+                        child: TextField(
+                          controller: City,
+                          style: TextStyle(
+                              color: Color(0xff292929),
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w500),
+                          onChanged: (value) {
+                            Citystatus = false;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20),
+                            hintText: "City",
+                            labelText: "City",
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan', color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
                           ),
-                        );
-                      }).toList(),
-                      value: province,
-                      onChanged: (value) {
-                        province = "";
-                        setState(() {
-                          province = value.toString();
-                          log(province!);
-                        });
-                      },
-                      icon: (const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 30,
-                        color: Color(0xff707070),
-                      )),
-                    ),
+                        ),
+                      ),
+                      Citystatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 25,
+                            ),
+                      if (getProvince?.data != null)
+                        DropdownButtonHideUnderline(
+                          child: Container(
+                            height: 48,
+                            width: width,
+                            padding: const EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: const Color(0xff707070), width: 1)),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              hint: const Padding(
+                                padding: EdgeInsets.only(left: 0),
+                                child: Text(
+                                  'Province',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: "spartan",
+                                    color: Color(0xff707070),
+                                  ),
+                                ),
+                              ),
+                              items: getProvince == null
+                                  ? []
+                                  : (getProvince!.data ?? []).map((items) {
+                                      return DropdownMenuItem(
+                                        value: items.id,
+                                        child: Text(
+                                          items.name ?? "",
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xff292929)),
+                                        ),
+                                      );
+                                    }).toList(),
+                              value: province,
+                              onChanged: (value) {
+                                province = "";
+                                setState(() {
+                                  province = value.toString();
+                                  log(province!);
+                                });
+                              },
+                              icon: (const Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: Color(0xff707070),
+                              )),
+                            ),
+                          ),
+                        ),
+                      Provincestatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 25,
+                            ),
+                      Container(
+                        child: TextField(
+                          controller: PostalCode,
+                          style: TextStyle(
+                              color: Color(0xff292929),
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w500),
+                          onChanged: (value) {
+                            PostalCodestatus = false;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20),
+                            hintText: "Postal Code",
+                            labelText: "Postal Code",
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan', color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                          ),
+                        ),
+                      ),
+                      PostalCodestatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 25,
+                            ),
+                      Container(
+                        child: TextField(
+                          controller: Country,
+                          style: TextStyle(
+                              color: Color(0xff292929),
+                              fontSize: 16,
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w500),
+                          onChanged: (value) {
+                            Countrystatus = false;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20),
+                            hintText: "Country",
+                            labelText: "Country",
+                            labelStyle: TextStyle(
+                                fontFamily: 'spartan', color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(color: Colors.black38),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Countrystatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 25,
+                            ),
+                      Spacer(),
+                      CommonButton(
+                          context, "SAVE", 12, FontWeight.w600, Colors.white,
+                          () {
+                        updateSalonLocation();
+                        print(Helper.prefs!.getString(UserPrefs.keyutoken));
+                      })
+                    ],
                   ),
                 ),
-                Provincestatus?Container(
-                  height: 30,
-                  child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
-                ):Container(height: 25,),
-                Container(
-                  child: TextField(
-                    controller: PostalCode,
-                    style: TextStyle(color: Color(0xff292929),fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w500),
-                    onChanged: (value) {
-                      PostalCodestatus=false;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Postal Code",
-                      labelText: "Postal Code",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                    ),
-                  ),
-                ),
-                PostalCodestatus?Container(
-                  height: 30,
-                  child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
-                ):Container(height: 25,),
-                Container(
-                  child: TextField(
-                    controller: Country,
-                    style: TextStyle(color: Color(0xff292929),fontSize: 16,fontFamily: "spartan",fontWeight: FontWeight.w500),
-                    onChanged: (value) {
-                      Countrystatus=false;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 20),
-                      hintText: "Country",
-                      labelText: "Country",
-                      labelStyle:
-                      TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black38),
-                      ),
-                    ),
-                  ),
-                ),
-                Countrystatus?Container(
-                  height: 30,
-                  child: Text("$status",style: TextStyle(fontFamily: 'spartan',fontSize: 12,color: Colors.red),),
-                ):Container(height: 25,),
-                Spacer(),
-                CommonButton(context,"SAVE",12, FontWeight.w600, Colors.white, () {
-                  updateSalonLocation();
-                  print(Helper.prefs!.getString(UserPrefs.keyutoken));
-                })
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
-  updateSalonLocation() async   {
+  updateSalonLocation() async {
     try {
       setState(() {
         isLoading = true;
       });
       var Body = {
-        "latitude" : latitude,
-        "longitude" : longitude,
-        "address" : Address.text,
-        "city" : City.text,
-        "provinceId" : province.toString(),
-        "zipCode" : PostalCode.text,
-        "country" : Country.text,
+        "latitude": latitude,
+        "longitude": longitude,
+        "address": Address.text,
+        "city": City.text,
+        "provinceId": province.toString(),
+        "zipCode": PostalCode.text,
+        "country": Country.text,
       };
       log("Body :: ${Body}");
       var Headers = {
-        "Authorization" : "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
         // "Content-Type" : "application/json",
       };
       var postUri = Uri.parse("${ApiUrlList.updateSalonLocation}");
-      var res = await http.put(
-        postUri,
-        body: Body,
-        headers: Headers
-      );
+      var res = await http.put(postUri, body: Body, headers: Headers);
       log('updateSalonLocation code: ${res.statusCode}');
       log('updateSalonLocation body: ${res.body}');
       Map map = jsonDecode(res.body);
-      if(res.statusCode == 200){
+      if (res.statusCode == 200) {
         isLoading = false;
         Navigator.pop(context);
         setState(() {});
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-      }else {
+      } else {
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -386,14 +475,14 @@ class _edit_LocationState extends State<edit_Location> {
 
   getProvinceData() async {
     getProvince = await addressService.getProvince();
-     if(widget.province!=null){
-       for(int i = 0; i < getProvince!.data!.length; i++){
-         if(widget.province == getProvince!.data![i].id){
-           province = getProvince!.data![i].id;
-           setState(() {});
-         }
-       }
-     }
+    if (widget.province != null) {
+      for (int i = 0; i < getProvince!.data!.length; i++) {
+        if (widget.province == getProvince!.data![i].id) {
+          province = getProvince!.data![i].id;
+          setState(() {});
+        }
+      }
+    }
     isLoading = false;
     setState(() {});
   }
@@ -416,7 +505,11 @@ class _edit_LocationState extends State<edit_Location> {
         ),
       ),
       components: [
-        Component(Component.country, "usa"),Component(Component.country, "in"),Component(Component.country, "pk"),Component(Component.country, "cn"),Component(Component.country, "ca")
+        Component(Component.country, "usa"),
+        Component(Component.country, "in"),
+        Component(Component.country, "pk"),
+        Component(Component.country, "cn"),
+        Component(Component.country, "ca")
         // Component(Component.country, "usa"),Component(Component.country, "in"),Component(Component.country, "pk"),Component(Component.country, "af"),Component(Component.country, "au"),Component(Component.country, "at"),Component(Component.country, "bd"),Component(Component.country, "ca"),Component(Component.country, "cn"),Component(Component.country, "fr"),
         // Component(Component.country, "de"),Component(Component.country, "hk"),Component(Component.country, "ir"),Component(Component.country, "iq"),Component(Component.country, "id"),Component(Component.country, "ie"),Component(Component.country, "it"),Component(Component.country, "jp"),Component(Component.country, "ke"),Component(Component.country, "lv"),
         // Component(Component.country, "lt"),Component(Component.country, "my"),Component(Component.country, "mv"),Component(Component.country, "mx"),Component(Component.country, "ma"),Component(Component.country, "mm"),Component(Component.country, "na"),Component(Component.country, "np"),Component(Component.country, "nz"),Component(Component.country, "om"),
@@ -435,7 +528,7 @@ class _edit_LocationState extends State<edit_Location> {
         apiHeaders: await const GoogleApiHeaders().getHeaders(),
       );
       PlacesDetailsResponse detail =
-      await _places.getDetailsByPlaceId(p.placeId!);
+          await _places.getDetailsByPlaceId(p.placeId!);
       final latitude = detail.result.geometry!.location.lat;
       final longitude = detail.result.geometry!.location.lng;
       getlatitude(latitude, longitude);
@@ -446,8 +539,8 @@ class _edit_LocationState extends State<edit_Location> {
     Loader.show(context,
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xff01635D)),
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
         themeData: Theme.of(context).copyWith(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(secondary: const Color(0xff01635D))));

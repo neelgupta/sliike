@@ -601,8 +601,8 @@ class _edit_profileState extends State<edit_profile> {
           Navigator.pop(context, true);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -617,8 +617,8 @@ class _edit_profileState extends State<edit_profile> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,

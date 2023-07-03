@@ -49,7 +49,6 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 10),
                 child: Container(
                   child: Row(
-
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -66,13 +65,14 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
                                 padding: EdgeInsets.all(5),
                                 child: Image(
                                   image:
-                                  AssetImage("assets/images/Group 55.png"),
-
+                                      AssetImage("assets/images/Group 55.png"),
                                 )),
                           ),
                         ),
                       ),
-                      SizedBox(width: width*0.12,),
+                      SizedBox(
+                        width: width * 0.12,
+                      ),
                       Container(
                         child: Text("No-show Protection",
                             textAlign: TextAlign.center,
@@ -83,8 +83,6 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.w700)),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -93,201 +91,230 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
           ),
         ),
       ),
-      body: isLoad?Center(
-        child: CircularProgressIndicator(),
-      ):SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20,right: 20),
-          child: Column(
-            children: [
-              SizedBox(height: height*0.01,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+      body: isLoad
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Column(
                   children: [
-                    textComoonfade("Protect your business by setting rules against missing appointments without prior communication.",12,Color(0xff414141), FontWeight.w500),
-                  ],
-                ),
-              ),
-              Container(
-                width: width,
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-                    Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(color: Colors.black12))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          textComoon("Set up No-show Protection",14,Color(0xff111111), FontWeight.w700),
-                          SizedBox(height: height*0.01,),
-                          textComoonfade("Set up how you want your No-show protection rule to apply.",12,Color(0xff414141), FontWeight.w500),
+                          textComoonfade(
+                              "Protect your business by setting rules against missing appointments without prior communication.",
+                              12,
+                              Color(0xff414141),
+                              FontWeight.w500),
                         ],
                       ),
                     ),
-
-
-                  ],
-                ),
-              ),
-              Container(
-                width: width,
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(//mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                        Radio(
-                          value: 1,
-                          groupValue: noShowValue,
-
-                          activeColor: Color(0xff01635D),
-                          fillColor: MaterialStateColor.resolveWith(
-                                  (states) => Color(0xff01635D)),
-                          onChanged: (value) {
-                            setState(() {
-                              noShowValue = value as int;
-                              print(noShowValue);
-
-                            });
-                          },
-                        ),
-                        textComoon("None",14,Color(0xff111111), FontWeight.w700),
-                      ],
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(color: Colors.black12))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                textComoon("Set up No-show Protection", 14,
+                                    Color(0xff111111), FontWeight.w700),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                textComoonfade(
+                                    "Set up how you want your No-show protection rule to apply.",
+                                    12,
+                                    Color(0xff414141),
+                                    FontWeight.w500),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                   // SizedBox(height: height*0.01,),
-                    textComoonfade("Reschedule appointment to a new date and time with no consequences attached.",12,Color(0xff414141), FontWeight.w500),
-                  ],
-                ),
-              ),
-              // Container(
-              //   width: width,
-              //   padding: EdgeInsets.symmetric(vertical: 12,),
-              //   decoration: BoxDecoration(
-              //       border: Border(bottom: BorderSide(color: Colors.black12))
-              //   ),
-              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //      //  Row(//mainAxisAlignment: MainAxisAlignment.start,
-              //      //    children: [
-              //      //
-              //      //      Radio(
-              //      //        value: 2,
-              //      //        groupValue: noShowValue,
-              //      //
-              //      //        activeColor: Color(0xff01635D),
-              //      //        fillColor: MaterialStateColor.resolveWith(
-              //      //                (states) => Color(0xff01635D)),
-              //      //        onChanged: (value) {
-              //      //          setState(() {
-              //      //            noShowValue = value as int;
-              //      //            print(noShowValue);
-              //      //
-              //      //          });
-              //      //        },
-              //      //      ),
-              //      //      textComoon("Relax",14,Color(0xff111111), FontWeight.w700),
-              //      //    ],
-              //      //  ),
-              //      // // SizedBox(height: height*0.01,),
-              //      //  textComoonfade("70% refund to client.",12,Color(0xff414141), FontWeight.w500),
-              //     ],
-              //   ),
-              // ),
-              // Container(
-              //   width: width,
-              //   padding: EdgeInsets.symmetric(vertical: 12,),
-              //   decoration: BoxDecoration(
-              //       border: Border(bottom: BorderSide(color: Colors.black12))
-              //   ),
-              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Row(//mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //
-              //           Radio(
-              //             value: 3,
-              //             groupValue: noShowValue,
-              //
-              //             activeColor: Color(0xff01635D),
-              //             fillColor: MaterialStateColor.resolveWith(
-              //                     (states) => Color(0xff01635D)),
-              //             onChanged: (value) {
-              //               setState(() {
-              //                 noShowValue = value as int;
-              //                 print(noShowValue);
-              //
-              //               });
-              //             },
-              //           ),
-              //           textComoon("Strict",14,Color(0xff111111), FontWeight.w700),
-              //         ],
-              //       ),
-              //      // SizedBox(height: height*0.01,),
-              //       textComoonfade("20% refund to client.",12,Color(0xff414141), FontWeight.w500),
-              //     ],
-              //   ),
-              // ),
-              Container(
-                  alignment: Alignment.topLeft,
-                width: width,
-                padding: EdgeInsets.symmetric(vertical: 12,),
-                decoration: BoxDecoration(
-
-                    border: Border(bottom: BorderSide(color: Colors.black12))
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                        Radio(
-                          value: 4,
-                          groupValue: noShowValue,
-
-                          activeColor: Color(0xff01635D),
-                          fillColor: MaterialStateColor.resolveWith(
-                                  (states) => Color(0xff01635D)),
-                          onChanged: (value) {
-                            setState(() {
-                              noShowValue = value as int;
-                              print(noShowValue);
-
-                            });
-                          },
-                        ),
-                        textComoon("Very Strict",14,Color(0xff111111), FontWeight.w700),
-                      ],
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(color: Colors.black12))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                value: 1,
+                                groupValue: noShowValue,
+                                activeColor: Color(0xff01635D),
+                                fillColor: MaterialStateColor.resolveWith(
+                                    (states) => Color(0xff01635D)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    noShowValue = value as int;
+                                    print(noShowValue);
+                                  });
+                                },
+                              ),
+                              textComoon("None", 14, Color(0xff111111),
+                                  FontWeight.w700),
+                            ],
+                          ),
+                          // SizedBox(height: height*0.01,),
+                          textComoonfade(
+                              "Reschedule appointment to a new date and time with no consequences attached.",
+                              12,
+                              Color(0xff414141),
+                              FontWeight.w500),
+                        ],
+                      ),
                     ),
-
-                    textComoonfade("Full charge and no refund to client.",12,Color(0xff414141), FontWeight.w500),
+                    // Container(
+                    //   width: width,
+                    //   padding: EdgeInsets.symmetric(vertical: 12,),
+                    //   decoration: BoxDecoration(
+                    //       border: Border(bottom: BorderSide(color: Colors.black12))
+                    //   ),
+                    //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //      //  Row(//mainAxisAlignment: MainAxisAlignment.start,
+                    //      //    children: [
+                    //      //
+                    //      //      Radio(
+                    //      //        value: 2,
+                    //      //        groupValue: noShowValue,
+                    //      //
+                    //      //        activeColor: Color(0xff01635D),
+                    //      //        fillColor: MaterialStateColor.resolveWith(
+                    //      //                (states) => Color(0xff01635D)),
+                    //      //        onChanged: (value) {
+                    //      //          setState(() {
+                    //      //            noShowValue = value as int;
+                    //      //            print(noShowValue);
+                    //      //
+                    //      //          });
+                    //      //        },
+                    //      //      ),
+                    //      //      textComoon("Relax",14,Color(0xff111111), FontWeight.w700),
+                    //      //    ],
+                    //      //  ),
+                    //      // // SizedBox(height: height*0.01,),
+                    //      //  textComoonfade("70% refund to client.",12,Color(0xff414141), FontWeight.w500),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   width: width,
+                    //   padding: EdgeInsets.symmetric(vertical: 12,),
+                    //   decoration: BoxDecoration(
+                    //       border: Border(bottom: BorderSide(color: Colors.black12))
+                    //   ),
+                    //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Row(//mainAxisAlignment: MainAxisAlignment.start,
+                    //         children: [
+                    //
+                    //           Radio(
+                    //             value: 3,
+                    //             groupValue: noShowValue,
+                    //
+                    //             activeColor: Color(0xff01635D),
+                    //             fillColor: MaterialStateColor.resolveWith(
+                    //                     (states) => Color(0xff01635D)),
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 noShowValue = value as int;
+                    //                 print(noShowValue);
+                    //
+                    //               });
+                    //             },
+                    //           ),
+                    //           textComoon("Strict",14,Color(0xff111111), FontWeight.w700),
+                    //         ],
+                    //       ),
+                    //      // SizedBox(height: height*0.01,),
+                    //       textComoonfade("20% refund to client.",12,Color(0xff414141), FontWeight.w500),
+                    //     ],
+                    //   ),
+                    // ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: width,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(color: Colors.black12))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                value: 4,
+                                groupValue: noShowValue,
+                                activeColor: Color(0xff01635D),
+                                fillColor: MaterialStateColor.resolveWith(
+                                    (states) => Color(0xff01635D)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    noShowValue = value as int;
+                                    print(noShowValue);
+                                  });
+                                },
+                              ),
+                              textComoon("Very Strict", 14, Color(0xff111111),
+                                  FontWeight.w700),
+                            ],
+                          ),
+                          textComoonfade("Full charge and no refund to client.",
+                              12, Color(0xff414141), FontWeight.w500),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    CommonButton(
+                        context, "SAVE", 12, FontWeight.w600, Colors.white, () {
+                      saveStatus();
+                    }),
                   ],
                 ),
               ),
-              SizedBox(height: height*0.03,),
-              CommonButton(context,"SAVE",12, FontWeight.w600, Colors.white, () {
-                saveStatus();
-              }),
-
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
   getStatus() async {
-    Response response = await businessSetupService.getCancellationProtectionStatus();
-    if(response.statusCode==200) {
+    Response response =
+        await businessSetupService.getCancellationProtectionStatus();
+    if (response.statusCode == 200) {
       noShowValue = jsonDecode(response.body)['data']['noShowProtection'] ?? 1;
     } else {
       noShowValue = 1;
@@ -300,16 +327,17 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
     Loader.show(context,
         isSafeAreaOverlay: false,
         overlayColor: Colors.black26,
-        progressIndicator: const CircularProgressIndicator(
-            backgroundColor: Color(0xffDD6A03)),
+        progressIndicator:
+            const CircularProgressIndicator(backgroundColor: Color(0xffDD6A03)),
         themeData: Theme.of(context).copyWith(
             colorScheme: ColorScheme.fromSwatch()
                 .copyWith(secondary: const Color(0xff01635D))));
-    Response response = await businessSetupService.updateCancellationProtectionStatus(noShowValue);
+    Response response = await businessSetupService
+        .updateCancellationProtectionStatus(noShowValue);
     Fluttertoast.showToast(
         msg: "${jsonDecode(response.body)['message']}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.black,
         textColor: Colors.white,

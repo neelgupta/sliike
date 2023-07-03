@@ -112,185 +112,174 @@ class _NearYouState extends State<NearYou> {
                   //     return
                   //   },
                   // ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context, [latitude, longitude, address]);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xffFAFAFA),
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xffE7E7E7),
-                        ),
+                  Container(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 15, bottom: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: const Color(0xffFAFAFA),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color(0xffE7E7E7),
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    textComoon(
-                                      "Address :  ",
-                                      12,
-                                      const Color(0xff111111),
-                                      FontWeight.w600,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        address,
-                                        maxLines: 3,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: const Color(0xff707070),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    textComoon(
-                                      "City :  ",
-                                      12,
-                                      const Color(0xff111111),
-                                      FontWeight.w600,
-                                    ),
-                                    textComoon(
-                                      city,
-                                      12,
-                                      const Color(0xff707070),
-                                      FontWeight.w600,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    textComoon(
-                                      "State/province/area :  ",
-                                      12,
-                                      const Color(0xff111111),
-                                      FontWeight.w600,
-                                    ),
-                                    Flexible(
-                                      child: textComoon(
-                                        province,
-                                        // "British Col",
-                                        12,
-                                        const Color(0xff707070),
-                                        FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    textComoon(
-                                        "Postal Code :  ",
-                                        12,
-                                        const Color(0xff111111),
-                                        FontWeight.w600),
-                                    textComoon(
-                                      postalCode,
-                                      12,
-                                      const Color(0xff707070),
-                                      FontWeight.w600,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    textComoon(
-                                        "Country :  ",
-                                        12,
-                                        const Color(0xff111111),
-                                        FontWeight.w600),
-                                    textComoon(
-                                      country,
-                                      12,
-                                      const Color(0xff707070),
-                                      FontWeight.w600,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    List data = [
-                                      latitude,
-                                      longitude,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  textComoon(
+                                    "Address :  ",
+                                    12,
+                                    const Color(0xff111111),
+                                    FontWeight.w600,
+                                  ),
+                                  Expanded(
+                                    child: Text(
                                       address,
-                                      city,
-                                      province,
-                                      postalCode,
-                                      country
-                                    ];
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return editLocation(
-                                            data: data,
-                                          );
-                                        },
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color(0xff707070),
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ).then((value) {
-                                      print(value);
-                                      if (value != null) {
-                                        setState(() {
-                                          latitude = value[0];
-                                          longitude = value[1];
-                                          address = value[2];
-                                          city = value[3];
-                                          province = value[4];
-                                          postalCode = value[5];
-                                          country = value[6];
-                                        });
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    height: height * 0.06,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffDD6A03),
-                                    ),
-                                    child: Center(
-                                      child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          child: const Image(
-                                            image: AssetImage(
-                                                "assets/images/righticon.png"),
-                                            color: Colors.white,
-                                          )),
                                     ),
                                   ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  textComoon(
+                                    "City :  ",
+                                    12,
+                                    const Color(0xff111111),
+                                    FontWeight.w600,
+                                  ),
+                                  textComoon(
+                                    city,
+                                    12,
+                                    const Color(0xff707070),
+                                    FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  textComoon(
+                                    "State/province/area :  ",
+                                    12,
+                                    const Color(0xff111111),
+                                    FontWeight.w600,
+                                  ),
+                                  Flexible(
+                                    child: textComoon(
+                                      province,
+                                      // "British Col",
+                                      12,
+                                      const Color(0xff707070),
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  textComoon("Postal Code :  ", 12,
+                                      const Color(0xff111111), FontWeight.w600),
+                                  textComoon(
+                                    postalCode,
+                                    12,
+                                    const Color(0xff707070),
+                                    FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  textComoon("Country :  ", 12,
+                                      const Color(0xff111111), FontWeight.w600),
+                                  textComoon(
+                                    country,
+                                    12,
+                                    const Color(0xff707070),
+                                    FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  List data = [
+                                    latitude,
+                                    longitude,
+                                    address,
+                                    city,
+                                    province,
+                                    postalCode,
+                                    country
+                                  ];
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return editLocation(
+                                          data: data,
+                                        );
+                                      },
+                                    ),
+                                  ).then((value) {
+                                    print(value);
+                                    if (value != null) {
+                                      setState(() {
+                                        latitude = value[0];
+                                        longitude = value[1];
+                                        address = value[2];
+                                        city = value[3];
+                                        province = value[4];
+                                        postalCode = value[5];
+                                        country = value[6];
+                                      });
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  height: height * 0.06,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xffDD6A03),
+                                  ),
+                                  child: Center(
+                                    child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        child: const Image(
+                                          image: AssetImage(
+                                              "assets/images/righticon.png"),
+                                          color: Colors.white,
+                                        )),
+                                  ),
                                 ),
-                                // Icon(Icons.keyboard_arrow_right),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                              // Icon(Icons.keyboard_arrow_right),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   SizedBox(height: height * 0.05),
@@ -321,25 +310,25 @@ class _NearYouState extends State<NearYou> {
                   //     ),
                   //   ),
                   // )
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context, [latitude, longitude, address]);
-                  //   },
-                  //   child: Container(
-                  //     alignment: Alignment.center,
-                  //     width: width,
-                  //     height: height * 0.06,
-                  //     decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(5),
-                  //         color: const Color(0xffDD6A03)),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         textComoon("SAVE", 12, Colors.white, FontWeight.w600),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // )
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context, [latitude, longitude, address]);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: width,
+                      height: height * 0.06,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xffDD6A03)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textComoon("SAVE", 12, Colors.white, FontWeight.w600),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

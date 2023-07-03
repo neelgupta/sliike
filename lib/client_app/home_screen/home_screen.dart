@@ -89,14 +89,15 @@ class _homescreenState extends State<homescreen> {
 //     ),
 //     label: "brands".tr()),
           BottomNavigationBarItem(
-              icon: Image(
-                image: const AssetImage("assets/images/menu.png"),
-                width: 20,
-                color: selectedBottomIndex == 4
-                    ? const Color(0xFFDD5103)
-                    : Colors.grey,
-              ),
-              label: "more".tr()),
+            icon: Image(  
+              image: const AssetImage("assets/images/menu.png"),
+              width: 20,
+              color: selectedBottomIndex == 2
+                  ? const Color(0xFFDD5103)
+                  : Colors.grey,
+            ),
+            label: "more".tr(),
+          ),
         ],
       ),
     );

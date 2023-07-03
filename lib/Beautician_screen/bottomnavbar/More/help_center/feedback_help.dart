@@ -123,7 +123,8 @@ class _feedback_beautyState extends State<feedback_beauty> {
                       padding: EdgeInsets.all(20),
                       color: Colors.blue[50],
                       child: Text(
-                          "Thanks for you feedback. A customer care personnel will reach out if shortly",style: TextStyle(color: Color(0xff1571ED))),
+                          "Thanks for you feedback. A customer care personnel will reach out if shortly",
+                          style: TextStyle(color: Color(0xff1571ED))),
                     ),
 
                     /// Toast Container ///
@@ -263,8 +264,8 @@ class _feedback_beautyState extends State<feedback_beauty> {
         });
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,

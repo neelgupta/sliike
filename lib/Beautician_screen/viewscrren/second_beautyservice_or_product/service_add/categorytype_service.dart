@@ -56,7 +56,9 @@ class _addServiceState extends State<addServicetype> {
   }
 
   bool isServiceTypeOpen = true;
+  int selectedEditIndex = 0;
   bool isEditView = true;
+  bool isServiceUpdating = false;
   TextEditingController description = TextEditingController();
   TextEditingController servicePrice = TextEditingController();
   bool servicePriceStatus = false;
@@ -235,13 +237,16 @@ class _addServiceState extends State<addServicetype> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                child: const Text("Add Services",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Colors.white,
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.bold)),
+                                child: const Text(
+                                  "Add Services",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.white,
+                                    fontFamily: "spartan",
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -791,6 +796,7 @@ class _addServiceState extends State<addServicetype> {
                                                   '======>$selectedServiceIdValue');
                                               selectedServiceNameValue =
                                                   value.serviceTypeName;
+                                              servicePrice.clear();
                                             });
                                           },
                                           buttonHeight: 60,
@@ -1272,54 +1278,25 @@ class _addServiceState extends State<addServicetype> {
                                             ),
                                           );
                                         } else {
-                                          List addedOrNotList = [];
-
-                                          for (int i = 0;
-                                              i < serviceAddedList.length;
-                                              i++) {
-                                            if (serviceAddedList[i]
-                                                    .serviceCatId
-                                                    .toLowerCase() ==
-                                                selectedServiceCategoryIdValue
-                                                    .toLowerCase()) {
-                                              if (serviceAddedList[i]
-                                                      .serviceId
-                                                      .toLowerCase() ==
-                                                  selectedServiceIdValue!
-                                                      .toLowerCase()) {
-                                                addedOrNotList.add(true);
-                                                log("service is exist :: ${serviceAddedList[i].serviceName.toLowerCase()} || ${selectedServiceNameValue.toLowerCase()}");
-                                                Fluttertoast.showToast(
-                                                  msg:
-                                                      "Existing Service Updated Successfully.",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.black,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0,
-                                                );
-                                                serviceAddedList[i]
-                                                        .serviceCatId =
-                                                    selectedServiceCategoryIdValue;
-                                                serviceAddedList[i]
-                                                        .serviceCatName =
-                                                    selectedServiceCategoryNameValue;
-                                                serviceAddedList[i]
-                                                        .serviceDurationMin =
-                                                    selectedvalueminnewformat!;
-                                                serviceAddedList[i]
-                                                        .serviceName =
-                                                    selectedService!
-                                                        .serviceTypeName;
-                                                serviceAddedList[i]
-                                                        .servicePrice =
-                                                    servicePrice.text.trim();
-                                              }
-                                            }
-                                          }
-                                          if (addedOrNotList.isEmpty) {
+                                          // List addedOrNotList = [];
+                                          if (isServiceUpdating) {
+                                            serviceAddedList[selectedEditIndex]
+                                                    .serviceCatId =
+                                                selectedServiceCategoryIdValue;
+                                            serviceAddedList[selectedEditIndex]
+                                                    .serviceCatName =
+                                                selectedServiceCategoryNameValue;
+                                            serviceAddedList[selectedEditIndex]
+                                                    .serviceDurationMin =
+                                                selectedvalueminnewformat!;
+                                            serviceAddedList[selectedEditIndex]
+                                                    .serviceName =
+                                                selectedService!
+                                                    .serviceTypeName;
+                                            serviceAddedList[selectedEditIndex]
+                                                    .servicePrice =
+                                                servicePrice.text.trim();
+                                          } else {
                                             serviceAddedList.add(
                                               ServiceAddModel(
                                                 serviceCatId:
@@ -1336,6 +1313,54 @@ class _addServiceState extends State<addServicetype> {
                                               ),
                                             );
                                           }
+
+                                          // for (int i = 0;
+                                          //     i < serviceAddedList.length;
+                                          //     i++) {
+                                          //   if (serviceAddedList[i]
+                                          //           .serviceCatId
+                                          //           .toLowerCase() ==
+                                          //       selectedServiceCategoryIdValue
+                                          //           .toLowerCase()) {
+                                          //     if (serviceAddedList[i]
+                                          //             .serviceId
+                                          //             .toLowerCase() ==
+                                          //         selectedServiceIdValue!
+                                          //             .toLowerCase()) {
+                                          //       addedOrNotList.add(true);
+                                          //       log("service is exist :: ${serviceAddedList[i].serviceName.toLowerCase()} || ${selectedServiceNameValue.toLowerCase()}");
+                                          //       Fluttertoast.showToast(
+                                          //         msg:
+                                          //             "Existing Service Updated Successfully.",
+                                          //         toastLength:
+                                          //             Toast.LENGTH_LONG,
+                                          //         gravity: ToastGravity.TOP,
+                                          //         timeInSecForIosWeb: 1,
+                                          //         backgroundColor: Colors.black,
+                                          //         textColor: Colors.white,
+                                          //         fontSize: 16.0,
+                                          //       );
+                                          //       serviceAddedList[i]
+                                          //               .serviceCatId =
+                                          //           selectedServiceCategoryIdValue;
+                                          //       serviceAddedList[i]
+                                          //               .serviceCatName =
+                                          //           selectedServiceCategoryNameValue;
+                                          //       serviceAddedList[i]
+                                          //               .serviceDurationMin =
+                                          //           selectedvalueminnewformat!;
+                                          //       serviceAddedList[i]
+                                          //               .serviceName =
+                                          //           selectedService!
+                                          //               .serviceTypeName;
+                                          //       serviceAddedList[i]
+                                          //               .servicePrice =
+                                          //           servicePrice.text.trim();
+                                          //     }
+                                          //   }
+                                          // }
+                                          // if (addedOrNotList.isEmpty) {
+                                          // }
                                         }
                                         selectedServiceNameValue = "";
                                         selectedServiceCategoryNameValue = "";
@@ -1557,6 +1582,7 @@ class _addServiceState extends State<addServicetype> {
                                         serviceCatId:
                                             singleServiceData.serviceCatId,
                                         isUpdating: true,
+                                        index: index,
                                         serviceName:
                                             singleServiceData.serviceName,
                                         serviceDuration: singleServiceData
@@ -1599,6 +1625,7 @@ class _addServiceState extends State<addServicetype> {
           InkWell(
             onTap: () {
               setState(() {
+                isServiceUpdating = false;
                 isEditView = true;
                 isServiceTypeOpen = true;
                 selectedServiceCategoryIdValue = "";
@@ -1770,8 +1797,8 @@ class _addServiceState extends State<addServicetype> {
         );
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1788,6 +1815,7 @@ class _addServiceState extends State<addServicetype> {
   Future<void> fetchServicesType({
     required String serviceCatId,
     required bool isUpdating,
+    int? index,
     required String serviceName,
     required String serviceDuration,
   }) async {
@@ -1820,6 +1848,10 @@ class _addServiceState extends State<addServicetype> {
             });
 
             if (isUpdating) {
+              setState(() {
+                selectedEditIndex = index!;
+                isServiceUpdating = isUpdating;
+              });
               Future.delayed(Duration(milliseconds: 100), () {
                 for (var item in typesDataList) {
                   if (serviceName.toLowerCase() ==

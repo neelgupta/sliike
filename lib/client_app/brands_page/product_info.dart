@@ -21,15 +21,18 @@ class product_info extends StatefulWidget {
 }
 
 class _product_infoState extends State<product_info> {
-  
   bool isSelected = false;
   MyFavorites? mf;
   bool isLoading = false;
-  
+
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top-MediaQuery.of(context).padding.bottom;
-    double width = MediaQuery.of(context).size.width-MediaQuery.of(context).padding.right-MediaQuery.of(context).padding.left;
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -37,28 +40,34 @@ class _product_infoState extends State<product_info> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               color: Color(0xFFFCF0E6),
-              image: DecorationImage(image: AssetImage("assets/images/Rectangle 28.png"),fit: BoxFit.fill)
-          ),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/Rectangle 28.png"),
+                  fit: BoxFit.fill)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 20,bottom: 10),
+                padding: const EdgeInsets.only(left: 10, right: 20, bottom: 10),
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
-                        height: height*0.06,
-                        child:Container(
+                        height: height * 0.06,
+                        child: Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                            child: const Image(
+                              image: AssetImage("assets/images/Group 55.png"),
+                              color: Colors.black,
+                            )),
                       ),
                     ),
-                    SizedBox(width: width*0.12,),
+                    SizedBox(
+                      width: width * 0.12,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
@@ -77,174 +86,230 @@ class _product_infoState extends State<product_info> {
           ),
         ),
       ),
-      body: isLoading ? const Center(child: CircularProgressIndicator(color: Color(0xffDD6A03),),) :SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-              SizedBox(
-                width: width,
-                height: height*0.6,
-                child: Image.asset("assets/images/Rectangle 907 (1).png",
-                  fit: BoxFit.fill,
-                ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xffDD6A03),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: const Text("Rose",style: TextStyle(color: Colors.white,fontSize: 24,fontFamily: "spartan",fontWeight: FontWeight.w600)),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if(isSelected) {
-                          setState(() {
-                            removeFromMyFavorites();
-                            isSelected = false;
-                          });
-                        }else{
-                          setState(() {
-                            addToMyFavorites();
-                            isSelected = true;
-                          });
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.topRight,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xffffffff),
-                            border: Border.all(color: const Color(0xffCFCFCF),width: 1)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Image.asset("assets/images/fav_ornage.png",
-                              fit: BoxFit.fill,
-                              height: 20,
-                              color: isSelected ? const Color(0xFFDD6A03) : Colors.black ,
-                          ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      SizedBox(
+                        width: width,
+                        height: height * 0.6,
+                        child: Image.asset(
+                          "assets/images/Rectangle 907 (1).png",
+                          fit: BoxFit.fill,
                         ),
                       ),
-                    )
-                  ],
-
-                ),
-              ),
-            ],
-            ),
-            SizedBox(
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text("Rose",style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: "spartan",fontWeight: FontWeight.w600)),
-                        ),
-                        const Text("Makeup kit",style: TextStyle(color: Colors.black,fontSize: 12,fontFamily: "spartan")),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if(isSelected) {
-                          setState(() {
-                            removeFromMyFavorites();
-                            isSelected = false;
-                          });
-                        }else{
-                          setState(() {
-                            addToMyFavorites();
-                            isSelected = true;
-                          });
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.topRight,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xffCFCFCF),width: 1)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Image.asset("assets/images/fav_ornage.png",
-                              fit: BoxFit.fill,
-                              height: 20,
-                              color: isSelected ? const Color(0xFFDD6A03) : Colors.black ,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const Divider(thickness: 1,color: Color(0xffCFCFCF),),
-            Container(alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
-                  child: textComoon("Rose Products",15,Colors.black87, FontWeight.w700),
-                )),
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: MasonryGridView.count(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 10,
-                crossAxisCount: 2,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 6,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: height*0.30,
-                    width: width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: const Color(0xffE7E7E7,),width: 1),
-                    ),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        InkWell(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) {
-                              return const product_description();
-                            },));
-                          },
-                          child: Container(
-                            height: height*0.20,
-                            width: width,
-                            decoration: BoxDecoration(
-                                image: const DecorationImage(image: AssetImage("assets/images/Rectangle 946.png"),fit: BoxFit.fill),
-                                borderRadius: BorderRadius.circular(5)
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child: const Text("Rose",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.w600)),
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                if (isSelected) {
+                                  setState(() {
+                                    removeFromMyFavorites();
+                                    isSelected = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    addToMyFavorites();
+                                    isSelected = true;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                alignment: Alignment.topRight,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: const Color(0xffffffff),
+                                    border: Border.all(
+                                        color: const Color(0xffCFCFCF),
+                                        width: 1)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Image.asset(
+                                    "assets/images/fav_ornage.png",
+                                    fit: BoxFit.fill,
+                                    height: 20,
+                                    color: isSelected
+                                        ? const Color(0xFFDD6A03)
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 15, bottom: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: const Text("Rose",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontFamily: "spartan",
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                              const Text("Makeup kit",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontFamily: "spartan")),
+                            ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,top: 10),
-                          child: textComoon("Rose Lip Gloss", 14, Colors.black87, FontWeight.w500),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15,top:5,),
-                          child: textComoon("\$999", 14, Colors.black87, FontWeight.w700),
-                        ),
-                      ],
+                          GestureDetector(
+                            onTap: () {
+                              if (isSelected) {
+                                setState(() {
+                                  removeFromMyFavorites();
+                                  isSelected = false;
+                                });
+                              } else {
+                                setState(() {
+                                  addToMyFavorites();
+                                  isSelected = true;
+                                });
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.topRight,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: const Color(0xffCFCFCF),
+                                      width: 1)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Image.asset(
+                                  "assets/images/fav_ornage.png",
+                                  fit: BoxFit.fill,
+                                  height: 20,
+                                  color: isSelected
+                                      ? const Color(0xFFDD6A03)
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  );},),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    color: Color(0xffCFCFCF),
+                  ),
+                  Container(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        child: textComoon("Rose Products", 15, Colors.black87,
+                            FontWeight.w700),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: MasonryGridView.count(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 6,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: height * 0.30,
+                          width: width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: const Color(
+                                  0xffE7E7E7,
+                                ),
+                                width: 1),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return const product_description();
+                                    },
+                                  ));
+                                },
+                                child: Container(
+                                  height: height * 0.20,
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                          image: AssetImage(
+                                              "assets/images/Rectangle 946.png"),
+                                          fit: BoxFit.fill),
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 10),
+                                child: textComoon("Rose Lip Gloss", 14,
+                                    Colors.black87, FontWeight.w500),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 15,
+                                  top: 5,
+                                ),
+                                child: textComoon("\$999", 14, Colors.black87,
+                                    FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: height*0.05,),
-          ],
-        ),
-      ),
     );
   }
+
   addToMyFavorites() async {
     var posturi = Uri.parse(ApiUrlList.addToMyFavorites);
     try {
@@ -253,7 +318,8 @@ class _product_infoState extends State<product_info> {
       });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -274,8 +340,8 @@ class _product_infoState extends State<product_info> {
           mf = MyFavorites.fromjson(map);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -283,8 +349,8 @@ class _product_infoState extends State<product_info> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -308,7 +374,8 @@ class _product_infoState extends State<product_info> {
       });
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "authorization":
+            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -329,8 +396,8 @@ class _product_infoState extends State<product_info> {
           mf = MyFavorites.fromjson(map);
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -338,8 +405,8 @@ class _product_infoState extends State<product_info> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -356,14 +423,14 @@ class _product_infoState extends State<product_info> {
   }
 }
 
-class MyFavorites{
+class MyFavorites {
   int? status;
   bool? success;
   String? message;
 
-  MyFavorites({this.status,this.success,this.message});
+  MyFavorites({this.status, this.success, this.message});
 
-  factory MyFavorites.fromjson(Map<dynamic, dynamic>map){
+  factory MyFavorites.fromjson(Map<dynamic, dynamic> map) {
     return MyFavorites(
       status: map['status'] ?? 0,
       success: map['success'] ?? false,
@@ -372,14 +439,14 @@ class MyFavorites{
   }
 }
 
-class RemoveFavorites{
+class RemoveFavorites {
   int? status;
   bool? success;
   String? message;
 
-  RemoveFavorites({this.status,this.success,this.message});
+  RemoveFavorites({this.status, this.success, this.message});
 
-  factory RemoveFavorites.fromjson(Map<dynamic, dynamic>map){
+  factory RemoveFavorites.fromjson(Map<dynamic, dynamic> map) {
     return RemoveFavorites(
       status: map['status'] ?? 0,
       success: map['success'] ?? false,

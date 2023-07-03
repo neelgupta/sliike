@@ -14,7 +14,6 @@ import '../Beautician_screen/b_model/employee_get_list.dart';
 import '../Beautician_screen/b_model/get_appointment_details_model.dart';
 
 class CalenderService {
-
   Future<List<EmployeeData>> getBeauticianAllEmployeesList() async {
     var geturi = Uri.parse(ApiUrlList.getEmployeeList);
     try {
@@ -51,12 +50,13 @@ class CalenderService {
   }
 
   Future<GetAppointMentDetailsModel?> getAppointmentDetailByDate(
-      {required String selectedDate,String? stylishId}) async {
+      {required String selectedDate, String? stylishId}) async {
     var geturi = Uri.parse(ApiUrlList.getCalenderAppointmentList);
     try {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");
@@ -96,22 +96,21 @@ class CalenderService {
     return null;
   }
 
-
   /// new ///
   Future<GetAppointmentDetailModel?> getAppointmentDetailByDate2(
-      {required String selectedDate,required String selectedDay,String? stylishId}) async {
+      {required String selectedDate,
+      required String selectedDay,
+      String? stylishId}) async {
     var geturi = Uri.parse(ApiUrlList.getCalenderAppointmentList);
     try {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
-        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       log("get profile url is  : $geturi");
       log("res headers  : $headers");
-      Map<String, dynamic> resBody = {
-        "date": selectedDate,
-        "day" : selectedDay
-      };
+      Map<String, dynamic> resBody = {"date": selectedDate, "day": selectedDay};
       if (stylishId != null) {
         resBody.addAll({
           "stylistId": [
@@ -249,8 +248,8 @@ class CalenderService {
         // Map map = jsonDecode(response.body);
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -266,8 +265,8 @@ class CalenderService {
       } else {
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -304,8 +303,8 @@ class CalenderService {
         // Map map = jsonDecode(response.body);
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -322,8 +321,8 @@ class CalenderService {
       } else {
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -338,12 +337,13 @@ class CalenderService {
   }
 
   Future<bool> SendAppointmentReminder({required String appointmentId}) async {
-    var geturi = Uri.parse("${ApiUrlList.SendAppointmentReminder}/$appointmentId");
+    var geturi =
+        Uri.parse("${ApiUrlList.SendAppointmentReminder}/$appointmentId");
     try {
       var headers = {
         'Content-Type': "application/json; charset=utf-8",
         "authorization":
-        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
       var response = await http.post(
         geturi,
@@ -357,7 +357,7 @@ class CalenderService {
         // Map map = jsonDecode(response.body);
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
+          toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 6,
           backgroundColor: Colors.black,
@@ -375,7 +375,7 @@ class CalenderService {
       } else {
         Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
+          toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 6,
           backgroundColor: Colors.black,

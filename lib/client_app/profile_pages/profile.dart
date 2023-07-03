@@ -1222,6 +1222,15 @@ class _profileState extends State<profile> {
                           Location: "surat",
                           Zip_Code: "395004",
                           addressValue: false,
+                          addressType: addressData!.addressType.toLowerCase() ==
+                                  "home"
+                              ? 1
+                              : addressData!.addressType.toLowerCase() == "work"
+                                  ? 2
+                                  : addressData!.addressType.toLowerCase() ==
+                                          "other"
+                                      ? 3
+                                      : 1,
                         );
                       },
                     )).then((value) {
@@ -1365,8 +1374,8 @@ class _profileState extends State<profile> {
         );
         Fluttertoast.showToast(
           msg: "Logged Out Successfully.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -1466,8 +1475,8 @@ class _profileState extends State<profile> {
         getClientPersonalInfo();
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1482,8 +1491,8 @@ class _profileState extends State<profile> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -1569,8 +1578,8 @@ class _profileState extends State<profile> {
           Loader.hide();
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -1590,8 +1599,8 @@ class _profileState extends State<profile> {
           Loader.hide();
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -1600,8 +1609,8 @@ class _profileState extends State<profile> {
       });
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -1610,8 +1619,8 @@ class _profileState extends State<profile> {
       Loader.hide();
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,

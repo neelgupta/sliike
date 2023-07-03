@@ -145,6 +145,7 @@ class _SelectAddressState extends State<SelectAddress> {
                             Province_name: "",
                             Zip_Code: "",
                             addressValue: false,
+                            addressType: 1,
                           );
                         },
                       )).then((value) {

@@ -631,8 +631,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
         );
         Fluttertoast.showToast(
           msg: "Logged Out Successfully.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -690,8 +690,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       );
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -700,8 +700,8 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       Loader.hide();
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,

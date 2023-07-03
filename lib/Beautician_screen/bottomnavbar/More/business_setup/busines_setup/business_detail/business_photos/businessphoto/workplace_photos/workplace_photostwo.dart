@@ -4,12 +4,11 @@ import 'dart:io';
 
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
@@ -23,7 +22,6 @@ class worlplace_PhotosTwo extends StatefulWidget {
 }
 
 class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
-
   File? firstImage;
   bool firstImageStatus = false;
   bool one = false;
@@ -44,11 +42,10 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   bool four = false;
   String fourthImagePath = "";
 
-
   ///
   bool isLoading = false;
   Workplacephotos? p;
-  List<File> files=[];
+  List<File> files = [];
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -123,14 +120,18 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
           ),
         ),
       ),
-      body: isLoading?
-          Center(child: CircularProgressIndicator(color: Color(0xff01635D)),):
-          SingleChildScrollView(
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(color: Color(0xff01635D)),
+            )
+          : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   children: [
-                    SizedBox(height: height * 0.03,),
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
                     textComoonfade(
                         "Show clients what your space looks like before they show up at your door.",
                         12,
@@ -154,449 +155,605 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                     SizedBox(
                       height: height * 0.02,
                     ),
+
                     /// Photo Widget ///
-                    firstImageStatus?
-                    Container(
-                        width: width,
-                        height: 180,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(image: FileImage(File(firstImagePath)), fit: BoxFit.contain)),
-                        child: InkWell(
-                          onTap: (){
-                            _sheet();
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(height:  10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                    firstImageStatus
+                        ? Container(
+                            width: width,
+                            height: 180,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: FileImage(File(firstImagePath)),
+                                    fit: BoxFit.contain)),
+                            child: InkWell(
+                              onTap: () {
+                                _sheet();
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  InkWell(
-                                    onTap: (){
-                                      _sheet();
-                                    },
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Image.asset("assets/images/edit-2.png",height: 30,color: Colors.grey),
-                                    ),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  const SizedBox(width:  10,),
-                                  InkWell(
-                                    onTap: (){
-                                      // deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
-                                      firstImageStatus = false;
-                                      one = false;
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Image.asset("assets/images/delete.png",height: 30),
-                                    ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          _sheet();
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset(
+                                              "assets/images/edit-2.png",
+                                              height: 30,
+                                              color: Colors.grey),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          // deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
+                                          firstImageStatus = false;
+                                          one = false;
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Image.asset(
+                                              "assets/images/delete.png",
+                                              height: 30),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width:  10,),
                                 ],
                               ),
-                            ],
-                          ),
-                        )
-                    ):
-                    Container(
-                        width: width,
-                        height: 180,
-                        decoration: BoxDecoration(
-                            image: p!.data!.first.workSpaceImgs.isNotEmpty?
-                            DecorationImage(image: NetworkImage( p!.data!.first.workSpaceImgs[0]), fit: BoxFit.fill):
-                            DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                        child: InkWell(
-                          onTap: (){
-                            _sheet();
-                          },
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
-                            children: [
-                              p!.data!.first.workSpaceImgs.isNotEmpty?
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            ))
+                        : Container(
+                            width: width,
+                            height: 180,
+                            decoration: BoxDecoration(
+                                image: p!.data!.first.workSpaceImgs.isNotEmpty
+                                    ? DecorationImage(
+                                        image: NetworkImage(
+                                            p!.data!.first.workSpaceImgs[0]),
+                                        fit: BoxFit.fill)
+                                    : DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/Rectangle_greyline.png"),
+                                        fit: BoxFit.fill)),
+                            child: InkWell(
+                              onTap: () {
+                                _sheet();
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  InkWell(
-                                    onTap: (){
-                                      _sheet();
-                                    },
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Image.asset("assets/images/edit-2.png",height: 30,color: Colors.grey),
+                                  p!.data!.first.workSpaceImgs.isNotEmpty
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                _sheet();
+                                              },
+                                              child: Container(
+                                                color: Colors.white,
+                                                child: Image.asset(
+                                                    "assets/images/edit-2.png",
+                                                    height: 30,
+                                                    color: Colors.grey),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                deleteWorkSpaceImg(p!.data!
+                                                    .first.workSpaceImgs[0]);
+                                                firstImageStatus = false;
+                                                // one = false;
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                color: Colors.white,
+                                                child: Image.asset(
+                                                    "assets/images/delete.png",
+                                                    height: 30),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  Center(
+                                    child: Image(
+                                      height: 40,
+                                      image: AssetImage(
+                                          "assets/images/camera_grey.png"),
                                     ),
                                   ),
-                                  const SizedBox(width:  10,),
-                                  InkWell(
-                                    onTap: (){
-                                      deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
-                                      firstImageStatus = false;
-                                      // one = false;
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Image.asset("assets/images/delete.png",height: 30),
-                                    ),
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                  const SizedBox(width:  10,),
+                                  textComoon("Add Photos", 12,
+                                      Color(0xff414141), FontWeight.w500),
                                 ],
-                              ):
-                                  SizedBox(),
-                              Center(
-                                child: Image(
-                                  height: 40,
-                                  image: AssetImage(
-                                      "assets/images/camera_grey.png"),
-                                ),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              textComoon(
-                                  "Add Photos",
-                                  12,
-                                  Color(0xff414141),
-                                  FontWeight.w500),
-                            ],
-                          ),
-                        )
+                            )),
+                    const SizedBox(
+                      height: 10,
                     ),
-                    const SizedBox(height: 10,),
                     Row(
                       children: [
-                        one?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image:  p!.data!.first.workSpaceImgs.isNotEmpty?
-                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[1]), fit: BoxFit.fill):
-                                DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet2();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  p!.data!.first.workSpaceImgs.isNotEmpty?
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                        one
+                            ? Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    image: p!.data!.first.workSpaceImgs
+                                            .isNotEmpty
+                                        ? DecorationImage(
+                                            image: NetworkImage(p!
+                                                .data!.first.workSpaceImgs[1]),
+                                            fit: BoxFit.fill)
+                                        : DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
+                                            fit: BoxFit.fill)),
+                                child: InkWell(
+                                  onTap: () {
+                                    _sheet2();
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet2();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
+                                      p!.data!.first.workSpaceImgs.isNotEmpty
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    _sheet2();
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/edit-2.png",
+                                                        height: 20,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    deleteWorkSpaceImg(p!
+                                                        .data!
+                                                        .first
+                                                        .workSpaceImgs[1]);
+                                                    secondImageStatus = false;
+                                                    one = true;
+                                                    setState(() {});
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/delete.png",
+                                                        height: 20),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
+                                      Center(
+                                        child: Image(
+                                          height: 40,
+                                          image: AssetImage(
+                                              "assets/images/camera_grey.png"),
                                         ),
                                       ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[1]);
-                                          secondImageStatus = false;
-                                          one = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
-                                      const SizedBox(width:  10,),
-                                    ],
-                                  ):
-                                      SizedBox(),
-                                  Center(
-                                    child: Image(
-                                      height: 40,
-                                      image: AssetImage(
-                                          "assets/images/camera_grey.png"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text("Add another photo",style: TextStyle(fontSize: 10,color: Color(0xff414141),fontWeight:FontWeight.w500),)
-                                ],
-                              ),
-                            )
-                        ):secondImageStatus?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: FileImage(File(secondImagePath)), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet2();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height:  10,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet2();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          secondImageStatus = false;
-                                          one = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
+                                      Text(
+                                        "Add another photo",
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xff414141),
+                                            fontWeight: FontWeight.w500),
+                                      )
                                     ],
                                   ),
-                                ],
-                              ),
-                            )
-                        ):SizedBox(),
-                        SizedBox(width: 05,),
-                        two?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image: p!.data!.first.workSpaceImgs.isNotEmpty?
-                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[2]), fit: BoxFit.fill):
-                                DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet3();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  p!.data!.first.workSpaceImgs.isNotEmpty?
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                ))
+                            : secondImageStatus
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: FileImage(
+                                                File(secondImagePath)),
+                                            fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet2();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  _sheet2();
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/edit-2.png",
+                                                      height: 20,
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  secondImageStatus = false;
+                                                  one = true;
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/delete.png",
+                                                      height: 20),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                : SizedBox(),
+                        SizedBox(
+                          width: 05,
+                        ),
+                        two
+                            ? Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    image: p!.data!.first.workSpaceImgs
+                                            .isNotEmpty
+                                        ? DecorationImage(
+                                            image: NetworkImage(p!
+                                                .data!.first.workSpaceImgs[2]),
+                                            fit: BoxFit.fill)
+                                        : DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
+                                            fit: BoxFit.fill)),
+                                child: InkWell(
+                                  onTap: () {
+                                    _sheet3();
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet3();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
+                                      p!.data!.first.workSpaceImgs.isNotEmpty
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    _sheet3();
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/edit-2.png",
+                                                        height: 20,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    deleteWorkSpaceImg(p!
+                                                        .data!
+                                                        .first
+                                                        .workSpaceImgs[2]);
+                                                    thirdImageStatus = false;
+                                                    two = true;
+                                                    setState(() {});
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/delete.png",
+                                                        height: 20),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
+                                      Center(
+                                        child: Image(
+                                          height: 40,
+                                          image: AssetImage(
+                                              "assets/images/camera_grey.png"),
                                         ),
                                       ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[2]);
-                                          thirdImageStatus = false;
-                                          two = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
-                                      const SizedBox(width:  10,),
-                                    ],
-                                  ):
-                                      SizedBox(),
-                                  Center(
-                                    child: Image(
-                                      height: 40,
-                                      image: AssetImage(
-                                          "assets/images/camera_grey.png"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text("Add another photo",style: TextStyle(fontSize: 10,color: Color(0xff414141),fontWeight:FontWeight.w500),)
-                                ],
-                              ),
-                            )
-                        ):thirdImageStatus?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: FileImage(File(thirdImagePath)), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet3();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height:  10,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet3();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          thirdImageStatus = false;
-                                          two = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                        ):SizedBox(),
-                        SizedBox(width: 05,),
-                        three?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image: p!.data!.first.workSpaceImgs.isNotEmpty?
-                                DecorationImage(image: NetworkImage(p!.data!.first.workSpaceImgs[3]), fit: BoxFit.fill):
-                                DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet4();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  p!.data!.first.workSpaceImgs.isNotEmpty?
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet4();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[3]);
-                                          fourthImageStatus = false;
-                                          three = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                    ],
-                                  ):
-                                      SizedBox(),
-                                  Center(
-                                    child: Image(
-                                      height: 40,
-                                      image: AssetImage(
-                                          "assets/images/camera_grey.png"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text("Add another photo",style: TextStyle(fontSize: 10,color: Color(0xff414141),fontWeight:FontWeight.w500),)
-                                ],
-                              ),
-                            )
-                        ):fourthImageStatus?Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: FileImage(File(fourthImagePath)), fit: BoxFit.fill)),
-                            child: InkWell(
-                              onTap: (){
-                                _sheet4();
-                              },
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height:  10,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                        onTap: (){
-                                          _sheet4();
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/edit-2.png",height: 20,color: Colors.grey),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
-                                      InkWell(
-                                        onTap: (){
-                                          fourthImageStatus = false;
-                                          three = true;
-                                          setState(() {});
-                                        },
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Image.asset("assets/images/delete.png",height: 20),
-                                        ),
-                                      ),
-                                      const SizedBox(width:  10,),
+                                      Text(
+                                        "Add another photo",
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xff414141),
+                                            fontWeight: FontWeight.w500),
+                                      )
                                     ],
                                   ),
-                                ],
-                              ),
-                            )
-                        ):SizedBox(),
+                                ))
+                            : thirdImageStatus
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image:
+                                                FileImage(File(thirdImagePath)),
+                                            fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet3();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  _sheet3();
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/edit-2.png",
+                                                      height: 20,
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  thirdImageStatus = false;
+                                                  two = true;
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/delete.png",
+                                                      height: 20),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                : SizedBox(),
+                        SizedBox(
+                          width: 05,
+                        ),
+                        three
+                            ? Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    image: p!.data!.first.workSpaceImgs
+                                            .isNotEmpty
+                                        ? DecorationImage(
+                                            image: NetworkImage(p!
+                                                .data!.first.workSpaceImgs[3]),
+                                            fit: BoxFit.fill)
+                                        : DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
+                                            fit: BoxFit.fill)),
+                                child: InkWell(
+                                  onTap: () {
+                                    _sheet4();
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      p!.data!.first.workSpaceImgs.isNotEmpty
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    _sheet4();
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/edit-2.png",
+                                                        height: 20,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    deleteWorkSpaceImg(p!
+                                                        .data!
+                                                        .first
+                                                        .workSpaceImgs[3]);
+                                                    fourthImageStatus = false;
+                                                    three = true;
+                                                    setState(() {});
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    child: Image.asset(
+                                                        "assets/images/delete.png",
+                                                        height: 20),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
+                                      Center(
+                                        child: Image(
+                                          height: 40,
+                                          image: AssetImage(
+                                              "assets/images/camera_grey.png"),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "Add another photo",
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xff414141),
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                ))
+                            : fourthImageStatus
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: FileImage(
+                                                File(fourthImagePath)),
+                                            fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet4();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  _sheet4();
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/edit-2.png",
+                                                      height: 20,
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  fourthImageStatus = false;
+                                                  three = true;
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Image.asset(
+                                                      "assets/images/delete.png",
+                                                      height: 20),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                : SizedBox(),
                       ],
                     ),
                     // Column(
@@ -1478,7 +1635,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                     //     )
                     //   ],
                     // ),
-                    SizedBox(height: height * 0.02,),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
                     Container(
                         width: width,
                         decoration: BoxDecoration(
@@ -1495,8 +1654,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                               FontWeight.w500),
                         )),
                     SizedBox(height: height * 0.05),
-                    CommonButton(context, "SAVE", 12, FontWeight.w600, Colors.white, () {postImage();}),
-                    SizedBox(height: height * 0.05,),
+                    CommonButton(
+                        context, "SAVE", 12, FontWeight.w600, Colors.white, () {
+                      postImage();
+                    }),
+                    SizedBox(
+                      height: height * 0.05,
+                    ),
                   ],
                 ),
               ),
@@ -1505,102 +1669,100 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   }
 
   postImage() async {
-      setState(() {
-        isLoading = true;
-      });
-      var postUri = Uri.parse(ApiUrlList.addWorkSpaceImg);
-      var request = http.MultipartRequest("POST", postUri);
-      request.headers['Authorization'] =
-          "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+    setState(() {
+      isLoading = true;
+    });
+    var postUri = Uri.parse(ApiUrlList.addWorkSpaceImg);
+    var request = http.MultipartRequest("POST", postUri);
+    request.headers['Authorization'] =
+        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
 
-      for(var i in files){
-          http.MultipartFile multipartFile =
+    for (var i in files) {
+      http.MultipartFile multipartFile =
           await http.MultipartFile.fromPath('workspace', i.path);
-          request.files.add(multipartFile);
-      }
-      // if (secondImageStatus) {
-      //   http.MultipartFile multipartFile =
-      //       await http.MultipartFile.fromPath('workspace', secondImage!.path);
-      //   request.files.add(multipartFile);
-      // }
-      // if (thirdImageStatus) {
-      //   http.MultipartFile multipartFile =
-      //       await http.MultipartFile.fromPath('workspace', thirdImage!.path);
-      //   request.files.add(multipartFile);
-      // }
-      // if (fourthImageStatus) {
-      //   http.MultipartFile multipartFile =
-      //       await http.MultipartFile.fromPath('workspace', fourthImage!.path);
-      //   request.files.add(multipartFile);
-      // }
-      http.StreamedResponse response = await request.send();
-      print('code: ${response.statusCode}');
-      final res = await http.Response.fromStream(response);
-      print('body: ${res.body}');
-      Map map = jsonDecode(res.body);
-      if (res.statusCode == 200) {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-      setState(() {
-        isLoading = false;
-      });
+      request.files.add(multipartFile);
+    }
+    // if (secondImageStatus) {
+    //   http.MultipartFile multipartFile =
+    //       await http.MultipartFile.fromPath('workspace', secondImage!.path);
+    //   request.files.add(multipartFile);
+    // }
+    // if (thirdImageStatus) {
+    //   http.MultipartFile multipartFile =
+    //       await http.MultipartFile.fromPath('workspace', thirdImage!.path);
+    //   request.files.add(multipartFile);
+    // }
+    // if (fourthImageStatus) {
+    //   http.MultipartFile multipartFile =
+    //       await http.MultipartFile.fromPath('workspace', fourthImage!.path);
+    //   request.files.add(multipartFile);
+    // }
+    http.StreamedResponse response = await request.send();
+    print('code: ${response.statusCode}');
+    final res = await http.Response.fromStream(response);
+    print('body: ${res.body}');
+    Map map = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "${map['message']}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   getImages() async {
-      setState(() {
-        isLoading = true;
-      });
-      var getUri = Uri.parse(ApiUrlList.getBeauticianWorkSpaceImage);
-      var headers = {
-        'Content-Type': "application/json; charset=utf-8",
-        "authorization":
-            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
-      };
-      log("get profile url is  : $getUri");
-      log("res headers  : $headers");
-      var response = await http.get(getUri, headers: headers);
-      log("getApi response.body ==> ${response.body}");
-      log("getAPi status code ==> ${response.statusCode}");
-      Map map = jsonDecode(response.body);
-      if (map['status'] == 200) {
-        p = Workplacephotos.fromJson(map);
-        if(p!.data!.first.workSpaceImgs.isNotEmpty){
-           for(int i = 0; i < p!.data!.first.workSpaceImgs.length; i++){
-             // i == 0 ? firstImageStatus=true:false;
-             i == 1 ? one=true:false;
-             i == 2 ? two=true:false;
-             i == 3 ? three=true:false;
-             print(one);
-             print(two);
-             print(three);
-             print(four);
-           }
-          setState(() {});
+    setState(() {
+      isLoading = true;
+    });
+    var getUri = Uri.parse(ApiUrlList.getBeauticianWorkSpaceImage);
+    var headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "authorization": "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    log("get profile url is  : $getUri");
+    log("res headers  : $headers");
+    var response = await http.get(getUri, headers: headers);
+    log("getApi response.body ==> ${response.body}");
+    log("getAPi status code ==> ${response.statusCode}");
+    Map map = jsonDecode(response.body);
+    if (map['status'] == 200) {
+      p = Workplacephotos.fromJson(map);
+      if (p!.data!.first.workSpaceImgs.isNotEmpty) {
+        for (int i = 0; i < p!.data!.first.workSpaceImgs.length; i++) {
+          // i == 0 ? firstImageStatus=true:false;
+          i == 1 ? one = true : false;
+          i == 2 ? two = true : false;
+          i == 3 ? three = true : false;
+          print(one);
+          print(two);
+          print(three);
+          print(four);
         }
-      } else {
-        p = null;
+        setState(() {});
       }
-      setState(() {
-        isLoading = false;
-      });
+    } else {
+      p = null;
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
-
 
   deleteWorkSpaceImg(String imgPath) async {
     try {
@@ -1610,11 +1772,10 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       var getUri = Uri.parse("${ApiUrlList.deleteWorkSpaceImg}");
       var Headers = {
         // 'Content-Type': "application/json; charset=utf-8",
-        "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
-      var Body = {
-        "imgPath" : imgPath
-      };
+      var Body = {"imgPath": imgPath};
       var response = await http.delete(
         body: Body,
         getUri,
@@ -1626,10 +1787,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
       if (map["status"] == 200) {
         isLoading = false;
         setState(() {});
-      }else if(response.statusCode == 401){
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return signInScreen();
-        },), (route) => false);
+      } else if (response.statusCode == 401) {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
       }
     } catch (e) {
       rethrow;
@@ -1640,20 +1803,20 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     }
   }
 
-
   updateImage(String workspace, String oldPath) async {
     setState(() {
       isLoading = true;
     });
     var postUri = Uri.parse(ApiUrlList.updateWorkSpaceImg);
     var request = http.MultipartRequest("PUT", postUri);
-    request.headers['Authorization'] = "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
+    request.headers['Authorization'] =
+        "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
 
-      http.MultipartFile multipartFile =
-          await http.MultipartFile.fromPath('workspace', workspace);
-      request.files.add(multipartFile);
+    http.MultipartFile multipartFile =
+        await http.MultipartFile.fromPath('workspace', workspace);
+    request.files.add(multipartFile);
 
-      request.fields["oldImgPath"] = oldPath;
+    request.fields["oldImgPath"] = oldPath;
 
     http.StreamedResponse response = await request.send();
     print('updateImage Code: ${response.statusCode}');
@@ -1663,8 +1826,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     if (res.statusCode == 200) {
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -1672,8 +1835,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     } else {
       Fluttertoast.showToast(
           msg: "${map['message']}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -1684,406 +1847,353 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     });
   }
 
-
   Future _sheet() => showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        alignment: Alignment.bottomCenter,
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: 20, vertical: 30),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(10))),
-        title: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "TAKE A PHOTO",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              final XFile? photo =
-              await _picker.pickImage(
-                  source: ImageSource.camera);
-              if (photo != null) {
-                one = true;
-                firstImage = File(photo.path);
-                firstImagePath = photo.path;
-                files.add(firstImage!);
-                firstImageStatus = true;
-                if(secondImageStatus){
-                  one = false;
-                }
-                if(p!.data!.first.workSpaceImgs.length==1){
-                  if(two || three || four){
-                    one = false;
-                  }else{
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.bottomCenter,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            title: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(
+                    context, "TAKE A PHOTO", 12, FontWeight.w600, Colors.white,
+                    () async {
+                  Navigator.pop(context);
+                  final XFile? photo =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
                     one = true;
-                  }
-                }
-                if(firstImageStatus){
-                  updateImage(firstImage!.path, p!.data!.first.workSpaceImgs[0]);
-                }
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "CHOOSE FROM GALLERY",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              XFile? selectedImages =
-              await _picker.pickImage(
-                  source: ImageSource.gallery);
-              if (selectedImages != null) {
-                setState(() {
-                  one = true;
-                  firstImage = File(selectedImages.path);
-                  firstImagePath = selectedImages.path;
-                  firstImageStatus = true;
-                  files.add(firstImage!);
-                  if(secondImageStatus){
-                    one = false;
-                  }
-                  if(p!.data!.first.workSpaceImgs.length==1){
-                    if(two || three || four){
+                    firstImage = File(photo.path);
+                    firstImagePath = photo.path;
+                    files.add(firstImage!);
+                    firstImageStatus = true;
+                    if (secondImageStatus) {
                       one = false;
-                    }else{
-                      one = true;
+                    }
+                    if (p!.data!.first.workSpaceImgs.length == 1) {
+                      if (two || three || four) {
+                        one = false;
+                      } else {
+                        one = true;
+                      }
+                    }
+                    if (firstImageStatus) {
+                      updateImage(
+                          firstImage!.path, p!.data!.first.workSpaceImgs[0]);
                     }
                   }
-                  if(firstImageStatus){
-                    updateImage(firstImage!.path, p!.data!.first.workSpaceImgs[0]);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                    FontWeight.w600, Colors.white, () async {
+                  Navigator.pop(context);
+                  XFile? selectedImages =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (selectedImages != null) {
+                    setState(() {
+                      one = true;
+                      firstImage = File(selectedImages.path);
+                      firstImagePath = selectedImages.path;
+                      firstImageStatus = true;
+                      files.add(firstImage!);
+                      if (secondImageStatus) {
+                        one = false;
+                      }
+                      if (p!.data!.first.workSpaceImgs.length == 1) {
+                        if (two || three || four) {
+                          one = false;
+                        } else {
+                          one = true;
+                        }
+                      }
+                      if (firstImageStatus) {
+                        updateImage(
+                            firstImage!.path, p!.data!.first.workSpaceImgs[0]);
+                      }
+                    });
                   }
-                });
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                commonButtonborder(
+                    context, "CANCEL", 12, FontWeight.w600, Color(0xff01635D),
+                    () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
             ),
-            commonButtonborder(
-                context,
-                "CANCEL",
-                12,
-                FontWeight.w600,
-                Color(0xff01635D), () {
-              Navigator.pop(context);
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-          ],
-        ),
+          );
+        },
       );
-    },
-  );
 
   Future _sheet2() => showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        alignment: Alignment.bottomCenter,
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: 20, vertical: 30),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(10))),
-        title: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "TAKE A PHOTO",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              final XFile? photo =
-              await _picker.pickImage(
-                  source: ImageSource.camera);
-              if (photo != null) {
-                secondImage = File(photo.path);
-                files.add(secondImage!);
-                secondImagePath = photo.path;
-                secondImageStatus = true;
-                two = true;
-                one = false;
-                if(thirdImageStatus){
-                  two = false;
-                }
-                if(p!.data!.first.workSpaceImgs.length==2){
-                  two = true;
-                }
-                for(var i in p!.data!.first.workSpaceImgs){
-                  if(i[1].isNotEmpty){
-                    updateImage(secondImage!.path, p!.data!.first.workSpaceImgs[1]);
-                  }
-                }
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "CHOOSE FROM GALLERY",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              XFile? selectedImages =
-              await _picker.pickImage(
-                  source: ImageSource.gallery);
-              if (selectedImages != null) {
-                setState(() {
-                  one = false;
-                  two = true;
-                  if(thirdImageStatus){
-                    two = false;
-                  }
-                  secondImage = File(selectedImages.path);
-                  files.add(secondImage!);
-                  secondImagePath = selectedImages.path;
-                  secondImageStatus = true;
-                  if(p!.data!.first.workSpaceImgs.length==2){
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.bottomCenter,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            title: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(
+                    context, "TAKE A PHOTO", 12, FontWeight.w600, Colors.white,
+                    () async {
+                  Navigator.pop(context);
+                  final XFile? photo =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
+                    secondImage = File(photo.path);
+                    files.add(secondImage!);
+                    secondImagePath = photo.path;
+                    secondImageStatus = true;
                     two = true;
-                  }
-                  for(var i in p!.data!.first.workSpaceImgs){
-                    if(i[1].isNotEmpty){
-                      updateImage(secondImage!.path, p!.data!.first.workSpaceImgs[1]);
+                    one = false;
+                    if (thirdImageStatus) {
+                      two = false;
+                    }
+                    if (p!.data!.first.workSpaceImgs.length == 2) {
+                      two = true;
+                    }
+                    for (var i in p!.data!.first.workSpaceImgs) {
+                      if (i[1].isNotEmpty) {
+                        updateImage(
+                            secondImage!.path, p!.data!.first.workSpaceImgs[1]);
+                      }
                     }
                   }
-                });
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                    FontWeight.w600, Colors.white, () async {
+                  Navigator.pop(context);
+                  XFile? selectedImages =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (selectedImages != null) {
+                    setState(() {
+                      one = false;
+                      two = true;
+                      if (thirdImageStatus) {
+                        two = false;
+                      }
+                      secondImage = File(selectedImages.path);
+                      files.add(secondImage!);
+                      secondImagePath = selectedImages.path;
+                      secondImageStatus = true;
+                      if (p!.data!.first.workSpaceImgs.length == 2) {
+                        two = true;
+                      }
+                      for (var i in p!.data!.first.workSpaceImgs) {
+                        if (i[1].isNotEmpty) {
+                          updateImage(secondImage!.path,
+                              p!.data!.first.workSpaceImgs[1]);
+                        }
+                      }
+                    });
+                  }
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                commonButtonborder(
+                    context, "CANCEL", 12, FontWeight.w600, Color(0xff01635D),
+                    () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
             ),
-            commonButtonborder(
-                context,
-                "CANCEL",
-                12,
-                FontWeight.w600,
-                Color(0xff01635D), () {
-              Navigator.pop(context);
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-          ],
-        ),
+          );
+        },
       );
-    },
-  );
 
   Future _sheet3() => showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        alignment: Alignment.bottomCenter,
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: 20, vertical: 30),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(10))),
-        title: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "TAKE A PHOTO",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              final XFile? photo =
-              await _picker.pickImage(
-                  source: ImageSource.camera);
-              if (photo != null) {
-                thirdImage = File(photo.path);
-                files.add(thirdImage!);
-                thirdImagePath = photo.path;
-                thirdImageStatus = true;
-                one = false;
-                two = false;
-                three = true;
-                if(fourthImageStatus){
-                  three = false;
-                }
-                if(p!.data!.first.workSpaceImgs.length==3){
-                  three = true;
-                }
-                for(var i in p!.data!.first.workSpaceImgs){
-                  if(i[2].isNotEmpty){
-                    updateImage(thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
-                  }
-                }
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "CHOOSE FROM GALLERY",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              XFile? selectedImages =
-              await _picker.pickImage(
-                  source: ImageSource.gallery);
-              if (selectedImages != null) {
-                setState(() {
-                  thirdImage = File(selectedImages.path);
-                  thirdImagePath = selectedImages.path;
-                  thirdImageStatus = true;
-                  files.add(thirdImage!);
-                  one = false;
-                  two = false;
-                  three = true;
-                  if(fourthImageStatus){
-                    three = false;
-                  }
-                  if(p!.data!.first.workSpaceImgs.length==3){
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.bottomCenter,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            title: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(
+                    context, "TAKE A PHOTO", 12, FontWeight.w600, Colors.white,
+                    () async {
+                  Navigator.pop(context);
+                  final XFile? photo =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
+                    thirdImage = File(photo.path);
+                    files.add(thirdImage!);
+                    thirdImagePath = photo.path;
+                    thirdImageStatus = true;
+                    one = false;
+                    two = false;
                     three = true;
-                  }
-                  for(var i in p!.data!.first.workSpaceImgs){
-                    if(i[2].isNotEmpty){
-                      updateImage(thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
+                    if (fourthImageStatus) {
+                      three = false;
+                    }
+                    if (p!.data!.first.workSpaceImgs.length == 3) {
+                      three = true;
+                    }
+                    for (var i in p!.data!.first.workSpaceImgs) {
+                      if (i[2].isNotEmpty) {
+                        updateImage(
+                            thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
+                      }
                     }
                   }
-                });
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                    FontWeight.w600, Colors.white, () async {
+                  Navigator.pop(context);
+                  XFile? selectedImages =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (selectedImages != null) {
+                    setState(() {
+                      thirdImage = File(selectedImages.path);
+                      thirdImagePath = selectedImages.path;
+                      thirdImageStatus = true;
+                      files.add(thirdImage!);
+                      one = false;
+                      two = false;
+                      three = true;
+                      if (fourthImageStatus) {
+                        three = false;
+                      }
+                      if (p!.data!.first.workSpaceImgs.length == 3) {
+                        three = true;
+                      }
+                      for (var i in p!.data!.first.workSpaceImgs) {
+                        if (i[2].isNotEmpty) {
+                          updateImage(thirdImage!.path,
+                              p!.data!.first.workSpaceImgs[2]);
+                        }
+                      }
+                    });
+                  }
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                commonButtonborder(
+                    context, "CANCEL", 12, FontWeight.w600, Color(0xff01635D),
+                    () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
             ),
-            commonButtonborder(
-                context,
-                "CANCEL",
-                12,
-                FontWeight.w600,
-                Color(0xff01635D), () {
-              Navigator.pop(context);
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-          ],
-        ),
+          );
+        },
       );
-    },
-  );
 
   Future _sheet4() => showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        alignment: Alignment.bottomCenter,
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: 20, vertical: 30),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(10))),
-        title: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "TAKE A PHOTO",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              final XFile? photo =
-              await _picker.pickImage(
-                  source: ImageSource.camera);
-              if (photo != null) {
-                fourthImage = File(photo.path);
-                fourthImagePath = photo.path;
-                fourthImageStatus = true;
-                one = false;
-                two = false;
-                three = false;
-                files.add(fourthImage!);
-                if(p!.data!.first.workSpaceImgs.length==4){
-                }
-                for(var i in p!.data!.first.workSpaceImgs){
-                  if(i[3].isNotEmpty){
-                    updateImage(fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
-                  }
-                }
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            CommonButton(
-                context,
-                "CHOOSE FROM GALLERY",
-                12,
-                FontWeight.w600,
-                Colors.white, () async {
-              Navigator.pop(context);
-              XFile? selectedImages =
-              await _picker.pickImage(
-                  source: ImageSource.gallery);
-              if (selectedImages != null) {
-                setState(() {
-                  fourthImage = File(selectedImages.path);
-                  fourthImagePath = selectedImages.path;
-                  files.add(fourthImage!);
-                  fourthImageStatus = true;
-                  one = false;
-                  two = false;
-                  three = false;
-                  if(p!.data!.first.workSpaceImgs.length==4){
-                  }
-                  for(var i in p!.data!.first.workSpaceImgs){
-                    if(i[3].isNotEmpty){
-                      updateImage(fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.bottomCenter,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            title: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(
+                    context, "TAKE A PHOTO", 12, FontWeight.w600, Colors.white,
+                    () async {
+                  Navigator.pop(context);
+                  final XFile? photo =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
+                    fourthImage = File(photo.path);
+                    fourthImagePath = photo.path;
+                    fourthImageStatus = true;
+                    one = false;
+                    two = false;
+                    three = false;
+                    files.add(fourthImage!);
+                    if (p!.data!.first.workSpaceImgs.length == 4) {}
+                    for (var i in p!.data!.first.workSpaceImgs) {
+                      if (i[3].isNotEmpty) {
+                        updateImage(
+                            fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
+                      }
                     }
                   }
-                });
-              }
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                    FontWeight.w600, Colors.white, () async {
+                  Navigator.pop(context);
+                  XFile? selectedImages =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (selectedImages != null) {
+                    setState(() {
+                      fourthImage = File(selectedImages.path);
+                      fourthImagePath = selectedImages.path;
+                      files.add(fourthImage!);
+                      fourthImageStatus = true;
+                      one = false;
+                      two = false;
+                      three = false;
+                      if (p!.data!.first.workSpaceImgs.length == 4) {}
+                      for (var i in p!.data!.first.workSpaceImgs) {
+                        if (i[3].isNotEmpty) {
+                          updateImage(fourthImage!.path,
+                              p!.data!.first.workSpaceImgs[3]);
+                        }
+                      }
+                    });
+                  }
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                commonButtonborder(
+                    context, "CANCEL", 12, FontWeight.w600, Color(0xff01635D),
+                    () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
             ),
-            commonButtonborder(
-                context,
-                "CANCEL",
-                12,
-                FontWeight.w600,
-                Color(0xff01635D), () {
-              Navigator.pop(context);
-            }),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-          ],
-        ),
+          );
+        },
       );
-    },
-  );
-
-
 }
 
 class Workplacephotos {
@@ -2118,6 +2228,7 @@ class Workplacephotos {
             : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
+
 class Datum {
   String? id;
   String? uid;

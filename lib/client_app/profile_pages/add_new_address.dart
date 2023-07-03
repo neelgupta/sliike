@@ -27,6 +27,7 @@ class add_new_address extends StatefulWidget {
   String Province_name;
   String Zip_Code;
   bool addressValue;
+  int addressType = 1;
 
   add_new_address({
     Key? key,
@@ -36,6 +37,7 @@ class add_new_address extends StatefulWidget {
     required this.Province_name,
     required this.Zip_Code,
     required this.addressValue,
+    required this.addressType,
   }) : super(key: key);
 
   @override
@@ -76,14 +78,27 @@ class _add_new_addressState extends State<add_new_address> {
     if (widget.Zip_Code != "") {
       zip_code.text = widget.Zip_Code;
     }
-    if (widget.addressValue != false) {
-      if (home = true) {
-        home = widget.addressValue;
-      } else if (work = true) {
-        work = widget.addressValue;
-      } else {
-        other = widget.addressValue;
-      }
+    // if (widget.addressValue != false) {
+    //   if (home = true) {
+    //     home = widget.addressValue;
+    //   } else if (work = true) {
+    //     work = widget.addressValue;
+    //   } else {
+    //     other = widget.addressValue;
+    //   }
+    // }
+    if (widget.addressType == 1) {
+      work = false;
+      home = true;
+      other = false;
+    } else if (widget.addressType == 2) {
+      other = false;
+      home = false;
+      work = true;
+    } else if (widget.addressType == 3) {
+      other = true;
+      home = false;
+      work = false;
     }
 
     super.initState();
@@ -733,8 +748,8 @@ class _add_new_addressState extends State<add_new_address> {
 
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
@@ -749,8 +764,8 @@ class _add_new_addressState extends State<add_new_address> {
         } else {
           Fluttertoast.showToast(
               msg: "${map['message']}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black,
               textColor: Colors.white,
