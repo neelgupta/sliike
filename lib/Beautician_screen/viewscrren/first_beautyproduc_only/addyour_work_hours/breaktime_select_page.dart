@@ -274,13 +274,14 @@ class _BreakTimeSelectState extends State<BreakTimeSelect> {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  if (breakStartTime == breakEndTime) {
+                  if (breakEndIndex == breakStartIndex) {
                     Fluttertoast.showToast(
-                        msg: "Break Time should not be same");
+                      msg:
+                          "Break Start Time and Break End Time should not be same",
+                    );
                   } else if (breakEndIndex < breakStartIndex) {
                     Fluttertoast.showToast(
-                        msg:
-                            "End Break Time should not less than start break time");
+                        msg: "Break End Time should be after break start time");
                   } else {
                     Navigator.pop(
                       context,

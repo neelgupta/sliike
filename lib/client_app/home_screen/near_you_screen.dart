@@ -22,6 +22,8 @@ class _NearYouState extends State<NearYou> {
   String longitude = "";
   bool isLoading = true;
 
+  bool isLocationEnable = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -335,7 +337,7 @@ class _NearYouState extends State<NearYou> {
     );
   }
 
-  Future<Position> getLocation() async {
+  getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -348,23 +350,34 @@ class _NearYouState extends State<NearYou> {
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
+      setState(() {
+        isLocationEnable = false;
+        isLoading = false;
+      });
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        setState(() {
+          isLocationEnable = false;
+          isLoading = false;
+        });
         Navigator.pop(context);
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       permission = await Geolocator.requestPermission();
+      setState(() {
+        isLocationEnable = false;
+        isLoading = false;
+      });
     }
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       Position p = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      isLocationEnable = true;
       await getlatitude(p.latitude, p.longitude);
     }
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
   }
 
   getlatitude(double lat, double long) async {

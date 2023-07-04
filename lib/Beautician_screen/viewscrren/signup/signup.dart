@@ -114,7 +114,7 @@ class _signUpState extends State<signUp> {
   String emailMsg = "";
   String phoneMsg = "";
   String passwordMsg = "";
-  bool showstatus = false;
+  bool showstatus = true;
   bool isEmailVerify = false;
   String _radioSelected = "user";
   String _countryname = "Ca";
@@ -381,7 +381,9 @@ class _signUpState extends State<signUp> {
                         ],
                         controller: tlastname,
                         onChanged: (value) {
-                          lastnamestatus = false;
+                          setState(() {
+                            lastnamestatus = false;
+                          });
                         },
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
@@ -418,7 +420,10 @@ class _signUpState extends State<signUp> {
                       TextField(
                         controller: temailAdress,
                         onChanged: (value) {
-                          emailAdressstatus = false;
+                          setState(() {
+                            emailAdressstatus = false;  
+                          });
+                          
                         },
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(

@@ -42,8 +42,7 @@ class ApiUrlList {
   static String getAppointmentList =
       "${baseUrl}client/getAppointmentList?status=past";
   static String getRecentBeauticians = "${baseUrl}client/getRecentBeauticians";
-  static String getBusinessDeatils =
-      "${baseUrl}client/getBusinessDeatils";
+  static String getBusinessDeatils = "${baseUrl}client/getBusinessDeatils";
   static String getBusinessDeatilsNew =
       "${baseUrl}client/getBusinessDetailsNew";
   static String getRecomadedBeauticians =
@@ -127,11 +126,10 @@ class ApiUrlList {
   static String addFeedbackClient = "${baseUrl}help/addFeedback/client";
   //beautician//
   static String addFeedbackBeauty = "${baseUrl}help/addFeedback/beautician";
-  static String SendAppointmentReminder = "${baseUrl}beautician/SendAppointmentReminder";
+  static String SendAppointmentReminder =
+      "${baseUrl}beautician/SendAppointmentReminder";
 
   static String updateBAppointment = "${baseUrl}beautician/updateAppointment/";
-
-
 
   /// Update Buisness Details //
   static String updateBusinessDetails =

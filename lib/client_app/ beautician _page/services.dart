@@ -24,11 +24,15 @@ class services extends StatefulWidget {
   String beauticianId;
   String? businessName;
   bool fromStart = true;
+  String? isLicensed;
+  String? isIndependent;
   services(
       {Key? key,
       required this.beauticianId,
       this.businessName,
-      this.fromStart = true})
+      this.fromStart = true,
+      this.isLicensed,
+      this.isIndependent})
       : super(key: key);
 
   @override
@@ -374,18 +378,47 @@ class _servicesState extends State<services> {
                                 // color: Colors.red,
                                 padding: const EdgeInsets.only(
                                     top: 20, bottom: 20, left: 20),
-                                width: width * 0.40,
+                                width: width * 0.45,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${Beauticiandata[0].businessName}",
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: "spartan",
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            log("Beauticiandata[0].isLicensed ; ${Beauticiandata[0].isLicensed}");
+                                            log("Beauticiandata[0].hasShop ; ${Beauticiandata[0].hasShop}");
+                                          },
+                                          child: Text(
+                                            "${Beauticiandata[0].businessName}",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: "spartan",
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        if (Beauticiandata[0].isLicensed == 1)
+                                          Image.asset(
+                                            "assets/images/Subtract (1).png",
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                        SizedBox(width: 05),
+                                        if (Beauticiandata[0].hasShop == 1)
+                                          InkWell(
+                                            onTap: () {
+                                              print(
+                                                  Beauticiandata[0].isLicensed);
+                                            },
+                                            child: Image.asset(
+                                              "assets/images/independentmen.png",
+                                              height: 20,
+                                              width: 20,
+                                            ),
+                                          )
+                                      ],
                                     ),
                                     SizedBox(height: height * 0.01),
                                     Text(
@@ -443,34 +476,6 @@ class _servicesState extends State<services> {
                               //               )),
                               //         ],
                               //       )),
-                              if (Beauticiandata[0].isLicensed == 1)
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 0, bottom: 35),
-                                  child: Image.asset(
-                                    "assets/images/Subtract (1).png",
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ),
-                              SizedBox(
-                                width: 05,
-                              ),
-                              if (Beauticiandata[0].hasShop == 0)
-                                InkWell(
-                                  onTap: () {
-                                    print(Beauticiandata[0].isLicensed);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 30, bottom: 35),
-                                    child: Image.asset(
-                                      "assets/images/independentmen.png",
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                  ),
-                                )
                             ],
                           ),
                         ),
@@ -2286,7 +2291,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFDD6A03),
+                      primary: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2362,7 +2367,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFDD6A03),
+                      primary: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2712,8 +2717,8 @@ class _servicesState extends State<services> {
         mf = MyFavorites.fromjson(map);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2722,8 +2727,8 @@ class _servicesState extends State<services> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2757,8 +2762,8 @@ class _servicesState extends State<services> {
         mf = MyFavorites.fromjson(map);
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2766,8 +2771,8 @@ class _servicesState extends State<services> {
       } else {
         Fluttertoast.showToast(
             msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black,
             textColor: Colors.white,
@@ -2954,8 +2959,8 @@ class SingalBeauticianData {
   List? workSpaceImgs;
   Address? address;
   bool? isFav;
-  int? isLicensed;
-  int? hasShop;
+  final int isLicensed;
+  final int hasShop;
 
   SingalBeauticianData(
       {this.id,
@@ -2968,8 +2973,8 @@ class SingalBeauticianData {
       this.workSpaceImgs,
       this.address,
       this.isFav,
-      this.isLicensed,
-      this.hasShop});
+      required this.isLicensed,
+      required this.hasShop});
 
   factory SingalBeauticianData.fromjson(Map<dynamic, dynamic> map1) {
     List list = map1['beauticianServiceId'] ?? [];
@@ -2987,8 +2992,8 @@ class SingalBeauticianData {
       workSpaceImgs: map1['workSpaceImgs'] ?? [],
       address: address,
       isFav: map1['isFav'] ?? false,
-      isLicensed: map1['isLicensed'] ?? 0,
-      hasShop: map1['hasShop'] ?? 0,
+      isLicensed: map1['isLicensed'],
+      hasShop: map1['hasShop'],
     );
   }
 }
@@ -3175,7 +3180,7 @@ class Beautician {
   int isProvideProduct;
   int totalEmployee;
   List<dynamic> demographicIds;
-  int hasShop;
+
   int isServeAtClient;
   int isServeAtOwnPlace;
   int screenStatus;
@@ -3192,6 +3197,8 @@ class Beautician {
   double rating;
   String gender;
   String profileImage;
+  String hasShop;
+  String isLicensed;
   List<User> user;
   List<ServiceDetail> serviceDetails;
   List<dynamic> demographys;
@@ -3225,6 +3232,7 @@ class Beautician {
     required this.businessNumber,
     required this.location,
     required this.logo,
+    required this.isLicensed,
     required this.address,
     required this.noOfReviews,
     required this.rating,
@@ -3254,8 +3262,9 @@ class Beautician {
         totalEmployee: json["totalEmployee"] ?? 0,
         demographicIds:
             List<dynamic>.from(json["demographicIds"].map((x) => x)),
-        hasShop: json["hasShop"] ?? 0,
+        hasShop: json["hasShop"].toString(),
         isServeAtClient: json["IsServeAtClient"],
+        isLicensed: json["isLicensed"].toString(),
         isServeAtOwnPlace: json["IsServeAtOwnPlace"],
         screenStatus: json["screenStatus"],
         isDeleted: json["isDeleted"],

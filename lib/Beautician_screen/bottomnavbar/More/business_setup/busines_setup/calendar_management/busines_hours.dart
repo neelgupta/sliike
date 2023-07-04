@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -468,7 +469,7 @@ class _busines_HoursState extends State<busines_Hours> {
                                                           ],
                                                         ),
                                                         SizedBox(
-                                                          width: width * 0.35,
+                                                          width: width * 0.25,
                                                         ),
                                                         Container(
                                                           alignment:

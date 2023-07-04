@@ -53,7 +53,6 @@ class _home_exploreState extends State<home_explore> {
     super.initState();
     getLocation();
     fetchServiceCategories();
-
     Helper.serviceId.clear();
   }
 
@@ -428,6 +427,10 @@ class _home_exploreState extends State<home_explore> {
                                                     MaterialPageRoute(
                                                         builder: (context) {
                                                       return services(
+                                                          isIndependent:
+                                                              "${favoritelist[index].hasShop}",
+                                                          isLicensed:
+                                                              "${favoritelist[index].isLicensed}",
                                                           beauticianId:
                                                               favoritelist[
                                                                       index]
@@ -560,7 +563,6 @@ class _home_exploreState extends State<home_explore> {
                                                                   ),
                                                                 ),
                                                                 if (favoritelist[
-
                                                                             index]
                                                                         .isLicensed ==
                                                                     "1")
@@ -578,7 +580,6 @@ class _home_exploreState extends State<home_explore> {
                                                                     ),
                                                                   ),
                                                                 if (favoritelist[
-
                                                                             index]
                                                                         .hasShop ==
                                                                     0)
@@ -758,6 +759,10 @@ class _home_exploreState extends State<home_explore> {
                                                       MaterialPageRoute(
                                                     builder: (context) {
                                                       return services(
+                                                        isIndependent:
+                                                            "${recentList[index].hasShop}",
+                                                        isLicensed:
+                                                            "${recentList[index].isLicensed}",
                                                         beauticianId:
                                                             "${recentList[index].id}",
                                                         businessName:
@@ -778,7 +783,7 @@ class _home_exploreState extends State<home_explore> {
                                                     CachedNetworkImage(
                                                       imageUrl:
                                                           recentList[index]
-                                                                  .logoPath ??
+                                                                  .logo ??
                                                               '',
                                                       imageBuilder: (context,
                                                               imageProvider) =>
@@ -899,55 +904,36 @@ class _home_exploreState extends State<home_explore> {
                                                                     width: 20,
                                                                   ),
                                                                 ),
-                                                                if (recentList[
-                                                                            index]
-                                                                        .isLicensed ==
-                                                                    "1")
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            8),
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/images/Subtract (1).png",
-                                                                      height:
-                                                                          20,
-                                                                      width: 20,
-                                                                    ),
+                                                              if (recentList[
+                                                                          index]
+                                                                      .hasShop ==
+                                                                  0)
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                                  child: Image
+                                                                      .asset(
+                                                                    "assets/images/independentmen.png",
+                                                                    height: 20,
+                                                                    width: 20,
                                                                   ),
-                                                                if (recentList[
-                                                                            index]
-                                                                        .hasShop ==
-                                                                    0)
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            5),
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/images/independentmen.png",
-                                                                      height:
-                                                                          20,
-                                                                      width: 20,
-                                                                    ),
-                                                                  )
-                                                              ],
+                                                                )
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Text(
+                                                            "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  "spartan",
                                                             ),
-                                                            const SizedBox(
-                                                                height: 5),
-                                                            Text(
-                                                              "${recentList[index].address!.apartment} ${recentList[index].address!.province} ${recentList[index].address!.city} ${recentList[index].address!.zipCode}",
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    "spartan",
-                                                              ),
-                                                            ),
+                                                          ),
                                                           const SizedBox(
                                                               height: 5),
                                                           // if(recentList[index].rating!="0" && recentList[index].noOfReviews!="0")
@@ -1083,6 +1069,10 @@ class _home_exploreState extends State<home_explore> {
                                                       MaterialPageRoute(
                                                     builder: (context) {
                                                       return services(
+                                                        isIndependent:
+                                                            "${recommended[index].hasShop}",
+                                                        isLicensed:
+                                                            "${recommended[index].isLicensed}",
                                                         beauticianId:
                                                             "${recommended[index].id}",
                                                         businessName:
@@ -1517,6 +1507,7 @@ class _home_exploreState extends State<home_explore> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (serviceEnabled == LocationPermission.denied) {
       await Geolocator.openLocationSettings();
+      permission = await Geolocator.requestPermission();
       return Future.error('Location services are disabled.');
     }
 
@@ -1524,6 +1515,10 @@ class _home_exploreState extends State<home_explore> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+        }
         // Navigator.pop(context);
         return Future.error('Location permissions are denied');
       }

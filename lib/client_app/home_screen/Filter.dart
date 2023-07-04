@@ -667,12 +667,12 @@ class _filterpageState extends State<filterpage> {
                   ),
                   Container(
                     height: height * 0.06,
-                    color: const Color(0xffF3F3F3),
+                    color: Color(0xffF3F3F3),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             "Filters",
                             style: TextStyle(
@@ -683,14 +683,47 @@ class _filterpageState extends State<filterpage> {
                               letterSpacing: 0.25,
                             ),
                           ),
-                          Text(
-                            "Clear All",
-                            style: TextStyle(
-                              color: Color(0xFFDD5103),
-                              fontFamily: "spartan",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.25,
+                          InkWell(
+                            onTap: () {
+                              for (var i in preferenceName) {
+                                setState(() {
+                                  i.isSelected = false;
+                                });
+                              }
+                              for (var i in serviceName) {
+                                setState(() {
+                                  i.isSelected = false;
+                                });
+                              }
+                              for (var i in demographyName) {
+                                setState(() {
+                                  i.isSelected = false;
+                                });
+                              }
+
+                              character = "forYou";
+                              gender = "Male";
+                              setState(() {
+                                      price = true;
+                                      price1 = false;
+                                      price2 = false;
+                                      price3 = false;
+                                      priceValue = 10;
+                                      _startValue = 0.0;
+                                 _endValue = 200.0;
+                                    });
+
+                                  
+                            },
+                            child: Text(
+                              "Clear All",
+                              style: TextStyle(
+                                color: Color(0xFFDD5103),
+                                fontFamily: "spartan",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.25,
+                              ),
                             ),
                           ),
                         ],

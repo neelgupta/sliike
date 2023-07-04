@@ -283,6 +283,9 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
   ];
   List timeend = [
     "00:00",
+    "00:15",
+    "00:30",
+    "00:45",
     "01:00",
     "01:15",
     "01:30",
@@ -815,7 +818,9 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                               // if(isbottomSheet==false){
                               //    navigtorbackshowdialodhide(context);
                               // }else{
-                              //   Navigator.pop(context);
+                              if (!widget.secondflow) {
+                                Navigator.pop(context);
+                              }
                               // }
                               //
                             },
@@ -1907,6 +1912,7 @@ class _add_Your_Work_HoursState extends State<add_Your_Work_Hours> {
                 setState(() {
                   endTimeIndex = index;
                   endTime = time[index];
+
 //               var now =DateTime.now()
 // ;              var sTim = DateTime(now.year,);
 //               var eTime = DateTime(now.year,);
