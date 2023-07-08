@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
@@ -143,91 +145,16 @@ class _importClientScreenState extends State<importClientScreen> {
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: InkWell(
                     onTap: () async {
-                      // showDialog(
-                      //
-                      //   context: context, builder: (context) {
-                      //   return AlertDialog(alignment: Alignment.center,
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //     actions: [
-                      //       SizedBox(height: height*0.03,),
-                      //       Center(
-                      //         child: Container(
-                      //           height: 20,
-                      //           width: 20,
-                      //           alignment: Alignment.center,
-                      //           child: Image.asset("assets/images/contacticon.png"),
-                      //         ),
-                      //       ),
-                      //       SizedBox(height: height*0.03,),
-                      //       Center(
-                      //         child: RichText(textAlign: TextAlign.center,
-                      //           text: const TextSpan(
-                      //             text: 'Allow ',
-                      //             style: TextStyle(
-                      //               fontSize: 14,
-                      //               fontFamily: 'spartan',
-                      //               color: Color(0xff292929),
-                      //               fontWeight: FontWeight.w400,
-                      //             ),
-                      //             children: [
-                      //               TextSpan(
-                      //                 text: 'Sliike ',
-                      //                 style: TextStyle(
-                      //                   fontSize: 14,
-                      //                   fontFamily: 'spartan',
-                      //                   fontWeight: FontWeight.bold,
-                      //                 ),
-                      //               ),
-                      //               TextSpan(
-                      //
-                      //                 text: 'to access your\ncontacts?',
-                      //                 style: TextStyle(
-                      //                   fontSize: 14,
-                      //                   fontFamily: 'spartan',
-                      //                   color: Color(0xff292929),
-                      //                   fontWeight: FontWeight.w400,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       SizedBox(height: height*0.01,),
-                      //       Divider(thickness: 1,color: Color(0xffCFCFCF),),
-                      //       SizedBox(height: height*0.01),
-                      //       Center(child: InkWell(
-                      //           onTap: (){
-                      //             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //               return contactLIst_Select();
-                      //             },));
-                      //           },
-                      //           child: Text("ALLOW",style: TextStyle(fontSize: 12, fontFamily: 'spartan',fontWeight: FontWeight.w600,color: Color(0xff2F80ED)),))),
-                      //       SizedBox(height: height*0.01),
-                      //       Divider(thickness: 1,color: Color(0xffCFCFCF),),
-                      //       SizedBox(height: height*0.01),
-                      //       Center(child: InkWell(
-                      //           onTap: (){
-                      //             Navigator.pop(context);
-                      //           },
-                      //           child: Text("DON\'T ALLOW",style: TextStyle(fontSize: 12, fontFamily: 'spartan',fontWeight: FontWeight.w600,color: Color(0xff2F80ED)),))),
-                      //       SizedBox(height: height*0.04,)
-                      //
-                      //     ],
-                      //   );
-                      //
-                      //
-                      // },);
                       if (!await FlutterContacts.requestPermission(
                           readonly: true)) {
                         setState(() => permissionDenied = true);
-                        // ignore: use_build_context_synchronously
+                        log("${!await FlutterContacts.requestPermission(readonly: true)}");
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return contactLIst_Select(contacts!, true);
+                            return  BottomNavigation();
                           },
                         ));
+                        // ignore: use_build_context_synchronously
                       } else {
                         contacts = await FlutterContacts.getContacts(
                             withProperties: true);
@@ -265,7 +192,7 @@ class _importClientScreenState extends State<importClientScreen> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return const BottomNavigation();
+                          return  BottomNavigation(dbpopup: "1");
                         },
                       ));
                     },

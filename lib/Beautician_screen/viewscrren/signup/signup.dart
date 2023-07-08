@@ -19,6 +19,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signup/teams_an
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -979,26 +980,14 @@ class _signUpState extends State<signUp> {
             .setString("country_code", countrycode.replaceAll("+", ""));
         Helper.prefs!.setString(UserPrefs.keybusinessNumber, phoneNumber);
         Helper.prefs!.setString(UserPrefs.password, password);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+       showToast(
+            message: "${map['message']}",);
         setState(() {
           isEmailVerify = true;
         });
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+       showToast(
+            message: "${map['message']}",);
       }
     } catch (e) {
       print(e.toString());
@@ -1124,14 +1113,8 @@ class _signUpState extends State<signUp> {
         sendotpmodel = SendOtpModel.fromJson(map);
         String userid = (sendotpmodel!.id ?? "");
 
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
@@ -1144,14 +1127,8 @@ class _signUpState extends State<signUp> {
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       }
     } catch (e) {
     } finally {

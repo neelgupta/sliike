@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/second_beautyservice_or_product/service_add/categorytype_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
@@ -10,6 +9,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
@@ -130,53 +130,53 @@ class _bussinessInfoCATEGORYState extends State<bussinessInfoCATEGORY> {
               const SizedBox(
                 height: 15,
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    // _radioValue1=0;
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: _radioValue1 == 0
-                        ? Border.all(
-                            width: 1,
-                            color: const Color(0xff707070),
-                          )
-                        : Border.all(
-                            width: 1,
-                            color: const Color(0xffCFCFCF),
-                          ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      children: [
-                        Radio(
-                            value: 0,
-                            activeColor: const Color(0xff01635D),
-                            groupValue: _radioValue1,
-                            onChanged: (value) {
-                              setState(() {
-                                _radioValue1 = value as int;
-                              });
-                            }),
-                        const Text(
-                          "I sell beauty products only",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'spartan',
-                              color: Color(0xff414141)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     setState(() {
+              //       // _radioValue1=0;
+              //     });
+              //   },
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       border: _radioValue1 == 0
+              //           ? Border.all(
+              //               width: 1,
+              //               color: const Color(0xff707070),
+              //             )
+              //           : Border.all(
+              //               width: 1,
+              //               color: const Color(0xffCFCFCF),
+              //             ),
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Padding(
+              //       padding: const EdgeInsets.only(top: 10, bottom: 10),
+              //       child: Row(
+              //         children: [
+              //           Radio(
+              //               value: 0,
+              //               activeColor: const Color(0xff01635D),
+              //               groupValue: _radioValue1,
+              //               onChanged: (value) {
+              //                 setState(() {
+              //                   _radioValue1 = value as int;
+              //                 });
+              //               }),
+              //           const Text(
+              //             "I sell beauty products only",
+              //             style: TextStyle(
+              //                 fontSize: 15,
+              //                 fontFamily: 'spartan',
+              //                 color: Color(0xff414141)),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -305,14 +305,9 @@ class _bussinessInfoCATEGORYState extends State<bussinessInfoCATEGORY> {
             },
           ));
         }
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       } else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -321,14 +316,9 @@ class _bussinessInfoCATEGORYState extends State<bussinessInfoCATEGORY> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       }
     } catch (e) {
       print(e.toString());

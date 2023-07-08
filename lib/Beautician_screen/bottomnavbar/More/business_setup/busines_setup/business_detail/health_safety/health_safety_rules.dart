@@ -11,6 +11,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class health_Safety_Rule extends StatefulWidget {
   const health_Safety_Rule({Key? key}) : super(key: key);
@@ -363,26 +364,12 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     } else {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
   }
 
@@ -434,15 +421,14 @@ class _health_Safety_RuleState extends State<health_Safety_Rule> {
 }
 
 class getHealthSafety {
-  int status;
   List<getHealthSafetyData> data;
-  getHealthSafety(this.status, this.data);
+  getHealthSafety(this.data);
 
   factory getHealthSafety.fromjson(Map<dynamic, dynamic> map) {
     List list = map["data"];
     List<getHealthSafetyData> d =
         list.map((e) => getHealthSafetyData.fromjson(e)).toList();
-    return getHealthSafety(map['status'], d);
+    return getHealthSafety(d);
   }
 }
 
@@ -478,7 +464,7 @@ class getData {
   factory getData.fromjson(Map<dynamic, dynamic> map) {
     List list = map["healthId"];
     List<healthId> d = list.map((e) => healthId.fromjson(e)).toList();
-    return getData(map["detailForClient"], d);
+    return getData(map["detailForClient"] ?? "", d);
   }
 }
 

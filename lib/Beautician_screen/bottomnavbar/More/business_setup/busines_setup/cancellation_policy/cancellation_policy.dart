@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/services/business_setup_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class cancellation_Policy extends StatefulWidget {
   const cancellation_Policy({Key? key}) : super(key: key);
@@ -357,14 +358,7 @@ class cancellation_PolicyState extends State<cancellation_Policy> {
     Response response = await businessSetupService
         .updateCancellationProtectionStatus(cancellationStatus,
             isCancellation: true);
-    Fluttertoast.showToast(
-        msg: "${jsonDecode(response.body)['message']}",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    showToast(message: "${jsonDecode(response.body)['message']}");
     Loader.hide();
   }
 }

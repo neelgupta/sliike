@@ -13,6 +13,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/app_colors.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class addService extends StatefulWidget {
   const addService({Key? key}) : super(key: key);
@@ -1071,14 +1072,7 @@ class _addServiceState extends State<addService> {
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       } else {
         Navigator.pop(context);
       }

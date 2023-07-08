@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/services/business_setup_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class no_show_Protection extends StatefulWidget {
   const no_show_Protection({Key? key}) : super(key: key);
@@ -334,14 +334,7 @@ class _no_show_ProtectionState extends State<no_show_Protection> {
                 .copyWith(secondary: const Color(0xff01635D))));
     Response response = await businessSetupService
         .updateCancellationProtectionStatus(noShowValue);
-    Fluttertoast.showToast(
-        msg: "${jsonDecode(response.body)['message']}",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    showToast(message: "${jsonDecode(response.body)['message']}");
     Loader.hide();
   }
 }

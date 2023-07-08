@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 // ignore: camel_case_types
 class BreakTimeSelect extends StatefulWidget {
@@ -275,13 +276,13 @@ class _BreakTimeSelectState extends State<BreakTimeSelect> {
               InkWell(
                 onTap: () {
                   if (breakEndIndex == breakStartIndex) {
-                    Fluttertoast.showToast(
-                      msg:
+                    showToast(
+                      message:
                           "Break Start Time and Break End Time should not be same",
                     );
                   } else if (breakEndIndex < breakStartIndex) {
-                    Fluttertoast.showToast(
-                        msg: "Break End Time should be after break start time");
+                    showToast(
+                        message: "Break End Time should be after break start time");
                   } else {
                     Navigator.pop(
                       context,

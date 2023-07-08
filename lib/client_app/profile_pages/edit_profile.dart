@@ -11,6 +11,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/t
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../utils/apiurllist.dart';
 
@@ -599,14 +600,8 @@ class _edit_profileState extends State<edit_profile> {
         if (map['status'] == 200) {
           p = PersonalInfo.fromjson(map);
           Navigator.pop(context, true);
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}");
         } else if (response.statusCode == 401) {
           logoutdata();
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -615,14 +610,9 @@ class _edit_profileState extends State<edit_profile> {
             },
           ), (route) => false);
         } else {
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",
+              );
         }
       }
     } catch (e) {

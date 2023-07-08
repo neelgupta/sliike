@@ -12,6 +12,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/beutician_location.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../commonClass.dart';
 import '../../utils/apiurllist.dart';
@@ -781,23 +782,11 @@ class _searchScreenState extends State<searchScreen> {
       if (map['status'] == 200) {
         mf = MyFavorites.fromjson(map);
         like = true;
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       }
     }
   }
@@ -826,23 +815,11 @@ class _searchScreenState extends State<searchScreen> {
       if (map['status'] == 200) {
         mf = MyFavorites.fromjson(map);
         like = false;
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       }
     }
   }
@@ -1151,7 +1128,7 @@ class Dis {
   });
 
   factory Dis.fromMap(Map<String, dynamic> json) => Dis(
-        calculated: json["calculated"].toDouble(),
+        calculated: double.parse((json["calculated"] ?? "0").toString()),
       );
 
   Map<String, dynamic> toMap() => {

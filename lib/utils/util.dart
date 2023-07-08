@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:new_sliikeapps_apps/theme/theme_configration.dart';
-
 
 class CardExpirationFormatter extends TextInputFormatter {
   @override
@@ -32,9 +32,7 @@ class CardExpirationFormatter extends TextInputFormatter {
   }
 }
 
-
 class Util {
-
   final DateFormat formatter = DateFormat('dd-mm-yyyy');
   final DateFormat eMMMdformatter = DateFormat('E, MMM d');
   final DateFormat hhmmaformatter = DateFormat('hh:mm a');
@@ -53,12 +51,11 @@ class Util {
     );
   }
 
-
-  Future<void> selectDate(BuildContext context,selectedDate,Color) async {
+  Future<void> selectDate(BuildContext context, selectedDate, Color) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        builder: ( context,  child) {
+        builder: (context, child) {
           return Theme(
             data: ThemeData.light().copyWith(
               colorScheme: ColorScheme.fromSwatch(
@@ -74,10 +71,9 @@ class Util {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
-        selectedDate = picked;
+      selectedDate = picked;
     }
   }
-
 
   formatMinuteDuration({
     required String hour,
@@ -173,4 +169,15 @@ class Util {
       ),
     );
   }
+}
+
+showToast({required String message}) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

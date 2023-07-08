@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class faq_page extends StatefulWidget {
   const faq_page({Key? key}) : super(key: key);
@@ -196,14 +197,8 @@ class _faq_pageState extends State<faq_page> {
         isExpand = List.generate(faq!.data.length, (index) => false);
       });
     } else {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+          message: "${map['message']}",);
       setState(() {
         faq = null;
         isLoading = false;

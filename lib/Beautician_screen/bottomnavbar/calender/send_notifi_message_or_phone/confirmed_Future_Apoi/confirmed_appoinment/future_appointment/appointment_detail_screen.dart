@@ -185,7 +185,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   ),
                 );
               }else{
-                Fluttertoast.showToast(msg: "Confirmed appointment cannot be edited");
+                showToast(message: "Confirmed appointment cannot be edited");
               }
             },
             child: Row(
@@ -891,7 +891,7 @@ class AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                 ),
                               );
                             }else{
-                              Fluttertoast.showToast(msg: "Confirmed appointment cannot be edited");
+                              showToast(message: "Confirmed appointment cannot be edited");
                             }
 
                             // Navigator.push(

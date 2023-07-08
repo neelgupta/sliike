@@ -178,6 +178,8 @@ class ApiUrlList {
   /// Card Services Endpoints (Client)///
   static String getCardDetails = "${baseUrl}client/getCardDetails";
   static String addCardDetails = "${baseUrl}client/addCardDetails";
+  static String deleteCardDetails = "${baseUrl}client/deleteCardDetails";
+  static String selectCardDetails = "${baseUrl}client/setCardASPrimary";
 
   /// Promotion Services Endpoints (Beautician) ///
   static String getServicesList = "${baseUrl}beautician/getServicesList";
@@ -205,4 +207,20 @@ class ApiUrlList {
   static String inviteContacts = "${baseUrl}beautician/inviteContacts";
   static String getInvitedClientList =
       "${baseUrl}beautician/getInvitedClientList";
+
+
+      /// Get Policy EndPoint ///
+      static String getPolicy = "${baseUrl}client/getBePolicyDetails/";
+      /// Get Portfolio Endpoint ///
+      static String getPortfolio = "${baseUrl}client/getPortfolioImages/";
+
+/// Tax Services EndPoints ///
+static String getProvinceList = "${baseUrl}option/getProvinceList";
+static String updateTax = "${baseUrl}beautician/addProvinceDetails";
+static String getTaxProvinceDetails = "${baseUrl}beautician/getTaxProvinceDetails";
+
+
+/// Send email invoice ///
+static String sendEmailInvoice = "${baseUrl}beautician/sendEmailInvoice";
+
 }

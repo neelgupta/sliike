@@ -10,6 +10,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class demograPhic extends StatefulWidget {
   const demograPhic({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _demograPhicState extends State<demograPhic> {
                             height: height * 0.02,
                           ),
                           textComoonfade(
-                              "Update your demographics so clientscan find you using their chosen demographics.",
+                              "Update your demographics so clients can find you using their chosen demographics.",
                               12,
                               Color(0xff414141),
                               FontWeight.w500),
@@ -315,26 +316,12 @@ class _demograPhicState extends State<demograPhic> {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     } else {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
   }
 

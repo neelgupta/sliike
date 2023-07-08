@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class feedback_beauty extends StatefulWidget {
   const feedback_beauty({Key? key}) : super(key: key);
@@ -112,6 +113,7 @@ class _feedback_beautyState extends State<feedback_beauty> {
                       maxLines: 4,
                       style: TextStyle(fontFamily: "spartan", fontSize: 12),
                       decoration: InputDecoration(
+                        alignLabelWithHint: true,
                         border: OutlineInputBorder(),
                         labelText: "Description",
                       ),
@@ -262,14 +264,7 @@ class _feedback_beautyState extends State<feedback_beauty> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       }
     } catch (e) {
       rethrow;

@@ -6,6 +6,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/Contactlist/contactlist_select.dart';
 import 'package:new_sliikeapps_apps/models/getClientListModel.dart';
 import 'package:new_sliikeapps_apps/services/invite_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class SelectedContact {
@@ -13,23 +14,27 @@ class SelectedContact {
   String mobile;
   String status;
   String id;
-  SelectedContact({required this.name,required  this.mobile,required  this.status,required  this.id});
+  SelectedContact(
+      {required this.name,
+      required this.mobile,
+      required this.status,
+      required this.id});
 }
-
 
 class clientListContact extends StatefulWidget {
   List<Contact>? contacts;
   bool isStart;
-   clientListContact(this.contacts,this.isStart, {Key? key}) : super(key: key);
+  clientListContact(this.contacts, this.isStart, {Key? key}) : super(key: key);
 
   @override
   State<clientListContact> createState() => _clientListContactState();
 }
+
 // ignore: camel_case_types, must_be_immutable
 class _clientListContactState extends State<clientListContact> {
-  TextEditingController search=TextEditingController();
+  TextEditingController search = TextEditingController();
   InviteServices _inviteServices = InviteServices();
-  GetClientListData ? getClientListData;
+  GetClientListData? getClientListData;
   List<SelectedContact> contactList = [];
   List<SelectedContact> localSearchData = [];
   @override
@@ -43,12 +48,15 @@ class _clientListContactState extends State<clientListContact> {
     });
   }
 
-
   addContact() {
     widget.contacts!.forEach((element) {
-      for(var item in getClientListData!.data ?? []) {
-        if(element.phones.first.number == item.phoneNubWithFormat) {
-          contactList.add(SelectedContact(name: "${element.name.first} ${element.name.last}", mobile: element.phones.first.number, status: item.status.toString(),id: item.clientId));
+      for (var item in getClientListData!.data ?? []) {
+        if (element.phones.first.number == item.phoneNubWithFormat) {
+          contactList.add(SelectedContact(
+              name: "${element.name.first} ${element.name.last}",
+              mobile: element.phones.first.number,
+              status: item.status.toString(),
+              id: item.clientId));
           setState(() {});
         }
       }
@@ -56,6 +64,9 @@ class _clientListContactState extends State<clientListContact> {
     log("length : ${contactList.length}");
     log("getClientListData!.data : ${getClientListData!.data!.length}");
   }
+
+  
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -101,7 +112,9 @@ class _clientListContactState extends State<clientListContact> {
                             ),
                           ),
                         ),
-                            SizedBox(width: width/5,),
+                        SizedBox(
+                          width: width / 5,
+                        ),
                         const Text("Clients List",
                             style: TextStyle(
                                 fontSize: 16,
@@ -111,7 +124,6 @@ class _clientListContactState extends State<clientListContact> {
                                 fontWeight: FontWeight.w700)),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -124,8 +136,9 @@ class _clientListContactState extends State<clientListContact> {
           width: width,
           height: height,
           child: Padding(
-            padding: const EdgeInsets.only(left: 20,right: 20),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: height * 0.02,
@@ -149,8 +162,8 @@ class _clientListContactState extends State<clientListContact> {
                         child: Image.asset("assets/images/search-normal.png"),
                       ),
                     ),
-                    labelStyle:
-                    const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                    labelStyle: const TextStyle(
+                        fontFamily: 'spartan', color: Colors.black54),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(color: Colors.black38),
@@ -165,24 +178,36 @@ class _clientListContactState extends State<clientListContact> {
                   height: height * 0.02,
                 ),
                 SizedBox(
-                  height: height*0.55,
+                  height: height * 0.55,
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: search.text.isNotEmpty ? localSearchData.length : contactList.length,
+                    itemCount: search.text.isNotEmpty
+                        ? localSearchData.length
+                        : contactList.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 6, bottom: 2),
                         child: Column(
                           children: [
                             InkWell(
-                              onTap: (){
-                                if(!widget.isStart &&  search.text.isNotEmpty?localSearchData[index].status=="1":contactList[index].status=="1"){
-                                  search.text.isNotEmpty ?
-                                  Navigator.pop(context,[localSearchData[index].name,localSearchData[index].id]):
-                                  Navigator.pop(context,[contactList[index].name,contactList[index].id]);
-                                }else{
-                                  Fluttertoast.showToast(msg: "This client has not been registered till now!");
+                              onTap: () {
+                                if (!widget.isStart && search.text.isNotEmpty
+                                    ? localSearchData[index].status == "1"
+                                    : contactList[index].status == "1") {
+                                  search.text.isNotEmpty
+                                      ? Navigator.pop(context, [
+                                          localSearchData[index].name,
+                                          localSearchData[index].id
+                                        ])
+                                      : Navigator.pop(context, [
+                                          contactList[index].name,
+                                          contactList[index].id
+                                        ]);
+                                } else {
+                                  showToast(
+                                      message:
+                                          "This client has not been registered till now!");
                                 }
                               },
                               child: Row(
@@ -202,9 +227,11 @@ class _clientListContactState extends State<clientListContact> {
                                     width: 20,
                                   ),
                                   SizedBox(
-                                    width: width*0.5,
+                                    width: width * 0.5,
                                     child: Text(
-                                      search.text.isNotEmpty ? "${localSearchData[index].name}" :  "${contactList[index].name}",
+                                      search.text.isNotEmpty
+                                          ? "${localSearchData[index].name}"
+                                          : "${contactList[index].name}",
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontSize: 12,
@@ -214,29 +241,66 @@ class _clientListContactState extends State<clientListContact> {
                                     ),
                                   ),
                                   const Spacer(),
+
                                   ///pending Button ?
-                                  search.text.isNotEmpty ? Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: localSearchData[index].status=="1"?Colors.green : Color(0xffFFD059),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                                      child: Text(localSearchData[index].status=="1"?"Accepted" : "Pending",style: TextStyle(fontFamily: 'Cairo',fontSize: 12,color: Color(0xff111111)),),
-                                    ),
-                                  ):
-                                  Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: contactList[index].status=="1"?Colors.green : Color(0xffFFD059),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                                      child: Text(contactList[index].status=="1"?"Accepted" : "Pending",style: TextStyle(fontFamily: 'Cairo',fontSize: 12,color: Color(0xff111111)),),
-                                    ),
-                                  ),
+                                  search.text.isNotEmpty
+                                      ? Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color:
+                                                localSearchData[index].status ==
+                                                        "1"
+                                                    ? Colors.green
+                                                    : Color(0xffFFD059),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                top: 5,
+                                                bottom: 5),
+                                            child: Text(
+                                              localSearchData[index].status ==
+                                                      "1"
+                                                  ? "Accepted"
+                                                  : "Pending",
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 12,
+                                                  color: Color(0xff111111)),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color:
+                                                contactList[index].status == "1"
+                                                    ? Colors.green
+                                                    : Color(0xffFFD059),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                top: 5,
+                                                bottom: 5),
+                                            child: Text(
+                                              contactList[index].status == "1"
+                                                  ? "Accepted"
+                                                  : "Pending",
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 12,
+                                                  color: Color(0xff111111)),
+                                            ),
+                                          ),
+                                        ),
+
                                   ///Accepted buttom ?
                                   // Container(
                                   //
@@ -265,14 +329,18 @@ class _clientListContactState extends State<clientListContact> {
                   ),
                 ),
                 SizedBox(
-                  width: width*0.4,
+                  width: width * 0.4,
                   child: InkWell(
-                    onTap: (){
-                      widget.isStart?
-                      Navigator.pop(context):
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                            return contactLIst_Select(widget.contacts,false);
-                          },));
+                    onTap: () {
+                      widget.isStart
+                          ? Navigator.pop(context)
+                          : Navigator.pushReplacement(context,
+                              MaterialPageRoute(
+                              builder: (context) {
+                                return contactLIst_Select(
+                                    widget.contacts, false);
+                              },
+                            ));
                     },
                     child: Row(
                       children: const [
@@ -296,32 +364,40 @@ class _clientListContactState extends State<clientListContact> {
                     ),
                   ),
                 ),
-                SizedBox(height: height*0.04,),
-                widget.isStart?InkWell(
-                  onTap: () {
-                    setState(() {
-                      setState(() {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return const BottomNavigation();
-                        },));
-                      });
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: width,
-                    height: height * 0.06,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xff01635D)),
-                    child: const Text("START USING APP",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "spartan",
-                            color: Colors.white)),
-                  ),
-                ):SizedBox(),
-                SizedBox(height: height*0.04,),
+                SizedBox(
+                  height: height * 0.04,
+                ),
+                widget.isStart
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            setState(() {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return  BottomNavigation(dbpopup: "1",);
+                                },
+                              ));
+                            });
+                          });
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: width,
+                          height: height * 0.06,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: const Color(0xff01635D)),
+                          child: const Text("START USING APP",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "spartan",
+                                  color: Colors.white)),
+                        ),
+                      )
+                    : SizedBox(),
+                SizedBox(
+                  height: height * 0.04,
+                ),
               ],
             ),
           ),
@@ -342,5 +418,4 @@ class _clientListContactState extends State<clientListContact> {
       log("localSearchData :: ${localSearchData}");
     }
   }
-
 }

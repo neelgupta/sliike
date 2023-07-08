@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import '../../../custom_widget/checkbox.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
@@ -679,16 +680,16 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                   InkWell(
                     onTap: () {
                       if (_selected.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "Please select any one option");
+                        showToast(
+                            message: "Please select any one option");
                       } else if (_selected == 1 && IsServeAtOwnPlace.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "Please select options from I own a salon");
+                        showToast(
+                            message: "Please select options from I own a salon");
                         Salon = true;
                         setState(() {});
                       } else if (_selected == 0 && IsServeAtClient.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "Please select options from I am independent");
+                        showToast(
+                            message: "Please select options from I am independent");
                         Independent = true;
                         setState(() {});
                       } else {
@@ -748,27 +749,15 @@ class _yourProfile_OneState extends State<yourProfile_One> {
           setState(() {
             isLoading = false;
           });
-          Fluttertoast.showToast(
-              msg: map['message'],
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",);
           Navigator.pop(context);
         } else {
           setState(() {
             isLoading = false;
           });
-          Fluttertoast.showToast(
-              msg: map['message'],
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",);
           Navigator.pop(context);
         }
       }

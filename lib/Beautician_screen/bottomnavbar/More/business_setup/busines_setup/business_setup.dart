@@ -151,7 +151,10 @@ class _business_SetUpState extends State<business_SetUp> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return service_Setup_Main();
+                          return service_Setup_Main(
+                            email: widget.email,
+                        isStripeSetUp: widget.isStripeSetUp,
+                          );
                         },
                       ));
                     },

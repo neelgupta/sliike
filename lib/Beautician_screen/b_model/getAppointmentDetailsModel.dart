@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-GetAppointmentDetailModel getAppointmentDetailModelFromJson(String str) => GetAppointmentDetailModel.fromJson(json.decode(str));
+GetAppointmentDetailModel getAppointmentDetailModelFromJson(String str) =>
+    GetAppointmentDetailModel.fromJson(json.decode(str));
 
-String getAppointmentDetailModelToJson(GetAppointmentDetailModel data) => json.encode(data.toJson());
+String getAppointmentDetailModelToJson(GetAppointmentDetailModel data) =>
+    json.encode(data.toJson());
 
 class GetAppointmentDetailModel {
   int? status;
@@ -19,41 +21,56 @@ class GetAppointmentDetailModel {
     this.data,
   });
 
-  factory GetAppointmentDetailModel.fromJson(Map<String, dynamic> json) => GetAppointmentDetailModel(
-    status: json["status"],
-    success: json["success"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory GetAppointmentDetailModel.fromJson(Map<String, dynamic> json) =>
+      GetAppointmentDetailModel(
+        status: json["status"],
+        success: json["success"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "success": success,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "success": success,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
   List<AppointmentDatum>? appointmentData;
   TimingOfDay? timingOfDay;
   CalenderSetting? calenderSetting;
+  bool? isStripeSetUp;
 
   Data({
     this.appointmentData,
     this.timingOfDay,
     this.calenderSetting,
+    this.isStripeSetUp
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    appointmentData: json["appointmentData"] == null ? [] : List<AppointmentDatum>.from(json["appointmentData"]!.map((x) => AppointmentDatum.fromJson(x))),
-    timingOfDay: json["timingOfDay"] == null ? null : TimingOfDay.fromJson(json["timingOfDay"]),
-    calenderSetting: json["calenderSetting"] == null ? null : CalenderSetting.fromJson(json["calenderSetting"]),
-  );
+        appointmentData: json["appointmentData"] == null
+            ? []
+            : List<AppointmentDatum>.from(json["appointmentData"]!
+                .map((x) => AppointmentDatum.fromJson(x))),
+        timingOfDay: json["timingOfDay"] == null
+            ? null
+            : TimingOfDay.fromJson(json["timingOfDay"]),
+        calenderSetting: json["calenderSetting"] == null
+            ? null
+            : CalenderSetting.fromJson(json["calenderSetting"]),
+
+          isStripeSetUp: json["isStripeSetUp"] ?? false
+      );
 
   Map<String, dynamic> toJson() => {
-    "appointmentData": appointmentData == null ? [] : List<dynamic>.from(appointmentData!.map((x) => x.toJson())),
-    "timingOfDay": timingOfDay?.toJson(),
-    "calenderSetting": calenderSetting?.toJson(),
-  };
+        "appointmentData": appointmentData == null
+            ? []
+            : List<dynamic>.from(appointmentData!.map((x) => x.toJson())),
+        "timingOfDay": timingOfDay?.toJson(),
+        "calenderSetting": calenderSetting?.toJson(),
+        "isStripeSetUp" : isStripeSetUp
+      };
 }
 
 class AppointmentDatum {
@@ -81,31 +98,39 @@ class AppointmentDatum {
     this.clientData,
   });
 
-  factory AppointmentDatum.fromJson(Map<String, dynamic> json) => AppointmentDatum(
-    id: json["_id"],
-    clientId: json["clientId"],
-    beauticianId: json["beauticianId"],
-    serviceId: json["serviceId"],
-    stylistId: json["stylistID"],
-    dateTime: json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
-    endDateTime: json["endDateTime"] == null ? null : DateTime.parse(json["endDateTime"]),
-    paymentDetails: json["paymentDetails"],
-    serviceDetails: json["serviceDetails"] == null ? null : ServiceDetails.fromJson(json["serviceDetails"]),
-    clientData: json["clientData"] == null ? null : ClientData.fromJson(json["clientData"]),
-  );
+  factory AppointmentDatum.fromJson(Map<String, dynamic> json) =>
+      AppointmentDatum(
+        id: json["_id"],
+        clientId: json["clientId"],
+        beauticianId: json["beauticianId"],
+        serviceId: json["serviceId"],
+        stylistId: json["stylistID"],
+        dateTime:
+            json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
+        endDateTime: json["endDateTime"] == null
+            ? null
+            : DateTime.parse(json["endDateTime"]),
+        paymentDetails: json["paymentDetails"],
+        serviceDetails: json["serviceDetails"] == null
+            ? null
+            : ServiceDetails.fromJson(json["serviceDetails"]),
+        clientData: json["clientData"] == null
+            ? null
+            : ClientData.fromJson(json["clientData"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "clientId": clientId,
-    "beauticianId": beauticianId,
-    "serviceId": serviceId,
-    "stylistID": stylistId,
-    "dateTime": dateTime?.toIso8601String(),
-    "endDateTime": endDateTime?.toIso8601String(),
-    "paymentDetails": paymentDetails,
-    "serviceDetails": serviceDetails?.toJson(),
-    "clientData": clientData?.toJson(),
-  };
+        "_id": id,
+        "clientId": clientId,
+        "beauticianId": beauticianId,
+        "serviceId": serviceId,
+        "stylistID": stylistId,
+        "dateTime": dateTime?.toIso8601String(),
+        "endDateTime": endDateTime?.toIso8601String(),
+        "paymentDetails": paymentDetails,
+        "serviceDetails": serviceDetails?.toJson(),
+        "clientData": clientData?.toJson(),
+      };
 }
 
 class ClientData {
@@ -120,16 +145,16 @@ class ClientData {
   });
 
   factory ClientData.fromJson(Map<String, dynamic> json) => ClientData(
-    id: json["_id"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-  );
+        id: json["_id"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "firstName": firstName,
-    "lastName": lastName,
-  };
+        "_id": id,
+        "firstName": firstName,
+        "lastName": lastName,
+      };
 }
 
 class ServiceDetails {
@@ -144,16 +169,16 @@ class ServiceDetails {
   });
 
   factory ServiceDetails.fromJson(Map<String, dynamic> json) => ServiceDetails(
-    id: json["_id"],
-    serviceType: json["serviceType"],
-    serviceTypeName: json["serviceTypeName"],
-  );
+        id: json["_id"],
+        serviceType: json["serviceType"],
+        serviceTypeName: json["serviceTypeName"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "serviceType": serviceType,
-    "serviceTypeName": serviceTypeName,
-  };
+        "_id": id,
+        "serviceType": serviceType,
+        "serviceTypeName": serviceTypeName,
+      };
 }
 
 class CalenderSetting {
@@ -165,15 +190,16 @@ class CalenderSetting {
     this.startDay,
   });
 
-  factory CalenderSetting.fromJson(Map<String, dynamic> json) => CalenderSetting(
-    formate: json["formate"],
-    startDay: json["startDay"],
-  );
+  factory CalenderSetting.fromJson(Map<String, dynamic> json) =>
+      CalenderSetting(
+        formate: json["formate"],
+        startDay: json["startDay"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "formate": formate,
-    "startDay": startDay,
-  };
+        "formate": formate,
+        "startDay": startDay,
+      };
 }
 
 class TimingOfDay {
@@ -196,22 +222,22 @@ class TimingOfDay {
   });
 
   factory TimingOfDay.fromJson(Map<String, dynamic> json) => TimingOfDay(
-    day: json["day"],
-    startTime: json["startTime"],
-    endTime: json["endTime"],
-    breakStartTime: json["breakStartTime"],
-    breakEndTime: json["breakEndTime"],
-    isOpen: json["isOpen"],
-    id: json["_id"],
-  );
+        day: json["day"],
+        startTime: json["startTime"],
+        endTime: json["endTime"],
+        breakStartTime: json["breakStartTime"],
+        breakEndTime: json["breakEndTime"],
+        isOpen: json["isOpen"],
+        id: json["_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "day": day,
-    "startTime": startTime,
-    "endTime": endTime,
-    "breakStartTime": breakStartTime,
-    "breakEndTime": breakEndTime,
-    "isOpen": isOpen,
-    "_id": id,
-  };
+        "day": day,
+        "startTime": startTime,
+        "endTime": endTime,
+        "breakStartTime": breakStartTime,
+        "breakEndTime": breakEndTime,
+        "isOpen": isOpen,
+        "_id": id,
+      };
 }

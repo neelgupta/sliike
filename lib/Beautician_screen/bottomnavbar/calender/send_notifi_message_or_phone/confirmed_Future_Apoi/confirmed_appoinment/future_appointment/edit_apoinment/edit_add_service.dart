@@ -615,17 +615,17 @@ class _add_SreviceState extends State<edit_add_service> {
                 Spacer(),
                 CommonButton(context, "SAVE", 12, FontWeight.w600, Colors.white, () async {
                   if(serviceId == ""){
-                    Fluttertoast.showToast(msg: "Please select one service type!");
+                    showToast(message: "Please select one service type!");
                   }else if(_date == ""){
-                    Fluttertoast.showToast(msg: "Please select date & time!");
+                    showToast(message: "Please select date & time!");
                   }
                   // else if(employeeId == ""){
-                  //   Fluttertoast.showToast(msg: "Please select any staff!");
+                  //   showToast(messagemsg: "Please select any staff!");
                   // }
                   else if(_price == ""){
-                    Fluttertoast.showToast(msg: "Price cannot be empty!");
+                    showToast(message: "Price cannot be empty!");
                   }else if(duration == ""){
-                    Fluttertoast.showToast(msg: "Duration cannot be empty!");
+                    showToast(message: "Duration cannot be empty!");
                   }else{
                     Map<String , dynamic> Body = {
                       "customerId" : widget.clientID,

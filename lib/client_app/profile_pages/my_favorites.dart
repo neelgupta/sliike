@@ -238,8 +238,8 @@ class _my_favoritesState extends State<my_favorites> {
                                           await getLocation();
                                           // if (latitude == "" ||
                                           //     longitude == "") {
-                                          //   Fluttertoast.showToast(
-                                          //       msg: "Please enable Location");
+                                          //   showToast(
+                                          //       message: "Please enable Location");
                                           // } else {}
                                         },
                                         child: Container(

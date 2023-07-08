@@ -3,13 +3,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
+import 'package:new_sliikeapps_apps/client_app/profile_pages/feedback.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class searchservices extends StatefulWidget {
   const searchservices({Key? key}) : super(key: key);
@@ -570,9 +574,43 @@ class _searchservicesState extends State<searchservices> {
                 ? Container()
                 : Container(
                     height: height * 0.75,
-                    child: const Center(
-                        child: Text(
-                            "Not yet available. More beauty experience coming soon.")));
+                    child: Center(
+                      child: Expanded(
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text:
+                                    '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'spartan',
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff414141)),
+                                children: [
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
+                                  TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => feedback(),
+                                            ),),
+                                      text: "feedback ",
+                                      style: TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Colors.blue)),
+                                  TextSpan(
+                                      text: 'section\"',
+                                      style: TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: Color(0xff414141))),
+                                ])),
+                      ),
+                    ));
   }
 
   fetchServiceCategories() async {
@@ -617,7 +655,10 @@ class _searchservicesState extends State<searchservices> {
         isLoading = true;
       });
       log("searchServiceType url is :: $geturi");
-      var response = await http.get(geturi);
+      var response = await http.get(geturi, headers: {
+        "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}"
+      });
       selectedServiceSearch.clear();
       log("searchServiceType status code ==> ${response.statusCode}");
       log(" searchServiceType res body is :  ${response.body}");

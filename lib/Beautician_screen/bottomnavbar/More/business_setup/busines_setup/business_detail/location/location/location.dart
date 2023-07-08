@@ -1,4 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -78,17 +81,34 @@ class _locationState extends State<location> {
     super.initState();
     getLocationData();
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(
-              size: Size(10, 20),
-              devicePixelRatio: 1,
-            ),
-            'assets/images/map_pin.png')
-        .then(
-      (onValue) {
-        myIcon = onValue;
-      },
-    );
+    getMapIcon();
+  }
+
+  getMapIcon() async {
+    Future<Uint8List> getBytesFromAsset(String path, int width) async {
+      ByteData data = await rootBundle.load(path);
+      ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+          targetWidth: width);
+      ui.FrameInfo fi = await codec.getNextFrame();
+      return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+          .buffer
+          .asUint8List();
+    }
+
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/images/map_pin.png', 150);
+    myIcon = BitmapDescriptor.fromBytes(markerIcon);
+    // BitmapDescriptor.fromAssetImage(
+    //         ImageConfiguration(
+    //           size: Size(10, 10),
+    //           devicePixelRatio: 1,
+    //         ),
+    //         'assets/images/map_pin.png')
+    //     .then(
+    //   (onValue) {
+    //     myIcon = onValue;
+    //   },
+    // );
   }
 
   @override
@@ -213,8 +233,11 @@ class _locationState extends State<location> {
                       border: Border.all(color: Color(0xffE7E7E7), width: 1),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 15, bottom: 15, left: 10),
+                      padding: EdgeInsets.only(
+                          top: 15,
+                          bottom: 15,
+                          left: width * 0.05,
+                          right: width * 0.05),
                       child: Row(
                         //  crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,7 +285,7 @@ class _locationState extends State<location> {
                                     Container(
                                         width: width * 0.2,
                                         child: textComoon(
-                                            "British Col",
+                                            "${province}",
                                             12,
                                             Color(0xff707070),
                                             FontWeight.w600)),
@@ -341,9 +364,6 @@ class _locationState extends State<location> {
                                     color: Colors.white),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
                           ),
                         ],
                       ),

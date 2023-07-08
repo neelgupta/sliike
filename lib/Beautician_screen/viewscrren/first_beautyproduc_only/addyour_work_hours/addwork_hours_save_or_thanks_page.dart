@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/congration_sucess/congratulation_screen.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -230,39 +231,47 @@ class _addWork_Save_or_NoThanks_PageState
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "${widget.dayDetailsList[index].startTime}",
-                                      style: const TextStyle(
-                                        color: Color(0xff292929),
-                                        fontWeight: FontWeight.w300,
-                                        fontFamily: "spartan",
-                                        fontSize: 12,
+                                widget.dayDetailsList[index].isOpen!
+                                    ? Row(
+                                        children: [
+                                          Text(
+                                            "${widget.dayDetailsList[index].startTime}",
+                                            style: const TextStyle(
+                                              color: Color(0xff292929),
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: "spartan",
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            " to ",
+                                            style: const TextStyle(
+                                              color: Color(0xff292929),
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: "spartan",
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Text(
+                                            "${widget.dayDetailsList[index].endTime}",
+                                            style: const TextStyle(
+                                              color: Color(0xff292929),
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: "spartan",
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Text(
+                                        "Closed",
+                                        style: const TextStyle(
+                                          color: Color(0xff292929),
+                                          fontWeight: FontWeight.w300,
+                                          fontFamily: "spartan",
+                                          fontSize: 12,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      widget.dayDetailsList[index].isOpen!
-                                          ? " to "
-                                          : "Closed",
-                                      style: const TextStyle(
-                                        color: Color(0xff292929),
-                                        fontWeight: FontWeight.w300,
-                                        fontFamily: "spartan",
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${widget.dayDetailsList[index].endTime}",
-                                      style: const TextStyle(
-                                        color: Color(0xff292929),
-                                        fontWeight: FontWeight.w300,
-                                        fontFamily: "spartan",
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                                 !widget.dayDetailsList[index].isOpen!
                                     ? SizedBox(height: 12)
                                     : Row(
@@ -313,17 +322,36 @@ class _addWork_Save_or_NoThanks_PageState
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pop(
-                                  context,
-                                  [
-                                    false,
-                                    widget.dayDetailsList[index].day,
-                                    widget.dayDetailsList[index].startTime,
-                                    widget.dayDetailsList[index].endTime,
-                                    widget.dayDetailsList[index].breakStartTime,
-                                    widget.dayDetailsList[index].breakEndTime,
-                                  ],
-                                );
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return add_Your_Work_Hours(
+                                        secondflow: false,
+                                        Day: widget.dayDetailsList[index].day!,
+                                        startTime: widget
+                                            .dayDetailsList[index].startTime!,
+                                        endTime: widget
+                                            .dayDetailsList[index].endTime!,
+                                        isOpen: widget
+                                            .dayDetailsList[index].isOpen!,
+                                        breakendTime: widget
+                                            .dayDetailsList[index]
+                                            .breakEndTime!,
+                                        breakstartTime: widget
+                                            .dayDetailsList[index]
+                                            .breakStartTime!);
+                                  },
+                                )).then((value) {
+                                  Map<String, dynamic> valuesMap = value;
+                                  widget.dayDetailsList[index] = DayDetails(
+                                    isOpen: valuesMap["isOpen"],
+                                    breakEndTime: valuesMap["breakEndTime"],
+                                    breakStartTime: valuesMap["breakStartTime"],
+                                    day: valuesMap["day"],
+                                    endTime: valuesMap["endTime"],
+                                    startTime: valuesMap["startTime"],
+                                  );
+                                  setState(() {});
+                                });
                                 print(
                                     "navistartoop=${widget.dayDetailsList[index].startTime}");
                                 // Navigator.push(context,MaterialPageRoute(builder: (context) {
@@ -378,12 +406,6 @@ class _addWork_Save_or_NoThanks_PageState
 
   Future<void> addWorkHours(
     BuildContext context,
-    // String selectedValue,
-    // String startTime,
-    // String endTime,
-    // String breakstartTime,
-    // String breakendTime,
-    // String Onoff
     List<DayDetails> dayDetailsList,
   ) async {
     try {
@@ -435,14 +457,7 @@ class _addWork_Save_or_NoThanks_PageState
         print(addworkMmdel);
         print('account sucessfully');
 
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
 
         // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(
@@ -453,14 +468,7 @@ class _addWork_Save_or_NoThanks_PageState
           (route) => false,
         );
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("else failed");
       }
     } catch (e) {

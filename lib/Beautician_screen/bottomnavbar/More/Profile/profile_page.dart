@@ -7,7 +7,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofilemodel.dart';
@@ -19,6 +18,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class profilePage extends StatefulWidget {
   const profilePage({Key? key}) : super(key: key);
@@ -952,59 +952,29 @@ class _profilePageState extends State<profilePage> {
                     m1 = mounthvalue;
                     y1 = year.text;
                     if (firstname.text.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please Entar Frist Name",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Please Entar Frist Name",
+                      );
                     } else if (lastname.text.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please Entar Last Name",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Please Entar Last Name",
+                      );
                     } else if (email.text.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please Entar Email",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Please Entar Email",
+                      );
                     } else if (phonernumber.text.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please Entar PhoneNumbar",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Please Entar PhoneNumbar",
+                      );
                     } else if (d1 == "" || m1 == "" || y1 == "") {
-                      Fluttertoast.showToast(
-                          msg: "Enter Your Dob",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Enter Your Dob",
+                      );
                     } else if (gendervalue == "") {
-                      Fluttertoast.showToast(
-                          msg: "Select Your Gender",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      showToast(
+                        message: "Select Your Gender",
+                      );
                     } else {
                       String dateString = '$d1$m1$y1';
                       print("dateString :: ${dateString}");
@@ -1153,7 +1123,7 @@ class _profilePageState extends State<profilePage> {
       request.fields['newPassword'] = newpassword.text;
       request.headers['Authorization'] =
           "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-      request.headers['Content-Type'] = "multipart/form-data";
+      // request.headers['Content-Type'] = "multipart/form-data";
       if (imagepath != "") {
         http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
           'profileImage',
@@ -1180,23 +1150,11 @@ class _profilePageState extends State<profilePage> {
         // print("updateBeauticianProfilemodel=$updateBeauticianProfilemodel");
         Navigator.pop(context);
         getBeauticianProfile();
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       }
       setState(() {});
     } catch (e) {

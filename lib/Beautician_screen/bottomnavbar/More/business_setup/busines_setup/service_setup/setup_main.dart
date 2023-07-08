@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/payment_sales/bank_detail/bank_detail_main_screen.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/service_setup/add_service.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/service_setup/profile_images.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
@@ -14,7 +15,11 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import '../../../../../../utils/app_colors.dart';
 
 class service_Setup_Main extends StatefulWidget {
-  const service_Setup_Main({Key? key}) : super(key: key);
+  final String email;
+  bool isStripeSetUp;
+  service_Setup_Main(
+      {Key? key, required this.email, required this.isStripeSetUp})
+      : super(key: key);
 
   @override
   State<service_Setup_Main> createState() => _service_Setup_MainState();
@@ -117,38 +122,53 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                     child: Column(
                       children: [
                         SizedBox(height: 25),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            width: width,
-                            // height: height * 0.055,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          width: width,
+                          // height: height * 0.055,
 
-                            child: TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  searchService(value);
-                                });
-                              },
-                              controller: txtSearch,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(top: 12),
-                                prefixIcon:
-                                    Icon(Icons.search, color: Colors.black45),
-                                border: InputBorder.none,
-                                hintText: "Search for services",
-                              ),
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                searchService(value);
+                              });
+                            },
+                            controller: txtSearch,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 12),
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.black45),
+                              border: InputBorder.none,
+                              hintText: "Search for services",
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.black45,
-                              ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.black45,
                             ),
                           ),
                         ),
                         SizedBox(height: 25),
+                        if (!widget.isStripeSetUp)
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return bank_detail(
+                                    email: widget.email,
+                                    isStripeSetUp: widget.isStripeSetUp,
+                                  );
+                                },
+                              ));
+                            },
+                            child: Text(
+                              "Product & Services won't be visible. Click here to register your payment details.",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        SizedBox(height: 15),
                         Expanded(
                           child: ListView.separated(
                             shrinkWrap: true,
@@ -220,6 +240,9 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                                         .data![index].id!
                                                     : localSearchData[index]
                                                         .id!,
+                                                email: widget.email,
+                                                isStripeSetUp:
+                                                    widget.isStripeSetUp,
                                               );
                                             },
                                           ),
@@ -288,18 +311,11 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                                 ],
                                               ),
                                               Spacer(),
-                                              InkWell(
-                                                onTap: () {
-                                                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                                  //   return ();
-                                                  // },));
-                                                },
-                                                child: Container(
-                                                  height: 15,
-                                                  width: 30,
-                                                  child: Image.asset(
-                                                      "assets/images/righticon.png"),
-                                                ),
+                                              Container(
+                                                height: 15,
+                                                width: 30,
+                                                child: Image.asset(
+                                                    "assets/images/righticon.png"),
                                               ),
                                             ],
                                           ),

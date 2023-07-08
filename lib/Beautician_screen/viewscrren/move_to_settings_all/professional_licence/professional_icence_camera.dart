@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/move_to_settings_all/professional_licence/professional_icence_camera.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
+
 import '../../../../commonClass.dart';
 import '../../../../utils/apiurllist.dart';
 import '../../../../utils/preferences.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: camel_case_types
 class professional_Licence_Camera extends StatefulWidget {
@@ -29,6 +31,66 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
   bool imageStatus = false;
   int? isLicensed;
   getLicenseDetailsC? data;
+
+  Future _sheet() => showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.bottomCenter,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            title: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(
+                    context, "TAKE A PHOTO", 12, FontWeight.w600, Colors.white,
+                    () async {
+                  Navigator.pop(context);
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      images = File(image.path);
+                      imagePath = image.path;
+                      imageStatus = true;
+                    });
+                  }
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CommonButton(context, "CHOOSE FROM GALLERY", 12,
+                    FontWeight.w600, Colors.white, () async {
+                  Navigator.pop(context);
+                  XFile? image =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      images = File(image.path);
+                      imagePath = image.path;
+                      imageStatus = true;
+                    });
+                  }
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                commonButtonborder(
+                    context, "CANCEL", 12, FontWeight.w600, Color(0xff01635D),
+                    () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ],
+            ),
+          );
+        },
+      );
 
   _pickImage() async {
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -211,37 +273,6 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-
-                                    ///Camera Condditon
-                                    // Container(
-                                    //
-                                    //   height: height*0.16,
-                                    //
-                                    //   child: Center(
-                                    //     child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                                    //       children: [
-                                    //
-                                    //         InkWell(
-                                    //           onTap: (){
-                                    //
-                                    //           },
-                                    //           child: Container(
-                                    //             width: 70,
-                                    //             height: 70,
-                                    //             decoration: BoxDecoration(
-                                    //                 image: DecorationImage(
-                                    //                   image: AssetImage("assets/images/camera.png"),
-                                    //                 )
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //         SizedBox(height: 10,),
-                                    //         Center(child: Text("Upload proof of professional licence",style: TextStyle(fontSize: 10,fontFamily: 'spartan',color: Color(0xff414141)),textAlign: TextAlign.center,)),
-                                    //
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // )
                                     Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -254,21 +285,32 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                                                     fit: BoxFit.fill),
                                               )
                                             : SizedBox(
-                                                width: width * 0.5,
-                                                height: height * 0.16,
+                                                width: data?.data
+                                                            ?.licenseImagePath ==
+                                                        null
+                                                    ? width * 0.3
+                                                    : width * 0.5,
+                                                height: data?.data
+                                                            ?.licenseImagePath ==
+                                                        null
+                                                    ? width * 0.3
+                                                    : height * 0.16,
                                                 child: data?.data
                                                             ?.licenseImagePath ==
                                                         null
                                                     ? Image.asset(
-                                                        "assets/images/Rectangle 217.png",
-                                                        fit: BoxFit.fill)
+                                                        "assets/images/Rectangle_greyline.png",
+                                                        height: width * 0.3,
+                                                        width: width * 0.3,
+                                                        fit: BoxFit.fill,
+                                                      )
                                                     : Image.network(
                                                         data!.data!
                                                             .licenseImagePath!,
                                                         fit: BoxFit.fill)),
                                         InkWell(
                                           onTap: () {
-                                            _pickImage();
+                                            _sheet();
                                             print(data?.data?.licenseImagePath);
                                           },
                                           child: SizedBox(
@@ -280,7 +322,16 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("Upload proof of professional license",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: "spartan",
+                                          color: Colors.grey,
+                                        ))
                                   ])
                                 : Column(
                                     children: const [],
@@ -294,8 +345,7 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
                   InkWell(
                     onTap: () {
                       if (isLicensed == 1 && imagePath == "") {
-                        Fluttertoast.showToast(
-                            msg: "Please upload licence photo");
+                        showToast(message: "Please upload licence photo");
                       } else {
                         addBusinessLicense();
                       }
@@ -347,26 +397,12 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       } else {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       }
     } catch (e) {
       rethrow;
@@ -401,23 +437,9 @@ class _professional_LicenceState extends State<professional_Licence_Camera> {
         isLicensed = data!.data!.isLicensed;
         print(isLicensed);
       });
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      // showToast(message: "${map['message']}");
     } else {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      // showToast(message: "${map['message']}");
     }
     setState(() {
       isLoading = false;

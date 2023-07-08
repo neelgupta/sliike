@@ -11,6 +11,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -26,7 +27,7 @@ class emailVeriFication extends StatefulWidget {
 // ignore: camel_case_types
 class _emailVeriFicationState extends State<emailVeriFication> {
   String userid = "";
-  int secondsRemaining = 30;
+  int secondsRemaining = 60;
   bool enableResend = false;
   Timer? timer;
   VerifyOtpModel? verifyotpmodel;
@@ -36,7 +37,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
   final formKey = GlobalKey<FormState>();
   String currentText = "";
 
-  int time = 30;
+  int time = 60;
   String ot = "";
   bool isOtpShow = false;
   @override
@@ -58,7 +59,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
   void _resendCode() {
     //other code here
     setState(() {
-      secondsRemaining = 30;
+      secondsRemaining = 60;
       enableResend = false;
       ReSendOtp();
     });
@@ -265,14 +266,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
       var map = jsonDecode(respnce.body);
       if (respnce.statusCode == 200) {
         verifyotpmodel = VerifyOtpModel.fromJson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         Helper.prefs!.setString(UserPrefs.keyutoken, verifyotpmodel!.token!);
         Navigator.pushAndRemoveUntil(
           context,
@@ -284,14 +278,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
           (route) => false,
         );
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       }
     } catch (e) {
       print(e.toString());
@@ -328,14 +315,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
       var map = jsonDecode(responce.body);
       if (responce.statusCode == 200) {
         reSendotpmodel = ReSendOtpModel.fromJson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       } else if (responce.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -344,14 +324,7 @@ class _emailVeriFicationState extends State<emailVeriFication> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("failed sendOtp");
       }
     } catch (e) {

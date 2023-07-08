@@ -180,60 +180,60 @@ class _bank_detailState extends State<bank_detail> {
             SizedBox(
               height: height * 0.03,
             ),
-            // InkWell(
-            //   onTap: () {
-            //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //       return sales_Tax_Setting();
-            //     },));
-            //   },
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: Color(0xffFBF104),
-            //       border: Border.all(width: 1, color: Color(0xffCFCFCF)),
-            //       borderRadius: BorderRadius.circular(8),
-            //     ),
-            //     child: Padding(
-            //       padding: const EdgeInsets.only(
-            //           top: 22, bottom: 22, left: 12, right: 12),
-            //       child: Column(
-            //         children: [
-            //           Row(
-            //             children: [
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Text(
-            //                 "Sales Tax Settings",
-            //                 overflow: TextOverflow.ellipsis,
-            //                 style: TextStyle(
-            //                   fontSize: 12,
-            //                   color: Color(0xff292929),
-            //                   fontFamily: "spartan",
-            //                   fontWeight: FontWeight.w600,
-            //                 ),
-            //               ),
-            //               Spacer(),
-            //               InkWell(
-            //                 onTap: () {
-            //                   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //                   //   return();
-            //                   // },));
-            //                 },
-            //                 child: Container(
-            //                   height: 15,
-            //                   width: 30,
-            //                   child: Image.asset(
-            //                     "assets/images/righticon.png",
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return sales_Tax_Setting();
+                },));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffFBF104),
+                  border: Border.all(width: 1, color: Color(0xffCFCFCF)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 22, bottom: 22, left: 12, right: 12),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Sales Tax Settings",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff292929),
+                              fontFamily: "spartan",
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              //   return();
+                              // },));
+                            },
+                            child: Container(
+                              height: 15,
+                              width: 30,
+                              child: Image.asset(
+                                "assets/images/righticon.png",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

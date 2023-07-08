@@ -7,14 +7,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
+import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/service_description.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../commonClass.dart';
@@ -82,7 +84,7 @@ class _servicesState extends State<services> {
   double width = 0;
   bool viewMore = false;
   bool isLoading = false;
-  MyFavorites? mf;
+  // MyFavorites? mf;
   String serviceTypeList = "";
   late CameraPosition _initialLocation;
   List<Marker> markers = <Marker>[];
@@ -92,11 +94,19 @@ class _servicesState extends State<services> {
   double? lati, longi;
   GoogleMapController? mapController;
 
+  GetPolicyModel? getPolicyModel;
+  GetPortfolioModel? getPortfolioModel;
+
+  bool isPolicyLoading = true;
+  bool isPortfolioLoading = true;
+
   @override
   void initState() {
     super.initState();
     if (widget.fromStart) Helper.serviceId.clear();
     getBeauticianDetails();
+    getPolicy(widget.beauticianId);
+    getPortfolio(widget.beauticianId);
     // getBusinessDeatils();
   }
 
@@ -385,10 +395,7 @@ class _servicesState extends State<services> {
                                     Row(
                                       children: [
                                         GestureDetector(
-                                          onTap: () {
-                                            log("Beauticiandata[0].isLicensed ; ${Beauticiandata[0].isLicensed}");
-                                            log("Beauticiandata[0].hasShop ; ${Beauticiandata[0].hasShop}");
-                                          },
+                                          onTap: () {},
                                           child: Text(
                                             "${Beauticiandata[0].businessName}",
                                             style: const TextStyle(
@@ -399,19 +406,18 @@ class _servicesState extends State<services> {
                                             ),
                                           ),
                                         ),
-                                        if (Beauticiandata[0].isLicensed == 1)
+                                        SizedBox(width: width * 0.03),
+                                        if (BeauticianDetails[0].isLicensed ==
+                                            "1")
                                           Image.asset(
                                             "assets/images/Subtract (1).png",
                                             height: 20,
                                             width: 20,
                                           ),
-                                        SizedBox(width: 05),
-                                        if (Beauticiandata[0].hasShop == 1)
+                                        SizedBox(width: width * 0.03),
+                                        if (BeauticianDetails[0].hasShop == "1")
                                           InkWell(
-                                            onTap: () {
-                                              print(
-                                                  Beauticiandata[0].isLicensed);
-                                            },
+                                            onTap: () {},
                                             child: Image.asset(
                                               "assets/images/independentmen.png",
                                               height: 20,
@@ -480,12 +486,13 @@ class _servicesState extends State<services> {
                           ),
                         ),
                         DefaultTabController(
-                            length: 4,
+                            length: 5,
                             initialIndex: 0,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 TabBar(
+                                  isScrollable: true,
                                     unselectedLabelColor: Colors.black,
                                     labelColor: const Color(0xFFDD6A03),
                                     indicatorColor: const Color(0xFFDD6A03),
@@ -520,6 +527,15 @@ class _servicesState extends State<services> {
                                       Tab(
                                           child: const Text(
                                         "details",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontFamily: "spartan",
+                                            fontSize: 13),
+                                      ).tr()),
+                                      Tab(
+                                          child: const Text(
+                                        "Policy",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -812,16 +828,154 @@ class _servicesState extends State<services> {
                                           ),
                                         ),
                                       ),
-                                      const Center(
-                                        child: Text(
-                                          "No Data Found!!!",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: "spartan",
-                                          ),
-                                        ),
-                                      ),
+                                      isPortfolioLoading
+                                          ? Center(
+                                              child: CircularProgressIndicator(
+                                                  color: Color(0xff0FFDD6A03)),
+                                            )
+                                          : getPortfolioModel!.data!.isNotEmpty
+                                              ? GridView.custom(
+                                                  shrinkWrap: true,
+                                                  padding: EdgeInsets.all(20),
+                                                  gridDelegate:
+                                                      SliverQuiltedGridDelegate(
+                                                    crossAxisCount: 2,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 10,
+                                                    repeatPattern:
+                                                        QuiltedGridRepeatPattern
+                                                            .same,
+                                                    pattern: [
+                                                      QuiltedGridTile(1, 1),
+                                                      QuiltedGridTile(1, 1),
+                                                      QuiltedGridTile(1, 2),
+                                                    ],
+                                                  ),
+                                                  childrenDelegate:
+                                                      SliverChildBuilderDelegate(
+                                                    childCount:
+                                                        getPortfolioModel
+                                                            ?.data?.length,
+                                                    (context, index) =>
+                                                        Container(
+                                                      decoration: BoxDecoration(
+                                                          // color: Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: CachedNetworkImage(
+                                                        // imageUrl:
+                                                        imageUrl:
+                                                            "${getPortfolioModel?.data?[index]}",
+                                                        //     "https://images.pexels.com/photos/213780/pexels-photo-213780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Stack(
+                                                          children: [
+                                                            Container(
+                                                              // width: 120,
+                                                              // height: 120,
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .black12),
+                                                                  image: DecorationImage(
+                                                                      image: NetworkImage(
+                                                                          "${getPortfolioModel?.data?[index]}"),
+                                                                      fit: BoxFit
+                                                                          .fill)),
+                                                            ),
+                                                            Positioned(
+                                                                bottom: -1,
+                                                                right: -1,
+                                                                child:
+                                                                    Container(
+                                                                  height: 40,
+                                                                  width: 50,
+                                                                  child: Center(
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .favorite_border,
+                                                                          color: Colors
+                                                                              .white,
+                                                                          size:
+                                                                              25,
+                                                                          weight:
+                                                                              1.0)),
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors
+                                                                          .black54,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              05)),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        progressIndicatorBuilder: (context,
+                                                                url, process) =>
+                                                            Container(
+                                                                height: height *
+                                                                    0.15,
+                                                                width: width,
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(5),
+                                                                child: const Center(
+                                                                    child:
+                                                                        CircularProgressIndicator())),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Container(
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            05),
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .black26)),
+                                                                height: height *
+                                                                    0.15,
+                                                                width: width,
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(5),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Center(
+                                                                    child:
+                                                                        Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    const Icon(Icons
+                                                                        .error),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          height *
+                                                                              0.02,
+                                                                    ),
+                                                                    const Text(
+                                                                        "No Image")
+                                                                  ],
+                                                                ))),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Center(
+                                                child: Text(
+                                                    "No Portfolio Found!",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight
+                                                                .w600)),
+                                              ),
                                       // SingleChildScrollView(
                                       //   child: Padding(
                                       //     padding: const EdgeInsets.symmetric(
@@ -2205,6 +2359,167 @@ class _servicesState extends State<services> {
                                                 ),
                                               ),
                                             ),
+
+                                      /// Policy Tab View ///
+                                      isPolicyLoading
+                                          ? Center(
+                                              child: CircularProgressIndicator(
+                                                  color: Color(0xff0FFDD6A03)),
+                                            )
+                                          : getPolicyModel?.data != null
+                                              ? SingleChildScrollView(
+                                                  child: Container(
+                                                    // color: Colors.red,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 20),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Cancellation Policy",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: 17),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 15,
+                                                        ),
+                                                        Container(
+                                                          width:
+                                                              double.infinity,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  20),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    10,
+                                                                  ),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .black12)),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    "${getPolicyModel?.data?.cancelPolicy?.title ?? ""}",
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        fontSize:
+                                                                            15),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Image.asset(
+                                                                    "assets/images/bluetick.png",
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Text(
+                                                                "${getPolicyModel?.data?.cancelPolicy?.policy ?? ""}",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        15,
+                                                                    color: Color(
+                                                                        0xff414141)),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Text(
+                                                          "No-show Policy: ${getPolicyModel?.data?.noSHowPolicy?.title ?? ""}",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: 17),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 15,
+                                                        ),
+                                                        Container(
+                                                          width:
+                                                              double.infinity,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  20),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    10,
+                                                                  ),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .black12)),
+                                                          child: Text(
+                                                            "${getPolicyModel?.data?.noSHowPolicy?.policy ?? ""}",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 15,
+                                                                color: Color(
+                                                                    0xff414141)),
+                                                          ),
+                                                        ),
+                                                        // const SizedBox(
+                                                        //   height: 25,
+                                                        // ),
+                                                        // Container(
+                                                        //   padding: EdgeInsets.all(20),
+                                                        //   decoration: BoxDecoration(
+                                                        //       borderRadius:
+                                                        //           BorderRadius.circular(
+                                                        //         10,
+                                                        //       ),
+                                                        //       border: Border.all(
+                                                        //           color: Colors.black12)),
+                                                        //   child: Text(
+                                                        //     "Arrive at your appointment 15 minutes before your scheduled time to avoid late arrival, total cancellation or forfeiture."
+                                                        //     "All no-show appointments may only be rescheduled at no cost, only at the discretion of the beauty business. Please avoid No-Show.",
+                                                        //     style: TextStyle(
+                                                        //         fontWeight:
+                                                        //             FontWeight.w500,
+                                                        //         fontSize: 15,
+                                                        //         color: Color(0xff414141)),
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : Center(
+                                              child: Text(
+                                                  "No Policy Found!",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                                )
                                     ],
                                   ),
                                 )
@@ -2221,32 +2536,51 @@ class _servicesState extends State<services> {
   serviceSingalItem(int index) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          infoDilog(index);
-        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ServiceDescription(
+                Beauticiandata[0].beauticianServiceId![index].description ?? "",
+                Beauticiandata[0].beauticianServiceId![index].imgName ?? "",
+              ),
+            ));
       },
       child: Container(
         // height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  // color: Colors.red,
                   alignment: Alignment.centerLeft,
-                  width: 100,
-                  child: Text(
-                          "${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}",
+                  width: 150,
+                  child: Row(
+                    children: [
+                      Text("${Beauticiandata[0].beauticianServiceId![index].serviceType!.serviceTypeName}",
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "spartan",
+                                  color: Colors.black))
+                          .tr(),
+                      SizedBox(
+                        width: 05,
+                      ),
+                      Text(
+                          "(${getTimeFormatedValue(Beauticiandata[0].beauticianServiceId![index].duration.toString())})",
                           style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: "spartan",
-                              color: Colors.black))
-                      .tr(),
+                              color: Colors.black54)),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -2255,11 +2589,23 @@ class _servicesState extends State<services> {
                             fontSize: 14,
                             fontFamily: "spartan",
                             color: Colors.black)),
+                    // Text(
+                    //     getTimeFormatedValue(Beauticiandata[0]
+                    //         .beauticianServiceId![index]
+                    //         .priceStatus
+                    //         .toString()),
+                    //     style: const TextStyle(
+                    //         fontSize: 12,
+                    //         fontFamily: "spartan",
+                    //         color: Colors.black54)),
+
                     Text(
-                        getTimeFormatedValue(Beauticiandata[0]
-                            .beauticianServiceId![index]
-                            .duration
-                            .toString()),
+                        Beauticiandata[0]
+                                    .beauticianServiceId![index]
+                                    .priceStatus !=
+                                ""
+                            ? "${Beauticiandata[0].beauticianServiceId![index].priceStatus}"
+                            : "Fixed",
                         style: const TextStyle(
                             fontSize: 12,
                             fontFamily: "spartan",
@@ -2291,7 +2637,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFFDD6A03),
+                      backgroundColor: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2310,9 +2656,14 @@ class _servicesState extends State<services> {
   showSearchItem(int index) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          infoDilog(index);
-        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ServiceDescription(
+                Beauticiandata[0].beauticianServiceId![index].description ?? "",
+                Beauticiandata[0].beauticianServiceId![index].imgName ?? "",
+              ),
+            ));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -2323,13 +2674,26 @@ class _servicesState extends State<services> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  width: 100,
-                  child: Text("${temp[index].serviceType!.serviceTypeName}",
+                  width: 150,
+                  child: Row(
+                    children: [
+                      Text("${temp[index].serviceType!.serviceTypeName}",
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "spartan",
+                                  color: Colors.black))
+                          .tr(),
+                      const SizedBox(
+                        width: 05,
+                      ),
+                      Text(
+                          "(${getTimeFormatedValue(temp[index].duration.toString())})",
                           style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: "spartan",
-                              color: Colors.black))
-                      .tr(),
+                              color: Colors.black54)),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 Column(
@@ -2341,11 +2705,23 @@ class _servicesState extends State<services> {
                             fontSize: 14,
                             fontFamily: "spartan",
                             color: Colors.black)),
-                    Text(getTimeFormatedValue(temp[index].duration.toString()),
+
+                    Text(
+                        Beauticiandata[0]
+                                    .beauticianServiceId![index]
+                                    .priceStatus !=
+                                ""
+                            ? "${Beauticiandata[0].beauticianServiceId![index].priceStatus}"
+                            : "Fixed",
                         style: const TextStyle(
                             fontSize: 12,
                             fontFamily: "spartan",
                             color: Colors.black54)),
+                    // Text(getTimeFormatedValue(temp[index].priceStatus.toString()),
+                    //     style: const TextStyle(
+                    //         fontSize: 12,
+                    //         fontFamily: "spartan",
+                    //         color: Colors.black54)),
                   ],
                 ),
                 const Spacer(),
@@ -2367,7 +2743,7 @@ class _servicesState extends State<services> {
                       ));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFFDD6A03),
+                      backgroundColor: const Color(0xFFDD6A03),
                     ),
                     child: const Text("book",
                             style: TextStyle(fontFamily: "spartan"))
@@ -2714,25 +3090,15 @@ class _servicesState extends State<services> {
     if (response.statusCode == 200) {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        mf = MyFavorites.fromjson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
         // getBeauticianDetails();
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
+        ;
       }
     }
   }
@@ -2759,24 +3125,13 @@ class _servicesState extends State<services> {
     if (response.statusCode == 200) {
       Map map = jsonDecode(response.body);
       if (map['status'] == 200) {
-        mf = MyFavorites.fromjson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       }
     }
   }
@@ -2802,14 +3157,13 @@ class _servicesState extends State<services> {
         headers: headers,
       );
       print("getBeauticianDetails status code ====> ${response.statusCode}");
-      print(" getBeauticianDetails res body is ====>  ${response.body}");
+      log(" getBeauticianDetails res body is ====>  ${response.body}");
+      log(" getBeauticianDetails Headers ====>  ${headers}");
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           sb = SingalBeautician.fromjson(map);
           Beauticiandata = sb!.data!.data!;
-          Beauticiandata[0].isFav!;
-          Beauticiandata[0].isFav!;
         }
       } else if (response.statusCode == 401) {
         logoutdata();
@@ -2819,16 +3173,10 @@ class _servicesState extends State<services> {
           },
         ), (route) => false);
       }
-      // setState(() {
-      //   isLoading = false;
-      // });
     } catch (e) {
       rethrow;
     } finally {
       getBusinessDeatils();
-      // setState(() {
-      //   isLoading = false;
-      // });
     }
   }
 
@@ -2841,7 +3189,7 @@ class _servicesState extends State<services> {
       var headers = {
         // 'Content-Type': "application/json; charset=utf-8",
         "authorization":
-            "bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
       };
 
       var bodydata = {
@@ -2890,6 +3238,86 @@ class _servicesState extends State<services> {
     }
   }
 
+  /// Get Policy ///
+  getPolicy(String id) async {
+    var getUri = Uri.parse(ApiUrlList.getPolicy + "$id");
+    var Headers = {
+      // 'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    log("URL ====> $getUri");
+    var response = await http.get(
+      getUri,
+      headers: Headers,
+    );
+    log("getPolicy Code ====> ${response.statusCode}");
+    log("getPolicy Body ====>  ${response.body}");
+    Map map = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      if (map['status'] == 200) {
+        setState(() {
+          isPolicyLoading = false;
+          getPolicyModel = GetPolicyModel.fromMap(jsonDecode(response.body));
+        });
+      }
+    } else if (response.statusCode == 401) {
+      logoutdata();
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return signInScreen();
+        },
+      ), (route) => false);
+    } else {
+      setState(() {
+        getPolicyModel = null;
+        isPolicyLoading = false;
+      });
+    }
+  }
+
+  /// Get Portfolio ///
+  getPortfolio(String id) async {
+    var getUri = Uri.parse(ApiUrlList.getPortfolio + "$id");
+    var Headers = {
+      // 'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    log("URL ====> $getUri");
+
+    try {
+      var response = await http.get(
+        getUri,
+        headers: Headers,
+      );
+      log("getPortfolio Code ====> ${response.statusCode}");
+      log("getPortfolio Body ====>  ${response.body}");
+      Map map = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        if (map['status'] == 200) {
+          setState(() {
+            isPortfolioLoading = false;
+            getPortfolioModel =
+                GetPortfolioModel.fromMap(jsonDecode(response.body));
+          });
+        }
+      } else if (response.statusCode == 401) {
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      } else {
+        setState(() {
+          getPortfolioModel = null;
+          isPortfolioLoading = false;
+        });
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   searchService(String value) {
     if (search.text.isNotEmpty) {
       temp.clear();
@@ -2915,31 +3343,27 @@ class _servicesState extends State<services> {
 }
 
 class SingalBeautician {
-  int? status;
   Data? data;
 
-  SingalBeautician({this.status, this.data});
+  SingalBeautician({this.data});
 
   factory SingalBeautician.fromjson(Map<dynamic, dynamic> map) {
     return SingalBeautician(
-      status: map['status'] ?? 0,
       data: Data.fromjson(map['data']),
     );
   }
 }
 
 class Data {
-  int? total;
   List<SingalBeauticianData>? data;
 
-  Data({this.total, this.data});
+  Data({this.data});
 
   factory Data.fromjson(Map<dynamic, dynamic> map4) {
     List list = map4['data'];
     List<SingalBeauticianData> data =
         list.map((e) => SingalBeauticianData.fromjson(e)).toList();
     return Data(
-      total: map4['total'],
       data: data,
     );
   }
@@ -2959,8 +3383,6 @@ class SingalBeauticianData {
   List? workSpaceImgs;
   Address? address;
   bool? isFav;
-  final int isLicensed;
-  final int hasShop;
 
   SingalBeauticianData(
       {this.id,
@@ -2972,9 +3394,7 @@ class SingalBeauticianData {
       this.beauticianServiceId,
       this.workSpaceImgs,
       this.address,
-      this.isFav,
-      required this.isLicensed,
-      required this.hasShop});
+      this.isFav});
 
   factory SingalBeauticianData.fromjson(Map<dynamic, dynamic> map1) {
     List list = map1['beauticianServiceId'] ?? [];
@@ -2986,21 +3406,20 @@ class SingalBeauticianData {
       businessName: map1['businessName'] ?? "",
       rating: (map1['rating'] ?? "0").toString(),
       noOfReviews: (map1['noOfReviews'] ?? "0").toString(),
-      location: Location.fromjson(map1['location'] ?? {}),
+      location:
+          map1['location'] != null ? Location.fromjson(map1['location']) : null,
       gender: map1['gender'] ?? "",
       beauticianServiceId: beauticianServiceId,
       workSpaceImgs: map1['workSpaceImgs'] ?? [],
       address: address,
       isFav: map1['isFav'] ?? false,
-      isLicensed: map1['isLicensed'],
-      hasShop: map1['hasShop'],
     );
   }
 }
 
 class Location {
   String? type;
-  List<dynamic>? coordinates;
+  List? coordinates;
 
   Location({this.type, this.coordinates});
 
@@ -3048,35 +3467,32 @@ class BeauticianServiceId {
   String? duration;
   int? price;
   String? description;
-  int? v;
-  String? createdAt;
-  String? updatedAt;
+  String? imgName;
+  String? priceStatus;
 
-  BeauticianServiceId(
-      {this.id,
-      this.beauticianId,
-      this.serviceCategory,
-      this.serviceType,
-      this.duration,
-      this.price,
-      this.description,
-      this.v,
-      this.createdAt,
-      this.updatedAt});
+  BeauticianServiceId({
+    this.id,
+    this.beauticianId,
+    this.serviceCategory,
+    this.serviceType,
+    this.duration,
+    this.price,
+    this.description,
+    this.imgName,
+    this.priceStatus,
+  });
 
   factory BeauticianServiceId.fromjson(Map<dynamic, dynamic> map2) {
     return BeauticianServiceId(
-      id: map2['_id'],
-      beauticianId: map2['beauticianId'],
-      serviceCategory: ServiceCategory.fromjson(map2['serviceCategory']),
-      serviceType: ServiceType.fromjson(map2['serviceType']),
-      duration: map2['duration'],
-      price: map2['price'],
-      description: map2['description'],
-      v: map2['__v'],
-      createdAt: map2['createdAt'],
-      updatedAt: map2['updatedAt'],
-    );
+        id: map2['_id'],
+        beauticianId: map2['beauticianId'],
+        serviceCategory: ServiceCategory.fromjson(map2['serviceCategory']),
+        serviceType: ServiceType.fromjson(map2['serviceType']),
+        duration: map2['duration'],
+        price: map2['price'],
+        description: map2['description'],
+        imgName: map2["imgName"] ?? "",
+        priceStatus: map2["priceStatus"] ?? "");
   }
 }
 
@@ -3108,38 +3524,6 @@ class ServiceCategory {
   }
 }
 
-class MyFavorites {
-  int? status;
-  bool? success;
-  String? message;
-
-  MyFavorites({this.status, this.success, this.message});
-
-  factory MyFavorites.fromjson(Map<dynamic, dynamic> map) {
-    return MyFavorites(
-      status: map['status'] ?? 0,
-      success: map['success'] ?? false,
-      message: map['message'] ?? "",
-    );
-  }
-}
-
-class RemoveFavorites {
-  int? status;
-  bool? success;
-  String? message;
-
-  RemoveFavorites({this.status, this.success, this.message});
-
-  factory RemoveFavorites.fromjson(Map<dynamic, dynamic> map) {
-    return RemoveFavorites(
-      status: map['status'] ?? 0,
-      success: map['success'] ?? false,
-      message: map['message'] ?? "",
-    );
-  }
-}
-
 class BeauticianDetail {
   int status;
   bool success;
@@ -3151,19 +3535,14 @@ class BeauticianDetail {
     required this.beautician,
   });
 
-  factory BeauticianDetail.fromMap(Map<String, dynamic> json) =>
-      BeauticianDetail(
-        status: json["status"],
-        success: json["success"],
-        beautician: List<Beautician>.from(
-            json["beautician"].map((x) => Beautician.fromMap(x))),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "status": status,
-        "success": success,
-        "beautician": List<dynamic>.from(beautician.map((x) => x.toMap())),
-      };
+  factory BeauticianDetail.fromMap(Map<String, dynamic> json) {
+    List list = json["beautician"] ?? [];
+    return BeauticianDetail(
+      status: json["status"],
+      success: json["success"],
+      beautician: list.map((x) => Beautician.fromMap(x)).toList(),
+    );
+  }
 }
 
 class Beautician {
@@ -3172,22 +3551,8 @@ class Beautician {
   String uid;
   String firstName;
   String lastName;
-  List<dynamic> workSpaceImgs;
+  List workSpaceImgs;
   String country;
-  String countryCode;
-  List<String> beauticianServiceId;
-  int isProvideService;
-  int isProvideProduct;
-  int totalEmployee;
-  List<dynamic> demographicIds;
-
-  int isServeAtClient;
-  int isServeAtOwnPlace;
-  int screenStatus;
-  int isDeleted;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
   String businessName;
   int businessNumber;
   LocationDetail location;
@@ -3199,12 +3564,8 @@ class Beautician {
   String profileImage;
   String hasShop;
   String isLicensed;
-  List<User> user;
-  List<ServiceDetail> serviceDetails;
-  List<dynamic> demographys;
   List<BeauticianAddress> beauticianAddress;
   List<WorkHour> workHours;
-  List<Employee> employees;
 
   Beautician({
     required this.id,
@@ -3214,20 +3575,7 @@ class Beautician {
     required this.lastName,
     required this.workSpaceImgs,
     required this.country,
-    required this.countryCode,
-    required this.beauticianServiceId,
-    required this.isProvideService,
-    required this.isProvideProduct,
-    required this.totalEmployee,
-    required this.demographicIds,
     required this.hasShop,
-    required this.isServeAtClient,
-    required this.isServeAtOwnPlace,
-    required this.screenStatus,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
     required this.businessName,
     required this.businessNumber,
     required this.location,
@@ -3238,12 +3586,8 @@ class Beautician {
     required this.rating,
     required this.gender,
     required this.profileImage,
-    required this.user,
-    required this.serviceDetails,
-    required this.demographys,
     required this.beauticianAddress,
     required this.workHours,
-    required this.employees,
   });
 
   factory Beautician.fromMap(Map<String, dynamic> json) => Beautician(
@@ -3252,87 +3596,24 @@ class Beautician {
         uid: json["uid"] ?? "",
         firstName: json["firstName"] ?? "",
         lastName: json["lastName"] ?? "",
-        workSpaceImgs: List<dynamic>.from(json["workSpaceImgs"].map((x) => x)),
+        workSpaceImgs: json["workSpaceImgs"] ?? [],
         country: json["country"] ?? "",
-        countryCode: json["country_code"] ?? "",
-        beauticianServiceId:
-            List<String>.from(json["beauticianServiceId"].map((x) => x)),
-        isProvideService: json["isProvideService"] ?? 0,
-        isProvideProduct: json["isProvideProduct"] ?? 0,
-        totalEmployee: json["totalEmployee"] ?? 0,
-        demographicIds:
-            List<dynamic>.from(json["demographicIds"].map((x) => x)),
-        hasShop: json["hasShop"].toString(),
-        isServeAtClient: json["IsServeAtClient"],
-        isLicensed: json["isLicensed"].toString(),
-        isServeAtOwnPlace: json["IsServeAtOwnPlace"],
-        screenStatus: json["screenStatus"],
-        isDeleted: json["isDeleted"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+        hasShop: (json["hasShop"] ?? 0).toString(),
+        isLicensed: (json["isLicensed"] ?? 0).toString(),
         businessName: json["businessName"] ?? "",
         businessNumber: json["businessNumber"],
         location: LocationDetail.fromMap(json["location"]),
-        logo: json["logo"],
-        address: json["address"],
-        noOfReviews: json["noOfReviews"],
-        rating: json["rating"]?.toDouble(),
-        gender: json["gender"],
-        profileImage: json["profileImage"],
-        user: List<User>.from(json["User"].map((x) => User.fromMap(x))),
-        serviceDetails: List<ServiceDetail>.from(
-            json["serviceDetails"].map((x) => ServiceDetail.fromMap(x))),
-        demographys: List<dynamic>.from(json["demographys"].map((x) => x)),
+        logo: json["logo"] ?? "",
+        address: json["address"] ?? "",
+        noOfReviews: (json["noOfReviews"] ?? 0),
+        rating: double.parse((json["rating"] ?? 0).toString()),
+        gender: json["gender"] ?? "",
+        profileImage: json["profileImage"] ?? "",
         beauticianAddress: List<BeauticianAddress>.from(
             json["beauticianAddress"].map((x) => BeauticianAddress.fromMap(x))),
         workHours: List<WorkHour>.from(
             json["workHours"].map((x) => WorkHour.fromMap(x))),
-        employees: List<Employee>.from(
-            json["Employees"].map((x) => Employee.fromMap(x))),
       );
-
-  Map<String, dynamic> toMap() => {
-        "_id": id,
-        "userId": userId,
-        "uid": uid,
-        "firstName": firstName,
-        "lastName": lastName,
-        "workSpaceImgs": List<dynamic>.from(workSpaceImgs.map((x) => x)),
-        "country": country,
-        "country_code": countryCode,
-        "beauticianServiceId":
-            List<dynamic>.from(beauticianServiceId.map((x) => x)),
-        "isProvideService": isProvideService,
-        "isProvideProduct": isProvideProduct,
-        "totalEmployee": totalEmployee,
-        "demographicIds": List<dynamic>.from(demographicIds.map((x) => x)),
-        "hasShop": hasShop,
-        "IsServeAtClient": isServeAtClient,
-        "IsServeAtOwnPlace": isServeAtOwnPlace,
-        "screenStatus": screenStatus,
-        "isDeleted": isDeleted,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "businessName": businessName,
-        "businessNumber": businessNumber,
-        "location": location.toMap(),
-        "logo": logo,
-        "address": address,
-        "noOfReviews": noOfReviews,
-        "rating": rating,
-        "gender": gender,
-        "profileImage": profileImage,
-        "User": List<dynamic>.from(user.map((x) => x.toMap())),
-        "serviceDetails":
-            List<dynamic>.from(serviceDetails.map((x) => x.toMap())),
-        "demographys": List<dynamic>.from(demographys.map((x) => x)),
-        "beauticianAddress":
-            List<dynamic>.from(beauticianAddress.map((x) => x.toMap())),
-        "workHours": List<dynamic>.from(workHours.map((x) => x.toMap())),
-        "Employees": List<dynamic>.from(employees.map((x) => x.toMap())),
-      };
 }
 
 class BeauticianAddress {
@@ -3361,70 +3642,6 @@ class BeauticianAddress {
         "province": province,
         "city": city,
         "zipCode": zipCode,
-      };
-}
-
-class Employee {
-  String firstName;
-  String lastName;
-  int phoneNumber;
-  String countryCode;
-  String email;
-  String title;
-  String notes;
-  String calenderColor;
-  String permissionLevel;
-  WorkHours workHours;
-  List<String> serviceIds;
-  int status;
-  String profileImage;
-
-  Employee({
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
-    required this.countryCode,
-    required this.email,
-    required this.title,
-    required this.notes,
-    required this.calenderColor,
-    required this.permissionLevel,
-    required this.workHours,
-    required this.serviceIds,
-    required this.status,
-    required this.profileImage,
-  });
-
-  factory Employee.fromMap(Map<String, dynamic> json) => Employee(
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        phoneNumber: json["phoneNumber"],
-        countryCode: json["country_code"],
-        email: json["email"],
-        title: json["title"],
-        notes: json["notes"],
-        calenderColor: json["calenderColor"],
-        permissionLevel: json["permissionLevel"],
-        workHours: WorkHours.fromMap(json["workHours"]),
-        serviceIds: List<String>.from(json["serviceIds"].map((x) => x)),
-        status: json["status"],
-        profileImage: json["profileImage"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "firstName": firstName,
-        "lastName": lastName,
-        "phoneNumber": phoneNumber,
-        "country_code": countryCode,
-        "email": email,
-        "title": title,
-        "notes": notes,
-        "calenderColor": calenderColor,
-        "permissionLevel": permissionLevel,
-        "workHours": workHours.toMap(),
-        "serviceIds": List<dynamic>.from(serviceIds.map((x) => x)),
-        "status": status,
-        "profileImage": profileImage,
       };
 }
 
@@ -3477,9 +3694,6 @@ class ServiceDetail {
   String duration;
   int price;
   String description;
-  int v;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   ServiceDetail({
     required this.id,
@@ -3489,9 +3703,6 @@ class ServiceDetail {
     required this.duration,
     required this.price,
     required this.description,
-    required this.v,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory ServiceDetail.fromMap(Map<String, dynamic> json) => ServiceDetail(
@@ -3502,9 +3713,6 @@ class ServiceDetail {
         duration: json["duration"],
         price: json["price"],
         description: json["description"],
-        v: json["__v"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -3515,45 +3723,6 @@ class ServiceDetail {
         "duration": duration,
         "price": price,
         "description": description,
-        "__v": v,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-      };
-}
-
-class User {
-  String email;
-  int phoneNumber;
-  int isVerified;
-  int isActiveUser;
-  DateTime createdAt;
-  DateTime updatedAt;
-
-  User({
-    required this.email,
-    required this.phoneNumber,
-    required this.isVerified,
-    required this.isActiveUser,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  factory User.fromMap(Map<String, dynamic> json) => User(
-        email: json["email"],
-        phoneNumber: json["phoneNumber"],
-        isVerified: json["isVerified"],
-        isActiveUser: json["isActiveUser"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "email": email,
-        "phoneNumber": phoneNumber,
-        "isVerified": isVerified,
-        "isActiveUser": isActiveUser,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
       };
 }
 
@@ -3564,14 +3733,12 @@ class WorkHour {
     required this.dayDetails,
   });
 
-  factory WorkHour.fromMap(Map<String, dynamic> json) => WorkHour(
-        dayDetails: List<DayDetail>.from(
-            json["dayDetails"].map((x) => DayDetail.fromMap(x))),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "dayDetails": List<dynamic>.from(dayDetails.map((x) => x.toMap())),
-      };
+  factory WorkHour.fromMap(Map<String, dynamic> json) {
+    List list = json['dayDetails'];
+    return WorkHour(
+      dayDetails: list.map((x) => DayDetail.fromMap(x)).toList(),
+    );
+  }
 }
 
 class DayDetail {
@@ -3594,22 +3761,118 @@ class DayDetail {
   });
 
   factory DayDetail.fromMap(Map<String, dynamic> json) => DayDetail(
-        day: json["day"],
-        startTime: json["startTime"],
-        endTime: json["endTime"],
-        breakStartTime: json["breakStartTime"],
-        breakEndTime: json["breakEndTime"],
-        isOpen: json["isOpen"],
-        id: json["_id"],
+        day: json["day"] ?? "Monday",
+        startTime: json["startTime"] ?? "",
+        endTime: json["endTime"] ?? "",
+        breakStartTime: json["breakStartTime"] ?? "",
+        breakEndTime: json["breakEndTime"] ?? "",
+        isOpen: json["isOpen"] ?? false,
+        id: json["_id"] ?? "",
+      );
+}
+
+/// get Policy Model Data Class ///
+
+GetPolicyModel getPolicyModelFromMap(String str) =>
+    GetPolicyModel.fromMap(json.decode(str));
+
+String getPolicyModelToMap(GetPolicyModel data) => json.encode(data.toMap());
+
+class GetPolicyModel {
+  int? status;
+  bool? success;
+  Data1? data;
+
+  GetPolicyModel({
+    this.status,
+    this.success,
+    this.data,
+  });
+
+  factory GetPolicyModel.fromMap(Map<String, dynamic> json) => GetPolicyModel(
+        status: json["status"],
+        success: json["success"],
+        data: json["data"] == null ? null : Data1.fromMap(json["data"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "day": day,
-        "startTime": startTime,
-        "endTime": endTime,
-        "breakStartTime": breakStartTime,
-        "breakEndTime": breakEndTime,
-        "isOpen": isOpen,
-        "_id": id,
+        "status": status,
+        "success": success,
+        "data": data?.toMap(),
+      };
+}
+
+class Data1 {
+  Policy? cancelPolicy;
+  Policy? noSHowPolicy;
+
+  Data1({
+    this.cancelPolicy,
+    this.noSHowPolicy,
+  });
+
+  factory Data1.fromMap(Map<String, dynamic> json) => Data1(
+        cancelPolicy: Policy.fromMap(json["cancelPolicy"] ?? {}),
+        noSHowPolicy: Policy.fromMap(json["noSHowPolicy"] ?? {}),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "cancelPolicy": cancelPolicy?.toMap(),
+        "noSHowPolicy": noSHowPolicy?.toMap(),
+      };
+}
+
+class Policy {
+  String? policy;
+  String? title;
+
+  Policy({
+    this.policy,
+    this.title,
+  });
+
+  factory Policy.fromMap(Map<String, dynamic> json) => Policy(
+        policy: json["policy"] ?? "",
+        title: json["title"] ?? "",
+      );
+
+  Map<String, dynamic> toMap() => {
+        "policy": policy,
+        "title": title,
+      };
+}
+
+/// get Portfolio Model Data Class ///
+
+GetPortfolioModel getPortfolioModelFromMap(String str) =>
+    GetPortfolioModel.fromMap(json.decode(str));
+
+String getPortfolioModelToMap(GetPortfolioModel data) =>
+    json.encode(data.toMap());
+
+class GetPortfolioModel {
+  int? status;
+  bool? success;
+  List<String>? data;
+
+  GetPortfolioModel({
+    this.status,
+    this.success,
+    this.data,
+  });
+
+  factory GetPortfolioModel.fromMap(Map<String, dynamic> json) =>
+      GetPortfolioModel(
+        status: json["status"],
+        success: json["success"],
+        data: json["data"] == null
+            ? []
+            : List<String>.from(json["data"]!.map((x) => x)),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "status": status,
+        "success": success,
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x)),
       };
 }

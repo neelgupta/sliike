@@ -15,6 +15,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/services/address_service.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../utils/preferences.dart';
 
@@ -746,14 +747,8 @@ class _add_new_addressState extends State<add_new_address> {
           a = ClientAddress.fromjson(map);
           Navigator.pop(context, true);
 
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",);
         } else if (response.statusCode == 401) {
           logoutdata();
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -762,14 +757,8 @@ class _add_new_addressState extends State<add_new_address> {
             },
           ), (route) => false);
         } else {
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",);
         }
       }
     } catch (e) {

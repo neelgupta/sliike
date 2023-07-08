@@ -7,7 +7,13 @@ class setting extends StatefulWidget {
   bool? isBookOnline;
   bool? isHomeService;
   String? intervalTime;
-  setting({Key? key, this.isBookOnline, this.isHomeService, this.intervalTime})
+  String? noOfParallelClient;
+  setting(
+      {Key? key,
+      this.isBookOnline,
+      this.isHomeService,
+      this.intervalTime,
+      this.noOfParallelClient})
       : super(key: key);
 
   @override
@@ -21,9 +27,11 @@ class _settingState extends State<setting> {
     "45 min",
     "60 min",
   ];
+  List<String> parallelClient = <String>["1", "2", "3", "4", "5", "6"];
   List<String> timelist = <String>["0", "25 min", "20 min", "15 min", "10 min"];
   String? selectedvaluemin = "30 min";
   String? selectedchosstime = "0";
+  String? paraclientValue = "1";
   bool clentswitch = false;
   bool homeswitch = false;
 
@@ -33,6 +41,7 @@ class _settingState extends State<setting> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    paraclientValue = widget.noOfParallelClient ?? "1";
     clentswitch = widget.isBookOnline ?? false;
     homeswitch = widget.isHomeService ?? false;
   }
@@ -269,93 +278,57 @@ class _settingState extends State<setting> {
                       Color(0xff414141),
                       FontWeight.w500),
                   SizedBox(height: height * 0.03),
-                  Container(
-                    height: 50,
-                    child: TextField(
-                      controller: txtPClients,
-                      style: const TextStyle(
+                  DropdownButtonFormField(
+                    enableFeedback: true,
+                    isDense: true,
+                    isExpanded: true,
+                    alignment: Alignment.center,
+                    elevation: 2,
+                    value: paraclientValue,
+                    items: parallelClient.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(
+                          items,
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0xff292929)),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        paraclientValue = newValue!;
+                      });
+                    },
+                    icon: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 30,
+                        color: Color(0xff969696),
+                      ),
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 20),
+                      hintText: "Parallel Client",
+                      hintStyle: TextStyle(
                           fontSize: 14,
+                          fontFamily: 'spartan',
                           color: Color(0xff292929),
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "spartan"),
-                      onChanged: (value) {
-                        setState(() {
-                          // servicecategorystatus = false;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 20),
-                        hintText: "Parallel Clients",
-                        hintStyle: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'spartan',
-                            color: Color(0xff292929),
-                            fontWeight: FontWeight.w500),
-                        labelText: "Parallel Clients",
-                        labelStyle: const TextStyle(
-                            fontFamily: 'spartan', color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide:
-                              const BorderSide(color: Color(0xff292929)),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide:
-                              const BorderSide(color: Color(0xff292929)),
-                        ),
+                          fontWeight: FontWeight.w500),
+                      labelText: "Parallel Client",
+                      labelStyle: TextStyle(
+                          fontFamily: 'spartan', color: Colors.black54),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Color(0xff292929)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: Color(0xff292929)),
                       ),
                     ),
                   ),
-                  // DropdownButtonFormField(
-                  //   enableFeedback: true,
-                  //   isDense: true,
-                  //   isExpanded: true,
-                  //   alignment: Alignment.center,
-                  //   elevation: 2,
-                  //   value: selectedchosstime,
-                  //   items: timelist.map((String items) {
-                  //     return DropdownMenuItem(
-                  //       value: items,
-                  //       child: Text(
-                  //         items,
-                  //         style: TextStyle(fontSize: 14, color: Color(0xff707070)),
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (String? newValue) {
-                  //     setState(() {
-                  //       selectedchosstime = newValue!;
-                  //     });
-                  //   },
-                  //   icon: Padding(
-                  //     padding: const EdgeInsets.only(right: 10),
-                  //     child: Icon(
-                  //       Icons.keyboard_arrow_down,
-                  //       size: 30,color: Color(0xff969696),
-                  //     ),
-                  //   ),
-                  //   decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.only(left: 20),
-                  //     hintText: "Service Category",
-                  //     hintStyle: TextStyle(
-                  //         fontSize: 14,
-                  //         fontFamily: 'spartan',
-                  //         color: Color(0xff292929),
-                  //         fontWeight: FontWeight.w500),
-                  //     labelText: "Choose Time",
-                  //     labelStyle:
-                  //     TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(5),
-                  //       borderSide: BorderSide(color: Color(0xff292929)),
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(5),
-                  //       borderSide: BorderSide(color: Color(0xff292929)),
-                  //     ),
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.only(top: height * 0.015),
                     child: Divider(
@@ -373,7 +346,7 @@ class _settingState extends State<setting> {
                       clentswitch,
                     );
                     Navigator.pop(
-                        context, [txtPClients.text, homeswitch, clentswitch]);
+                        context, [paraclientValue, homeswitch, clentswitch]);
                   }),
                   SizedBox(
                     height: height * 0.025,

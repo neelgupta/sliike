@@ -6,6 +6,7 @@ import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class feedback extends StatefulWidget {
   const feedback({Key? key}) : super(key: key);
@@ -271,14 +272,8 @@ class _feedbackState extends State<feedback> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}");
       }
     } catch (e) {
       rethrow;

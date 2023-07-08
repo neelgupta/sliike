@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/apiurllist.dart';
@@ -331,14 +332,9 @@ class _delete_my_accountState extends State<delete_my_account> {
             return const signInScreen();
           },
         ));
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",
+            );
       } else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -347,14 +343,8 @@ class _delete_my_accountState extends State<delete_my_account> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+          showToast(
+            message: "${map['message']}");
       }
     } catch (e) {
       rethrow;

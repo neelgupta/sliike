@@ -9,6 +9,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../utils/preferences.dart';
 
@@ -265,14 +266,8 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
             return homescreen(selectedIndex: 1);
           },
         ));
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       } else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -281,14 +276,8 @@ class _cancel_appoinmentState extends State<cancel_appoinment> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+       showToast(
+            message: "${map['message']}",);
       }
     } catch (e) {
       rethrow;

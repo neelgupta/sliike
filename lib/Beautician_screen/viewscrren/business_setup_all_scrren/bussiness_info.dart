@@ -17,6 +17,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/getProvinceMoel.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../../services/address_service.dart';
 
@@ -1138,14 +1139,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
       print("body${responce.body}");
       if (responce.statusCode == 200) {
         addBusinessDetailModel = AddBusinessDetailModel.fromJson(map);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return const bussinessInfoCATEGORY();
@@ -1159,14 +1153,7 @@ class _BussIneSSInfoState extends State<BussIneSSInfo> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       }
     } catch (e) {
       print(e.toString());

@@ -33,6 +33,7 @@ class home_explore extends StatefulWidget {
 
 class _home_exploreState extends State<home_explore> {
   bool isLoading = false;
+  bool isRecommandedLoading = false;
   ServiceCategories? s;
   String selectedServiceIdValue = "";
   String? allItemName;
@@ -65,7 +66,7 @@ class _home_exploreState extends State<home_explore> {
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
-      body: isLoading
+      body: isLoading && isRecommandedLoading
           ? const Center(
               child: CircularProgressIndicator(
                 color: Color(0xffDD6A03),
@@ -1440,7 +1441,7 @@ class _home_exploreState extends State<home_explore> {
     var posturi = Uri.parse(ApiUrlList.getRecomadedBeauticians);
     try {
       setState(() {
-        isLoading = true;
+        isRecommandedLoading = true;
       });
 
       var headers = {
@@ -1474,7 +1475,7 @@ class _home_exploreState extends State<home_explore> {
           recommended = r!.beauticians.data;
         }
         setState(() {
-          isLoading = false;
+          isRecommandedLoading = false;
         });
       } else if (response.statusCode == 401) {
         logoutdata();
@@ -1484,14 +1485,14 @@ class _home_exploreState extends State<home_explore> {
           },
         ), (route) => false);
         setState(() {
-          isLoading = false;
+          isRecommandedLoading = false;
         });
       }
     } catch (e) {
       rethrow;
     } finally {
       setState(() {
-        isLoading = false;
+        isRecommandedLoading = false;
       });
     }
   }

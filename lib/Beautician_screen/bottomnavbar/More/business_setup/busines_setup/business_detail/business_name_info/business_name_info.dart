@@ -7,6 +7,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../../../../../../commonClass.dart';
 import '../../../../../../../utils/apiurllist.dart';
@@ -700,35 +701,19 @@ class _business_Name_InfoState extends State<business_Name_Info> {
                           CommonButton(context, "SAVE", 12, FontWeight.w700,
                               Colors.white, () {
                             if (businessname.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter business name !");
+                              showToast(message: "Please enter business name !");
                             } else if (phonernumber.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter phone number !");
+                              showToast(message: "Please enter phone number !");
                             } else if (email.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter email address !");
+                              showToast(message: "Please enter email address !");
                             } else if (!email.text.contains("@")) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter valid email address !");
+                              showToast(message: "Please enter valid email address !");
                             } else if (timeformatvalue!.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please select time format !");
+                              showToast(message: "Please select time format !");
                             } else if (mounthvalue == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please select start week !");
+                              showToast(message: "Please select start week !");
                             } else if (languagevalue.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please select any language !");
-                            } else if (Instagram.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter your instagram link !");
-                            } else if (Facebook.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please select your facebook link !");
-                            } else if (Website.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please select your website link !");
+                              showToast(message: "Please select any language !");
                             } else {
                               updateBusinessDetails();
                             }
@@ -784,24 +769,10 @@ class _business_Name_InfoState extends State<business_Name_Info> {
     if (responce.statusCode == 200) {
       Navigator.pop(context);
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     }
   }
 
@@ -831,13 +802,14 @@ class _business_Name_InfoState extends State<business_Name_Info> {
         phonernumber.text =
             getmodelProfile!.data!.userId!.phoneNumber.toString();
         email.text = getmodelProfile!.data!.userId!.email!;
-        // Description.text = getmodelProfile!.data!.description! ?? "";
-        // mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay;
+        Description.text = getmodelProfile!.data!.description ?? "";
+        mounthvalue = getmodelProfile!.data!.calenderSetting!.startDay ?? null;
         // languagevalue = getmodelProfile!.data!.language!;
         Instagram.text = getmodelProfile!.data!.instagramUrl!;
         Facebook.text = getmodelProfile!.data!.facebookUrl!;
         Website.text = getmodelProfile!.data!.website!;
-        getmodelProfile!.data!.calenderSetting!.formate == "12"
+        (getmodelProfile!.data!.calenderSetting!.formate ?? "12").toString() ==
+                "12"
             ? timeformatvalue = timeformatitems[1]
             : timeformatvalue = timeformatitems[0];
         countryCode = getmodelProfile!.data!.countryCode!;

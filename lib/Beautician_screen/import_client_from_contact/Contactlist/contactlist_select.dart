@@ -1,13 +1,15 @@
 import 'dart:io';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/checkbox.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/client_list/client_list.dart';
 import 'package:new_sliikeapps_apps/services/invite_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 // ignore: camel_case_types, must_be_immutable
 class contactLIst_Select extends StatefulWidget {
   List<Contact>? contacts;
@@ -18,38 +20,232 @@ class contactLIst_Select extends StatefulWidget {
   @override
   State<contactLIst_Select> createState() => _contactLIst_SelectState();
 }
+
 // ignore: camel_case_types, must_be_immutable
 class _contactLIst_SelectState extends State<contactLIst_Select> {
   // bool checkboxvalue = false;
 
-  List<bool> ? checkboxvalue;
+  List<bool>? checkboxvalue;
 
   TextEditingController search = TextEditingController();
 
   List<Contact> localSearchData = [];
 
+  done2() {
+    return InkWell(
+      onTap: () => showDialog(
+        context: context,
+        builder: (ctxDialog) => Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: <Widget>[
+              AlertDialog(
+                titlePadding: EdgeInsets.zero,
+                title: Container(
+                  height: 250,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).accentColor,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: <Widget>[
+                        FittedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'PT.ABADI',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text('Lantai 1'),
+                      ],
+                    ),
+                  ),
+                ),
+                content: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 30.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text('Maret 2020'),
+                        SizedBox(height: 10),
+                        SizedBox(height: 10),
+                        InkWell(
+                          onTap: () => print('Pilih Foto'),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            alignment: Alignment.center,
+                            height: 100,
+                            width: 200,
+                            child: Text('Pilih Foto'),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 200,
+                  right: 200,
+                ),
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Theme.of(context).errorColor,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      size: 20,
+                    ),
+                    onPressed: () => print('close'),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: <Widget>[
+            // titleHeaderRow(title: '$indexOrder'),
+            // titleHeaderRow(
+            //     title: '$indexOrder', textAlign: TextAlign.left),
+            // titleHeaderRow(title: '$indexOrder'),
+            // titleHeaderRow(title: month.toString()),
+            // titleHeaderRow(title: month.toString()),
+          ],
+        ),
+      ),
+    );
+  }
+
   String _name = "";
   String _number = "";
 
-  Future whatsapp(String contact,String message) async{
+  done() {
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Stack(
+          children: [
+            AlertDialog(
+              alignment: Alignment.center,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              title: StatefulBuilder(
+                builder: (context, setState) {
+                  return Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: textComoon("Clients", 14,
+                            const Color(0xff111111), FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: textComoon("Successfully Invited", 12,
+                            Colors.black87, FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => clientListContact(
+                                    widget.contacts, widget.isADD),
+                              ));
+                              
+                        },
+
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xff219653),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 12, bottom: 12),
+                            child: Center(
+                              child: textComoon(
+                                  "DONE", 10, Colors.white, FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            Positioned(
+              left: width * 0.43,
+              top: height * 0.36,
+              child: Container(
+                alignment: Alignment.center,
+                height: 70,
+                child: Image.asset("assets/images/tick.png"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future whatsapp(String contact, String message) async {
     var androidUrl = "whatsapp://send?phone=$contact&text=$message";
     var iosUrl = "https://wa.me/$contact?text=${Uri.parse('$message')}";
-    try{
-      if(Platform.isIOS){
-        await launchUrl(Uri.parse(iosUrl),mode: LaunchMode.externalApplication);
+    try {
+      if (Platform.isIOS) {
+        await launchUrl(Uri.parse(iosUrl),
+            mode: LaunchMode.externalApplication);
+      } else {
+        await launchUrl(Uri.parse(androidUrl),
+            mode: LaunchMode.externalApplication);
       }
-      else{
-        await launchUrl(Uri.parse(androidUrl),mode: LaunchMode.externalApplication);
-      }
-    } on Exception{
-      Fluttertoast.showToast(msg: "WhatsApp is not installed.");
+    } on Exception {
+      showToast(message: "WhatsApp is not installed.");
     }
   }
 
-
   InviteServices _inviteServices = InviteServices();
 
-  getName ? name;
+  getName? name;
 
   @override
   void initState() {
@@ -181,8 +377,8 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                         child: Image.asset("assets/images/search-normal.png"),
                       ),
                     ),
-                    labelStyle:
-                        const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                    labelStyle: const TextStyle(
+                        fontFamily: 'spartan', color: Colors.black54),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(color: Colors.black38),
@@ -230,95 +426,110 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                   thickness: 1,
                   color: (Color(0xffCFCFCF)),
                 ),
-                if(checkboxvalue!=null)Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: search.text.isNotEmpty ? localSearchData.length : widget.contacts!.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 6, bottom: 2),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                search.text.isNotEmpty ? Custom_Checkbox(
-                                  isChecked: checkboxvalue![index],
-                                  onChange: (value) {
-                                    print(widget.contacts);
-                                    setState(() {
-                                      checkboxvalue![index] = value;
-                                      _name = localSearchData[index].displayName;
-                                      _number =  localSearchData[index].phones.first.number;
-                                      print(_name);
-                                      print(_number);
-                                    });
-                                  },
-                                  backgroundColor: const Color(0xff01635D),
-                                  borderColor: const Color(0xff01635D),
-                                  icon: Icons.check,
-                                  iconColor: Colors.white,
-                                  size: 24,
-                                  iconSize: 20,
-                                ) : Custom_Checkbox(
-                                  isChecked: checkboxvalue![index],
-                                  onChange: (value) {
-                                    print(widget.contacts);
-                                    setState(() {
-                                      checkboxvalue![index] = value;
-                                      _name = widget.contacts![index].displayName;
-                                      _number =  widget.contacts![index].phones.first.number;
-                                      print(_name);
-                                      print(_number);
-                                    });
-                                  },
-                                  backgroundColor: const Color(0xff01635D),
-                                  borderColor: const Color(0xff01635D),
-                                  icon: Icons.check,
-                                  iconColor: Colors.white,
-                                  size: 24,
-                                  iconSize: 20,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xffCFCFCF),
-                                    shape: BoxShape.circle,
+                if (checkboxvalue != null)
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: search.text.isNotEmpty
+                          ? localSearchData.length
+                          : widget.contacts!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 6, bottom: 2),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  search.text.isNotEmpty
+                                      ? Custom_Checkbox(
+                                          isChecked: checkboxvalue![index],
+                                          onChange: (value) {
+                                            print(widget.contacts);
+                                            setState(() {
+                                              checkboxvalue![index] = value;
+                                              _name = localSearchData[index]
+                                                  .displayName;
+                                              _number = localSearchData[index]
+                                                  .phones
+                                                  .first
+                                                  .number;
+                                              print(_name);
+                                              print(_number);
+                                            });
+                                          },
+                                          backgroundColor:
+                                              const Color(0xff01635D),
+                                          borderColor: const Color(0xff01635D),
+                                          icon: Icons.check,
+                                          iconColor: Colors.white,
+                                          size: 24,
+                                          iconSize: 20,
+                                        )
+                                      : Custom_Checkbox(
+                                          isChecked: checkboxvalue![index],
+                                          onChange: (value) {
+                                            print(widget.contacts);
+                                            setState(() {
+                                              checkboxvalue![index] = value;
+                                              _name = widget
+                                                  .contacts![index].displayName;
+                                              _number = widget.contacts![index]
+                                                  .phones.first.number;
+                                              print(_name);
+                                              print(_number);
+                                            });
+                                          },
+                                          backgroundColor:
+                                              const Color(0xff01635D),
+                                          borderColor: const Color(0xff01635D),
+                                          icon: Icons.check,
+                                          iconColor: Colors.white,
+                                          size: 24,
+                                          iconSize: 20,
+                                        ),
+                                  const SizedBox(
+                                    width: 15,
                                   ),
-                                  child: Image.asset(
-                                      "assets/images/profile.png",
-                                      fit: BoxFit.fill),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    search.text.isNotEmpty ? localSearchData[index].displayName :  widget.contacts![index].displayName,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xff414141),
-                                      fontFamily: "spartan",
+                                  Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xffCFCFCF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                        "assets/images/profile.png",
+                                        fit: BoxFit.fill),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      search.text.isNotEmpty
+                                          ? localSearchData[index].displayName
+                                          : widget.contacts![index].displayName,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xff414141),
+                                        fontFamily: "spartan",
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const Divider(
-                              thickness: 1,
-                              color: (Color(0xffCFCFCF)),
-                            )
-                          ],
-                        ),
-                      );
-                    },
+                                ],
+                              ),
+                              const Divider(
+                                thickness: 1,
+                                color: (Color(0xffCFCFCF)),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
                 //Spacer(),
                 SizedBox(
                   width: width,
@@ -329,21 +540,33 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          onTap: () async{
+                          onTap: () async {
                             String message = "Hello, $_name\n"
                                 "This is ${name?.data.firstName} ${name?.data.lastName}\n"
                                 "I am inviting you to join Sliike platform. The digital marketplace where you can easily book and pay for my beauty services and products.\n"
                                 "Click here to accept my invite and go to your app store or  ${"www.sliike.com"} to download the app.";
-                            if(_name!=""){
-                             WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-                              await whatsapp(_number,message).then((value) async {
-                                await  _inviteServices.inviteContacts(context, _number).then((value){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => clientListContact(widget.contacts,widget.isADD),));
+                            if (_name != "") {
+                              WidgetsBinding.instance
+                                  .addPostFrameCallback((timeStamp) async {
+                                await whatsapp(_number, message)
+                                    .then((value) async {
+                                  await _inviteServices
+                                      .inviteContacts(context, _number)
+                                      .then((value) {
+                                    done();
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           clientListContact(widget.contacts,
+                                    //               widget.isADD),
+                                    //     ));
+                                  });
                                 });
                               });
-                             });
-                            }else{
-                              Fluttertoast.showToast(msg: "Please select any contact");
+                            } else {
+                              done();
+                              showToast(message: "Please select any contact");
                             }
                           },
                           child: Container(
@@ -379,7 +602,9 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
     if (value.isNotEmpty) {
       localSearchData.clear();
       for (int i = 0; i < widget.contacts!.length; i++) {
-        if (widget.contacts![i].displayName.toLowerCase().contains(value.toLowerCase())) {
+        if (widget.contacts![i].displayName
+            .toLowerCase()
+            .contains(value.toLowerCase())) {
           localSearchData.add(widget.contacts![i]);
           setState(() {});
         }
@@ -387,7 +612,4 @@ class _contactLIst_SelectState extends State<contactLIst_Select> {
       // log("localSearchData :: ${localSearchData}");
     }
   }
-
 }
-
-

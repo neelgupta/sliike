@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class faq_beauty extends StatefulWidget {
   const faq_beauty({Key? key}) : super(key: key);
@@ -90,13 +91,6 @@ class _faq_beautyState extends State<faq_beauty> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         children: [
-                          // const TextField(
-                          //   style: TextStyle(fontFamily: "spartan",fontSize: 12),
-                          //   decoration: InputDecoration(
-                          //     border: OutlineInputBorder(),
-                          //     hintText: "Describe your issue"
-                          //   ),
-                          // ),
                           SizedBox(
                             height: height * 0.02,
                           ),
@@ -195,14 +189,7 @@ class _faq_beautyState extends State<faq_beauty> {
         isLoading = false;
       });
     } else {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
       setState(() {
         faq = null;
         isLoading = false;
@@ -212,15 +199,13 @@ class _faq_beautyState extends State<faq_beauty> {
 }
 
 class Header {
-  int status;
-  String message;
   List<Data> data;
-  Header(this.status, this.message, this.data);
+  Header(this.data);
 
   factory Header.fromjson(Map<dynamic, dynamic> map) {
     List list = map["data"];
     List<Data> d = list.map((e) => Data.fromjson(e)).toList();
-    return Header(map['status'], map['message'], d);
+    return Header(d);
   }
 }
 

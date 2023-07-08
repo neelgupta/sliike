@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
-import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/addwork_hours_save_or_thanks_page.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 import '../../../../../custom_widget/textcommon/textcommon.dart';
-import 'package:http/http.dart' as http;
 
 class calendar_Adjustment extends StatefulWidget {
   const calendar_Adjustment({Key? key}) : super(key: key);
@@ -216,26 +218,13 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
                         children: [
                           Container(
                             width: width * 0.4,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${getScheduledData!.data!.day}",
-                                  style: TextStyle(
-                                      color: Color(0xff292929),
-                                      fontWeight: FontWeight.w300,
-                                      fontFamily: "spartan",
-                                      fontSize: 14),
-                                ),
-                                // Text(
-                                //   "Today",
-                                //   style: TextStyle(
-                                //       color: Color(0xff292D32),
-                                //       fontWeight: FontWeight.normal,
-                                //       fontFamily: "spartan",
-                                //       fontSize: 10),
-                                // ),
-                              ],
+                            child: Text(
+                              "${getScheduledData!.data!.day}",
+                              style: TextStyle(
+                                  color: Color(0xff292929),
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: "spartan",
+                                  fontSize: 14),
                             ),
                           ),
                           Container(
@@ -329,26 +318,12 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
         isLoading = false;
         getScheduledData = GetScheduledData.fromJson(jsonDecode(response.body));
       });
-      // Fluttertoast.showToast(
-      //     msg: map["message"],
-      //     toastLength: Toast.LENGTH_LONG,
-      //     gravity: ToastGravity.TOP,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Colors.black,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
+      // showToast(message: map["message"]);
     } else {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
   }
 
@@ -378,26 +353,12 @@ class _calendar_AdjustmentState extends State<calendar_Adjustment> {
         // isLoading = false;
         getScheduledData = GetScheduledData.fromJson(jsonDecode(response.body));
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     } else {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
   }
 }

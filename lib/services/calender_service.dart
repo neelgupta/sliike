@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getAppointmentDetailsModel.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../Beautician_screen/b_model/appointment_details_model.dart';
 import '../Beautician_screen/b_model/appointment_payment_details.dart';
@@ -246,14 +246,8 @@ class CalenderService {
       // log("pastAppointmentChangeStatus status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         // Map map = jsonDecode(response.body);
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
         return true;
         // if (getProfileModel.status == 200) {
@@ -263,14 +257,8 @@ class CalenderService {
         //   }
         // }
       } else {
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
       }
     } catch (e) {
@@ -301,14 +289,8 @@ class CalenderService {
       // log("cancelAppointment status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         // Map map = jsonDecode(response.body);
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
 
         return true;
@@ -319,14 +301,8 @@ class CalenderService {
         //   }
         // }
       } else {
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
       }
     } catch (e) {
@@ -355,14 +331,8 @@ class CalenderService {
       log("SendAppointmentReminder status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
         // Map map = jsonDecode(response.body);
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 6,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
 
         return true;
@@ -373,14 +343,8 @@ class CalenderService {
         //   }
         // }
       } else {
-        Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 6,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "${map['message']}",
         );
       }
     } catch (e) {

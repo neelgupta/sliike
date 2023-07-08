@@ -389,26 +389,12 @@ class _editLocationState extends State<editLocation> {
   //       isLoading = false;
   //       Navigator.pop(context);
   //       setState(() {});
-  //       Fluttertoast.showToast(
-  //         msg: "${map['message']}",
-  //         toastLength: Toast.LENGTH_LONG,
-  //         gravity: ToastGravity.TOP,
-  //         timeInSecForIosWeb: 1,
-  //         backgroundColor: Colors.black,
-  //         textColor: Colors.white,
-  //         fontSize: 16.0,
-  //       );
+// showToast(
+//             message: "${map['message']}",);
   //     } else {
   //       Navigator.pop(context);
-  //       Fluttertoast.showToast(
-  //         msg: "${map['message']}",
-  //         toastLength: Toast.LENGTH_LONG,
-  //         gravity: ToastGravity.TOP,
-  //         timeInSecForIosWeb: 1,
-  //         backgroundColor: Colors.black,
-  //         textColor: Colors.white,
-  //         fontSize: 16.0,
-  //       );
+// showToast(
+//             message: "${map['message']}",);
   //     }
   //   } catch (e) {
   //     rethrow;

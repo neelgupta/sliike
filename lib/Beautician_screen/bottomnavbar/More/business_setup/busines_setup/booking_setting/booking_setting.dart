@@ -4,12 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/cancellation_policy/cancellation_policy.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/models/booking_setting_model.dart';
 import 'package:new_sliikeapps_apps/services/business_setup_services.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class booking_Setting extends StatefulWidget {
   const booking_Setting({Key? key}) : super(key: key);
@@ -716,7 +717,14 @@ class _booking_SettingState extends State<booking_Setting> {
                         ),
                         children: [
                           TextSpan(
-                            recognizer: TapGestureRecognizer()..onTap = () {},
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return cancellation_Policy();
+                                  },
+                                ));
+                              },
                             text: 'Cancellation policy ',
                             style: TextStyle(
                               fontSize: 14,
@@ -826,14 +834,7 @@ class _booking_SettingState extends State<booking_Setting> {
     print(body);
     Response response =
         await businessSetupService.updateBookingSetting(jsonEncode(body));
-    Fluttertoast.showToast(
-        msg: "${jsonDecode(response.body)['message']}",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    showToast(message: "${jsonDecode(response.body)['message']}");
     Loader.hide();
   }
 }

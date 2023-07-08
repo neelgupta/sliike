@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/bottomnavbar.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class StripeWebViews extends StatefulWidget {
@@ -92,14 +93,69 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double width = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.right -
+        MediaQuery.of(context).padding.left;
     return SafeArea(
       child: Scaffold(
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : WebViewWidget(
-                controller: _controller,
+            : SizedBox(
+                height: height,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Center(
+                              child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 25,
+                          )),
+                        ),
+                        SizedBox(
+                          width: width * 0.02,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: const Text("Bank Account Setup",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: const Color(0xff292929),
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    Expanded(
+                      child: WebViewWidget(
+                        controller: _controller,
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
     );
@@ -125,15 +181,22 @@ Page resource error:
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-      Fluttertoast.showToast(
-          msg: "Stripe Setup Done!!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    } else {}
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return  BottomNavigation();
+          },
+        ),
+        (route) => false,
+      );
+      showToast(
+        message: "Stripe Setup Done!!",
+      );
+    } else {
+      showToast(
+        message: jsonDecode(response.body)["message"],
+      );
+    }
   }
 }

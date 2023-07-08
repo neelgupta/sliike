@@ -7,6 +7,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/models/paymentDeatailsModel.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class PaymentService {
   Future<PaymentDetail?> getPaymentDetail({body}) async {
@@ -21,7 +22,7 @@ class PaymentService {
     if (response.statusCode == 200) {
       return PaymentDetail.fromJson(jsonDecode(response.body));
     } else {
-      Fluttertoast.showToast(msg: "${jsonDecode(response.body)['message']}");
+      showToast(message: "${jsonDecode(response.body)['message']}");
       return null;
     }
   }
@@ -39,7 +40,7 @@ class PaymentService {
       print(jsonDecode(response.body)['data']['BookingId']);
       return jsonDecode(response.body)['data']['BookingId'];
     } else {
-      Fluttertoast.showToast(msg: "${jsonDecode(response.body)['message']}");
+      showToast(message: "${jsonDecode(response.body)['message']}");
       return null;
     }
   }

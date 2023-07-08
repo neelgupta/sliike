@@ -14,8 +14,10 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/app_colors.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../../../utils/apiurllist.dart';
+import '../../../bottomnavbar/More/business_setup/busines_setup/service_setup/profile_images.dart';
 
 class addServicetype extends StatefulWidget {
   bool secondflow;
@@ -1329,17 +1331,7 @@ class _addServiceState extends State<addServicetype> {
                                           //             .toLowerCase()) {
                                           //       addedOrNotList.add(true);
                                           //       log("service is exist :: ${serviceAddedList[i].serviceName.toLowerCase()} || ${selectedServiceNameValue.toLowerCase()}");
-                                          //       Fluttertoast.showToast(
-                                          //         msg:
-                                          //             "Existing Service Updated Successfully.",
-                                          //         toastLength:
-                                          //             Toast.LENGTH_LONG,
-                                          //         gravity: ToastGravity.TOP,
-                                          //         timeInSecForIosWeb: 1,
-                                          //         backgroundColor: Colors.black,
-                                          //         textColor: Colors.white,
-                                          //         fontSize: 16.0,
-                                          //       );
+                                          //       showToast(message: "${map['message']}",);
                                           //       serviceAddedList[i]
                                           //               .serviceCatId =
                                           //           selectedServiceCategoryIdValue;
@@ -1566,42 +1558,48 @@ class _addServiceState extends State<addServicetype> {
                                 //   // selectedServiceNameValue =
                                 //   //     singleServiceData.serviceName;
                                 // });
-                                for (var item in categoryDataList) {
-                                  if (item.serviceCategoryName!.toLowerCase() ==
-                                      singleServiceData.serviceCatName
-                                          .toLowerCase()) {
-                                    setState(() {
-                                      // select = item;
-                                      selectedServiceCategoryIdValue =
-                                          singleServiceData.serviceCatId;
-                                      selectedServiceCategoryNameValue =
-                                          singleServiceData.serviceCatName;
-                                      servicePrice.text =
-                                          singleServiceData.servicePrice;
-                                      fetchServicesType(
-                                        serviceCatId:
-                                            singleServiceData.serviceCatId,
-                                        isUpdating: true,
-                                        index: index,
-                                        serviceName:
-                                            singleServiceData.serviceName,
-                                        serviceDuration: singleServiceData
-                                            .serviceDurationMin,
-                                      );
-                                    });
-                                  } else {}
-                                }
-                                print(
-                                    'selectedServiceCategoryIdValue ===> $selectedServiceCategoryIdValue');
-                                print(
-                                    'selectedServiceCategoryNameValue ===> $selectedServiceCategoryNameValue');
-                                print(
-                                    'selectedServiceNameValue ===> $selectedServiceNameValue');
-                                print(
-                                    'servicePrice.text ===> ${servicePrice.text}');
-                                print(
-                                    'selectedvaluemin ===> $selectedvaluemin');
-                                print(selectedServiceCategoryNameValue);
+                                /// Chirag CODE ???
+                                // for (var item in categoryDataList) {
+                                //   if (item.serviceCategoryName!.toLowerCase() ==
+                                //       singleServiceData.serviceCatName
+                                //           .toLowerCase()) {
+                                //     setState(() {
+                                //       // select = item;
+                                //       selectedServiceCategoryIdValue =
+                                //           singleServiceData.serviceCatId;
+                                //       selectedServiceCategoryNameValue =
+                                //           singleServiceData.serviceCatName;
+                                //       servicePrice.text =
+                                //           singleServiceData.servicePrice;
+                                //       fetchServicesType(
+                                //         serviceCatId:
+                                //             singleServiceData.serviceCatId,
+                                //         isUpdating: true,
+                                //         index: index,
+                                //         serviceName:
+                                //             singleServiceData.serviceName,
+                                //         serviceDuration: singleServiceData
+                                //             .serviceDurationMin,
+                                //       );
+                                //     });
+                                //   } else {}
+                                // }
+                                // print(
+                                //     'selectedServiceCategoryIdValue ===> $selectedServiceCategoryIdValue');
+                                // print(
+                                //     'selectedServiceCategoryNameValue ===> $selectedServiceCategoryNameValue');
+                                // print(
+                                //     'selectedServiceNameValue ===> $selectedServiceNameValue');
+                                // print(
+                                //     'servicePrice.text ===> ${servicePrice.text}');
+                                // print(
+                                //     'selectedvaluemin ===> $selectedvaluemin');
+                                // print(selectedServiceCategoryNameValue);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Profile_Images(singleServiceData.serviceId,email: "",isStripeSetUp: false),
+                                    ));
                               },
                               child: SizedBox(
                                 height: 20,
@@ -1795,14 +1793,9 @@ class _addServiceState extends State<addServicetype> {
           ),
           (route) => false,
         );
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       }
     } catch (e) {
       print(e.toString());

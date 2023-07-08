@@ -27,6 +27,7 @@ import 'package:new_sliikeapps_apps/client_app/profile_pages/my_favorites.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/payments.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import '../../client_model/get_profile_model.dart';
@@ -181,7 +182,7 @@ class _profileState extends State<profile> {
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(
-                                "assets/images/Ellipse 202.png",
+                                "assets/images/pro.jpeg",
                                 fit: BoxFit.fill,
                               ),
                   ),
@@ -1372,14 +1373,8 @@ class _profileState extends State<profile> {
           ),
           (route) => false,
         );
-        Fluttertoast.showToast(
-          msg: "Logged Out Successfully.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "Logged Out Successfully.",
         );
         // setState(() {
         //   businessname = getmodelProfile!.data?.businessName ?? '';
@@ -1473,14 +1468,9 @@ class _profileState extends State<profile> {
       Map map = jsonDecode(res.body);
       if (res.statusCode == 200) {
         getClientPersonalInfo();
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",
+             );
       } else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -1489,14 +1479,9 @@ class _profileState extends State<profile> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",
+             );
       }
     } catch (e) {
       rethrow;
@@ -1576,20 +1561,15 @@ class _profileState extends State<profile> {
           );
         } else if ((switchAccountModel.screenStatus ?? 0) == 7) {
           Loader.hide();
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",
+              );
           Helper.prefs!.setBool(UserPrefs.keyisserviceprovide, true);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) {
-                return const BottomNavigation();
+                return  BottomNavigation();
               },
             ),
             (route) => false,
@@ -1597,34 +1577,15 @@ class _profileState extends State<profile> {
           Helper.prefs!.setBool(UserPrefs.keyuserlogin, true);
         } else {
           Loader.hide();
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",
+              );
         }
       });
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast( message: "${map['message']}");
     }
   }
 

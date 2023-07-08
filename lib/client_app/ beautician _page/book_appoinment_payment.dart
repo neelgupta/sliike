@@ -144,7 +144,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                         child: TextFormField(
                           controller: cardNumberController,
                           style: const TextStyle(
-                              fontFamily: "spartan", fontSize: 12),
+                              fontFamily: "spartan", fontSize: 12,color: Colors.grey),
                           inputFormatters: [
                             MaskedTextInputFormatter(
                                 mask: 'xxxx xxxx xxxx xxxx', separator: " ")
@@ -169,7 +169,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                               child: TextFormField(
                                 controller: expController,
                                 style: const TextStyle(
-                                    fontFamily: "spartan", fontSize: 12),
+                                    fontFamily: "spartan", fontSize: 12,color: Colors.grey),
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   MaskedTextInputFormatter(
@@ -188,7 +188,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                               child: TextFormField(
                                 controller: cvvController,
                                 style: const TextStyle(
-                                    fontFamily: "spartan", fontSize: 12),
+                                    fontFamily: "spartan", fontSize: 12,),
                                 inputFormatters: [
                                   MaskedTextInputFormatter(
                                       mask: 'xxx', separator: "")
@@ -196,7 +196,7 @@ class _book_appoinment_paymentState extends State<book_appoinment_payment> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
-                                  labelText: "cvv".tr(),
+                                  labelText: "CSV".tr(),
                                   hintText: '',
                                 ),
                               ),

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import '../../utils/preferences.dart';
 
 class notification extends StatefulWidget {
@@ -274,23 +275,13 @@ class _notificationState extends State<notification> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           n = Notification.fromjson(map);
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",
+          );
         } else {
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+              message: "${map['message']}",
+              );
         }
       }
     } catch (e) {

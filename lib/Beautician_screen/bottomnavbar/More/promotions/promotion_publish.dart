@@ -109,7 +109,7 @@ class _promotion_PublishState extends State<promotion_Publish> {
                     color: Color(0xff78D6F5),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child:Center(child: textComoon("${widget.body["discount"]} ${widget.body["isDiscPercentage"]==1? "%" : "\$"} OFF", 18, Color(0xff292929), FontWeight.w700)),
+                  child:Center(child: textComoon("${widget.body["isDiscPercentage"]=="0"?"\$":""}${widget.body["discount"]}${widget.body["isDiscPercentage"]=="1"?"%":""} OFF", 18, Color(0xff292929), FontWeight.w700)),
                 ),
                 SizedBox(height: height*0.04,),
                 textComoon("Service", 12, Color(0xff292929), FontWeight.w700),

@@ -8,7 +8,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:device_info_plus/device_info_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +23,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/main.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../../client_service_api/login_service.dart';
 import '../signup/signup.dart';
@@ -55,7 +55,7 @@ class _signInScreenState extends State<signInScreen> {
   String emailError = "";
   String passwordError = "";
   String validEmail = "";
-  bool showstatus = false;
+  bool showstatus = true;
   String email = "";
   String firebaseToken = "";
   String deviceToken = "";
@@ -643,31 +643,24 @@ class _signInScreenState extends State<signInScreen> {
             ));
           } else if ((signinmodel!.success!.screenStatus ?? 0) == 6) {
             Loader.hide();
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
                   return add_Your_Work_Hours(secondflow: true);
                 },
               ),
-              (route) => false,
             );
           } else if ((signinmodel!.success!.screenStatus ?? 0) == 7) {
             Loader.hide();
-            Fluttertoast.showToast(
-                msg: "${map['message']}",
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.TOP,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 16.0);
+            showToast(
+            message: "${map['message']}",);
             Helper.prefs!.setBool(UserPrefs.keyisserviceprovide, true);
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const BottomNavigation();
+                  return  BottomNavigation();
                 },
               ),
               (route) => false,
@@ -677,14 +670,8 @@ class _signInScreenState extends State<signInScreen> {
         }
       } else {
         Loader.hide();
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       }
     } catch (e) {
       print(e.toString());
@@ -724,14 +711,8 @@ class _signInScreenState extends State<signInScreen> {
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+            message: "${map['message']}",);
       }
     } catch (e) {
     } finally {

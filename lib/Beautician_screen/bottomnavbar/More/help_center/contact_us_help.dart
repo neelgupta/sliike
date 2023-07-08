@@ -13,12 +13,11 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
   void _launchDailer(String mobileNumber) async {
     Uri phoneno = Uri.parse('tel:${mobileNumber}');
     if (await launchUrl(phoneno)) {
-      print("dailer open");
-      //dialer opened
+      launchUrl(phoneno);
     } else {
-      print("dailer is not open");
-      //dailer is not opened
+      print("111");
     }
+    //dialer opened
   }
 
   @override
@@ -103,7 +102,7 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
               SizedBox(
                 height: height * 0.04,
               ),
-              Text("(438) 444-1024",
+              Text("(514) 709-8276",
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "spartan",
@@ -135,7 +134,7 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
                 children: [
                   InkWell(
                     onTap: () {
-                      _launchDailer("8178771977");
+                      _launchDailer("+15147098276");
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -172,9 +171,7 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    contactdialog();
-                  });
+                  contactdialog();
                 },
                 child: Container(
                   height: height * 0.08,

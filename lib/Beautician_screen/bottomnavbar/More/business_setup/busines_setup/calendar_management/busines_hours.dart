@@ -12,6 +12,7 @@ import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/userdetail.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../utils/constants.dart';
@@ -584,23 +585,9 @@ class _busines_HoursState extends State<busines_Hours> {
       print("res  body :: ${response.body}");
       if (response.statusCode == 201 || response.statusCode == 200) {
         getWorkHours();
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("else failed");
       }
     } catch (e) {

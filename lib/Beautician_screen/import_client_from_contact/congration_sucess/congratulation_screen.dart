@@ -91,10 +91,6 @@ class _conGraTuLation_HoursState extends State<conGraTuLation> {
                                 ),
                                 (route) => false,
                               );
-                              //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-                              //     return const BottomNavigation();
-                              //   },),(route) => false, );
-                              // });
                             },
                             child: Container(
                               width: width,

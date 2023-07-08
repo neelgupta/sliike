@@ -13,6 +13,7 @@ import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../Beautician_screen/bottomnavbar/bottomnavbar.dart';
 
@@ -48,14 +49,8 @@ class AppointmentService {
       return GetServiceDetailsModel.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     }
     Loader.hide();
     return GetServiceDetailsModel.fromJson(jsonDecode(response.body));
@@ -89,14 +84,8 @@ class AppointmentService {
       return GetStaffDataModel.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     }
     Loader.hide();
     return GetStaffDataModel.fromJson(jsonDecode(response.body));
@@ -138,25 +127,13 @@ class AppointmentService {
           MaterialPageRoute(
             builder: (context) => newAppoinment_Viwe_Add(appointmentIds),
           ));
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
       return GetAddBAppointment.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     }
     return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
@@ -198,25 +175,13 @@ class AppointmentService {
           MaterialPageRoute(
             builder: (context) => newAppoinment_Viwe_Add(appointmentIds),
           ));
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
       return GetAddBAppointment.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     }
     return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }
@@ -254,25 +219,11 @@ class AppointmentService {
     Map map = jsonDecode(response.body);
     if (response.statusCode == 201 || response.statusCode == 200) {
       Loader.hide();
-      // Fluttertoast.showToast(
-      //     msg: map["message"],
-      //     toastLength: Toast.LENGTH_LONG,
-      //     gravity: ToastGravity.TOP,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Colors.black,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
+      //showToast(message: "${map['message']}",);
       return GetAppointmentPreDetailsData.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      // Fluttertoast.showToast(
-      //     msg: map["message"],
-      //     toastLength: Toast.LENGTH_LONG,
-      //     gravity: ToastGravity.TOP,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Colors.black,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
+      // showToast(message: "${map['message']}");
     }
     Loader.hide();
     return GetAppointmentPreDetailsData.fromJson(jsonDecode(response.body));
@@ -310,25 +261,11 @@ class AppointmentService {
       Navigator.pop(context);
       Navigator.pop(context);
       Navigator.pop(context);
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
       // return GetAddBAppointment.fromJson(jsonDecode(response.body));
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
     // return GetAddBAppointment.fromJson(jsonDecode(response.body));
   }

@@ -11,9 +11,13 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class addService extends StatefulWidget {
-  const addService({Key? key}) : super(key: key);
+  final String email;
+  bool isStripeSetUp;
+  addService({Key? key, required this.email, required this.isStripeSetUp})
+      : super(key: key);
 
   @override
   State<addService> createState() => _addServiceState();
@@ -977,16 +981,10 @@ class _addServiceState extends State<addService> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => service_Setup_Main(),
+            builder: (context) => service_Setup_Main(
+                email: widget.email, isStripeSetUp: widget.isStripeSetUp),
           ));
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     } else {
       setState(() {
         isLoading = false;
@@ -994,16 +992,10 @@ class _addServiceState extends State<addService> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => service_Setup_Main(),
+            builder: (context) => service_Setup_Main(
+                email: widget.email, isStripeSetUp: widget.isStripeSetUp),
           ));
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: map["message"]);
     }
   }
 

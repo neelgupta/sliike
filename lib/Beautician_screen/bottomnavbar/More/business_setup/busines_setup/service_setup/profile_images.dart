@@ -14,10 +14,15 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class Profile_Images extends StatefulWidget {
   String id;
-  Profile_Images(this.id, {Key? key}) : super(key: key);
+  final String email;
+  bool isStripeSetUp;
+  Profile_Images(this.id,
+      {Key? key, required this.email, required this.isStripeSetUp})
+      : super(key: key);
 
   @override
   State<Profile_Images> createState() => _Profile_ImagesState();
@@ -231,7 +236,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Row(
                             children: [
-                              textComoon("Add image of this service ", 12,
+                              textComoon("Add image of this service", 12,
                                   const Color(0xff292929), FontWeight.w700),
                               textComoon("(optional)", 12,
                                   const Color(0xff707070), FontWeight.w700)
@@ -722,6 +727,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       selectedpriceStatus = newValue!;
+                                      print(selectedpriceStatus);
                                     });
                                   },
                                   icon: const Padding(
@@ -904,12 +910,17 @@ class _Profile_ImagesState extends State<Profile_Images> {
                                         .data!.isHomeService,
                                     intervalTime: getSingleServiceDetailsData!
                                         .data!.inBetweenInterval,
+                                    noOfParallelClient:
+                                        getSingleServiceDetailsData!
+                                            .data!.noOfParallelClient,
                                   );
                                 },
                               )).then((value) {
+                                print(value);
                                 parallelClients = value[0];
                                 homeService = value[1];
                                 Clients = value[2];
+                                print(parallelClients);
                                 setState(() {});
                               });
                             },
@@ -1055,14 +1066,15 @@ class _Profile_ImagesState extends State<Profile_Images> {
         var time = await convertIntoTimeFormatForPriceDuration(
             getSingleServiceDetailsData!.data!.duration);
         servicetype.text =
-            getSingleServiceDetailsData!.data!.serviceType!.serviceTypeName!;
+            getSingleServiceDetailsData!.data!.serviceType!.serviceTypeName ?? "";
         servicecategory.text = getSingleServiceDetailsData!
-            .data!.serviceCategory!.serviceCategoryName!;
-        description.text = getSingleServiceDetailsData!.data!.description!;
+            .data!.serviceCategory!.serviceCategoryName ?? "";
+        description.text = getSingleServiceDetailsData!.data!.description ?? "";
         selectedprice = getSingleServiceDetailsData!
-            .data!.serviceCategory!.serviceCategoryName!;
+            .data!.serviceCategory!.serviceCategoryName ?? "";
         txtPrice.text =
             "\$ ${getSingleServiceDetailsData!.data!.price!.toString()}";
+        selectedpriceStatus = getSingleServiceDetailsData!.data!.priceStatus;
         print("converted Time : ${selectedvaluemin}");
         print(getSingleServiceDetailsData!.data!.duration);
         setState(() {});
@@ -1098,8 +1110,9 @@ class _Profile_ImagesState extends State<Profile_Images> {
       request.fields['description'] = description.text;
       request.fields['isBookOnline'] = Clients.toString();
       request.fields['isHomeService'] = homeService.toString();
-      request.fields['noOfParallelClient '] = parallelClients;
-      request.fields['showCancelPolicy '] = "false";
+      request.fields['noOfParallelClient'] = parallelClients;
+      request.fields['showCancelPolicy'] = "false";
+      request.fields['priceStatus'] = selectedpriceStatus ?? "";
       if (imagestatus) {
         http.MultipartFile multipartFile =
             await http.MultipartFile.fromPath('serviceImg', file!.path);
@@ -1117,24 +1130,12 @@ class _Profile_ImagesState extends State<Profile_Images> {
         isLoading = false;
         Navigator.pop(context);
         setState(() {});
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
       } else {
         Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(
+          message: "${map['message']}",
+        );
       }
     } catch (e) {
       rethrow;
@@ -1195,7 +1196,10 @@ class _Profile_ImagesState extends State<Profile_Images> {
         isLoading = false;
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return const service_Setup_Main();
+            return service_Setup_Main(
+              email: widget.email,
+              isStripeSetUp: widget.isStripeSetUp,
+            );
           },
         ));
         setState(() {});
@@ -1264,49 +1268,53 @@ class Data {
   String? inBetweenInterval;
   bool? isBookOnline;
   bool? isHomeService;
+  String? noOfParallelClient;
   String? imgName;
   String? imageUrl;
   String? dataId;
+  String? priceStatus;
 
-  Data({
-    this.id,
-    this.beauticianId,
-    this.serviceCategory,
-    this.serviceType,
-    this.duration,
-    this.price,
-    this.description,
-    this.isDelete,
-    this.showCancelPolicy,
-    this.inBetweenInterval,
-    this.isBookOnline,
-    this.isHomeService,
-    this.imgName,
-    this.imageUrl,
-    this.dataId,
-  });
+  Data(
+      {this.id,
+      this.beauticianId,
+      this.serviceCategory,
+      this.serviceType,
+      this.duration,
+      this.price,
+      this.description,
+      this.isDelete,
+      this.showCancelPolicy,
+      this.inBetweenInterval,
+      this.isBookOnline,
+      this.isHomeService,
+      this.noOfParallelClient,
+      this.imgName,
+      this.imageUrl,
+      this.dataId,
+      this.priceStatus});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["_id"],
-        beauticianId: json["beauticianId"],
-        serviceCategory: json["serviceCategory"] == null
-            ? null
-            : ServiceCategory.fromJson(json["serviceCategory"]),
-        serviceType: json["serviceType"] == null
-            ? null
-            : ServiceType.fromJson(json["serviceType"]),
-        duration: json["duration"],
-        price: json["price"],
-        description: json["description"],
-        isDelete: json["isDelete"],
-        showCancelPolicy: json["showCancelPolicy"],
-        inBetweenInterval: json["inBetweenInterval"],
-        isBookOnline: json["isBookOnline"],
-        isHomeService: json["isHomeService"],
-        imgName: json["imgName"],
-        imageUrl: json["imageUrl"],
-        dataId: json["id"],
-      );
+      id: json["_id"],
+      beauticianId: json["beauticianId"],
+      serviceCategory: json["serviceCategory"] == null
+          ? null
+          : ServiceCategory.fromJson(json["serviceCategory"]),
+      serviceType: json["serviceType"] == null
+          ? null
+          : ServiceType.fromJson(json["serviceType"]),
+      duration: json["duration"],
+      price: json["price"],
+      description: json["description"],
+      isDelete: json["isDelete"],
+      showCancelPolicy: json["showCancelPolicy"],
+      inBetweenInterval: json["inBetweenInterval"],
+      isBookOnline: json["isBookOnline"],
+      isHomeService: json["isHomeService"],
+      noOfParallelClient: (json["noOfParallelClient"] ?? "1").toString(),
+      imgName: json["imgName"],
+      imageUrl: json["imageUrl"],
+      dataId: json["id"],
+      priceStatus: json["priceStatus"]);
 
   Map<String, dynamic> toJson() => {
         "_id": id,
@@ -1324,6 +1332,7 @@ class Data {
         "imgName": imgName,
         "imageUrl": imageUrl,
         "id": dataId,
+        "priceStatus": priceStatus
       };
 }
 

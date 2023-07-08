@@ -84,7 +84,7 @@ class _contact_usState extends State<contact_us> {
                 child: Image.asset("assets/images/Frame 427321081.png",fit: BoxFit.fill,),
               ),
               SizedBox(height: height*0.04,),
-              const Text("(438) 444-1024",
+              const Text("(514) 709-8276",
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: "spartan",
@@ -115,7 +115,7 @@ class _contact_usState extends State<contact_us> {
                 children: [
                   InkWell(
                     onTap: (){
-                      _launchDailer("+987654231");
+                      _launchDailer("+15147098276");
                     },
                     child: Container(alignment: Alignment.center,
                       height: height*0.07,

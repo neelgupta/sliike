@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/services.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/near_you_screen.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/search_screen.dart';
+import 'package:new_sliikeapps_apps/client_app/profile_pages/feedback.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../commonClass.dart';
 import '../../utils/apiurllist.dart';
@@ -304,13 +307,45 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                                 ),
                               )
                             : datum.isEmpty || selectedServiceIds.isEmpty
-                                ? SizedBox(
-                                    height: 200,
-                                    width: double.infinity,
-                                    child: Center(
-                                      child: Text("No Data Found !!!"),
-                                    ),
-                                  )
+                                ? Container(
+                    height: height * 0.45,
+                    child: Center(
+                      child: Expanded(
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text:
+                                    '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'spartan',
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff414141)),
+                                children: [
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
+                                  TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => feedback(),
+                                            ),),
+                                      text: "feedback ",
+                                      style: TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Colors.blue)),
+                                  TextSpan(
+                                      text: 'section\"',
+                                      style: TextStyle(
+                                          fontFamily: 'spartan',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: Color(0xff414141))),
+                                ])),
+                      ),
+                    ))
                                 : ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: datum.length,
@@ -767,23 +802,13 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           mf = MyFavorites.fromjson(map);
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",
+          );
         } else {
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",
+          );
         }
       }
     } catch (e) {
@@ -823,23 +848,13 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
           mf = MyFavorites.fromjson(map);
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",
+          );
         } else {
-          Fluttertoast.showToast(
-              msg: "${map['message']}",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          showToast(
+            message: "${map['message']}",
+          );
         }
       }
     } catch (e) {
@@ -950,7 +965,10 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
         isLoading = true;
       });
       log("searchServiceType url is :: $geturi");
-      var response = await http.get(geturi);
+      var response = await http.get(geturi, headers: {
+         "Authorization":
+            "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}"
+      });
       datum.clear();
       log("searchServiceType status code ==> ${response.statusCode}");
       log(" searchServiceType res body is :  ${response.body}");

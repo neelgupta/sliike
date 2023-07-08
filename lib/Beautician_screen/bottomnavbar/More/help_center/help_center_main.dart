@@ -199,7 +199,7 @@ class _help_center_beautiState extends State<help_center_beauti> {
                       return contact_us_beauty();
                     },
                   ));
-                },
+                }, 
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     vertical: 17,

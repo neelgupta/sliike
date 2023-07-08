@@ -17,6 +17,7 @@ import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 import '../../../viewscrren/signin/signin.dart';
 import '../business_setup/busines_setup/business_setup.dart';
@@ -123,7 +124,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                                   .data!.profileImage!,
                                               fit: BoxFit.fill)
                                           : Image.asset(
-                                              "assets/images/Ellipse 202.png",
+                                              "assets/images/pro.jpeg",
                                               fit: BoxFit.fill),
                                     ),
                                   ),
@@ -282,14 +283,16 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                         ),
                       ),
                       // Padding(
-                      //   padding: const EdgeInsets.only(left: 20,right: 20),
+                      //   padding: const EdgeInsets.only(left: 20, right: 20),
                       //   child: Container(
-                      //     padding: EdgeInsets.symmetric(vertical: 17,),
-                      //     decoration: BoxDecoration(
-                      //         border: Border(bottom: BorderSide(color: Colors.black12))
+                      //     padding: EdgeInsets.symmetric(
+                      //       vertical: 17,
                       //     ),
+                      //     decoration: BoxDecoration(
+                      //         border: Border(
+                      //             bottom: BorderSide(color: Colors.black12))),
                       //     child: InkWell(
-                      //       onTap: (){
+                      //       onTap: () {
                       //         // Navigator.push(context, MaterialPageRoute(builder: (context) {
                       //         //   return all_Activities();
                       //         // },));
@@ -298,15 +301,20 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       //         children: [
                       //           Container(
                       //             height: 30,
-                      //           child: Image.asset("assets/images/diagram.png"),
+                      //             child:
+                      //                 Image.asset("assets/images/diagram.png"),
                       //           ),
-                      //           SizedBox(width: 15,),
-                      //           textComoon("Reports",14,Color(0xff414141), FontWeight.w500),
+                      //           SizedBox(
+                      //             width: 15,
+                      //           ),
+                      //           textComoon("Reports", 14, Color(0xff414141),
+                      //               FontWeight.w500),
                       //           Spacer(),
                       //           Container(
                       //             height: 15,
                       //             width: 30,
-                      //             child: Image.asset("assets/images/righticon.png"),
+                      //             child: Image.asset(
+                      //                 "assets/images/righticon.png"),
                       //           ),
                       //         ],
                       //       ),
@@ -382,7 +390,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                       // ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 100),
+                            left: 20, right: 20, bottom: 10),
                         child: Container(
                           padding: EdgeInsets.only(top: 10, bottom: 15),
                           decoration: BoxDecoration(
@@ -421,7 +429,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                         ),
                       ),
                       Container(
-                        height: height * 0.05,
+                        height: height * 0.01,
                         width: width,
                         color: Color(0xffF3F3F3),
                       ),
@@ -587,9 +595,14 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
   handleLogoutFunction() async {
     var geturi = Uri.parse(ApiUrlList.handleLogout);
     try {
-      setState(() {
-        isLoading = true;
-      });
+      Loader.show(context,
+          isSafeAreaOverlay: false,
+          overlayColor: Colors.black26,
+          progressIndicator: const CircularProgressIndicator(
+              backgroundColor: Color(0xff01635D)),
+          themeData: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.fromSwatch()
+                  .copyWith(secondary: const Color(0xff01635D))));
       var userRole = Helper.prefs!.getString(UserPrefs.keyusertype);
 
       var deviceToken = Helper.prefs!.getString(UserPrefs.keyDeviceToken);
@@ -615,10 +628,6 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
       log("handleLogoutFunction response.body ==> ${response.body}");
       log("handleLogoutFunction status code ==> ${response.statusCode}");
       if (response.statusCode == 200) {
-        // Map map = jsonDecode(response.body);
-        // getmodelProfile =
-        //     getBeauticianProfilemodel.fromjson(jsonDecode(response.body));
-        // if (getmodelProfile!.status == 200) {
         logoutdata();
         Navigator.pushAndRemoveUntil(
           context,
@@ -629,27 +638,14 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
           ),
           (route) => false,
         );
-        Fluttertoast.showToast(
-          msg: "Logged Out Successfully.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0,
+        showToast(
+          message: "Logged Out Successfully.",
         );
-        // setState(() {
-        //   businessname = getmodelProfile!.data?.businessName ?? '';
-        //   Userid = getmodelProfile!.data?.uid ?? '';
-        // });
-        // }
       }
     } catch (e) {
       rethrow;
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      Loader.hide();
     }
   }
 
@@ -688,24 +684,13 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
           builder: (context) => homescreen(selectedIndex: 0),
         ),
       );
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+          message: "${map['message']}",
+          );
     } else {
       Loader.hide();
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+          message: "${map['message']}",);
     }
   }
 

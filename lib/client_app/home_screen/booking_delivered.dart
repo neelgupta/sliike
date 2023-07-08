@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 import '../ beautician _page/booking_receipt.dart';
 import 'dart:developer';
 import 'dart:convert';
@@ -636,7 +637,7 @@ class _booking_deliveredState extends State<booking_delivered> {
                     //                 InkWell(
                     //                   onTap: (){
                     //                     if(ratingValue == null){
-                    //                       Fluttertoast.showToast(msg: "Please give rating");
+                    //                       showToast(message: "${map['message']}",);
                     //                     }else{
                     //                       addRating();
                     //                     }
@@ -751,26 +752,14 @@ class _booking_deliveredState extends State<booking_delivered> {
       // setState(() {
       //   isLoading = false;
       // });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     } else {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(
-          msg: map["message"],
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(
+            message: "${map['message']}",);
     }
   }
 }

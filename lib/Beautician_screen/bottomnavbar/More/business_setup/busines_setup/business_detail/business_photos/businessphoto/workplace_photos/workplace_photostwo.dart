@@ -4,7 +4,6 @@ import 'dart:io';
 
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
@@ -13,6 +12,7 @@ import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.d
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class worlplace_PhotosTwo extends StatefulWidget {
   worlplace_PhotosTwo({Key? key}) : super(key: key);
@@ -24,22 +24,18 @@ class worlplace_PhotosTwo extends StatefulWidget {
 class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
   File? firstImage;
   bool firstImageStatus = false;
-  bool one = false;
   String firstImagePath = "";
 
   File? secondImage;
   bool secondImageStatus = false;
-  bool two = false;
   String secondImagePath = "";
 
   File? thirdImage;
   bool thirdImageStatus = false;
-  bool three = false;
   String thirdImagePath = "";
 
   File? fourthImage;
   bool fourthImageStatus = false;
-  bool four = false;
   String fourthImagePath = "";
 
   ///
@@ -162,12 +158,19 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             width: width,
                             height: 180,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: FileImage(File(firstImagePath)),
-                                    fit: BoxFit.contain)),
+                                image: firstImagePath.isNotEmpty
+                                    ? DecorationImage(
+                                        image: NetworkImage(firstImagePath),
+                                        fit: BoxFit.fill)
+                                    : DecorationImage(
+                                        image:
+                                            FileImage(File(firstImage!.path)),
+                                        fit: BoxFit.fill)),
                             child: InkWell(
                               onTap: () {
-                                _sheet();
+                                setState(() {
+                                  _sheet();
+                                });
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,7 +184,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          _sheet();
+                                          setState(() {
+                                            _sheet();
+                                          });
                                         },
                                         child: Container(
                                           color: Colors.white,
@@ -196,9 +201,11 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          // deleteWorkSpaceImg(p!.data!.first.workSpaceImgs[0]);
+                                          if (firstImagePath.isNotEmpty)
+                                            deleteWorkSpaceImg(firstImagePath);
                                           firstImageStatus = false;
-                                          one = false;
+                                          firstImagePath = "";
+                                          firstImage = null;
                                           setState(() {});
                                         },
                                         child: Container(
@@ -220,64 +227,20 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                             width: width,
                             height: 180,
                             decoration: BoxDecoration(
-                                image: p!.data!.first.workSpaceImgs.isNotEmpty
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            p!.data!.first.workSpaceImgs[0]),
-                                        fit: BoxFit.fill)
-                                    : DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/Rectangle_greyline.png"),
-                                        fit: BoxFit.fill)),
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/Rectangle_greyline.png"),
+                                    fit: BoxFit.fill)),
                             child: InkWell(
                               onTap: () {
-                                _sheet();
+                                setState(() {
+                                  _sheet();
+                                });
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  p!.data!.first.workSpaceImgs.isNotEmpty
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                _sheet();
-                                              },
-                                              child: Container(
-                                                color: Colors.white,
-                                                child: Image.asset(
-                                                    "assets/images/edit-2.png",
-                                                    height: 30,
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                deleteWorkSpaceImg(p!.data!
-                                                    .first.workSpaceImgs[0]);
-                                                firstImageStatus = false;
-                                                // one = false;
-                                                setState(() {});
-                                              },
-                                              child: Container(
-                                                color: Colors.white,
-                                                child: Image.asset(
-                                                    "assets/images/delete.png",
-                                                    height: 30),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                          ],
-                                        )
-                                      : SizedBox(),
                                   Center(
                                     child: Image(
                                       height: 40,
@@ -298,102 +261,24 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                     ),
                     Row(
                       children: [
-                        one
-                            ? Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    image: p!.data!.first.workSpaceImgs
-                                            .isNotEmpty
-                                        ? DecorationImage(
-                                            image: NetworkImage(p!
-                                                .data!.first.workSpaceImgs[1]),
-                                            fit: BoxFit.fill)
-                                        : DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/Rectangle_greyline.png"),
-                                            fit: BoxFit.fill)),
-                                child: InkWell(
-                                  onTap: () {
-                                    _sheet2();
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      p!.data!.first.workSpaceImgs.isNotEmpty
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    _sheet2();
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/edit-2.png",
-                                                        height: 20,
-                                                        color: Colors.grey),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    deleteWorkSpaceImg(p!
-                                                        .data!
-                                                        .first
-                                                        .workSpaceImgs[1]);
-                                                    secondImageStatus = false;
-                                                    one = true;
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/delete.png",
-                                                        height: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                              ],
-                                            )
-                                          : SizedBox(),
-                                      Center(
-                                        child: Image(
-                                          height: 40,
-                                          image: AssetImage(
-                                              "assets/images/camera_grey.png"),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        "Add another photo",
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Color(0xff414141),
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                            : secondImageStatus
+                        firstImage != null ||
+                                firstImagePath.isNotEmpty ||
+                                secondImage != null ||
+                                secondImagePath.isNotEmpty
+                            ? secondImageStatus
                                 ? Container(
                                     width: 120,
                                     height: 120,
                                     decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: FileImage(
-                                                File(secondImagePath)),
-                                            fit: BoxFit.fill)),
+                                        image: secondImagePath.isNotEmpty
+                                            ? DecorationImage(
+                                                image: NetworkImage(
+                                                    secondImagePath),
+                                                fit: BoxFit.fill)
+                                            : DecorationImage(
+                                                image: FileImage(
+                                                    File(secondImage!.path)),
+                                                fit: BoxFit.fill)),
                                     child: InkWell(
                                       onTap: () {
                                         _sheet2();
@@ -428,8 +313,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                               ),
                                               InkWell(
                                                 onTap: () {
+                                                  if (secondImagePath
+                                                      .isNotEmpty)
+                                                    deleteWorkSpaceImg(
+                                                        secondImagePath);
                                                   secondImageStatus = false;
-                                                  one = true;
+                                                  secondImage = null;
+                                                  secondImagePath = "";
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -447,106 +337,66 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         ],
                                       ),
                                     ))
-                                : SizedBox(),
-                        SizedBox(
-                          width: 05,
-                        ),
-                        two
-                            ? Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    image: p!.data!.first.workSpaceImgs
-                                            .isNotEmpty
-                                        ? DecorationImage(
-                                            image: NetworkImage(p!
-                                                .data!.first.workSpaceImgs[2]),
-                                            fit: BoxFit.fill)
-                                        : DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/Rectangle_greyline.png"),
-                                            fit: BoxFit.fill)),
-                                child: InkWell(
-                                  onTap: () {
-                                    _sheet3();
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      p!.data!.first.workSpaceImgs.isNotEmpty
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    _sheet3();
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/edit-2.png",
-                                                        height: 20,
-                                                        color: Colors.grey),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    deleteWorkSpaceImg(p!
-                                                        .data!
-                                                        .first
-                                                        .workSpaceImgs[2]);
-                                                    thirdImageStatus = false;
-                                                    two = true;
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/delete.png",
-                                                        height: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                              ],
-                                            )
-                                          : SizedBox(),
-                                      Center(
-                                        child: Image(
-                                          height: 40,
-                                          image: AssetImage(
-                                              "assets/images/camera_grey.png"),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        "Add another photo",
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Color(0xff414141),
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                            : thirdImageStatus
-                                ? Container(
+                                : Container(
                                     width: 120,
                                     height: 120,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image:
-                                                FileImage(File(thirdImagePath)),
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
                                             fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet2();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: Image(
+                                              height: 40,
+                                              image: AssetImage(
+                                                  "assets/images/camera_grey.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "Add another photo",
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xff414141),
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                            : SizedBox(),
+                        SizedBox(
+                          width: 05,
+                        ),
+                        secondImage != null ||
+                                secondImagePath.isNotEmpty ||
+                                thirdImage != null ||
+                                thirdImagePath.isNotEmpty
+                            ? thirdImageStatus
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: thirdImagePath.isNotEmpty
+                                            ? DecorationImage(
+                                                image: NetworkImage(
+                                                    thirdImagePath),
+                                                fit: BoxFit.fill)
+                                            : DecorationImage(
+                                                image: FileImage(
+                                                    File(thirdImage!.path)),
+                                                fit: BoxFit.fill)),
                                     child: InkWell(
                                       onTap: () {
                                         _sheet3();
@@ -581,8 +431,12 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                               ),
                                               InkWell(
                                                 onTap: () {
+                                                  if (thirdImagePath.isNotEmpty)
+                                                    deleteWorkSpaceImg(
+                                                        thirdImagePath);
                                                   thirdImageStatus = false;
-                                                  two = true;
+                                                  thirdImage = null;
+                                                  thirdImagePath = "";
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -600,106 +454,66 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         ],
                                       ),
                                     ))
-                                : SizedBox(),
-                        SizedBox(
-                          width: 05,
-                        ),
-                        three
-                            ? Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    image: p!.data!.first.workSpaceImgs
-                                            .isNotEmpty
-                                        ? DecorationImage(
-                                            image: NetworkImage(p!
-                                                .data!.first.workSpaceImgs[3]),
-                                            fit: BoxFit.fill)
-                                        : DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/Rectangle_greyline.png"),
-                                            fit: BoxFit.fill)),
-                                child: InkWell(
-                                  onTap: () {
-                                    _sheet4();
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      p!.data!.first.workSpaceImgs.isNotEmpty
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    _sheet4();
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/edit-2.png",
-                                                        height: 20,
-                                                        color: Colors.grey),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    deleteWorkSpaceImg(p!
-                                                        .data!
-                                                        .first
-                                                        .workSpaceImgs[3]);
-                                                    fourthImageStatus = false;
-                                                    three = true;
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.white,
-                                                    child: Image.asset(
-                                                        "assets/images/delete.png",
-                                                        height: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                              ],
-                                            )
-                                          : SizedBox(),
-                                      Center(
-                                        child: Image(
-                                          height: 40,
-                                          image: AssetImage(
-                                              "assets/images/camera_grey.png"),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        "Add another photo",
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Color(0xff414141),
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                            : fourthImageStatus
-                                ? Container(
+                                : Container(
                                     width: 120,
                                     height: 120,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: FileImage(
-                                                File(fourthImagePath)),
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
                                             fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet3();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: Image(
+                                              height: 40,
+                                              image: AssetImage(
+                                                  "assets/images/camera_grey.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "Add another photo",
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xff414141),
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                            : SizedBox(),
+                        SizedBox(
+                          width: 05,
+                        ),
+                        thirdImage != null ||
+                                thirdImagePath.isNotEmpty ||
+                                fourthImage != null ||
+                                fourthImagePath.isNotEmpty
+                            ? fourthImageStatus
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: fourthImagePath.isNotEmpty
+                                            ? DecorationImage(
+                                                image: NetworkImage(
+                                                    fourthImagePath),
+                                                fit: BoxFit.fill)
+                                            : DecorationImage(
+                                                image: FileImage(
+                                                    File(fourthImage!.path)),
+                                                fit: BoxFit.fill)),
                                     child: InkWell(
                                       onTap: () {
                                         _sheet4();
@@ -734,8 +548,13 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                               ),
                                               InkWell(
                                                 onTap: () {
+                                                  if (fourthImagePath
+                                                      .isNotEmpty)
+                                                    deleteWorkSpaceImg(
+                                                        fourthImagePath);
                                                   fourthImageStatus = false;
-                                                  three = true;
+                                                  fourthImagePath = "";
+                                                  fourthImage = null;
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -753,888 +572,47 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                                         ],
                                       ),
                                     ))
-                                : SizedBox(),
+                                : Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/Rectangle_greyline.png"),
+                                            fit: BoxFit.fill)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _sheet4();
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: Image(
+                                              height: 40,
+                                              image: AssetImage(
+                                                  "assets/images/camera_grey.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "Add another photo",
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xff414141),
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                            : SizedBox(),
                       ],
                     ),
-                    // Column(
-                    //   children: [
-                    //     SizedBox(
-                    //       height: height * 0.02,
-                    //     ),
-                    //     Row(
-                    //       children: [
-                    //         fristimagestatus
-                    //             ? Container(
-                    //                 width: width * 0.43,
-                    //                 child: GestureDetector(
-                    //                   onTap: () {
-                    //                     showDialog(
-                    //                       context: context,
-                    //                       builder: (context) {
-                    //                         return AlertDialog(
-                    //                           alignment: Alignment.bottomCenter,
-                    //                           insetPadding:
-                    //                               EdgeInsets.symmetric(
-                    //                                   horizontal: 20,
-                    //                                   vertical: 30),
-                    //                           shape: RoundedRectangleBorder(
-                    //                               borderRadius:
-                    //                                   BorderRadius.all(
-                    //                                       Radius.circular(10))),
-                    //                           title: Column(
-                    //                             children: <Widget>[
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "TAKE A PHOTO",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-                    //                                 if (photo != null) {
-                    //                                   fristimage =
-                    //                                       File(photo.path);
-                    //                                   firstimagestring =
-                    //                                       photo.path;
-                    //                                   fristimagestatus = true;
-                    //                                   setState(() {});
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "CHOOSE FROM GALLERY",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
-                    //                                 if (selectedImages != null) {
-                    //                                   setState(() {
-                    //                                     fristimage = File(selectedImages.path);
-                    //                                     firstimagestring = selectedImages.path;
-                    //                                     fristimagestatus = true;
-                    //                                     print(fristimagestatus);
-                    //                                   });
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               commonButtonborder(
-                    //                                   context,
-                    //                                   "CANCEL",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Color(0xff01635D), () {
-                    //                                 Navigator.pop(context);
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.03,
-                    //                               ),
-                    //                             ],
-                    //                           ),
-                    //                         );
-                    //                       },
-                    //                     );
-                    //                   },
-                    //                   child: Container(
-                    //                       width: width,
-                    //                       height: 180,
-                    //                       decoration: BoxDecoration(
-                    //                           image: fristimagestatus
-                    //                               ? DecorationImage(
-                    //                                   image: FileImage(File(
-                    //                                       firstimagestring)))
-                    //                               : firstNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(firstNetworkImage)):
-                    //                           DecorationImage(
-                    //                                   image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                    //                       child: fristimagestatus
-                    //                           ? Stack(
-                    //                               children: [
-                    //                                 Positioned(
-                    //                                   right: 50,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () async {
-                    //                                       XFile?
-                    //                                           selectedImages =
-                    //                                           await _picker.pickImage(
-                    //                                               source: ImageSource
-                    //                                                   .gallery);
-                    //                                       if (selectedImages !=
-                    //                                           null) {
-                    //                                         setState(() {
-                    //                                           fristimage = File(
-                    //                                               selectedImages
-                    //                                                   .path);
-                    //                                           firstimagestring =
-                    //                                               selectedImages
-                    //                                                   .path;
-                    //                                           fristimagestatus =
-                    //                                               true;
-                    //                                           print(
-                    //                                               fristimagestatus);
-                    //                                         });
-                    //                                       }
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/edit_grey.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 ),
-                    //                                 Positioned(
-                    //                                   right: 10,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () {
-                    //                                       setState(() {
-                    //                                         firstimagestring =
-                    //                                             "";
-                    //                                         fristimagestatus =
-                    //                                             false;
-                    //                                       });
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/delete.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 )
-                    //                               ],
-                    //                             )
-                    //                           : Column(
-                    //                               crossAxisAlignment:
-                    //                                   CrossAxisAlignment.center,
-                    //                               mainAxisAlignment:
-                    //                                   MainAxisAlignment.center,
-                    //                               children: [
-                    //                                 Center(
-                    //                                   child: Image(
-                    //                                     height: 40,
-                    //                                     image: AssetImage(
-                    //                                         "assets/images/camera_grey.png"),
-                    //                                   ),
-                    //                                 ),
-                    //                                 SizedBox(
-                    //                                   height: 5,
-                    //                                 ),
-                    //                                 textComoon(
-                    //                                     "Add Logo",
-                    //                                     12,
-                    //                                     Color(0xff414141),
-                    //                                     FontWeight.w500),
-                    //                               ],
-                    //                             )),
-                    //                 ),
-                    //               )
-                    //             : SizedBox(),
-                    //         SizedBox(
-                    //           width: width * 0.02,
-                    //         ),
-                    //         secoundimagestatus
-                    //             ? Container(
-                    //                 width: width * 0.43,
-                    //                 child: GestureDetector(
-                    //                   onTap: () {
-                    //                     showDialog(
-                    //                       context: context,
-                    //                       builder: (context) {
-                    //                         return AlertDialog(
-                    //                           alignment: Alignment.bottomCenter,
-                    //                           insetPadding:
-                    //                               EdgeInsets.symmetric(
-                    //                                   horizontal: 20,
-                    //                                   vertical: 30),
-                    //                           shape: RoundedRectangleBorder(
-                    //                               borderRadius:
-                    //                                   BorderRadius.all(
-                    //                                       Radius.circular(10))),
-                    //                           title: Column(
-                    //                             children: <Widget>[
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "TAKE A PHOTO",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 final XFile? photo =
-                    //                                     await _picker.pickImage(
-                    //                                         source: ImageSource
-                    //                                             .camera);
-                    //                                 if (photo != null) {
-                    //                                   secoundimage =
-                    //                                       File(photo.path);
-                    //                                   secoundimagestring =
-                    //                                       photo.path;
-                    //                                   secoundimagestatus = true;
-                    //                                   setState(() {});
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "CHOOSE FROM GALLERY",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 XFile? selectedImages =
-                    //                                     await _picker.pickImage(
-                    //                                         source: ImageSource
-                    //                                             .gallery);
-                    //                                 if (selectedImages !=
-                    //                                     null) {
-                    //                                   setState(() {
-                    //                                     secoundimage = File(
-                    //                                         selectedImages
-                    //                                             .path);
-                    //                                     secoundimagestring =
-                    //                                         selectedImages.path;
-                    //                                     secoundimagestatus = true;
-                    //                                     print(fristimagestatus);
-                    //                                   });
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               commonButtonborder(
-                    //                                   context,
-                    //                                   "CANCEL",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Color(0xff01635D), () {
-                    //                                 Navigator.pop(context);
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.03,
-                    //                               ),
-                    //                             ],
-                    //                           ),
-                    //                         );
-                    //                       },
-                    //                     );
-                    //                   },
-                    //                   child: Container(
-                    //                       width: width,
-                    //                       height: 180,
-                    //                       decoration: BoxDecoration(
-                    //                           image: secoundimagestatus
-                    //                               ? DecorationImage(
-                    //                                   image: FileImage(File(secoundimagestring)))
-                    //                               :secondNetworkImage.isNotEmpty?
-                    //                           DecorationImage(image: NetworkImage(secondNetworkImage)):
-                    //                           DecorationImage(image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                    //                       child: secoundimagestatus
-                    //                           ? Stack(
-                    //                               children: [
-                    //                                 Positioned(
-                    //                                   right: 50,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () async {
-                    //                                       XFile?
-                    //                                           selectedImages =
-                    //                                           await _picker.pickImage(
-                    //                                               source: ImageSource
-                    //                                                   .gallery);
-                    //                                       if (selectedImages !=
-                    //                                           null) {
-                    //                                         setState(() {
-                    //                                           secoundimage = File(
-                    //                                               selectedImages
-                    //                                                   .path);
-                    //                                           secoundimagestring =
-                    //                                               selectedImages
-                    //                                                   .path;
-                    //                                           secoundimagestatus =
-                    //                                               true;
-                    //                                         });
-                    //                                       }
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/edit_grey.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 ),
-                    //                                 Positioned(
-                    //                                   right: 10,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () {
-                    //                                       setState(() {
-                    //                                         secoundimagestring =
-                    //                                             "";
-                    //                                         secoundimagestatus =
-                    //                                             false;
-                    //                                       });
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/delete.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 )
-                    //                               ],
-                    //                             )
-                    //                           : Column(
-                    //                               crossAxisAlignment:
-                    //                                   CrossAxisAlignment.center,
-                    //                               mainAxisAlignment:
-                    //                                   MainAxisAlignment.center,
-                    //                               children: [
-                    //                                 Center(
-                    //                                   child: Image(
-                    //                                     height: 40,
-                    //                                     image: AssetImage(
-                    //                                         "assets/images/camera_grey.png"),
-                    //                                   ),
-                    //                                 ),
-                    //                                 SizedBox(
-                    //                                   height: 5,
-                    //                                 ),
-                    //                                 textComoon(
-                    //                                     "Add Logo",
-                    //                                     12,
-                    //                                     Color(0xff414141),
-                    //                                     FontWeight.w500),
-                    //                               ],
-                    //                             )),
-                    //                 ),
-                    //               )
-                    //             : SizedBox()
-                    //       ],
-                    //     ),
-                    //     SizedBox(
-                    //       height: height * 0.02,
-                    //     ),
-                    //     Row(
-                    //       children: [
-                    //         threeimagestatus
-                    //             ? Expanded(
-                    //                 child: GestureDetector(
-                    //                   onTap: () {
-                    //                     showDialog(
-                    //                       context: context,
-                    //                       builder: (context) {
-                    //                         return AlertDialog(
-                    //                           alignment: Alignment.bottomCenter,
-                    //                           insetPadding:
-                    //                               EdgeInsets.symmetric(
-                    //                                   horizontal: 20,
-                    //                                   vertical: 30),
-                    //                           shape: RoundedRectangleBorder(
-                    //                               borderRadius:
-                    //                                   BorderRadius.all(
-                    //                                       Radius.circular(10))),
-                    //                           title: Column(
-                    //                             children: <Widget>[
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "TAKE A PHOTO",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 final XFile? photo =
-                    //                                     await _picker.pickImage(
-                    //                                         source: ImageSource
-                    //                                             .camera);
-                    //                                 if (photo != null) {
-                    //                                   threeimage =
-                    //                                       File(photo.path);
-                    //                                   threeimagestring =
-                    //                                       photo.path;
-                    //                                   threeimagestatus = true;
-                    //                                   setState(() {});
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               CommonButton(
-                    //                                   context,
-                    //                                   "CHOOSE FROM GALLERY",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Colors.white, () async {
-                    //                                 Navigator.pop(context);
-                    //                                 XFile? selectedImages =
-                    //                                     await _picker.pickImage(
-                    //                                         source: ImageSource
-                    //                                             .gallery);
-                    //                                 if (selectedImages !=
-                    //                                     null) {
-                    //                                   setState(() {
-                    //                                     threeimage = File(
-                    //                                         selectedImages
-                    //                                             .path);
-                    //                                     threeimagestring =
-                    //                                         selectedImages.path;
-                    //                                     threeimagestatus = true;
-                    //                                     print(fristimagestatus);
-                    //                                   });
-                    //                                 }
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.02,
-                    //                               ),
-                    //                               commonButtonborder(
-                    //                                   context,
-                    //                                   "CANCEL",
-                    //                                   12,
-                    //                                   FontWeight.w600,
-                    //                                   Color(0xff01635D), () {
-                    //                                 Navigator.pop(context);
-                    //                               }),
-                    //                               SizedBox(
-                    //                                 height: height * 0.03,
-                    //                               ),
-                    //                             ],
-                    //                           ),
-                    //                         );
-                    //                       },
-                    //                     );
-                    //                   },
-                    //                   child: Container(
-                    //                       width: width,
-                    //                       height: 150,
-                    //                       decoration: BoxDecoration(
-                    //                           image: fourimagestatus
-                    //                               ? DecorationImage(
-                    //                                   image: FileImage(File(
-                    //                                       threeimagestring)))
-                    //                               :thirdNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(thirdNetworkImage)): DecorationImage(
-                    //                                   image: AssetImage(
-                    //                                       "assets/images/Rectangle_greyline.png"),
-                    //                                   fit: BoxFit.fill)),
-                    //                       child: threeimagestatus
-                    //                           ? Stack(
-                    //                               children: [
-                    //                                 Positioned(
-                    //                                   right: 50,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () async {
-                    //                                       XFile? selectedImages = await _picker.pickImage(
-                    //                                               source: ImageSource
-                    //                                                   .gallery);
-                    //                                       if (selectedImages !=
-                    //                                           null) {
-                    //                                         setState(() {
-                    //                                           threeimage = File(
-                    //                                               selectedImages
-                    //                                                   .path);
-                    //                                           threeimagestring =
-                    //                                               selectedImages
-                    //                                                   .path;
-                    //                                           threeimagestatus =
-                    //                                               true;
-                    //                                           print(
-                    //                                               fristimagestatus);
-                    //                                         });
-                    //                                       }
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/edit_grey.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 ),
-                    //                                 Positioned(
-                    //                                   right: 10,
-                    //                                   child: GestureDetector(
-                    //                                     onTap: () {
-                    //                                       setState(() {
-                    //                                         threeimagestring =
-                    //                                             "";
-                    //                                         threeimagestatus =
-                    //                                             false;
-                    //                                       });
-                    //                                     },
-                    //                                     child: Container(
-                    //                                       width: 30,
-                    //                                       height: 30,
-                    //                                       decoration:
-                    //                                           BoxDecoration(
-                    //                                         color: Color(
-                    //                                             0xffFFFFFF),
-                    //                                         borderRadius:
-                    //                                             BorderRadius
-                    //                                                 .circular(
-                    //                                                     5),
-                    //                                         border: Border.all(
-                    //                                             color: Color(
-                    //                                                 0xffE7E7E7),
-                    //                                             width: 1),
-                    //                                       ),
-                    //                                       child: Padding(
-                    //                                         padding:
-                    //                                             const EdgeInsets
-                    //                                                 .all(8.0),
-                    //                                         child: Image.asset(
-                    //                                             "assets/images/delete.png"),
-                    //                                       ),
-                    //                                     ),
-                    //                                   ),
-                    //                                 )
-                    //                               ],
-                    //                             )
-                    //                           : Column(
-                    //                               crossAxisAlignment:
-                    //                                   CrossAxisAlignment.center,
-                    //                               mainAxisAlignment:
-                    //                                   MainAxisAlignment.center,
-                    //                               children: [
-                    //                                 Center(
-                    //                                   child: Image(
-                    //                                     height: 40,
-                    //                                     image: AssetImage(
-                    //                                         "assets/images/camera_grey.png"),
-                    //                                   ),
-                    //                                 ),
-                    //                                 SizedBox(
-                    //                                   height: 5,
-                    //                                 ),
-                    //                                 textComoon(
-                    //                                     "Add Logo",
-                    //                                     12,
-                    //                                     Color(0xff414141),
-                    //                                     FontWeight.w500),
-                    //                               ],
-                    //                             )),
-                    //                 ),
-                    //               )
-                    //             : SizedBox(),
-                    //         SizedBox(
-                    //           width: width * 0.02,
-                    //         ),
-                    //         fourimagestatus
-                    //             ? Container(
-                    //           width: width * 0.43,
-                    //           child: GestureDetector(
-                    //             onTap: () {
-                    //               showDialog(
-                    //                 context: context,
-                    //                 builder: (context) {
-                    //                   return AlertDialog(
-                    //                     alignment: Alignment.bottomCenter,
-                    //                     insetPadding:
-                    //                     EdgeInsets.symmetric(
-                    //                         horizontal: 20,
-                    //                         vertical: 30),
-                    //                     shape: RoundedRectangleBorder(
-                    //                         borderRadius:
-                    //                         BorderRadius.all(
-                    //                             Radius.circular(10))),
-                    //                     title: Column(
-                    //                       children: <Widget>[
-                    //                         SizedBox(
-                    //                           height: height * 0.02,
-                    //                         ),
-                    //                         CommonButton(
-                    //                             context,
-                    //                             "TAKE A PHOTO",
-                    //                             12,
-                    //                             FontWeight.w600,
-                    //                             Colors.white, () async {
-                    //                           Navigator.pop(context);
-                    //                           final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-                    //                           if (photo != null) {
-                    //                             fourimage =
-                    //                                 File(photo.path);
-                    //                             fourimagestring =
-                    //                                 photo.path;
-                    //                             fourimagestatus = true;
-                    //                             setState(() {});
-                    //                           }
-                    //                         }),
-                    //                         SizedBox(
-                    //                           height: height * 0.02,
-                    //                         ),
-                    //                         CommonButton(
-                    //                             context,
-                    //                             "CHOOSE FROM GALLERY",
-                    //                             12,
-                    //                             FontWeight.w600,
-                    //                             Colors.white, () async {
-                    //                           Navigator.pop(context);
-                    //                           XFile? selectedImages = await _picker.pickImage(source: ImageSource.gallery);
-                    //                           if (selectedImages != null) {
-                    //                             setState(() {
-                    //                               fourimage = File(selectedImages.path);
-                    //                               fourimagestring = selectedImages.path;
-                    //                               fourimagestatus = true;
-                    //                               print(fristimagestatus);
-                    //                             });
-                    //                           }
-                    //                         }),
-                    //                         SizedBox(
-                    //                           height: height * 0.02,
-                    //                         ),
-                    //                         commonButtonborder(
-                    //                             context,
-                    //                             "CANCEL",
-                    //                             12,
-                    //                             FontWeight.w600,
-                    //                             Color(0xff01635D), () {
-                    //                           Navigator.pop(context);
-                    //                         }),
-                    //                         SizedBox(
-                    //                           height: height * 0.03,
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   );
-                    //                 },
-                    //               );
-                    //             },
-                    //             child: Container(
-                    //                 width: width,
-                    //                 height: 180,
-                    //                 decoration: BoxDecoration(
-                    //                     image: fourimagestatus
-                    //                         ? DecorationImage(
-                    //                         image: FileImage(File(
-                    //                             fourimagestring)))
-                    //                         : fourthNetworkImage.isNotEmpty?DecorationImage(image: NetworkImage(fourthNetworkImage)):
-                    //                     DecorationImage(
-                    //                         image: AssetImage("assets/images/Rectangle_greyline.png"), fit: BoxFit.fill)),
-                    //                 child: fourimagestatus
-                    //                     ? Stack(
-                    //                   children: [
-                    //                     Positioned(
-                    //                       right: 50,
-                    //                       child: GestureDetector(
-                    //                         onTap: () async {
-                    //                           XFile?
-                    //                           selectedImages =
-                    //                           await _picker.pickImage(
-                    //                               source: ImageSource
-                    //                                   .gallery);
-                    //                           if (selectedImages !=
-                    //                               null) {
-                    //                             setState(() {
-                    //                               fourimage = File(
-                    //                                   selectedImages
-                    //                                       .path);
-                    //                               fourimagestring =
-                    //                                   selectedImages
-                    //                                       .path;
-                    //                               fourimagestatus =
-                    //                               true;
-                    //                               print(
-                    //                                   fristimagestatus);
-                    //                             });
-                    //                           }
-                    //                         },
-                    //                         child: Container(
-                    //                           width: 30,
-                    //                           height: 30,
-                    //                           decoration:
-                    //                           BoxDecoration(
-                    //                             color: Color(
-                    //                                 0xffFFFFFF),
-                    //                             borderRadius:
-                    //                             BorderRadius
-                    //                                 .circular(
-                    //                                 5),
-                    //                             border: Border.all(
-                    //                                 color: Color(
-                    //                                     0xffE7E7E7),
-                    //                                 width: 1),
-                    //                           ),
-                    //                           child: Padding(
-                    //                             padding:
-                    //                             const EdgeInsets
-                    //                                 .all(8.0),
-                    //                             child: Image.asset(
-                    //                                 "assets/images/edit_grey.png"),
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                     Positioned(
-                    //                       right: 10,
-                    //                       child: GestureDetector(
-                    //                         onTap: () {
-                    //                           setState(() {
-                    //                             fourimagestring =
-                    //                             "";
-                    //                             fourimagestatus =
-                    //                             false;
-                    //                           });
-                    //                         },
-                    //                         child: Container(
-                    //                           width: 30,
-                    //                           height: 30,
-                    //                           decoration:
-                    //                           BoxDecoration(
-                    //                             color: Color(
-                    //                                 0xffFFFFFF),
-                    //                             borderRadius:
-                    //                             BorderRadius
-                    //                                 .circular(
-                    //                                 5),
-                    //                             border: Border.all(
-                    //                                 color: Color(
-                    //                                     0xffE7E7E7),
-                    //                                 width: 1),
-                    //                           ),
-                    //                           child: Padding(
-                    //                             padding:
-                    //                             const EdgeInsets
-                    //                                 .all(8.0),
-                    //                             child: Image.asset(
-                    //                                 "assets/images/delete.png"),
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     )
-                    //                   ],
-                    //                 )
-                    //                     : Column(
-                    //                   crossAxisAlignment:
-                    //                   CrossAxisAlignment.center,
-                    //                   mainAxisAlignment:
-                    //                   MainAxisAlignment.center,
-                    //                   children: [
-                    //                     Center(
-                    //                       child: Image(
-                    //                         height: 40,
-                    //                         image: AssetImage(
-                    //                             "assets/images/camera_grey.png"),
-                    //                       ),
-                    //                     ),
-                    //                     SizedBox(
-                    //                       height: 5,
-                    //                     ),
-                    //                     textComoon(
-                    //                         "Add Logo",
-                    //                         12,
-                    //                         Color(0xff414141),
-                    //                         FontWeight.w500),
-                    //                   ],
-                    //                 )),
-                    //           ),
-                    //         )
-                    //             : SizedBox(),
-                    //       ],
-                    //     )
-                    //   ],
-                    // ),
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -1676,50 +654,35 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     var request = http.MultipartRequest("POST", postUri);
     request.headers['Authorization'] =
         "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}";
-
-    for (var i in files) {
+    if (firstImage != null) {
       http.MultipartFile multipartFile =
-          await http.MultipartFile.fromPath('workspace', i.path);
+          await http.MultipartFile.fromPath('workspace', firstImage!.path);
       request.files.add(multipartFile);
     }
-    // if (secondImageStatus) {
-    //   http.MultipartFile multipartFile =
-    //       await http.MultipartFile.fromPath('workspace', secondImage!.path);
-    //   request.files.add(multipartFile);
-    // }
-    // if (thirdImageStatus) {
-    //   http.MultipartFile multipartFile =
-    //       await http.MultipartFile.fromPath('workspace', thirdImage!.path);
-    //   request.files.add(multipartFile);
-    // }
-    // if (fourthImageStatus) {
-    //   http.MultipartFile multipartFile =
-    //       await http.MultipartFile.fromPath('workspace', fourthImage!.path);
-    //   request.files.add(multipartFile);
-    // }
+    if (secondImage != null) {
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('workspace', secondImage!.path);
+      request.files.add(multipartFile);
+    }
+    if (thirdImage != null) {
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('workspace', thirdImage!.path);
+      request.files.add(multipartFile);
+    }
+    if (fourthImage != null) {
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('workspace', fourthImage!.path);
+      request.files.add(multipartFile);
+    }
     http.StreamedResponse response = await request.send();
     print('code: ${response.statusCode}');
     final res = await http.Response.fromStream(response);
     print('body: ${res.body}');
     Map map = jsonDecode(res.body);
     if (res.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     } else {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     }
     setState(() {
       isLoading = false;
@@ -1744,15 +707,34 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     if (map['status'] == 200) {
       p = Workplacephotos.fromJson(map);
       if (p!.data!.first.workSpaceImgs.isNotEmpty) {
-        for (int i = 0; i < p!.data!.first.workSpaceImgs.length; i++) {
-          // i == 0 ? firstImageStatus=true:false;
-          i == 1 ? one = true : false;
-          i == 2 ? two = true : false;
-          i == 3 ? three = true : false;
-          print(one);
-          print(two);
-          print(three);
-          print(four);
+        if (p!.data!.first.workSpaceImgs.length == 0) {
+          firstImage = null;
+          firstImagePath = "";
+          firstImageStatus = false;
+        } else if (p!.data!.first.workSpaceImgs.length == 1) {
+          firstImagePath = p!.data!.first.workSpaceImgs[0];
+          firstImageStatus = true;
+        } else if (p!.data!.first.workSpaceImgs.length == 2) {
+          firstImagePath = p!.data!.first.workSpaceImgs[0];
+          firstImageStatus = true;
+          secondImagePath = p!.data!.first.workSpaceImgs[1];
+          secondImageStatus = true;
+        } else if (p!.data!.first.workSpaceImgs.length == 3) {
+          firstImagePath = p!.data!.first.workSpaceImgs[0];
+          firstImageStatus = true;
+          secondImagePath = p!.data!.first.workSpaceImgs[1];
+          secondImageStatus = true;
+          thirdImagePath = p!.data!.first.workSpaceImgs[2];
+          thirdImageStatus = true;
+        } else if (p!.data!.first.workSpaceImgs.length == 4) {
+          firstImagePath = p!.data!.first.workSpaceImgs[0];
+          firstImageStatus = true;
+          secondImagePath = p!.data!.first.workSpaceImgs[1];
+          secondImageStatus = true;
+          thirdImagePath = p!.data!.first.workSpaceImgs[2];
+          thirdImageStatus = true;
+          fourthImagePath = p!.data!.first.workSpaceImgs[3];
+          fourthImageStatus = true;
         }
         setState(() {});
       }
@@ -1824,23 +806,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
     print('updateImage Body: ${res.body}');
     Map map = jsonDecode(res.body);
     if (res.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     } else {
-      Fluttertoast.showToast(
-          msg: "${map['message']}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      showToast(message: "${map['message']}");
     }
     setState(() {
       isLoading = false;
@@ -1867,25 +835,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   final XFile? photo =
                       await _picker.pickImage(source: ImageSource.camera);
                   if (photo != null) {
-                    one = true;
                     firstImage = File(photo.path);
-                    firstImagePath = photo.path;
-                    files.add(firstImage!);
                     firstImageStatus = true;
-                    if (secondImageStatus) {
-                      one = false;
-                    }
-                    if (p!.data!.first.workSpaceImgs.length == 1) {
-                      if (two || three || four) {
-                        one = false;
-                      } else {
-                        one = true;
-                      }
-                    }
-                    if (firstImageStatus) {
-                      updateImage(
-                          firstImage!.path, p!.data!.first.workSpaceImgs[0]);
-                    }
+                    updateImage(firstImage!.path, firstImagePath);
                   }
                 }),
                 SizedBox(
@@ -1898,25 +850,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                       await _picker.pickImage(source: ImageSource.gallery);
                   if (selectedImages != null) {
                     setState(() {
-                      one = true;
                       firstImage = File(selectedImages.path);
-                      firstImagePath = selectedImages.path;
                       firstImageStatus = true;
-                      files.add(firstImage!);
-                      if (secondImageStatus) {
-                        one = false;
-                      }
-                      if (p!.data!.first.workSpaceImgs.length == 1) {
-                        if (two || three || four) {
-                          one = false;
-                        } else {
-                          one = true;
-                        }
-                      }
-                      if (firstImageStatus) {
-                        updateImage(
-                            firstImage!.path, p!.data!.first.workSpaceImgs[0]);
-                      }
+                      updateImage(firstImage!.path, firstImagePath);
                     });
                   }
                 }),
@@ -1958,23 +894,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                       await _picker.pickImage(source: ImageSource.camera);
                   if (photo != null) {
                     secondImage = File(photo.path);
-                    files.add(secondImage!);
-                    secondImagePath = photo.path;
                     secondImageStatus = true;
-                    two = true;
-                    one = false;
-                    if (thirdImageStatus) {
-                      two = false;
-                    }
-                    if (p!.data!.first.workSpaceImgs.length == 2) {
-                      two = true;
-                    }
-                    for (var i in p!.data!.first.workSpaceImgs) {
-                      if (i[1].isNotEmpty) {
-                        updateImage(
-                            secondImage!.path, p!.data!.first.workSpaceImgs[1]);
-                      }
-                    }
+                    updateImage(secondImage!.path, secondImagePath);
                   }
                 }),
                 SizedBox(
@@ -1987,24 +908,9 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                       await _picker.pickImage(source: ImageSource.gallery);
                   if (selectedImages != null) {
                     setState(() {
-                      one = false;
-                      two = true;
-                      if (thirdImageStatus) {
-                        two = false;
-                      }
                       secondImage = File(selectedImages.path);
-                      files.add(secondImage!);
-                      secondImagePath = selectedImages.path;
                       secondImageStatus = true;
-                      if (p!.data!.first.workSpaceImgs.length == 2) {
-                        two = true;
-                      }
-                      for (var i in p!.data!.first.workSpaceImgs) {
-                        if (i[1].isNotEmpty) {
-                          updateImage(secondImage!.path,
-                              p!.data!.first.workSpaceImgs[1]);
-                        }
-                      }
+                      updateImage(secondImage!.path, secondImagePath);
                     });
                   }
                 }),
@@ -2046,24 +952,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                       await _picker.pickImage(source: ImageSource.camera);
                   if (photo != null) {
                     thirdImage = File(photo.path);
-                    files.add(thirdImage!);
-                    thirdImagePath = photo.path;
                     thirdImageStatus = true;
-                    one = false;
-                    two = false;
-                    three = true;
-                    if (fourthImageStatus) {
-                      three = false;
-                    }
-                    if (p!.data!.first.workSpaceImgs.length == 3) {
-                      three = true;
-                    }
-                    for (var i in p!.data!.first.workSpaceImgs) {
-                      if (i[2].isNotEmpty) {
-                        updateImage(
-                            thirdImage!.path, p!.data!.first.workSpaceImgs[2]);
-                      }
-                    }
+                    updateImage(thirdImage!.path, thirdImagePath);
                   }
                 }),
                 SizedBox(
@@ -2077,24 +967,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   if (selectedImages != null) {
                     setState(() {
                       thirdImage = File(selectedImages.path);
-                      thirdImagePath = selectedImages.path;
                       thirdImageStatus = true;
-                      files.add(thirdImage!);
-                      one = false;
-                      two = false;
-                      three = true;
-                      if (fourthImageStatus) {
-                        three = false;
-                      }
-                      if (p!.data!.first.workSpaceImgs.length == 3) {
-                        three = true;
-                      }
-                      for (var i in p!.data!.first.workSpaceImgs) {
-                        if (i[2].isNotEmpty) {
-                          updateImage(thirdImage!.path,
-                              p!.data!.first.workSpaceImgs[2]);
-                        }
-                      }
+                      updateImage(thirdImage!.path, thirdImagePath);
                     });
                   }
                 }),
@@ -2136,19 +1010,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                       await _picker.pickImage(source: ImageSource.camera);
                   if (photo != null) {
                     fourthImage = File(photo.path);
-                    fourthImagePath = photo.path;
                     fourthImageStatus = true;
-                    one = false;
-                    two = false;
-                    three = false;
-                    files.add(fourthImage!);
-                    if (p!.data!.first.workSpaceImgs.length == 4) {}
-                    for (var i in p!.data!.first.workSpaceImgs) {
-                      if (i[3].isNotEmpty) {
-                        updateImage(
-                            fourthImage!.path, p!.data!.first.workSpaceImgs[3]);
-                      }
-                    }
+                    updateImage(fourthImage!.path, fourthImagePath);
                   }
                 }),
                 SizedBox(
@@ -2162,19 +1025,8 @@ class _worlplace_PhotosTwoState extends State<worlplace_PhotosTwo> {
                   if (selectedImages != null) {
                     setState(() {
                       fourthImage = File(selectedImages.path);
-                      fourthImagePath = selectedImages.path;
-                      files.add(fourthImage!);
                       fourthImageStatus = true;
-                      one = false;
-                      two = false;
-                      three = false;
-                      if (p!.data!.first.workSpaceImgs.length == 4) {}
-                      for (var i in p!.data!.first.workSpaceImgs) {
-                        if (i[3].isNotEmpty) {
-                          updateImage(fourthImage!.path,
-                              p!.data!.first.workSpaceImgs[3]);
-                        }
-                      }
+                      updateImage(fourthImage!.path, fourthImagePath);
                     });
                   }
                 }),

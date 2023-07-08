@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_sliikeapps_apps/utils/util.dart';
 
 class resetPassWord extends StatefulWidget {
   final String email;
@@ -675,14 +676,7 @@ class _resetPassWordState extends State<resetPassWord> {
         forgotpasswordModel = ForgotPasswordModel.fromJson(map);
         print(forgotpasswordModel);
 
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         setState(() {
           _showdialog(context);
         });
@@ -694,14 +688,7 @@ class _resetPassWordState extends State<resetPassWord> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("failed");
       }
     } catch (e) {
@@ -745,14 +732,7 @@ class _resetPassWordState extends State<resetPassWord> {
         userid = verifyresetCodemodel._userId!;
         print('account sucessfully');
         print("userid====$userid");
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         setState(() {
           isPasswordEnter = true;
         });
@@ -765,14 +745,7 @@ class _resetPassWordState extends State<resetPassWord> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("failed");
       }
     } catch (e) {
@@ -820,14 +793,7 @@ class _resetPassWordState extends State<resetPassWord> {
         resetpasswordmodel = ResetPasswordModel.fromJson(map);
         print(resetpasswordmodel);
 
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         setState(() {
           isProcessDone = true;
         });
@@ -840,14 +806,7 @@ class _resetPassWordState extends State<resetPassWord> {
           },
         ), (route) => false);
       } else {
-        Fluttertoast.showToast(
-            msg: "${map['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showToast(message: "${map['message']}");
         print("failed");
       }
     } catch (e) {
