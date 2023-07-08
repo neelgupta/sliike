@@ -22,61 +22,57 @@ class _serach_pageState extends State<serach_page> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: (){
-                    if(searchbyservice) {
-                      setState(() {
-                        searchbyservice = false;
-                      });
-                    } else {Navigator.pop(context);}
-                  },
-                  child: Image.asset(height:height*0.03 ,"assets/images/Group 55.png",),
-                ),
-                const SizedBox(height: 20,),
-                InkWell(
-                  onTap: () {
-                    if(!searchbyservice) {
-                      setState(() {
-                        searchbyservice = true;
-                      });
-                    }
-                    print(searchbyservice);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    height: height*0.07,
-                    width: width,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)
-                    ),
-                    child: TextField(
-                      readOnly: !searchbyservice,
-                      onTap: () {
-                        if(!searchbyservice) {
-                          setState(() {
-                            searchbyservice = true;
-                          });
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search for services or stylist",
-                      ),
+          padding: const EdgeInsets.only(top: 70,left: 15,right: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                onTap: (){
+                  if(searchbyservice) {
+                    setState(() {
+                      searchbyservice = false;
+                    });
+                  } else {Navigator.pop(context);}
+                },
+                child: Image.asset(height:height*0.025 ,"assets/images/back.png",color: Colors.black54,),
+              ),
+              const SizedBox(height: 20,),
+              InkWell(
+                onTap: () {
+                  if(!searchbyservice) {
+                    setState(() {
+                      searchbyservice = true;
+                    });
+                  }
+                  print(searchbyservice);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  width: width,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: TextField(
+                    readOnly: !searchbyservice,
+                    onTap: () {
+                      if(!searchbyservice) {
+                        setState(() {
+                          searchbyservice = true;
+                        });
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Search products or vendors",
                     ),
                   ),
                 ),
-                const SizedBox(height: 20,),
-                searchbyservice?serviceSearch():search()
-              ],
-            ),
+              ),
+              // const SizedBox(height: 10,),
+              searchbyservice?serviceSearch():search()
+            ],
           ),
         ),
       ),
@@ -95,8 +91,7 @@ class _serach_pageState extends State<serach_page> {
           children: [
             for(int i=0;i<service.length;i++)
               Container(
-                height: 35,
-                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 08),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black45)
@@ -105,32 +100,33 @@ class _serach_pageState extends State<serach_page> {
               )
           ],
         ),
-        SizedBox(height: height*0.04,),
+        SizedBox(height: height*0.03,),
         Container(
           alignment: Alignment.topLeft,
-          child: const Text("Recent searches",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: "spartan",fontWeight: FontWeight.w600)),
+          child: const Text("Recent searches",style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: "spartan",fontWeight: FontWeight.w600)),
         ),
         SizedBox(height: height*0.02,),
         Row(
           children: [
             SizedBox(
-                height: height*0.15,
-                width: width*0.30,
+                height: 75,
+                width: 75,
                 child: const Image(image: AssetImage("assets/images/Rectangle 944.png"),fit: BoxFit.fill,)),
-            SizedBox(width: width*0.04,),
+            SizedBox(width: width*0.03,),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text("Lakme",
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 14,
                         fontFamily: "spartan",
                         color: Colors.black)),
                 Text("Hair product",
                     style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 12,
                         fontFamily: "spartan",
                         color: Colors.black54)),
+                SizedBox(height: height*0.04,),
               ],
             )
           ],

@@ -47,8 +47,8 @@ class _edit_addressState extends State<edit_address> {
                             padding: const EdgeInsets.all(5),
                             child: const Image(
                               image: AssetImage("assets/images/Vector.png"),
-                              height: 20,
-                              width: 20,
+                              height: 18,
+                              width: 18,
                             )),
                       ),
                     ),
@@ -60,7 +60,7 @@ class _edit_addressState extends State<edit_address> {
                       children: const [
                         Text("Shipping Info",
                             style: TextStyle(
-                                fontSize: 23,
+                                fontSize: 18,
                                 color: Colors.black,
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.bold)),
@@ -85,7 +85,7 @@ class _edit_addressState extends State<edit_address> {
               const Text(
                 "Edit Address",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.black,
                   fontFamily: "spartan",
                   fontWeight: FontWeight.bold,
@@ -222,7 +222,7 @@ class _edit_addressState extends State<edit_address> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height * 0.07,
+                      height: height * 0.06,
                       width: width * 0.43,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
@@ -244,7 +244,7 @@ class _edit_addressState extends State<edit_address> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height * 0.07,
+                      height: height * 0.06,
                       width: width * 0.43,
                       decoration: BoxDecoration(
                           border: Border.all(color: const Color(0xffDD6A03)),

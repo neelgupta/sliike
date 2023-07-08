@@ -32,7 +32,6 @@ class _productbaarState extends State<productbaar> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.14, //
-
         flexibleSpace: Container(
           color: Color(0xff01635D),
           child: Column(
@@ -44,8 +43,6 @@ class _productbaarState extends State<productbaar> {
                   children: [
                     Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
-
                         Container(
                           child: Text("Products",
                               style: TextStyle(
@@ -68,157 +65,121 @@ class _productbaarState extends State<productbaar> {
         body: Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: height * 0.03,
+              height: height * 0.02,
             ),
             Container(
+              // color: Colors.red,
               alignment: Alignment.center,
-              height: height * 0.06,
-              width: width,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          ProductList = true;
-
-                          Orders = false;
-
-                          StockRecord = false;
-
-                          type = "1";
-
-                          // notificationf(type);
-
-                          print(type);
-                        });
-                      },
-                      child: Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(21),
-                            color: ProductList ? Color(0xff01635D) : Colors.white,
-                            border: Border.all(
-                                color: ProductList
-                                    ? Color(0xff01635D)
-                                    : Colors.black38)),
-                        child: Text(
-                          "Product List",
-                          style: TextStyle(
-                              color:
-                              ProductList ? Colors.white : Color(0xff01635D),
-                              fontFamily: 'spartan',
-                              fontSize: 12),
-                        ),
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              // padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        ProductList = true;
+                        Orders = false;
+                        StockRecord = false;
+                        type = "1";
+                        // notificationf(type);
+                        print(type);
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 08, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21),
+                          color: ProductList ? Color(0xff01635D) : Color(0xffEBEFEE),
+                          border: Border.all(
+                              color: Colors.transparent,),
                       ),
-                    ),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          ProductList = false;
-
-                          Orders = true;
-
-                          StockRecord = false;
-
-                          type = "2";
-
-                          // notificationf(type);
-
-                          print(type);
-                        });
-                      },
-                      child: Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(21),
-                            color: Orders ? Color(0xff01635D) : Colors.white,
-                            border: Border.all(
-                                color: Orders
-                                    ? Color(0xff01635D)
-                                    : Colors.black38)),
-                        child: Text(
-                          "Orders",
-                          style: TextStyle(
-                              color: Orders ? Colors.white : Color(0xff01635D),
-                              fontFamily: 'spartan',
-                              fontSize: 12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          ProductList = false;
-
-                          Orders = false;
-
-                          StockRecord = true;
-
-                          type = "3";
-
-                          // notificationf(type);
-
-                          print(type);
-                        });
-                      },
-                      child: Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(21),
+                      child: Text(
+                        "Product List",
+                        style: TextStyle(
                             color:
-                            StockRecord ? Color(0xff01635D) : Colors.white,
-                            border: Border.all(
-                                color: StockRecord
-                                    ? Color(0xff01635D)
-                                    : Colors.black38)),
-                        child: Text(
-                          "StockRecord",
-                          style: TextStyle(
-                              color: StockRecord
-                                  ? Colors.white
-                                  : Color(0xff01635D),
-                              fontFamily: 'spartan',
-                              fontSize: 12),
-                        ),
+                            ProductList ? Colors.white : Color(0xff01635D),
+                            fontFamily: 'spartan',
+                            fontSize: 12,fontWeight: FontWeight.w600),
                       ),
                     ),
-                    SizedBox(
-                      width: width * 0.01,
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        ProductList = false;
+                        Orders = true;
+                        StockRecord = false;
+                        type = "2";
+                        // notificationf(type);
+                        print(type);
+                      });
+                    },
+                    child: Container(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 08, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21),
+                          color: Orders ? Color(0xff01635D) :  Color(0xffEBEFEE),
+                          border: Border.all(
+                              color: Colors.transparent
+                          )
+                      ),
+                      child: Text(
+                        "Orders",
+                        style: TextStyle(
+                            color: Orders ? Colors.white : Color(0xff01635D),
+                            fontFamily: 'spartan',
+                            fontSize: 12,fontWeight: FontWeight.w600),
+                      ),
                     ),
-
-
-
-
-
-                  ],
-                ),
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        ProductList = false;
+                        Orders = false;
+                        StockRecord = true;
+                        type = "3";
+                        // notificationf(type);
+                        print(type);
+                      });
+                    },
+                    child: Container(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 08, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21),
+                          color:
+                          StockRecord ? Color(0xff01635D) :  Color(0xffEBEFEE),
+                          border: Border.all(
+                              color: Colors.transparent
+                          )),
+                      child: Text(
+                        "Stock Record",
+                        style: TextStyle(
+                            color: StockRecord
+                                ? Colors.white
+                                : Color(0xff01635D),
+                            fontFamily: 'spartan',
+                            fontSize: 12,fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             ///productlist ADD
-            ProductList==true? Expanded(child: productList(context)):Container(),
+            ProductList? Expanded(child: productList(context)):Container(),
             //AddProduct(context),
-
             ///order select
-            Orders==true?Expanded(child: order(context)):Container(),
-
-            StockRecord==true?Expanded(child: stackRecord(context)):Container(),
+            Orders?Expanded(child: order(context)):Container(),
+            StockRecord?Expanded(child: stackRecord(context)):Container(),
           ],
 
         ),
-        floatingActionButton:  ProductList==true
+        floatingActionButton: ProductList
         ?InkWell(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -234,12 +195,10 @@ class _productbaarState extends State<productbaar> {
             child: Padding(
               padding: const EdgeInsets.only(top: 15,bottom: 15),
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
-                  textComoon("ADD",12, Colors.white, FontWeight.w600),
-                  SizedBox(width: 10,),
                   Icon(Icons.add,size: 20,color: Colors.white,),
-
+                  SizedBox(width: 10,),
+                  textComoon("ADD",12, Colors.white, FontWeight.w600),
                 ],
               ),
             ),

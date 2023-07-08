@@ -47,7 +47,7 @@ class _my_orderState extends State<my_order> {
                         height: height*0.06,
                         child:Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Vector.png"),height: 20,width: 20,)),
+                            child: const Image(image: AssetImage("assets/images/Vector.png"),color: Colors.black45,height: 20,width: 20,)),
                       ),
                     ),
                     SizedBox(width: width*0.20,),
@@ -56,7 +56,7 @@ class _my_orderState extends State<my_order> {
                       children: [
                         const Text("my_orders",
                             style: TextStyle(
-                                fontSize: 23,
+                                fontSize: 18,
                                 color: Colors.black,
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.bold)).tr(),
@@ -75,8 +75,9 @@ class _my_orderState extends State<my_order> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: height*0.04,),
+              SizedBox(height: height*0.03,),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
                     onTap: () {
@@ -88,8 +89,7 @@ class _my_orderState extends State<my_order> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height*0.05,
-                      width: width*0.25,
+                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 06),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: current?const Color(0xFFDD5103):Colors.black),
@@ -113,8 +113,7 @@ class _my_orderState extends State<my_order> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height*0.05,
-                      width: width*0.30,
+                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 06),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: delivered?const Color(0xFFDD5103):Colors.black),
@@ -138,8 +137,7 @@ class _my_orderState extends State<my_order> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height*0.05,
-                      width: width*0.30,
+                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 06),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: cancelled?const Color(0xFFDD5103):Colors.black),
@@ -154,239 +152,241 @@ class _my_orderState extends State<my_order> {
                   ),
                 ],
               ),
-              SizedBox(height: height*0.02,),
-              current == true ? Column  (
+              SizedBox(height: height*0.03,),
+              current? Column  (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("20 Nov, 2022",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.black,
                           fontFamily: "spartan",
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: height*0.02,),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const order_detail();
-                      },));
-                    },
-                    child: Row(
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white,
+                    child: Column(
                       children: [
-                        SizedBox(
-                            height: height*0.15,
-                            width: width*0.30,
-                            child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
-                        SizedBox(width: width*0.04,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text("Subaru Hair Dye",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                                SizedBox(width: width*0.10,),
-                                const Text("pending",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: "spartan",
-                                        color: Color(0XFFDD6A03))).tr(),
-                              ],
-                            ),
-                            const Text("\$1,000",
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            //   return const order_detail();
+                            // },));
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                  height: 75,
+                                  width: 75,
+                                  child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
+                              SizedBox(width: width*0.04,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Subaru Hair Dye",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                  const SizedBox(height: 05),
+                                  const Text("\$1,000",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                  const SizedBox(height: 05),
+                                  const Text("Vendor: Star salon",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: height*0.015,),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return const track_order();
+                            },));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: width,
+                            height: height * 0.05,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: const Color(0xffDD6A03)),),
+                            child: const Text("track_order",
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontFamily: "spartan",
-                                    color: Colors.black54)),
-                            const Text("Vendor: Star salon",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)),
-                          ],
-                        )
+                                    color: Color(0xffDD6A03))).tr(),
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
-                  SizedBox(height: height*0.02,),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const track_order();
-                      },));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width,
-                      height: height * 0.06,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: const Color(0xffDD6A03)),),
-                      child: const Text("track_order",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Color(0xffDD6A03))).tr(),
                     ),
                   ),
                 ],
-              ) : delivered == true ?
-              Column(
+              ) :
+              delivered ?
+              Column  (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("20 Nov, 2022",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.black,
                           fontFamily: "spartan",
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: height*0.02,),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const order_detail_delivered();
-                      },));
-                    },
-                    child: Row(
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white,
+                    child: Column(
                       children: [
-                        SizedBox(
-                            height: height*0.15,
-                            width: width*0.30,
-                            child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
-                        SizedBox(width: width*0.04,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text("Subaru Hair Dye",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                                SizedBox(width: width*0.07,),
-                                const Text("delivered",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "spartan",
-                                        color: Color(0XFF1571ED))).tr(),
-                              ],
-                            ),
-                            const Text("\$1,000",
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            //   return const order_detail();
+                            // },));
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                  height: 75,
+                                  width: 75,
+                                  child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
+                              SizedBox(width: width*0.04,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Subaru Hair Dye",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                  const SizedBox(height: 05),
+                                  const Text("\$1,000",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                  const SizedBox(height: 05),
+                                  const Text("Vendor: Star salon",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: height*0.015,),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return const track_order();
+                            },));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: width,
+                            height: height * 0.05,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: const Color(0xffDD6A03)),),
+                            child: const Text("track_order",
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontFamily: "spartan",
-                                    color: Colors.black54)),
-                            const Text("Vendor: Star salon",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)),
-                          ],
-                        )
+                                    color: Color(0xffDD6A03))).tr(),
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
-                  SizedBox(height: height*0.02,),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const track_order();
-                      },));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width,
-                      height: height * 0.06,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color(0xffDD6A03)),),
-                      child: const Text("track_order",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Color(0xffDD6A03))).tr(),
                     ),
                   ),
                 ],
-              ): Column(
+              ):
+              Column  (
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("20 Nov, 2022",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.black,
                           fontFamily: "spartan",
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: height*0.02,),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const order_detail_cancelled();
-                      },));
-                    },
-                    child: Row(
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white,
+                    child: Column(
                       children: [
-                        SizedBox(
-                            height: height*0.15,
-                            width: width*0.30,
-                            child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
-                        SizedBox(width: width*0.04,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text("Subaru Hair Dye",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "spartan",
-                                        color: Colors.black)),
-                                SizedBox(width: width*0.06,),
-                                const Text("cancelled",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "spartan",
-                                        color: Color(0XFFD90000))).tr(),
-                              ],
-                            ),
-                            const Text("\$1,000",
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            //   return const order_detail();
+                            // },));
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                  height: 75,
+                                  width: 75,
+                                  child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
+                              SizedBox(width: width*0.04,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Subaru Hair Dye",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black)),
+                                  const SizedBox(height: 05),
+                                  const Text("\$1,000",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                  const SizedBox(height: 05),
+                                  const Text("Vendor: Star salon",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: "spartan",
+                                          color: Colors.black54)),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: height*0.015,),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return const track_order();
+                            },));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: width,
+                            height: height * 0.05,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: const Color(0xffDD6A03)),),
+                            child: const Text("track_order",
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontFamily: "spartan",
-                                    color: Colors.black54)),
-                            const Text("Vendor: Star salon",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "spartan",
-                                    color: Colors.black54)),
-                          ],
-                        )
+                                    color: Color(0xffDD6A03))).tr(),
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
-                  SizedBox(height: height*0.02,),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const track_order();
-                      },));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: width,
-                      height: height * 0.06,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color(0xffDD6A03)),),
-                      child: const Text("track_order",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "spartan",
-                              color: Color(0xffDD6A03))).tr(),
                     ),
                   ),
                 ],

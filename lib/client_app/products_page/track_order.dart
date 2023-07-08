@@ -26,12 +26,19 @@ class _track_orderState extends State<track_order> {
               SizedBox(height: height*0.08),
               Row(
                 children: [
-                  InkWell(
-                    onTap: () {
+                  GestureDetector(
+                    onTap: (){
                       Navigator.pop(context);
                     },
-                      child: const Icon(Icons.arrow_back_sharp,size: 30,)),
-                  SizedBox(width: width*0.25),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      height: height*0.06,
+                      child:Container(
+                          padding: const EdgeInsets.all(5),
+                          child: const Image(image: AssetImage("assets/images/back.png"),color: Colors.black,)),
+                    ),
+                  ),
+                  SizedBox(width: width*0.10),
                   const Text("track_order",
                       style: TextStyle(
                           fontSize: 20,
@@ -42,21 +49,21 @@ class _track_orderState extends State<track_order> {
               SizedBox(height: height*0.04,),
               const Text("20 Nov, 2022",
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       fontFamily: "spartan",
                       color: Colors.black)),
-              SizedBox(height: height*0.01,),
+              SizedBox(height: height*0.005,),
               const Text("Order ID: 5t33-76ky",
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       fontFamily: "spartan",
-                      color: Colors.black)),
-              SizedBox(height: height*0.05,),
+                      color: Colors.black,fontWeight: FontWeight.w500)),
+              SizedBox(height: height*0.03,),
               const Text("ETA: 12hrs 30mins",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 14,
                       fontFamily: "spartan",
-                      color: Colors.black)),
+                      color: Colors.black,fontWeight: FontWeight.bold)),
               Theme(
                 data: ThemeData(
                   colorScheme: Theme.of(context).colorScheme.copyWith(
@@ -82,12 +89,12 @@ class _track_orderState extends State<track_order> {
                             children: const [
                               Text("Order delivered",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 12,
                                       fontFamily: "spartan",
                                       color: Colors.black)),
                               Text("Order delivered successfully",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 12,
                                       fontFamily: "spartan",
                                       color: Colors.black54)),
                             ],
@@ -104,7 +111,7 @@ class _track_orderState extends State<track_order> {
                               children: const [
                                 Text("Order is on the way",
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontFamily: "spartan",
                                         color: Colors.black)),
                                 Spacer(),
@@ -117,7 +124,7 @@ class _track_orderState extends State<track_order> {
                             ),
                             const Text("Your order has been processed",
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontFamily: "spartan",
                                     color: Colors.black54)),
                           ],
@@ -134,7 +141,7 @@ class _track_orderState extends State<track_order> {
                                 children: const [
                                   Text("Order is on the way",
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontFamily: "spartan",
                                           color: Colors.black)),
                                   Spacer(),
@@ -147,7 +154,7 @@ class _track_orderState extends State<track_order> {
                               ),
                               const Text("Your order has been processed",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontFamily: "spartan",
                                       color: Colors.black54)),
                             ],
@@ -164,7 +171,7 @@ class _track_orderState extends State<track_order> {
                                 children: const [
                                   Text("Order accepted",
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontFamily: "spartan",
                                           color: Colors.black)),
                                   Spacer(),
@@ -177,7 +184,7 @@ class _track_orderState extends State<track_order> {
                               ),
                               const Text("We have recieved your order",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontFamily: "spartan",
                                       color: Colors.black54)),
                             ],
@@ -201,7 +208,7 @@ class _track_orderState extends State<track_order> {
                   Container(
                     alignment: Alignment.center,
                     width: width*0.40,
-                    height: height * 0.06,
+                    height: height * 0.05,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: const Color(0xffDD6A03)),
@@ -209,11 +216,11 @@ class _track_orderState extends State<track_order> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image(image: const AssetImage("assets/images/Vector 1.png"),height: height*0.03,),
+                        Image(image: const AssetImage("assets/images/Vector 1.png"),height: height*0.02,),
                         SizedBox(width: width*0.03,),
                         const Text("call_rider",
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontFamily: "spartan",
                                 color: Colors.white)).tr(),
                       ],
@@ -224,9 +231,9 @@ class _track_orderState extends State<track_order> {
               SizedBox(height: height*0.04,),
               Container(
                 width: width,
-                height: height*0.30,
+                height: height*0.25,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(color: Colors.black54),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
@@ -238,7 +245,7 @@ class _track_orderState extends State<track_order> {
                       SizedBox(height: height*0.02,),
                       Row(
                         children: [
-                          Image(image: const AssetImage("assets/images/home-2.png"),height: height*0.03,),
+                          Image(image: const AssetImage("assets/images/home-2.png"),height: height*0.025,),
                           SizedBox(width: width*0.03,),
                           const Text("Delivery Address",
                               style: TextStyle(
@@ -248,7 +255,7 @@ class _track_orderState extends State<track_order> {
                           SizedBox(width: width*0.02,),
                           const Text("(Home)",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   fontFamily: "spartan",
                                   color: Colors.black54)),
                         ],
@@ -258,7 +265,7 @@ class _track_orderState extends State<track_order> {
                         padding: EdgeInsets.only(left: 35),
                         child: Text("Ester Britney\n825 Dawson Island\nApt 30\nToronto, DE 63324\nCanada",
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontFamily: "spartan",
                                 color: Colors.black54)),
                       ),

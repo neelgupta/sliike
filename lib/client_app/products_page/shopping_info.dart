@@ -156,20 +156,20 @@ class _shopping_infoState extends State<shopping_info> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height*0.06,
                         child:Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                            child: const Image(image: AssetImage("assets/images/back.png"),color: Colors.black,)),
                       ),
                     ),
-                    SizedBox(width: width*0.10,),
+                    SizedBox(width: width*0.12,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("shipping_info",
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Colors.black,
                                 fontFamily: "spartan",
                                 fontWeight: FontWeight.bold)).tr(),
@@ -220,7 +220,7 @@ class _shopping_infoState extends State<shopping_info> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
-                  SizedBox(height: height*0.04,),
+                  SizedBox(height: height*0.02,),
                   Row(
                     children: [
                       InkWell(
@@ -232,8 +232,9 @@ class _shopping_infoState extends State<shopping_info> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          height: height*0.05,
-                          width: width*0.30,
+                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 05),
+                          // height: height*0.05,
+                          // width: width*0.30,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: pickup?const Color(0xFFDD5103):Colors.black),
@@ -256,8 +257,7 @@ class _shopping_infoState extends State<shopping_info> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          height: height*0.05,
-                          width: width*0.30,
+                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 05),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: delivery?const Color(0xFFDD5103):Colors.black),
@@ -272,30 +272,30 @@ class _shopping_infoState extends State<shopping_info> {
                       ),
                     ],
                   ),
-                  delivery == true ? Column(
+                  SizedBox(height: height*0.01,),
+                  delivery? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: height*0.03,),
+                      SizedBox(height: height*0.02,),
                       const Text("select_method",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 17,
                               color: Colors.black,
                               fontFamily: "spartan",
-                              fontWeight: FontWeight.bold)).tr(),
+                              fontWeight: FontWeight.w600)).tr(),
                       SizedBox(height: height*0.02,),
                       InkWell(
                         onTap: () {
                           setState(() {
-                            method = true;
+                            method = !method;
                           });
                         },
                         child: Container(
                           alignment: Alignment.centerRight,
-                          width: width,
-                          height: height*0.07,
+                          height: height*0.05,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(05),
+                            border: Border.all(color: Colors.black54),
                           ),
                           child: Row(
                             children: [
@@ -317,7 +317,7 @@ class _shopping_infoState extends State<shopping_info> {
                         ),
                       ),
                       SizedBox(height: height*0.01,),
-                      method == true ? Container(
+                      method? Container(
                         width: width,
                         height: height*0.28,
                         decoration: BoxDecoration(
@@ -437,14 +437,15 @@ class _shopping_infoState extends State<shopping_info> {
                             ],
                           ),
                         ),
-                      ): Column(
+                      ):
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               const Text("set_default_address",
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: Colors.black,
                                       fontFamily: "spartan",
                                       fontWeight: FontWeight.bold)).tr(),
@@ -469,7 +470,7 @@ class _shopping_infoState extends State<shopping_info> {
                             children: [
                               const Text("Esther Britney",
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: Colors.black,
                                       fontFamily: "spartan")),
                               const Spacer(),
@@ -481,7 +482,7 @@ class _shopping_infoState extends State<shopping_info> {
                                 },
                                 child: const Text("edit",
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xFFDD5103),
                                         fontFamily: "spartan")).tr(),
                               ),
@@ -490,21 +491,21 @@ class _shopping_infoState extends State<shopping_info> {
                           SizedBox(height: height*0.01,),
                           const Text("825 Dawson Island\nApt 30\nToronto, DE 63324\nCanada",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Colors.black54,
                                   fontFamily: "spartan")),
                         ],
                       ),
                       SizedBox(height: height*0.01,),
                       const Divider(color: Colors.black54,),
-                      SizedBox(height: height*0.03,),
+                      SizedBox(height: height*0.01,),
                       const Text("billing_address",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 17,
                               color: Colors.black,
                               fontFamily: "spartan",
                               fontWeight: FontWeight.bold)).tr(),
-                      SizedBox(height: height*0.02,),
+                      SizedBox(height: height*0.01,),
                       Row(
                         children: [
                           SizedBox(
@@ -524,7 +525,7 @@ class _shopping_infoState extends State<shopping_info> {
                           SizedBox(width: width*0.04,),
                           const Text("same_as",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   color: Colors.black54,
                                   fontFamily: "spartan")).tr(),
                         ],
@@ -536,7 +537,7 @@ class _shopping_infoState extends State<shopping_info> {
                           SizedBox(width: width*0.02,),
                           const Text("different",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   fontFamily: "spartan",
                                   color: Color(0xffDD6A03))).tr(),
                         ],
@@ -549,7 +550,7 @@ class _shopping_infoState extends State<shopping_info> {
                               Navigator.pop(context);
                             },
                             child: Container(alignment: Alignment.center,
-                              height: height*0.07,
+                              height: height*0.06,
                               width: width*0.43,
                               decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: const BorderRadius.all(Radius.circular(5))),
                               child: const Text("back",style: TextStyle(
@@ -566,7 +567,7 @@ class _shopping_infoState extends State<shopping_info> {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              height: height*0.07,
+                              height: height*0.06,
                               width: width*0.43,
                               decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03) ),color:const Color(0xffDD6A03) ,borderRadius: const BorderRadius.all(Radius.circular(5))),
                               child: const Text("go_to_payment",style: TextStyle(color: Colors.white,fontSize: 14,
@@ -576,7 +577,8 @@ class _shopping_infoState extends State<shopping_info> {
                       ),
                       SizedBox(height: height*0.04,)
                     ],
-                  ) : Column(
+                  ):
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: height*0.04,),

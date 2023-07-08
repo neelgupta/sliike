@@ -37,21 +37,21 @@ class _new_cardState extends State<new_card> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 70),
                 child: InkWell(
                   onTap: () {
                     Navigator.pop(context);
                   },
                     child: const Image(image: AssetImage("assets/images/Vector.png"),height: 20,width: 20,)),
               ),
-              SizedBox(height: height*0.04,),
+              SizedBox(height: height*0.03,),
               const Text("add_new_card",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.black,
                       fontFamily: "spartan",
                       fontWeight: FontWeight.bold)).tr(),
-              SizedBox(height: height*0.04,),
+              SizedBox(height: height*0.03,),
               TextField(
                 controller: txtCardHolderName,
                 style: const TextStyle(fontFamily: "spartan",fontSize: 12),
@@ -70,7 +70,7 @@ class _new_cardState extends State<new_card> {
                   labelText: "card_number".tr(),
                 ),
               ),
-              SizedBox(height: height*0.03,),
+              SizedBox(height: height*0.02,),
               Row(
                 children: [
                   Column(
@@ -78,9 +78,9 @@ class _new_cardState extends State<new_card> {
                     children: [
                       const Text("expire_date",
                           style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontFamily: "spartan",)).tr(),
+                              fontSize: 15,
+                              color: Colors.black54,
+                              fontFamily: "spartan",fontWeight: FontWeight.w500)).tr(),
                       SizedBox(height: height*0.02,),
                       // SizedBox(
                       //   width: width*0.43,
@@ -123,8 +123,8 @@ class _new_cardState extends State<new_card> {
                     children: [
                       const Text("cvv",
                           style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
+                            fontSize: 15,
+                            color: Colors.black54,
                             fontFamily: "spartan",)).tr(),
                       SizedBox(height: height*0.02,),
                       SizedBox(
@@ -143,13 +143,14 @@ class _new_cardState extends State<new_card> {
                   ),
                 ],
               ),
-              SizedBox(height: height*0.03,),
+              SizedBox(height: height*0.02,),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           SizedBox(
                             height: height*0.05,
@@ -188,12 +189,12 @@ class _new_cardState extends State<new_card> {
               SizedBox(height: height*0.02,),
               Row(
                 children: [
-                  const Image(image: AssetImage("assets/images/lock.png"),height: 25,width: 25,color: Color(0xFFDD6A03),),
+                  const Image(image: AssetImage("assets/images/lock.png"),height: 20,width: 20,color: Color(0xFFDD6A03),),
                   SizedBox(width: width*0.04,),
                   const Text("secure",
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
+                        fontSize: 14,
+                        color: Colors.black87,
                         fontFamily: "spartan",)).tr()
                 ],
               ),
@@ -205,7 +206,7 @@ class _new_cardState extends State<new_card> {
                       Navigator.pop(context);
                     },
                     child: Container(alignment: Alignment.center,
-                      height: height*0.07,
+                      height: height*0.055,
                       width: width*0.43,
                       decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: const BorderRadius.all(Radius.circular(5))),
                       child: const Text("cancel",style: TextStyle(
@@ -238,7 +239,7 @@ class _new_cardState extends State<new_card> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: height*0.07,
+                      height: height*0.055,
                       width: width*0.43,
                       decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03) ),color:const Color(0xffDD6A03) ,borderRadius: const BorderRadius.all(Radius.circular(5))),
                       child: const Text("save",style: TextStyle(color: Colors.white,fontSize: 14,

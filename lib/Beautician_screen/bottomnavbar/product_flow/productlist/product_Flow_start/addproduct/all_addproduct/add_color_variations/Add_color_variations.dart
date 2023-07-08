@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
 class add_color_variations extends StatefulWidget {
-  const add_color_variations({Key? key}) : super(key: key);
+  const   add_color_variations({Key? key}) : super(key: key);
 
   @override
   State<add_color_variations> createState() => _add_color_variationsState();
@@ -167,12 +167,12 @@ class _add_color_variationsState extends State<add_color_variations> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(alignment: Alignment.center,
-                    height: height*0.07,
+                    height: height*0.05,
                     width: width*0.4,
                     child: textComoon("CANCEL",12,Color(0xff414141), FontWeight.w600),
                     decoration: BoxDecoration(border: Border.all(color: Color(0xff414141)),borderRadius: BorderRadius.all(Radius.circular(5))),),
                   Container(alignment: Alignment.center,
-                    height: height*0.07,
+                    height: height*0.05,
                     width: width*0.4,
                     child: Text("SAVE",style: TextStyle(color: Colors.white),),
                     decoration: BoxDecoration(border: Border.all(color: Color(0xFF01635D) ),color:Color(0xFF01635D) ,borderRadius: BorderRadius.all(Radius.circular(5))),),

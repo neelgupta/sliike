@@ -318,15 +318,14 @@ class _clientsDetailsState extends State<clientsDetails> {
             SizedBox(
               height: height * 0.03,
             ),
-            InkWell(
+            !showStats?InkWell(
               onTap: () {
                 setState(() {
                   showStats = !showStats;
                 });
               },
               child: Container(
-                //        color: Colors.amber,
-                // color: Color(0xffFAFAFA),
+                color: Color(0xffFAFAFA),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 15),
                   child: Row(
@@ -347,8 +346,8 @@ class _clientsDetailsState extends State<clientsDetails> {
                   ),
                 ),
               ),
-            ),
-            showStats == true
+            ):SizedBox(),
+            showStats
                 ? Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
@@ -450,42 +449,72 @@ class _clientsDetailsState extends State<clientsDetails> {
                           Divider(
                             thickness: 1,
                             color: Color(0xffCFCFCF),
-                          )
+                          ),
+                          showStats?InkWell(
+                            onTap: () {
+                              setState(() {
+                                showStats = false;
+                              });
+                            },
+                            child: Container(
+                              color: Color(0xffFAFAFA),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 15, bottom: 15),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    textComoon(
+                                        "Hide Stats", 12, Color(0xff2F80ED), FontWeight.w600),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      height: 15,
+                                      width: 15,
+                                      child: Image.asset("assets/images/a1.png"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ):
+                              SizedBox()
                         ],
                       ),
                     ),
                   )
                 : Container(),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  showStats = !showStats;
-                });
-              },
-              child: Container(
-                //  color: Colors.amber,
-                // color: Color(0xffFAFAFA),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      textComoon(
-                          "Hide Stats", 12, Color(0xff2F80ED), FontWeight.w600),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 15,
-                        width: 15,
-                        child: Image.asset("assets/images/topblue.png"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       showStats = !showStats;
+            //     });
+            //   },
+            //   child: Container(
+            //     //  color: Colors.amber,
+            //     // color: Color(0xffFAFAFA),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(top: 15, bottom: 15),
+            //       child: Row(
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           textComoon(
+            //               "Hide Stats", 12, Color(0xff2F80ED), FontWeight.w600),
+            //           SizedBox(
+            //             width: 10,
+            //           ),
+            //           Container(
+            //             height: 15,
+            //             width: 15,
+            //             child: Image.asset("assets/images/topblue.png"),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
             DefaultTabController(
                 length: 5, // length of tabs
                 initialIndex: 0,

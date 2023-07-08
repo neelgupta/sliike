@@ -35,19 +35,21 @@ class _product_detailState extends State<product_detail> {
                   ),
                 ),
                 Positioned(
+                  top: 30,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      height: height*0.16,
-                      margin: EdgeInsets.only(left: width*0.02,top: height*0.04),
+                      height: height*0.12,
                       alignment: Alignment.centerLeft,
                       child: Image.asset("assets/images/Bach Arrow.png",fit: BoxFit.fill,),
                     ),
                   ),
                 ),
                 Positioned(
+                   top: 55,
+                  right: 20,
                   child: InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -55,47 +57,47 @@ class _product_detailState extends State<product_detail> {
                       },));
                     },
                     child: Container(
-                      height: height*0.06,
-                      margin: EdgeInsets.only(right: width*0.06,top: height*0.08),
+                      height: height*0.05,
                       alignment: Alignment.centerRight,
-                      child: Image.asset("assets/images/cart.png",height: height*0.13),
+                      child: Image.asset("assets/images/cart.png"),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: height*0.02,),
+            SizedBox(height: height*0.01,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: height*0.10,
-                    width: width*0.17,
+                    height: 70,
+                    width: 70,
                     child: Image.asset("assets/images/Rectangle 146.png",fit: BoxFit.fill,),
                   ),
-                  SizedBox(width: width*0.01,),
+                  SizedBox(width: 05),
                   SizedBox(
-                    height: height*0.10,
-                    width: width*0.17,
+                    height: 70,
+                    width: 70,
                     child: Image.asset("assets/images/Rectangle 960.png",fit: BoxFit.fill,),
                   ),
-                  SizedBox(width: width*0.01,),
+                  SizedBox(width: 05),
                   SizedBox(
-                    height: height*0.10,
-                    width: width*0.17,
+                    height: 70,
+                    width: 70,
                     child: Image.asset("assets/images/Rectangle 961.png",fit: BoxFit.fill,),
                   ),
-                  SizedBox(width: width*0.01,),
+                  SizedBox(width: 05),
                   SizedBox(
-                    height: height*0.10,
-                    width: width*0.17,
+                    height: 70,
+                    width: 70,
                     child: Image.asset("assets/images/Rectangle 959.png",fit: BoxFit.fill,),
                   ),
-                  SizedBox(width: width*0.01,),
+                  SizedBox(width: 05),
                   SizedBox(
-                    height: height*0.10,
-                    width: width*0.17,
+                    height: 70,
+                    width: 70,
                     child: Image.asset("assets/images/Rectangle 962.png",fit: BoxFit.fill,),
                   ),
                 ],
@@ -106,7 +108,7 @@ class _product_detailState extends State<product_detail> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text("Subaru Hair Dye Blonde/Wine Red/Gold/Black 1 PCS",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black,
                       fontFamily: "spartan",
                       fontWeight: FontWeight.bold)),
@@ -117,39 +119,39 @@ class _product_detailState extends State<product_detail> {
               child: Row(
                 children: [
                   SizedBox(
-                    height: height*0.07,
-                    width: width*0.07,
+                    height: 28,
+                    width: 28,
                     child: Image.asset("assets/images/Star 1.png"),
                   ),
                   SizedBox(width: width*0.01,),
                   SizedBox(
-                    height: height*0.07,
-                    width: width*0.07,
+                    height: 28,
+                    width: 28,
                     child: Image.asset("assets/images/Star 1.png"),
                   ),
                   SizedBox(width: width*0.01,),
                   SizedBox(
-                    height: height*0.07,
-                    width: width*0.07,
+                    height: 28,
+                    width: 28,
                     child: Image.asset("assets/images/Star 1.png"),
                   ),
                   SizedBox(width: width*0.01,),
                   SizedBox(
-                    height: height*0.07,
-                    width: width*0.07,
+                    height: 28,
+                    width: 28,
                     child: Image.asset("assets/images/Star 1.png",color: Colors.black54,),
                   ),
                   SizedBox(width: width*0.01,),
                   SizedBox(
-                    height: height*0.07,
-                    width: width*0.07,
+                    height: 28,
+                    width: 28,
                     child: Image.asset("assets/images/Star 1.png",color: Colors.black54,),
                   ),
                   SizedBox(width: width*0.02,),
                   const Text("(8 Ratings)",
                       style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
+                          fontSize: 16,
+                          color: Colors.black54,
                           fontFamily: "spartan")),
                   const Spacer(),
                   const Icon(Icons.share,color: Color(0xFFDD6A03),size: 20,),
@@ -158,7 +160,7 @@ class _product_detailState extends State<product_detail> {
                 ],
               ),
             ),
-            SizedBox(height: height*0.02,),
+            SizedBox(height: height*0.01,),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Divider(color: Colors.black54,),
@@ -168,7 +170,7 @@ class _product_detailState extends State<product_detail> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text("\$999",
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.black,
                       fontFamily: "spartan",
                       fontWeight: FontWeight.bold)),
@@ -178,7 +180,7 @@ class _product_detailState extends State<product_detail> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text("+shipping to anywhere within your region for affordable price.",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       color: Colors.black54,
                       fontFamily: "spartan",)),
             ),
@@ -192,7 +194,7 @@ class _product_detailState extends State<product_detail> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: const Text("available_variation",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.black,
                     fontFamily: "spartan",
                       fontWeight: FontWeight.bold)).tr(),
@@ -223,11 +225,12 @@ class _product_detailState extends State<product_detail> {
                 children: [
                   const Text("product_description",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                           fontFamily: "spartan",
                           )).tr(),
                   const Spacer(),
-                  const Icon(Icons.arrow_forward_ios_sharp,size: 25,)
+                  const Icon(Icons.arrow_forward_ios_sharp,size: 20,)
                 ],
               ),
             ),
@@ -241,7 +244,7 @@ class _product_detailState extends State<product_detail> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Text("Subaru Unisex hair colorant is a high quality\nHair Dye that has conditioning properties and\nLeaves a long lasting colour on your hair.",
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: "spartan",
                   )),
             ),
@@ -257,7 +260,7 @@ class _product_detailState extends State<product_detail> {
                 child: Container(
                   alignment: Alignment.center,
                   width: width,
-                  height: height * 0.06,
+                  height: height * 0.05,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: const Color(0xffDD6A03)),

@@ -39,11 +39,11 @@ class _appointmentsState extends State<appointments> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height*0.06,
                         child:Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                            child: const Image(image: AssetImage("assets/images/back.png"),color: Colors.black,)),
                       ),
                     ),
                     SizedBox(width: width*0.12,),
@@ -166,7 +166,7 @@ class _appointmentsState extends State<appointments> {
                       SizedBox(width: width*0.04,),
                       const Text("use_this_card",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontFamily: "spartan",
                               color: Colors.black)).tr(),
                     ],
@@ -186,7 +186,7 @@ class _appointmentsState extends State<appointments> {
                         SizedBox(width: width*0.02,),
                         const Text("add_new_card",
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontFamily: "spartan",
                                 color: Color(0xffDD6A03))).tr(),
                       ],
@@ -200,7 +200,7 @@ class _appointmentsState extends State<appointments> {
                           Navigator.pop(context);
                         },
                         child: Container(alignment: Alignment.center,
-                          height: height*0.07,
+                          height: height*0.055,
                           width: width*0.43,
                           decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: const BorderRadius.all(Radius.circular(5))),
                           child: const Text("back",style: TextStyle(
@@ -217,7 +217,7 @@ class _appointmentsState extends State<appointments> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          height: height*0.07,
+                          height: height*0.055,
                           width: width*0.43,
                           decoration: BoxDecoration(border: Border.all(color: const Color(0xffDD6A03) ),color:const Color(0xffDD6A03) ,borderRadius: const BorderRadius.all(Radius.circular(5))),
                           child: const Text("review",style: TextStyle(color: Colors.white,fontSize: 14,

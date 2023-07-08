@@ -12,12 +12,9 @@ Widget stackRecord(BuildContext context){
       MediaQuery.of(context).padding.right -
       MediaQuery.of(context).padding.left;
   return Padding(
-    padding: const EdgeInsets.only(left: 20,right: 20),
+    padding: const EdgeInsets.only(left: 20,right: 20,top: 25),
     child: Column(
       children: [
-        SizedBox(
-          height: height * 0.02,
-        ),
         Container(
             alignment: Alignment.topLeft,
             child: textComoon(
@@ -25,13 +22,12 @@ Widget stackRecord(BuildContext context){
         SizedBox(
           height: height * 0.03,
         ),
-
         Row(
           children: [
-            Expanded(child: textComoon("Name", 10, Color(0xff707070), FontWeight.w500)),
-            Expanded(child: textComoon("Category", 10, Color(0xff707070), FontWeight.w500)),
-            Expanded(child: textComoon("Expt stock", 10, Color(0xff707070), FontWeight.w500)),
-            Expanded(child: textComoon("Current stock", 10, Color(0xff707070), FontWeight.w500)),
+            Expanded(child: textComoon("Name", 12, Color(0xff707070), FontWeight.w500)),
+            Expanded(child: textComoon("Category", 12, Color(0xff707070), FontWeight.w500)),
+            Expanded(child: textComoon("Expt stock", 12, Color(0xff707070), FontWeight.w500)),
+            Expanded(child: textComoon("Current stock", 12, Color(0xff707070), FontWeight.w500)),
 
           ],
         ),
@@ -45,28 +41,29 @@ Widget stackRecord(BuildContext context){
               itemBuilder: (context, index) {
               return Column(
                 children: [
+                  const SizedBox(height: 15,),
                   Padding(
                     padding: const EdgeInsets.only(top: 10,bottom: 10,),
                     child: Row(mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(child: Text(maxLines: 2,"Subaru Hairg",style: TextStyle(
-                          fontSize: 10, color:Color(0xff111111),fontWeight: FontWeight.w500,
+                          fontSize: 12, color:Color(0xff111111),fontWeight: FontWeight.w400,
                         ),)
                         ),
 
                         Expanded(child: Text(maxLines: 2,"Skin & Facials",style: TextStyle(
-                          fontSize: 10, color:Color(0xff111111),fontWeight: FontWeight.w500,
+                          fontSize: 12, color:Color(0xff111111),fontWeight: FontWeight.w400,
                         ),)
                         ),
                         Expanded(child: Text(maxLines: 2,"20",style: TextStyle(
-                          fontSize: 10, color:Color(0xff111111),fontWeight: FontWeight.w500,
+                          fontSize: 12, color:Color(0xff111111),fontWeight: FontWeight.w400,
                         ),)
                         ),
                         Expanded(child: Text(maxLines: 2,"12",style: TextStyle(
-                          fontSize: 10, color:Color(0xff111111),fontWeight: FontWeight.w500,
+                          fontSize: 12, color:Color(0xff111111),fontWeight: FontWeight.w400,
                         ),)
-                        ),                    ],
+                        ), ],
                     ),
                   ),
                   Divider(thickness: 1,color: Color(0xffCFCFCF),),

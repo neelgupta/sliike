@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/ButtonCommon/Button.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 
+import '../all_addproduct/all_product.dart';
 import 'addproduct_phoros3.dart';
 
 class addProduct_Photos extends StatefulWidget {
@@ -27,7 +28,6 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -69,7 +69,7 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
                                 overflow: TextOverflow.ellipsis,
                                 color: Colors.black,
                                 fontFamily: "spartan",
-                                fontWeight: FontWeight.w700)),
+                                fontWeight: FontWeight.bold)),
                       ),
 
 
@@ -90,7 +90,7 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
               children: [
 
                 SizedBox(
-                  height: height*0.02,
+                  height: height*0.025,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,6 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
                     showDialog(context: context, builder: (context) {
                       return AlertDialog(
                         alignment: Alignment.bottomCenter,
-
                         insetPadding: EdgeInsets.symmetric(horizontal: 0,),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
@@ -137,7 +136,6 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
                           builder: (context, setState) {
                             return Container(
                               width: width,
-
                               child: Column(
                                 children: <Widget>[
                                   SizedBox(
@@ -227,9 +225,9 @@ class _addProduct_PhotosState extends State<addProduct_Photos> {
                 ),
                 Spacer(),
                 CommonButton(context, "Continue", 12, FontWeight.w600, Colors.white, () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //   return allProduct_select();
-                  // },));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return allProduct_select();
+                  },));
                 })
               ],
             ),

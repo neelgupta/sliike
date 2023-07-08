@@ -41,7 +41,6 @@ class _clientsmainState extends State<clientsmain> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.14, //
-
         flexibleSpace: Container(
           color: Color(0xff01635D),
           child: Column(
@@ -55,9 +54,9 @@ class _clientsmainState extends State<clientsmain> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          child: Text("Clients List",
+                          child: Text("Clients",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   overflow: TextOverflow.ellipsis,
                                   color: Colors.white,
                                   fontFamily: "spartan",
@@ -75,120 +74,106 @@ class _clientsmainState extends State<clientsmain> {
       body: Column(
         children: [
           SizedBox(
-            height: height * 0.03,
+            height: height * 0.02,
           ),
           Container(
             alignment: Alignment.center,
-
             width: width,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        ClientListTab = true;
-                        ReviewsTab = false;
-                        NotificationsTab = false;
-                        type = "1";
-                        print(type);
-                      });
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
-                          color: ClientListTab ? Color(0xff01635D) : Colors.white,
-                          border: Border.all(
-                              color: ClientListTab
-                                  ? Color(0xff01635D)
-                                  : Colors.black38)),
-                      child: Text(
-                        "Client List",
-                        style: TextStyle(
-                            color:
-                                ClientListTab ? Colors.white : Color(0xff01635D),
-                            fontFamily: 'spartan',
-                            fontSize: 12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * 0.01,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        ClientListTab = false;
-                        ReviewsTab = true;
-                        NotificationsTab = false;
-                        type = "2";
-                        print(type);
-                      });
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
-                          color: ReviewsTab ? Color(0xff01635D) : Colors.white,
-                          border: Border.all(
-                              color: ReviewsTab
-                                  ? Color(0xff01635D)
-                                  : Colors.black38)),
-                      child: Text(
-                        "Reviews",
-                        style: TextStyle(
-                            color: ReviewsTab ? Colors.white : Color(0xff01635D),
-                            fontFamily: 'spartan',
-                            fontSize: 12),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * 0.01,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        ClientListTab = false;
-                        ReviewsTab = false;
-                        NotificationsTab = true;
-                        type = "3";
-                        print(type);
-                      });
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      ClientListTab = true;
+                      ReviewsTab = false;
+                      NotificationsTab = false;
+                      type = "1";
+                      print(type);
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 08, horizontal: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21),
+                        color: ClientListTab ? Color(0xff01635D) : Color(0xffEBEFEE),
+                        border: Border.all(
+                            color: Colors.transparent
+                        )),
+                    child: Text(
+                      "Client List",
+                      style: TextStyle(
                           color:
-                              NotificationsTab ? Color(0xff01635D) : Colors.white,
-                          border: Border.all(
-                              color: NotificationsTab
-                                  ? Color(0xff01635D)
-                                  : Colors.black38)),
-                      child: Text(
-                        "Notifications",
-                        style: TextStyle(
-                            color: NotificationsTab
-                                ? Colors.white
-                                : Color(0xff01635D),
-                            fontFamily: 'spartan',
-                            fontSize: 12),
-                      ),
+                              ClientListTab ? Colors.white : Color(0xff01635D),
+                          fontFamily: 'spartan',
+                          fontSize: 12,fontWeight: FontWeight.w600),
                     ),
                   ),
-                  SizedBox(
-                    width: width * 0.01,
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      ClientListTab = false;
+                      ReviewsTab = true;
+                      NotificationsTab = false;
+                      type = "2";
+                      print(type);
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 08, horizontal: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21),
+                        color: ReviewsTab ? Color(0xff01635D) : Color(0xffEBEFEE),
+                        border: Border.all(
+                            color: Colors.transparent
+                        )),
+                    child: Text(
+                      "Reviews",
+                      style: TextStyle(
+                          color: ReviewsTab ? Colors.white : Color(0xff01635D),
+                          fontFamily: 'spartan',
+                          fontSize: 12,fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      ClientListTab = false;
+                      ReviewsTab = false;
+                      NotificationsTab = true;
+                      type = "3";
+                      print(type);
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 08, horizontal: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21),
+                        color:
+                            NotificationsTab ? Color(0xff01635D) : Color(0xffEBEFEE),
+                        border: Border.all(
+                            color: Colors.transparent
+                        )),
+                    child: Text(
+                      "Notifications",
+                      style: TextStyle(
+                          color: NotificationsTab
+                              ? Colors.white
+                              : Color(0xff01635D),
+                          fontFamily: 'spartan',
+                          fontSize: 12,fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -200,7 +185,7 @@ class _clientsmainState extends State<clientsmain> {
           ),
 
           ///ClientList
-          ClientListTab ==true
+          ClientListTab
               ?Container(
                 child: Column(
                     children: [
@@ -210,7 +195,7 @@ class _clientsmainState extends State<clientsmain> {
                         child: Container(
                           alignment: Alignment.topLeft,
                           child: textComoon("Client List", 14, Color(0xff111111),
-                              FontWeight.w700),
+                              FontWeight.bold),
                         ),
                       ),
                       temp.length!=0?Column(
@@ -226,9 +211,9 @@ class _clientsmainState extends State<clientsmain> {
                                       onChanged: (value) {},
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.only(left: 20),
-                                        hintText: "Search service",
+                                        hintText: "Search Client",
                                         hintStyle:
-                                        TextStyle(color: Color(0xff707070)),
+                                        TextStyle(color: Color(0xff707070),fontSize: 14),
                                         suffixIcon: Container(
                                           width: width * 0.15,
                                           decoration: BoxDecoration(
@@ -289,217 +274,213 @@ class _clientsmainState extends State<clientsmain> {
                             height: height * 0.02,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            padding: const EdgeInsets.only(left: 20, right: 20,top: 10),
                             child: Container(
-                              height: height * 0.5,
                               child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: temp.length,
                                 itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding:
-                                    const EdgeInsets.only(top: 10, bottom: 5),
-                                    child: InkWell(
-                                      onTap: () {
-                                        ///pendid select to temproly condition
-                                        temp[index]=="pending"?showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              alignment: Alignment.bottomCenter,
-                                              insetPadding: EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 30),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10))),
-                                              title: StatefulBuilder(
-                                                builder: (context, setState) {
-                                                  return Column(
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        height: height * 0.02,
+                                  return InkWell(
+                                    onTap: () {
+                                      ///pendid select to temproly condition
+                                      temp[index]=="pending"?showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            alignment: Alignment.bottomCenter,
+                                            insetPadding: EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 30),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            title: StatefulBuilder(
+                                              builder: (context, setState) {
+                                                return Column(
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: height * 0.02,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        children: [
+                                                          Container(
+                                                            alignment:
+                                                            Alignment.center,
+                                                            height: 30,
+                                                            child: Image.asset(
+                                                                "assets/images/message.png"),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          textComoon(
+                                                              "Send text message",
+                                                              14,
+                                                              Color(0xff111111),
+                                                              FontWeight.w500),
+                                                        ],
                                                       ),
-                                                      InkWell(
-                                                        onTap: () {},
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Container(
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10, bottom: 10),
+                                                      child: Divider(
+                                                        thickness: 1,
+                                                        color: Color(0xffCFCFCF),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .only(left: 15),
+                                                            child: Container(
                                                               alignment:
                                                               Alignment.center,
                                                               height: 30,
                                                               child: Image.asset(
-                                                                  "assets/images/message.png"),
+                                                                  "assets/images/email.png"),
                                                             ),
-                                                            SizedBox(
-                                                              width: 20,
-                                                            ),
-                                                            textComoon(
-                                                                "Send text message",
-                                                                14,
-                                                                Color(0xff111111),
-                                                                FontWeight.w500),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          textComoon(
+                                                              "Send email message",
+                                                              14,
+                                                              Color(0xff111111),
+                                                              FontWeight.w500),
+                                                        ],
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.only(
-                                                            top: 10, bottom: 10),
-                                                        child: Divider(
-                                                          thickness: 1,
-                                                          color: Color(0xffCFCFCF),
-                                                        ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {},
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                              const EdgeInsets
-                                                                  .only(left: 15),
-                                                              child: Container(
-                                                                alignment:
-                                                                Alignment.center,
-                                                                height: 30,
-                                                                child: Image.asset(
-                                                                    "assets/images/email.png"),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 20,
-                                                            ),
-                                                            textComoon(
-                                                                "Send email message",
-                                                                14,
-                                                                Color(0xff111111),
-                                                                FontWeight.w500),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: height * 0.05,
-                                                      ),
-                                                      commonButtonbordergrey(
-                                                          context,
-                                                          "CLOSE",
-                                                          12,
-                                                          FontWeight.w600,
-                                                          Color(0xff707070), () {
-                                                        Navigator.pop(context);
-                                                      }),
-                                                      SizedBox(
-                                                        height: height * 0.01,
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ):
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          return clientsDetails();
-                                        },));
-
-
-                                      },
-                                      child: Container(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  width: 35,
-                                                  height: 35,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xffCFCFCF),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Image.asset(
-                                                      "assets/images/profile.png",
-                                                      fit: BoxFit.fill),
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Container(
-                                                  width: width * 0.5,
-                                                  child: Text(
-                                                    "Phillip Hills",
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xff414141),
-                                                      fontFamily: "spartan",
                                                     ),
-                                                  ),
-                                                ),
-
-                                                Spacer(),
-
-                                                ///pending Button ?
-                                                temp[index]=="pending"||temp[index]=="Accepted"?
-                                                Container(
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadiusDirectional
-                                                        .circular(4),
-                                                    color: Color(0xffFFD059),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 10,
-                                                        right: 10,
-                                                        top: 5,
-                                                        bottom: 5),
-                                                    child: Text(
-                                                      "pending",
-                                                      style: TextStyle(
-                                                          fontFamily: 'Cairo',
-                                                          fontSize: 12,
-                                                          color: Color(0xff111111)),
+                                                    SizedBox(
+                                                      height: height * 0.05,
                                                     ),
-                                                  ),
-                                                ):
-                                                ///Accepted buttom ?
-                                                Container(
-
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadiusDirectional.circular(4),
-                                                    color: Color(0xff219653),
-                                                  ),
-
-                                                  child: Padding(
-
-                                                    padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-
-                                                    child: Text("Accepted",style: TextStyle(fontSize: 10,fontFamily: 'Cairo',color: Color(0xffFFFFFF)),),
-
-                                                  ),
-
-                                                ),
-
-
-
-
-
-
-                                              ],
+                                                    commonButtonbordergrey(
+                                                        context,
+                                                        "CLOSE",
+                                                        12,
+                                                        FontWeight.w600,
+                                                        Color(0xff707070), () {
+                                                      Navigator.pop(context);
+                                                    }),
+                                                    SizedBox(
+                                                      height: height * 0.05,
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             ),
-                                            Divider(
-                                              thickness: 1,
-                                              color: (Color(0xffCFCFCF)),
-                                            )
-                                          ],
-                                        ),
+                                          );
+                                        },
+                                      ):
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return clientsDetails();
+                                      },));
+
+
+                                    },
+                                    child: Container(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 35,
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xffCFCFCF),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.asset(
+                                                    "assets/images/profile.png",
+                                                    fit: BoxFit.fill),
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Container(
+                                                width: width * 0.5,
+                                                child: Text(
+                                                  "Phillip Hills",
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xff414141),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: "spartan",
+                                                  ),
+                                                ),
+                                              ),
+
+                                              Spacer(),
+
+                                              ///pending Button ?
+                                              temp[index]=="pending"||temp[index]=="Accepted"?
+                                              Container(
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadiusDirectional
+                                                      .circular(4),
+                                                  color: Color(0xffFFD059),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 10,
+                                                      right: 10,
+                                                      top: 5,
+                                                      bottom: 5),
+                                                  child: Text(
+                                                    "pending",
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontSize: 12,
+                                                        color: Color(0xff111111)),
+                                                  ),
+                                                ),
+                                              ):
+                                              ///Accepted buttom ?
+                                              Container(
+
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadiusDirectional.circular(4),
+                                                  color: Color(0xff219653),
+                                                ),
+
+                                                child: Padding(
+
+                                                  padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+
+                                                  child: Text("Accepted",style: TextStyle(fontSize: 10,fontFamily: 'Cairo',color: Color(0xffFFFFFF)),),
+
+                                                ),
+
+                                              ),
+
+
+
+
+
+
+                                            ],
+                                          ),
+                                          Divider(
+                                            thickness: 1,
+                                            color: (Color(0xffCFCFCF)),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   );
@@ -507,8 +488,10 @@ class _clientsmainState extends State<clientsmain> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 20,)
                         ],
-                      ):Padding(
+                      ):
+                      Padding(
                         padding: const EdgeInsets.only(left: 20,right: 20),
                         child: Column(
 
@@ -546,10 +529,10 @@ class _clientsmainState extends State<clientsmain> {
                     ],
                   ),
               )
-              : Column(),
+              : const SizedBox(),
 
           ///Reviews
-          ReviewsTab == true
+          ReviewsTab
               ? Padding(
                   padding:  EdgeInsets.only(left: 20, right: 20),
                   child: Column(
@@ -756,10 +739,10 @@ class _clientsmainState extends State<clientsmain> {
                     ],
                   ),
                 )
-              : Column(),
+              : const SizedBox(),
 
           ///notification
-          NotificationsTab == true
+          NotificationsTab
               ? Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
@@ -783,7 +766,7 @@ class _clientsmainState extends State<clientsmain> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  textComoon("New client added", 14,
+                                  textComoon("New client added", 13,
                                       Color(0xff292929), FontWeight.w600),
                                   SizedBox(
                                     height: height * 0.01,
@@ -807,7 +790,7 @@ class _clientsmainState extends State<clientsmain> {
                                   textComoon("30 Mar 2022", 12,
                                       Color(0xffA0A0A0), FontWeight.w500),
                                   SizedBox(
-                                    height: height * 0.01,
+                                    height: height * 0.005,
                                   ),
                                   Divider(
                                     thickness: 1,
@@ -822,9 +805,7 @@ class _clientsmainState extends State<clientsmain> {
                     ],
                   ),
                 )
-              : Column(
-                  children: [],
-                )
+              : const SizedBox(),
         ],
       ),
       floatingActionButton: ClientListTab

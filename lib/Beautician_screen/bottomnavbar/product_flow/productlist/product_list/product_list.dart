@@ -11,142 +11,142 @@ Widget productList(BuildContext context) {
       MediaQuery.of(context).padding.left;
   var selectedItem = 0;
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20),
+    padding: const EdgeInsets.only(left: 20, right: 20,top: 25),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: height * 0.02,
-        ),
         Container(
             alignment: Alignment.topLeft,
             child: textComoon(
-                "Products (2)", 14, const Color(0xff292929), FontWeight.w700)),
+                "Products (2)", 14, const Color(0xff292929), FontWeight.bold)),
         SizedBox(
-          height: height * 0.03,
+          height: height * 0.015,
         ),
         Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-                alignment: Alignment.topLeft,
-                //height: height*0.6,
-
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 8,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Card(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                  color: const Color(0xffE7E7E7), width: 1),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
+          child: Container(
+              // color: Colors.red,
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 8,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Card(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: const Color(0xffE7E7E7), width: 1),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Material(
+                                  elevation: 20,
+                                  child: Container(
                                     height: 90,
                                     width: 90,
                                     decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 4,
+                                            offset: Offset(4, 0), // Shadow position
+                                          ),
+                                        ],
                                         borderRadius: BorderRadius.circular(5),
                                         image: const DecorationImage(
                                             fit: BoxFit.fill,
                                             image: AssetImage(
                                                 "assets/images/Rectangle218.png"))),
                                   ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Container(
-                                    height: 90,
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        textComoon(
-                                            "Gatsby Hair Dye",
-                                            14,
-                                            const Color(0xff292929),
-                                            FontWeight.w500),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        textComoon(
-                                            "120 in stock",
-                                            12,
-                                            const Color(0xff414141),
-                                            FontWeight.w500),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        textComoon(
-                                            "\$20",
-                                            12,
-                                            const Color(0xff292929),
-                                            FontWeight.w600),
-                                      ],
+                                ),
+                                const SizedBox(
+                                  width: 18,
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    textComoon(
+                                        "Gatsby Hair Dye",
+                                        14,
+                                        const Color(0xff292929),
+                                        FontWeight.w600),
+                                    const SizedBox(
+                                      height: 5,
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  PopupMenuButton(
-                                    onSelected: (value) {
-                                      selectedItem = value as int;
-                                      if (selectedItem == 1) {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                          builder: (context) {
-                                            return const all_product_sale();
-                                          },
-                                        ));
-                                      } else if (selectedItem == 2) {
-                                        deletedialog(context);
-                                      }
-                                    },
-                                    itemBuilder: (BuildContext context) {
-                                      return [
-                                        PopupMenuItem(
-                                          value: 1,
-                                          child: textComoon("Edit", 12,
-                                              Colors.black, FontWeight.w500),
-                                        ),
-                                        PopupMenuItem(
-                                          value: 2,
-                                          child: textComoon("Delete", 12,
-                                              Colors.black, FontWeight.w500),
-                                        ),
-                                      ];
-                                    },
-                                  )
-                                ],
-                              ),
+                                    textComoon(
+                                        "120 in stock",
+                                        12,
+                                        const Color(0xff414141),
+                                        FontWeight.w500),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    textComoon(
+                                        "\$20",
+                                        12,
+                                        const Color(0xff292929),
+                                        FontWeight.w600),
+                                  ],
+                                ),
+                                const Spacer(),
+                                PopupMenuButton(
+                                  padding: EdgeInsets.only(bottom: 15),
+                                  onSelected: (value) {
+                                    selectedItem = value as int;
+                                    if (selectedItem == 1) {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(
+                                        builder: (context) {
+                                          return const all_product_sale();
+                                        },
+                                      ));
+                                    } else if (selectedItem == 2) {
+                                      deletedialog(context);
+                                    }
+                                  },
+                                  itemBuilder: (BuildContext context) {
+                                    return [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: textComoon("Edit", 12,
+                                            Colors.black, FontWeight.w500),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child: textComoon("Delete", 12,
+                                            Colors.black, FontWeight.w500),
+                                      ),
+                                    ];
+                                  },
+                                )
+                              ],
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    );
-                  },
-                )),
-          ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  );
+                },
+              )),
         )
       ],
     ),
   );
 }
 
-deletedialog(BuildContext context) {
+ deletedialog(BuildContext context) {
   double height = MediaQuery.of(context).size.height -
       MediaQuery.of(context).padding.top -
       MediaQuery.of(context).padding.bottom;

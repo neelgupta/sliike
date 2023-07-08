@@ -21,7 +21,6 @@ class _orderDetailState extends State<orderDetail> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: height * 0.13, //
-
         flexibleSpace: Container(
           color: Color(0xffFFFFFF),
           child: Column(
@@ -60,7 +59,7 @@ class _orderDetailState extends State<orderDetail> {
 
                         },
                         child: Container(
-                          child: Text("Add Product",
+                          child: Text("Order Detail",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -84,15 +83,14 @@ class _orderDetailState extends State<orderDetail> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: height * 0.02,
+                height: height * 0.025,
               ),
               Container(alignment: Alignment.topLeft,
                   child: textComoon(
-                      "Oder Summary", 14, Color(0xff292929), FontWeight.w700)),
+                      "Order Summary", 14, Color(0xff292929), FontWeight.bold)),
               SizedBox(
                 height: height * 0.02,
               ),
-
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   textComoon("Subaru Hair Dye Blond", 12,Color(0xff414141), FontWeight.w500),
@@ -107,18 +105,19 @@ class _orderDetailState extends State<orderDetail> {
                   textComoon("Status:", 12,Color(0xff707070), FontWeight.w500),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xffFFD059),
                       borderRadius: BorderRadius.circular(2),
+                      color: Color(0xffFFD059),
                     ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                        child: textComoon("Pending", 12,Color(0xff111111), FontWeight.w600),
-                      )),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 06),
+                      child: Center(child: textComoon("Pending", 10, Color(0xff000000), FontWeight.w600)),
+                    ),
+                  )
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
+                padding: const EdgeInsets.only(top: 2.5),
+                child: Divider(color: Color(0xffCFCFCF)),
               ),
               SizedBox(
                 height: height * 0.01,
@@ -130,7 +129,7 @@ class _orderDetailState extends State<orderDetail> {
                 ],
               ),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -139,7 +138,7 @@ class _orderDetailState extends State<orderDetail> {
                 ],
               ),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -147,7 +146,6 @@ class _orderDetailState extends State<orderDetail> {
                   textComoon("\$10", 12,Color(0xff111111), FontWeight.w600),
                 ],
               ),
-
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Divider(thickness: 1,color: Color(0xffCFCFCF),),
@@ -170,29 +168,29 @@ class _orderDetailState extends State<orderDetail> {
               ),
               Container(alignment: Alignment.topLeft,
                   child: textComoon(
-                      "Delivery Address", 14, Color(0xff292929), FontWeight.w700)),
+                      "Delivery Address", 14, Color(0xff292929), FontWeight.bold)),
               SizedBox(
                 height: height * 0.02,
               ),
               textComoon("Alex Roderic", 12, Color(0xff414141), FontWeight.w500),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               textComoon("825 Dawson Island", 12, Color(0xff414141), FontWeight.w500),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               textComoon("Apt 30", 12, Color(0xff414141), FontWeight.w500),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               textComoon("Toronto. DE 63324", 12, Color(0xff414141), FontWeight.w500),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               textComoon("Canada", 12, Color(0xff414141), FontWeight.w500),
               SizedBox(
-                height: height * 0.01,
+                height: height * 0.02,
               ),
               Divider(thickness: 1,color: Color(0xffCFCFCF),),
               SizedBox(
@@ -200,7 +198,7 @@ class _orderDetailState extends State<orderDetail> {
               ),
               Container(alignment: Alignment.topLeft,
                   child: textComoon(
-                      "Buyer Detail", 14, Color(0xff292929), FontWeight.w700)),
+                      "Buyer Detail", 14, Color(0xff292929), FontWeight.bold)),
               SizedBox(
                 height: height * 0.02,
               ),

@@ -35,10 +35,11 @@ class _cartState extends State<cart> {
                 child: Row(
                   children: [
                     InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(Icons.arrow_back_sharp,size: 30,)),
+                      onTap: (){
+                         Navigator.pop(context);
+                      },
+                      child: Image.asset(height:height*0.025 ,"assets/images/back.png",color: Colors.black,),
+                    ),
                     const Spacer(),
                     const Text("cart",
                         style: TextStyle(
@@ -100,23 +101,26 @@ class _cartState extends State<cart> {
                   Row(
                     children: [
                       SizedBox(
-                          height: height*0.15,
-                          width: width*0.30,
+                          height: 102,
+                          width: 102,
                           child: const Image(image: AssetImage("assets/images/Rectangle 146.png"),fit: BoxFit.fill,)),
                       SizedBox(width: width*0.04,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:  [
                           Text("Subaru Hair Dye Blonde/Wine\nRed/Gold/Black 1 PCS",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontFamily: "spartan",
-                                  color: Colors.black)),
+                                  color: Colors.black,fontWeight: FontWeight.w600)),
+                          const SizedBox(height: 05,),
                           Text("\$999",
                               style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: "spartan",
-                                  color: Colors.black54)),
+                                  color: Colors.black87)),
+                          const SizedBox(height: 05,),
                           Text("Seller: Star salon",
                               style: TextStyle(
                                   fontSize: 15,
@@ -247,32 +251,32 @@ class _cartState extends State<cart> {
                     ],
                   ),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Text("delivery_fees",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontFamily: "spartan",
                           color: Colors.black54)).tr(),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01),
                   Row(
                     children: [
                       const Text("sub_total",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontFamily: "spartan",
                               color: Colors.black)).tr(),
                       const Spacer(),
                       const Text("\$999",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontFamily: "spartan",
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.04,),
+                  SizedBox(height: height*0.03,),
                   InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -282,7 +286,7 @@ class _cartState extends State<cart> {
                     child: Container(
                       alignment: Alignment.center,
                       width: width,
-                      height: height * 0.06,
+                      height: height * 0.055,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: const Color(0xffDD6A03)),
@@ -297,7 +301,7 @@ class _cartState extends State<cart> {
                   Container(
                     alignment: Alignment.center,
                     width: width,
-                    height: height * 0.06,
+                    height: height * 0.055,
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xffDD6A03)),
                       borderRadius: BorderRadius.circular(5),),
@@ -324,7 +328,7 @@ class _cartState extends State<cart> {
                           SizedBox(height: height*0.03),
                           const Text("return_policy",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontFamily: "spartan",
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)).tr(),

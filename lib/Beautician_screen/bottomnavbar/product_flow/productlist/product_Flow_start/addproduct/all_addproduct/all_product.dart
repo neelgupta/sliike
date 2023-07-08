@@ -299,14 +299,22 @@ class _allProduct_selectState extends State<allProduct_select> {
               ),
               Row(
                 children: [
-                  Container(
-                      width: 20,
-                      height: 20,
-                      child: Image.asset("assets/images/add-square.png")),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context) {
+                        return add_color_variations();
+                      },));
+                    },
+                    child: Container(
+                        width: 20,
+                        height: 20,
+                        child: Image.asset("assets/images/add-square.png")),
+                  ),
                   SizedBox(
                     width: 10,
                   ),
-                  textComoon("Add color variations", 12, Color(0xff1571ED),
+                  textComoon(
+                      "Add color variations", 12, Color(0xff1571ED),
                       FontWeight.w500),
                   Spacer(),
                   InkWell(

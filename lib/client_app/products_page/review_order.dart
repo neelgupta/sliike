@@ -38,14 +38,14 @@ class _review_orderState extends State<review_order> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(12),
                         height: height*0.06,
                         child:Container(
                             padding: const EdgeInsets.all(5),
-                            child: const Image(image: AssetImage("assets/images/Group 55.png"),color: Colors.black,)),
+                            child: const Image(image: AssetImage("assets/images/back.png"),color: Colors.black,)),
                       ),
                     ),
-                    SizedBox(width: width*0.18,),
+                    SizedBox(width: width*0.12,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -68,7 +68,6 @@ class _review_orderState extends State<review_order> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: height*0.01,),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               height: height*0.05,
@@ -78,7 +77,7 @@ class _review_orderState extends State<review_order> {
                 children: [
                   const Text("review",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: Colors.black,
                           fontFamily: "spartan")).tr(),
                   const Spacer(),
@@ -103,63 +102,63 @@ class _review_orderState extends State<review_order> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height*0.04,),
+                  SizedBox(height: height*0.02,),
                   const Text("order_details",
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.black,
                           fontFamily: "spartan",
                           fontWeight: FontWeight.bold)).tr(),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   Row(
                     children: const [
                       Text("Subaru Hair Dye Blonde",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               color: Colors.black,
                               fontFamily: "spartan",
-                              fontWeight: FontWeight.bold)),
+                              fontWeight: FontWeight.w500)),
                       Spacer(),
                       Text("x1",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               color: Colors.black54,
                               fontFamily: "spartan")),
                     ],
                   ),
-                  SizedBox(height: height*0.01,),
+                  SizedBox(height: height*0.015,),
                   Row(
                     children: const [
                       Text("Hair Dye (Blonde)",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Colors.black54,
                             fontFamily: "spartan",)),
                       Spacer(),
                       Text("\$999",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               color: Colors.black,
                               fontFamily: "spartan",
                               fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.015,),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   Row(
                     children: [
                       const Text("subtotal",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")).tr(),
                       const Spacer(),
                       const Text("\$999",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")),
                     ],
@@ -169,13 +168,13 @@ class _review_orderState extends State<review_order> {
                     children: [
                       const Text("gst/hst",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")).tr(),
                       const Spacer(),
                       const Text("\$10.00",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")),
                     ],
@@ -185,13 +184,13 @@ class _review_orderState extends State<review_order> {
                     children: [
                       const Text("shipping",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")).tr(),
                       const Spacer(),
                       const Text("\$16.80",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")),
                     ],
@@ -199,45 +198,45 @@ class _review_orderState extends State<review_order> {
                   SizedBox(height: height*0.01,),
                   const Text("Canada Post Regular Parcel",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           color: Colors.black54,
                           fontFamily: "spartan")),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   Row(
                     children: [
                       const Text("total",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")).tr(),
                       const Spacer(),
                       const Text("\$1,025.8",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 14,
                               color: Colors.black,
                               fontFamily: "spartan")),
                     ],
                   ),
-                  SizedBox(height: height*0.06,),
+                  SizedBox(height: height*0.03,),
                   Row(
                     children: [
                       const Text("shipping_address",
                           style: TextStyle(
-                              fontSize: 23,
+                              fontSize: 16,
                               color: Colors.black,
                               fontFamily: "spartan",
                               fontWeight: FontWeight.bold)).tr(),
                       const Spacer(),
                       const Text("edit",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color(0xFFDD5103),
                               fontFamily: "spartan")).tr(),
                     ],
                   ),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Divider(color: Colors.black54,),
                   Row(
                     children: [
@@ -254,7 +253,7 @@ class _review_orderState extends State<review_order> {
                             });
                           },),
                       ),
-                      SizedBox(width: width*0.04,),
+                      SizedBox(width: width*0.03,),
                       const Text("billing_address",
                           style: TextStyle(
                               fontSize: 14,
@@ -270,32 +269,32 @@ class _review_orderState extends State<review_order> {
                   SizedBox(height: height*0.02,),
                   const Text("Ester Britney\n825 Dawson Island\nApt 30\nToronto, DE 63324\nCanada",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.black,
                           fontFamily: "spartan")),
-                  SizedBox(height: height*0.06,),
+                  SizedBox(height: height*0.03,),
                   Row(
                     children: [
                       const Text("payment",
                           style: TextStyle(
-                              fontSize: 23,
+                              fontSize: 16,
                               color: Colors.black,
                               fontFamily: "spartan",
                               fontWeight: FontWeight.bold)).tr(),
                       const Spacer(),
                       const Text("edit",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color(0xFFDD5103),
                               fontFamily: "spartan")).tr(),
                     ],
                   ),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Divider(color: Colors.black54,),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(height: height*0.01,),
                   const Text("Alex Roderic\n....  ....  ....  555\n05/23\n315",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Colors.black,
                           fontFamily: "spartan")),
                   SizedBox(height: height*0.06,),

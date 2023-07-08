@@ -123,7 +123,7 @@ Widget upcoming(BuildContext context,){
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Color(0xff89c6a3),
+                    color: Colors.green[100],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -214,7 +214,7 @@ Widget previous(BuildContext context,){
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Color(0xff67E1FC),
+                    color: Colors.blue[100],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -232,10 +232,8 @@ Widget previous(BuildContext context,){
                 textComoon("Mar 15, 2022 - 9:30 AM ", 10, Color(0xff414141), FontWeight.w500),
                 SizedBox(height: height*0.01,),
                 textComoon("\$20.00",12, Color(0xff414141), FontWeight.w600),
-
               ],
             ),
-
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -247,7 +245,6 @@ Widget previous(BuildContext context,){
                 child: textComoon("Rebook",10,Color(0xff01635D), FontWeight.w600),
               ),
             ),
-
           ],
         ),
         SizedBox(height: height*0.01,),
@@ -262,7 +259,7 @@ Widget previous(BuildContext context,){
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Color(0xff8fceaa),
+                    color: Colors.green[100],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -283,7 +280,6 @@ Widget previous(BuildContext context,){
 
               ],
             ),
-
             Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -295,7 +291,6 @@ Widget previous(BuildContext context,){
                 child: textComoon("Mark Delivered",10,Color(0xff01635D), FontWeight.w600),
               ),
             ),
-
           ],
         ),
         SizedBox(height: height*0.01,),
@@ -304,9 +299,7 @@ Widget previous(BuildContext context,){
         Padding(
             padding: const EdgeInsets.only(left: 20,right: 20),
             child: CommonButton(context,"NEW APPOINTMENT", 12, FontWeight.w600, Colors.white, () {
-
             })),
-
       ],
     ),
   );

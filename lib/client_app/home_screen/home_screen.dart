@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_explore.dart';
 import 'package:new_sliikeapps_apps/client_app/profile_pages/profile.dart';
 
+import '../products_page/products.dart';
 import 'home_appointments.dart';
 
 class homescreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _homescreenState extends State<homescreen> {
   final List _screens = [
     home_explore(),
     const home_appointments(),
-    // const products(),
+    const products(),
     // const brands(),
     const profile(),
   ];
@@ -72,14 +73,14 @@ class _homescreenState extends State<homescreen> {
             ),
             label: "appointments".tr(),
           ),
-// BottomNavigationBarItem(
-//     icon: Image(
-//       image: const AssetImage("assets/images/archive.png"),
-//       width: 20,
-//       color:
-//           _selectedIndex == 2 ? const Color(0xFFDD5103) : Colors.grey,
-//     ),
-//     label: "products".tr()),
+BottomNavigationBarItem(
+    icon: Image(
+      image: const AssetImage("assets/images/archive.png"),
+      width: 20,
+      color:
+      selectedBottomIndex == 2 ? const Color(0xFFDD5103) : Colors.grey,
+    ),
+    label: "products".tr()),
 // BottomNavigationBarItem(
 //     icon: Image(
 //       image: const AssetImage("assets/images/category.png"),

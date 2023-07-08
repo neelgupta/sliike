@@ -169,7 +169,7 @@ class _allProduct_selectState extends State<all_product_sale> {
               ),
               Container(
                   child: textComoon("Product photos", 14,
-                      const Color(0xff292929), FontWeight.w700)),
+                      const Color(0xff292929), FontWeight.bold)),
               SizedBox(
                 height: height * 0.03,
               ),

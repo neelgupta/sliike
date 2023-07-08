@@ -66,6 +66,7 @@ import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'calender/send_notifi_message_or_phone/calender_screen/calender.dart';
+import 'clients/clientsmain.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -87,6 +88,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Future<void> typenavibar() async {
     var prefs = await SharedPreferences.getInstance();
     prefservicedata = prefs.getBool(UserPrefs.keyisserviceprovide) ?? false;
+    // prefservicedata =  false;
     print("prefservicedata===$prefservicedata");
     setState(() {});
   }
@@ -95,7 +97,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int selectedScreenIndex2 = 0;
   List servicesSreens = [
     const productbaar(),
-    // clientsmain(),
+    clientsmain(),
     // brands_Tab_Screen(),
     // Center(child: Text("gist")),
     const more_Main_Sccreen(),
@@ -103,8 +105,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   List prodctScreens = [
     const calender(),
-    // clientsmain(),
-    // productbaar(),
+    clientsmain(),
+    productbaar(),
     // brands_Tab_Screen(),
     const more_Main_Sccreen(),
   ];
@@ -123,7 +125,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: prefservicedata
+      body: !prefservicedata
           ? prodctScreens[selectedScreenIndex]
           : servicesSreens[selectedScreenIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -133,7 +135,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           onTap: _selectScreen,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
-          items: prefservicedata
+          items: !prefservicedata
               ? [
                   BottomNavigationBarItem(
                     icon: Image.asset("assets/images/calender.png",
@@ -143,22 +145,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             : const Color(0xffA0A0A0)),
                     label: "Calendar",
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: Image.asset("assets/images/clients.png",
-                  //       height: 20,
-                  //       color: selectedScreenIndex == 1
-                  //           ? Color(0xff01635D)
-                  //           : Color(0xffA0A0A0)),
-                  //   label: "Clients",
-                  // ),
-                  // BottomNavigationBarItem(
-                  //   icon: Image.asset("assets/images/product.png",
-                  //       height: 20,
-                  //       color: selectedScreenIndex == 2
-                  //           ? Color(0xff01635D)
-                  //           : Color(0xffA0A0A0)),
-                  //   label: "Product",
-                  // ),
+                  BottomNavigationBarItem(
+                    icon: Image.asset("assets/images/clients.png",
+                        height: 20,
+                        color: selectedScreenIndex == 1
+                            ? Color(0xff01635D)
+                            : Color(0xffA0A0A0)),
+                    label: "Clients",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Image.asset("assets/images/product.png",
+                        height: 20,
+                        color: selectedScreenIndex == 2
+                            ? Color(0xff01635D)
+                            : Color(0xffA0A0A0)),
+                    label: "Product",
+                  ),
                   // BottomNavigationBarItem(
                   //   icon: Image.asset("assets/images/brands.png",
                   //       height: 20,
@@ -183,14 +185,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             : const Color(0xffA0A0A0)),
                     label: "Product",
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: Image.asset("assets/images/clients.png",
-                  //       height: 20,
-                  //       color: selectedScreenIndex == 1
-                  //           ? Color(0xff01635D)
-                  //           : Color(0xffA0A0A0)),
-                  //   label: "Clients",
-                  // ),
+                  BottomNavigationBarItem(
+                    icon: Image.asset("assets/images/clients.png",
+                        height: 20,
+                        color: selectedScreenIndex == 1
+                            ? Color(0xff01635D)
+                            : Color(0xffA0A0A0)),
+                    label: "Clients",
+                  ),
                   // BottomNavigationBarItem(
                   //   icon: Image.asset("assets/images/brands.png",
                   //       height: 20,

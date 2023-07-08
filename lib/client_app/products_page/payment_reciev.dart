@@ -71,7 +71,18 @@ class _payment_recievState extends State<payment_reciev> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.arrow_back_sharp,size: 30,color: Color(0xffDD6A03),),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        height: height*0.06,
+                        child:Container(
+                            padding: const EdgeInsets.all(5),
+                            child: const Image(image: AssetImage("assets/images/back.png"),color: Color(0xffDD6A03),)),
+                      ),
+                    ),
                     SizedBox(width: width*0.02,),
                     const Text("back_to_home",
                         style: TextStyle(
