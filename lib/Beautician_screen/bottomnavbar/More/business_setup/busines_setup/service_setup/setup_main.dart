@@ -243,6 +243,7 @@ class _service_Setup_MainState extends State<service_Setup_Main> {
                                                 email: widget.email,
                                                 isStripeSetUp:
                                                     widget.isStripeSetUp,
+                                                    isFromProfile: true,
                                               );
                                             },
                                           ),

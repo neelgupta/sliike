@@ -5,7 +5,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
@@ -72,6 +71,9 @@ class _addServiceState extends State<addServicetype> {
   bool isLoading = false;
   String? selectedvaluemin = "30 min";
   String? selectedvalueminnewformat = "00:30";
+
+  List serviceImages = [];
+
   List<String> minValuesList = <String>[
     "30 min",
     "60 min",
@@ -1266,18 +1268,25 @@ class _addServiceState extends State<addServicetype> {
                                         if (serviceAddedList.isEmpty) {
                                           serviceAddedList.add(
                                             ServiceAddModel(
-                                              serviceCatId:
-                                                  selectedServiceCategoryIdValue,
-                                              serviceCatName:
-                                                  selectedServiceCategoryNameValue,
-                                              serviceDurationMin:
-                                                  selectedvalueminnewformat!,
-                                              serviceId: selectedService!.id,
-                                              serviceName: selectedService!
-                                                  .serviceTypeName,
-                                              servicePrice:
-                                                  servicePrice.text.trim(),
-                                            ),
+                                                serviceImagePath: "",
+                                                serviceCatId:
+                                                    selectedServiceCategoryIdValue,
+                                                serviceCatName:
+                                                    selectedServiceCategoryNameValue,
+                                                serviceDurationMin:
+                                                    selectedvalueminnewformat!,
+                                                serviceId: selectedService!.id,
+                                                serviceName: selectedService!
+                                                    .serviceTypeName,
+                                                servicePrice:
+                                                    servicePrice.text.trim(),
+                                                description: "",
+                                                imgName: "",
+                                                inBetweenInterval: "",
+                                                isBookOnline: false,
+                                                isHomeService: false,
+                                                noOfParallelClient: "",
+                                                priceStatus: ""),
                                           );
                                         } else {
                                           // List addedOrNotList = [];
@@ -1301,18 +1310,26 @@ class _addServiceState extends State<addServicetype> {
                                           } else {
                                             serviceAddedList.add(
                                               ServiceAddModel(
-                                                serviceCatId:
-                                                    selectedServiceCategoryIdValue,
-                                                serviceCatName:
-                                                    selectedServiceCategoryNameValue,
-                                                serviceName: selectedService!
-                                                    .serviceTypeName,
-                                                serviceId: selectedService!.id,
-                                                servicePrice:
-                                                    servicePrice.text.trim(),
-                                                serviceDurationMin:
-                                                    selectedvalueminnewformat!,
-                                              ),
+                                                  serviceImagePath: "",
+                                                  serviceCatId:
+                                                      selectedServiceCategoryIdValue,
+                                                  serviceCatName:
+                                                      selectedServiceCategoryNameValue,
+                                                  serviceName: selectedService!
+                                                      .serviceTypeName,
+                                                  serviceId:
+                                                      selectedService!.id,
+                                                  servicePrice:
+                                                      servicePrice.text.trim(),
+                                                  serviceDurationMin:
+                                                      selectedvalueminnewformat!,
+                                                  description: "",
+                                                  imgName: "",
+                                                  inBetweenInterval: "",
+                                                  isBookOnline: false,
+                                                  isHomeService: false,
+                                                  noOfParallelClient: "",
+                                                  priceStatus: ""),
                                             );
                                           }
 
@@ -1355,7 +1372,7 @@ class _addServiceState extends State<addServicetype> {
                                           // }
                                         }
                                         selectedServiceNameValue = "";
-                                        selectedServiceCategoryNameValue = "";
+                                        // selectedServiceCategoryNameValue = "";
                                       }
                                     });
                                   },
@@ -1598,8 +1615,111 @@ class _addServiceState extends State<addServicetype> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Profile_Images(singleServiceData.serviceId,email: "",isStripeSetUp: false),
-                                    ));
+                                      builder: (context) => Profile_Images(
+                                          singleServiceData.serviceId,
+                                          email: "",
+                                          isStripeSetUp: false,
+                                          isFromProfile: false,
+                                          singleServiceData: singleServiceData
+                                        
+                                          // serviceCategory:
+                                          //     singleServiceData.serviceCatName,
+                                          // dutration: singleServiceData
+                                          //     .serviceDurationMin,
+                                          // price: singleServiceData.servicePrice,
+                                          // serviceType:
+                                          //     singleServiceData.serviceName
+
+                                              
+                                              ),
+                                    )).then((value) {
+                                  setState(() {
+                                    if (value != null) {
+                                      singleServiceData.serviceDurationMin =
+                                          value[0];
+                                      singleServiceData.noOfParallelClient =
+                                          value[4];
+                                      singleServiceData.servicePrice = value[2];
+                                      singleServiceData.description = value[3];
+                                      singleServiceData.isBookOnline = value[6];
+                                      singleServiceData.priceStatus = value[1];
+                                      singleServiceData.isHomeService =
+                                          value[5];
+                                      singleServiceData.serviceImagePath =
+                                          value[8];
+                                      singleServiceData.imgName = value[7];
+                                    }
+                                    //  if (serviceAddedList.isEmpty) {
+                                    //       serviceAddedList.add(
+                                    //         ServiceAddModel(
+                                    //             serviceImagePath: "",
+                                    //             serviceCatId:
+                                    //                 selectedServiceCategoryIdValue,
+                                    //             serviceCatName:
+                                    //                 selectedServiceCategoryNameValue,
+                                    //             serviceDurationMin:
+                                    //                 selectedvalueminnewformat!,
+                                    //             serviceId: selectedService!.id,
+                                    //             serviceName: selectedService!
+                                    //                 .serviceTypeName,
+                                    //             servicePrice:
+                                    //                 servicePrice.text.trim(),
+                                    //             description: value[3],
+                                    //             imgName: value[7],
+                                    //             inBetweenInterval: "",
+                                    //             isBookOnline: value[6],
+                                    //             isHomeService: value[5],
+                                    //             noOfParallelClient: value[4],
+                                    //             priceStatus: value[1]),
+                                    //       );
+                                    //     } else {
+                                    //       // List addedOrNotList = [];
+                                    //       if (isServiceUpdating) {
+                                    //         serviceAddedList[selectedEditIndex]
+                                    //                 .serviceCatId =
+                                    //             selectedServiceCategoryIdValue;
+                                    //         serviceAddedList[selectedEditIndex]
+                                    //                 .serviceCatName =
+                                    //             selectedServiceCategoryNameValue;
+                                    //         serviceAddedList[selectedEditIndex]
+                                    //                 .serviceDurationMin =
+                                    //             selectedvalueminnewformat!;
+                                    //         serviceAddedList[selectedEditIndex]
+                                    //                 .serviceName =
+                                    //             selectedService!
+                                    //                 .serviceTypeName;
+                                    //         serviceAddedList[selectedEditIndex]
+                                    //                 .servicePrice =
+                                    //             servicePrice.text.trim();
+                                    //       } else {
+                                    //         serviceAddedList.add(
+                                    //           ServiceAddModel(
+                                    //               serviceImagePath: "",
+                                    //               serviceCatId:
+                                    //                   selectedServiceCategoryIdValue,
+                                    //               serviceCatName:
+                                    //                   selectedServiceCategoryNameValue,
+                                    //               serviceName: selectedService!
+                                    //                   .serviceTypeName,
+                                    //               serviceId:
+                                    //                   selectedService!.id,
+                                    //               servicePrice:
+                                    //                   servicePrice.text.trim(),
+                                    //               serviceDurationMin:
+                                    //                   selectedvalueminnewformat!,
+                                    //               description: value[3],
+                                    //               imgName: value[7],
+                                    //               inBetweenInterval: "",
+                                    //               isBookOnline: value[6],
+                                    //               isHomeService: value[5],
+                                    //               noOfParallelClient: value[4],
+                                    //               priceStatus: value[1]
+                                    //               ),
+                                    //         );
+                                    //       }
+                                    //     }
+                                  });
+                                });
                               },
                               child: SizedBox(
                                 height: 20,
@@ -1761,7 +1881,12 @@ class _addServiceState extends State<addServicetype> {
           'serviceType': serviceAddedList[i].serviceId,
           "duration": serviceAddedList[i].serviceDurationMin,
           "price": serviceAddedList[i].servicePrice,
-          "description": ""
+          "description": serviceAddedList[i].description,
+          "imgName": serviceAddedList[i].imgName,
+          "isBookOnline": serviceAddedList[i].isBookOnline,
+          "isHomeService": serviceAddedList[i].isHomeService,
+          "noOfParallelClient": serviceAddedList[i].noOfParallelClient,
+          "inBetweenInterval": serviceAddedList[i].inBetweenInterval,
         };
         print("bodyData$bodyData");
         body.add(bodyData);
@@ -1774,9 +1899,16 @@ class _addServiceState extends State<addServicetype> {
       log("addServiceDetails url : ${ApiUrlList.addServiceDetails}");
       log("passing bodyDat : $body");
       log("passing headers : $headers");
+
+      List<String> serviceImages = [];
+
+      for (var item in serviceAddedList) {
+        serviceImages.add(item.serviceImagePath);
+      }
+      log("serviceImages : $serviceImages");
       var response = await http.post(
         Uri.parse(ApiUrlList.addServiceDetails),
-        body: jsonEncode({"services": body}),
+        body: jsonEncode({"images": serviceImages, "services": body}),
         headers: headers,
       );
       var map = jsonDecode(response.body.toString());

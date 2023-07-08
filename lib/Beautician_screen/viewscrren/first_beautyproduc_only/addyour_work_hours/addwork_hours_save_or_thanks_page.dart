@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/b_model/addworkhours_model.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/import_client_from_contact/congration_sucess/congratulation_screen.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/first_beautyproduc_only/addyour_work_hours/add_your_work_hours.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/constants.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
@@ -410,7 +411,10 @@ class _addWork_Save_or_NoThanks_PageState
   ) async {
     try {
       var prefs = await SharedPreferences.getInstance();
-
+          var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
       Userdetail.userToken = prefs.getString(UserPrefs.keyutoken) ?? "";
       // ignore: use_build_context_synchronously
       Loader.show(context,
@@ -447,7 +451,7 @@ class _addWork_Save_or_NoThanks_PageState
       var response = await http.post(
         Uri.parse(ApiUrlList.addWorkHours),
         body: jsonEncode(reqBody),
-        headers: ApiHeader.headers,
+        headers: Headers,
       );
       var map = jsonDecode(response.body.toString());
       print("statuscode : ${response.statusCode}");

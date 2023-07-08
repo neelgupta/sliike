@@ -95,7 +95,7 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
       if (details != null) {
         if (details.data.isNotEmpty) {
           paymentData = details.data.first;
-          for (var i in details.data ?? []) {
+          for (var i in details.data) {
             bookingId = i.id;
           }
         }
@@ -112,18 +112,18 @@ class PaymentDetailScreenState extends State<PaymentDetailScreen> {
   sendEmailInvoice(
     BuildContext context,
   ) async {
-    // Loader.show(
-    //   context,
-    //   isSafeAreaOverlay: false,
-    //   overlayColor: Colors.black26,
-    //   progressIndicator:
-    //       const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
-    //   themeData: Theme.of(context).copyWith(
-    //     colorScheme: ColorScheme.fromSwatch().copyWith(
-    //       secondary: const Color(0xff01635D),
-    //     ),
-    //   ),
-    // );
+    Loader.show(
+      context,
+      isSafeAreaOverlay: false,
+      overlayColor: Colors.black26,
+      progressIndicator:
+          const CircularProgressIndicator(backgroundColor: Color(0xff01635D)),
+      themeData: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: const Color(0xff01635D),
+        ),
+      ),
+    );
     var getUri = Uri.parse(ApiUrlList.sendEmailInvoice);
     var request = http.MultipartRequest("POST", getUri);
     request.headers['Authorization'] =

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/business_setup/busines_setup/service_setup/setting.dart';
@@ -16,12 +15,29 @@ import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/util.dart';
 
+import '../../../../../viewscrren/second_beautyservice_or_product/service_add/service_add_model.dart';
+
 class Profile_Images extends StatefulWidget {
   String id;
   final String email;
   bool isStripeSetUp;
+  bool isFromProfile;
+  ServiceAddModel? singleServiceData;
+  // String? serviceCategory;
+  // String? serviceType;
+  // String? dutration;
+  // String? price;
   Profile_Images(this.id,
-      {Key? key, required this.email, required this.isStripeSetUp})
+      {Key? key,
+      required this.email,
+      required this.isStripeSetUp,
+      this.isFromProfile = false,
+      this.singleServiceData
+      // this.serviceCategory,
+      // this.serviceType,
+      // this.dutration,
+      // this.price
+      })
       : super(key: key);
 
   @override
@@ -144,7 +160,26 @@ class _Profile_ImagesState extends State<Profile_Images> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getSingleServiceDetails(widget.id);
+    if (widget.isFromProfile) {
+      getSingleServiceDetails(widget.id);
+    } else {
+      print(widget.singleServiceData?.serviceImagePath);
+      setState(() {
+        convertIntoTimeFormatForPriceDuration(
+            widget.singleServiceData?.serviceDurationMin ?? "");
+        servicetype.text = widget.singleServiceData?.serviceName ?? "";
+        servicecategory.text = widget.singleServiceData?.serviceCatName ?? "";
+        txtPrice.text = widget.singleServiceData?.servicePrice ?? "";
+        description.text = widget.singleServiceData?.description ?? "";
+        // if (widget.singleServiceData?.imgName != null) {
+        //   imagestatus = true;
+        //   setState(() {
+        //     imagepath = widget.singleServiceData!.imgName;
+        //   });
+        // }
+
+      });
+    }
     print(widget.id);
     print(Helper.prefs!.getString(UserPrefs.keyutoken));
   }
@@ -158,326 +193,379 @@ class _Profile_ImagesState extends State<Profile_Images> {
         MediaQuery.of(context).padding.right -
         MediaQuery.of(context).padding.left;
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: height * 0.14, //
-          flexibleSpace: Container(
-            color: const Color(0xffF5F7F7),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 20),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              height: height * 0.06,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: const Color(0xff414141))),
-                              child: Center(
-                                child: Container(
-                                    padding: const EdgeInsets.all(5),
-                                    child: const Image(
-                                      image: AssetImage(
-                                          "assets/images/Group 55.png"),
-                                      color: Color(0xff414141),
-                                    )),
-                              ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: height * 0.14, //
+        flexibleSpace: Container(
+          color: const Color(0xffF5F7F7),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            height: height * 0.06,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: const Color(0xff414141))),
+                            child: Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  child: const Image(
+                                    image: AssetImage(
+                                        "assets/images/Group 55.png"),
+                                    color: Color(0xff414141),
+                                  )),
                             ),
                           ),
-                          SizedBox(
-                            width: width * 0.2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text("${selectedprice ?? ""}",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Color(0xff292929),
-                                        fontFamily: "spartan",
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        SizedBox(
+                          width: width * 0.2,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text("${selectedprice ?? ""}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Color(0xff292929),
+                                      fontFamily: "spartan",
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(color: Color(0xff01635D)),
-              )
-            : getSingleServiceDetailsData != null
-                ? SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: height * 0.04,
+      ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(color: Color(0xff01635D)),
+            )
+          : !widget.isFromProfile
+              ? SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: height * 0.04,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            textComoon("Add image of this service", 12,
+                                const Color(0xff292929), FontWeight.w700),
+                            textComoon("(optional)", 12,
+                                const Color(0xff707070), FontWeight.w700)
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Row(
-                            children: [
-                              textComoon("Add image of this service", 12,
-                                  const Color(0xff292929), FontWeight.w700),
-                              textComoon("(optional)", 12,
-                                  const Color(0xff707070), FontWeight.w700)
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.025,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: imagestatus
-                              ? InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          alignment: Alignment.bottomCenter,
-                                          insetPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 30),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          title: Column(
-                                            children: <Widget>[
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              CommonButton(
-                                                  context,
-                                                  "TAKE A PHOTO",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  Colors.white, () async {
-                                                Navigator.pop(context);
-                                                final XFile? photo =
-                                                    await _picker.pickImage(
-                                                        source:
-                                                            ImageSource.camera);
-                                                if (photo != null) {
-                                                  file = File(photo.path);
-                                                  imagestatus = true;
-                                                  imagepath = photo.path;
-                                                }
-                                              }),
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              CommonButton(
-                                                  context,
-                                                  "CHOOSE FROM GALLERY",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  Colors.white, () async {
-                                                Navigator.pop(context);
-                                                final XFile? image =
-                                                    await _picker.pickImage(
-                                                        source: ImageSource
-                                                            .gallery);
-                                                if (image != null) {
-                                                  file = File(image.path);
-                                                  imagestatus = true;
-                                                  imagepath = image.path;
-                                                }
-                                              }),
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              commonButtonborder(
-                                                  context,
-                                                  "CANCEL",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  const Color(0xff01635D), () {
-                                                Navigator.pop(context);
-                                              }),
-                                              SizedBox(height: height * 0.03),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSetter setState) {
-                                      return Container(
-                                        width: width,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                          // shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: FileImage(File(imagepath)),
-                                            fit: BoxFit.fill,
-                                          ),
+                      ),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: imagestatus
+                            ? InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        alignment: Alignment.bottomCenter,
+                                        insetPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 30),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        title: Column(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "TAKE A PHOTO",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+                                              final XFile? photo =
+                                                  await _picker.pickImage(
+                                                      source:
+                                                          ImageSource.camera);
+                                              if (photo != null) {
+                                                file = File(photo.path);
+                                                imagestatus = true;
+                                                imagepath = photo.path;
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "CHOOSE FROM GALLERY",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+                                              final XFile? image =
+                                                  await _picker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (image != null) {
+                                                file = File(image.path);
+                                                imagestatus = true;
+                                                imagepath = image.path;
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            commonButtonborder(
+                                                context,
+                                                "CANCEL",
+                                                12,
+                                                FontWeight.w600,
+                                                const Color(0xff01635D), () {
+                                              Navigator.pop(context);
+                                            }),
+                                            SizedBox(height: height * 0.03),
+                                          ],
                                         ),
                                       );
                                     },
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          alignment: Alignment.bottomCenter,
-                                          insetPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 30),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          title: Column(
-                                            children: <Widget>[
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              CommonButton(
-                                                  context,
-                                                  "TAKE A PHOTO",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  Colors.white, () async {
-                                                Navigator.pop(context);
-
-                                                final XFile? photo =
-                                                    await _picker.pickImage(
-                                                        source:
-                                                            ImageSource.camera);
-                                                if (photo != null) {
-                                                  setState(() {
-                                                    file = File(photo.path);
-                                                    imagestatus = true;
-                                                    imagepath = photo.path;
-                                                  });
-                                                }
-                                              }),
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              CommonButton(
-                                                  context,
-                                                  "CHOOSE FROM GALLERY",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  Colors.white, () async {
-                                                Navigator.pop(context);
-                                                final XFile? image =
-                                                    await _picker.pickImage(
-                                                        source: ImageSource
-                                                            .gallery);
-                                                if (image != null) {
-                                                  setState(() {
-                                                    file = File(image.path);
-                                                    imagestatus = true;
-                                                    imagepath = image.path;
-                                                  });
-                                                }
-                                              }),
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              commonButtonborder(
-                                                  context,
-                                                  "CANCEL",
-                                                  12,
-                                                  FontWeight.w600,
-                                                  const Color(0xff01635D), () {
-                                                Navigator.pop(context);
-                                              }),
-                                              SizedBox(
-                                                height: height * 0.03,
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
+                                  );
+                                },
+                                child: StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSetter setState) {
+                                    return Container(
                                       width: width,
                                       height: 150,
                                       decoration: BoxDecoration(
-                                        color: Color(0xffF3F3F3),
-                                        image: getSingleServiceDetailsData
-                                                    ?.data?.imageUrl !=
-                                                null
-                                            ? DecorationImage(
-                                                image: NetworkImage(
-                                                    getSingleServiceDetailsData!
-                                                        .data!.imageUrl!),
-                                                fit: BoxFit.fill)
-                                            : DecorationImage(
-                                                image: AssetImage(
-                                                    "assets/images/Rectangle_greyline.png"),
-                                                fit: BoxFit.fill),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        // shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: FileImage(File(imagepath)),
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Center(
-                                            child: Image(
-                                              height: 40,
-                                              image: AssetImage(
-                                                  "assets/images/camera_grey.png"),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          textComoon(
-                                              "Take a photo or Upload from gallery",
-                                              12,
-                                              const Color(0xff414141),
-                                              FontWeight.w500),
-                                        ],
-                                      )),
+                                    );
+                                  },
                                 ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        alignment: Alignment.bottomCenter,
+                                        insetPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 30),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        title: Column(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "TAKE A PHOTO",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+
+                                              final XFile? photo =
+                                                  await _picker.pickImage(
+                                                      source:
+                                                          ImageSource.camera);
+                                              if (photo != null) {
+                                                setState(() {
+                                                  file = File(photo.path);
+                                                  imagestatus = true;
+                                                  imagepath = photo.path;
+                                                });
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            CommonButton(
+                                                context,
+                                                "CHOOSE FROM GALLERY",
+                                                12,
+                                                FontWeight.w600,
+                                                Colors.white, () async {
+                                              Navigator.pop(context);
+                                              final XFile? image =
+                                                  await _picker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (image != null) {
+                                                setState(() {
+                                                  file = File(image.path);
+                                                  imagestatus = true;
+                                                  imagepath = image.path;
+                                                });
+                                              }
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            commonButtonborder(
+                                                context,
+                                                "CANCEL",
+                                                12,
+                                                FontWeight.w600,
+                                                const Color(0xff01635D), () {
+                                              Navigator.pop(context);
+                                            }),
+                                            SizedBox(
+                                              height: height * 0.03,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                    width: width,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffF3F3F3),
+                                      image: getSingleServiceDetailsData
+                                                  ?.data?.imageUrl !=
+                                              null
+                                          ? DecorationImage(
+                                              image: NetworkImage(
+                                                  getSingleServiceDetailsData!
+                                                      .data!.imageUrl!),
+                                              fit: BoxFit.fill)
+                                          : DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/Rectangle_greyline.png"),
+                                              fit: BoxFit.fill),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Center(
+                                          child: Image(
+                                            height: 40,
+                                            image: AssetImage(
+                                                "assets/images/camera_grey.png"),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        textComoon(
+                                            "Take a photo or Upload from gallery",
+                                            12,
+                                            const Color(0xff414141),
+                                            FontWeight.w500),
+                                      ],
+                                    )),
+                              ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                        child: Divider(
+                          thickness: 1,
+                          color: Color(0xffCFCFCF),
                         ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(0xffCFCFCF),
+                      ),
+                      SizedBox(height: height * 0.04),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: TextField(
+                          readOnly: true,
+                          controller: servicetype,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff292929),
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "spartan"),
+                          onChanged: (value) {
+                            setState(() {
+                              servicetypestatus = false;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.only(left: 20),
+                            hintText: "Service Type",
+                            hintStyle: const TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'spartan',
+                                color: Color(0xff292929),
+                                fontWeight: FontWeight.w500),
+                            labelText: "Service Type",
+                            labelStyle: const TextStyle(
+                                fontFamily: 'spartan', color: Colors.black54),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide:
+                                  const BorderSide(color: Color(0xff292929)),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide:
+                                  const BorderSide(color: Color(0xff292929)),
+                            ),
                           ),
                         ),
-                        SizedBox(height: height * 0.04),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                      ),
+                      servicetypestatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              height: 25,
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
                           child: TextField(
                             readOnly: true,
-                            controller: servicetype,
+                            controller: servicecategory,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color(0xff292929),
@@ -485,18 +573,18 @@ class _Profile_ImagesState extends State<Profile_Images> {
                                 fontFamily: "spartan"),
                             onChanged: (value) {
                               setState(() {
-                                servicetypestatus = false;
+                                servicecategorystatus = false;
                               });
                             },
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.only(left: 20),
-                              hintText: "Service Type",
+                              hintText: "Service Category",
                               hintStyle: const TextStyle(
                                   fontSize: 14,
                                   fontFamily: 'spartan',
                                   color: Color(0xff292929),
                                   fontWeight: FontWeight.w500),
-                              labelText: "Service Type",
+                              labelText: "Service Category",
                               labelStyle: const TextStyle(
                                   fontFamily: 'spartan', color: Colors.black54),
                               focusedBorder: OutlineInputBorder(
@@ -512,239 +600,227 @@ class _Profile_ImagesState extends State<Profile_Images> {
                             ),
                           ),
                         ),
-                        servicetypestatus
-                            ? Container(
-                                height: 30,
-                                child: Text(
-                                  "$status",
-                                  style: const TextStyle(
-                                      fontFamily: 'spartan',
-                                      fontSize: 12,
-                                      color: Colors.red),
-                                ),
-                              )
-                            : Container(
-                                height: 25,
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            child: TextField(
-                              readOnly: true,
-                              controller: servicecategory,
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff292929),
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: "spartan"),
-                              onChanged: (value) {
-                                setState(() {
-                                  servicecategorystatus = false;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.only(left: 20),
-                                hintText: "Service Category",
-                                hintStyle: const TextStyle(
-                                    fontSize: 14,
+                      ),
+                      servicecategorystatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: const TextStyle(
                                     fontFamily: 'spartan',
-                                    color: Color(0xff292929),
-                                    fontWeight: FontWeight.w500),
-                                labelText: "Service Category",
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'spartan',
-                                    color: Colors.black54),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xff292929)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xff292929)),
-                                ),
+                                    fontSize: 12,
+                                    color: Colors.red),
                               ),
+                            )
+                          : Container(
+                              height: 10,
+                            ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Divider(
+                          thickness: 1,
+                          color: Color(0xffCFCFCF),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: textComoon("Pricing & Duration", 14,
+                            const Color(0xff292929), FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: DropdownButtonFormField(
+                          enableFeedback: true,
+                          isDense: true,
+                          isExpanded: true,
+                          alignment: Alignment.center,
+                          elevation: 2,
+                          value: selectedvaluemin,
+                          items: mindropdownlist.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? selectedvalue) {
+                            setState(() {
+                              convertIntoTimeFormat(selectedvalue);
+                              print("selectedvalue==${selectedvalue}");
+                              print("selectedvaluemin==${selectedvaluemin}");
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                          ),
+                          decoration: InputDecoration(
+                            //labelText: "Duration",
+                            label: const Text("Duration",
+                                style: TextStyle(color: Color(0xff292929))),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide:
+                                  const BorderSide(color: Colors.black38),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide:
+                                  const BorderSide(color: Colors.black38),
                             ),
                           ),
                         ),
-                        servicecategorystatus
-                            ? Container(
-                                height: 30,
-                                child: Text(
-                                  "$status",
-                                  style: const TextStyle(
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20, right: 20),
+                      //   child: DropdownButtonFormField(
+                      //     enableFeedback: true,
+                      //     isDense: true,
+                      //     isExpanded: true,
+                      //     alignment: Alignment.center,
+                      //     elevation: 2,
+                      //     value: selectedvaluemin,
+                      //     items: mindropdownlist.map((String items) {
+                      //       return DropdownMenuItem(
+                      //         value: items,
+                      //         child: Text(
+                      //           items,
+                      //           style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                      //         ),
+                      //       );
+                      //     }).toList(),
+                      //     onChanged: (String? newValue) {
+                      //       setState(() {
+                      //         selectedvaluemin = newValue!;
+                      //       });
+                      //     },
+                      //     icon: const Padding(
+                      //       padding: EdgeInsets.only(right: 10),
+                      //       child: Icon(
+                      //           Icons.keyboard_arrow_down,
+                      //           size: 30, color: Color(0xff969696)
+                      //       ),
+                      //     ),
+                      //     decoration: InputDecoration(
+                      //       contentPadding: const EdgeInsets.only(left: 20),
+                      //       hintText: "Service Category",
+                      //       hintStyle: const TextStyle(
+                      //           fontSize: 14,
+                      //           fontFamily: 'spartan',
+                      //           color: Color(0xff292929),
+                      //           fontWeight: FontWeight.w500),
+                      //       labelText: "Service Category",
+                      //       labelStyle:
+                      //       const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                      //       focusedBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide: const BorderSide(color: Color(0xff292929)),
+                      //       ),
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide: const BorderSide(color: Color(0xff292929)),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: DropdownButtonFormField(
+                                enableFeedback: true,
+                                isDense: true,
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                elevation: 2,
+                                value: selectedpriceStatus,
+                                items: pricelist.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff292929)),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedpriceStatus = newValue!;
+                                    print(selectedpriceStatus);
+                                  });
+                                },
+                                icon: const Padding(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Icon(Icons.keyboard_arrow_down,
+                                      size: 30, color: Color(0xff969696)),
+                                ),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  hintText: "Price Status",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14,
                                       fontFamily: 'spartan',
-                                      fontSize: 12,
-                                      color: Colors.red),
+                                      color: Color(0xff292929),
+                                      fontWeight: FontWeight.w500),
+                                  labelText: "Price Status",
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff292929)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff292929)),
+                                  ),
                                 ),
-                              )
-                            : Container(
-                                height: 10,
-                              ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(0xffCFCFCF),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.05,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: textComoon("Pricing & Duration", 14,
-                              const Color(0xff292929), FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: height * 0.025,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: DropdownButtonFormField(
-                            enableFeedback: true,
-                            isDense: true,
-                            isExpanded: true,
-                            alignment: Alignment.center,
-                            elevation: 2,
-                            value: selectedvaluemin,
-                            items: mindropdownlist.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(
-                                  items,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String? selectedvalue) {
-                              setState(() {
-                                convertIntoTimeFormat(selectedvalue);
-                                print("selectedvalue==${selectedvalue}");
-                                print("selectedvaluemin==${selectedvaluemin}");
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                            ),
-                            decoration: InputDecoration(
-                              //labelText: "Duration",
-                              label: const Text("Duration",
-                                  style: TextStyle(color: Color(0xff292929))),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.black38),
                               ),
                             ),
-                          ),
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 20, right: 20),
-                        //   child: DropdownButtonFormField(
-                        //     enableFeedback: true,
-                        //     isDense: true,
-                        //     isExpanded: true,
-                        //     alignment: Alignment.center,
-                        //     elevation: 2,
-                        //     value: selectedvaluemin,
-                        //     items: mindropdownlist.map((String items) {
-                        //       return DropdownMenuItem(
-                        //         value: items,
-                        //         child: Text(
-                        //           items,
-                        //           style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
-                        //         ),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: (String? newValue) {
-                        //       setState(() {
-                        //         selectedvaluemin = newValue!;
-                        //       });
-                        //     },
-                        //     icon: const Padding(
-                        //       padding: EdgeInsets.only(right: 10),
-                        //       child: Icon(
-                        //           Icons.keyboard_arrow_down,
-                        //           size: 30, color: Color(0xff969696)
-                        //       ),
-                        //     ),
-                        //     decoration: InputDecoration(
-                        //       contentPadding: const EdgeInsets.only(left: 20),
-                        //       hintText: "Service Category",
-                        //       hintStyle: const TextStyle(
-                        //           fontSize: 14,
-                        //           fontFamily: 'spartan',
-                        //           color: Color(0xff292929),
-                        //           fontWeight: FontWeight.w500),
-                        //       labelText: "Service Category",
-                        //       labelStyle:
-                        //       const TextStyle(fontFamily: 'spartan', color: Colors.black54),
-                        //       focusedBorder: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.circular(5),
-                        //         borderSide: const BorderSide(color: Color(0xff292929)),
-                        //       ),
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.circular(5),
-                        //         borderSide: const BorderSide(color: Color(0xff292929)),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: DropdownButtonFormField(
-                                  enableFeedback: true,
-                                  isDense: true,
-                                  isExpanded: true,
-                                  alignment: Alignment.center,
-                                  elevation: 2,
-                                  value: selectedpriceStatus,
-                                  items: pricelist.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(
-                                        items,
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xff292929)),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: TextField(
+                                  controller: txtPrice,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xff292929),
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "spartan"),
+                                  onChanged: (value) {
                                     setState(() {
-                                      selectedpriceStatus = newValue!;
-                                      print(selectedpriceStatus);
+                                      servicecategorystatus = false;
                                     });
                                   },
-                                  icon: const Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(Icons.keyboard_arrow_down,
-                                        size: 30, color: Color(0xff969696)),
-                                  ),
                                   decoration: InputDecoration(
                                     contentPadding:
                                         const EdgeInsets.only(left: 20),
-                                    hintText: "Price Status",
+                                    hintText: "Service Price",
                                     hintStyle: const TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'spartan',
                                         color: Color(0xff292929),
                                         fontWeight: FontWeight.w500),
-                                    labelText: "Price Status",
+                                    labelText: "Service Price",
                                     labelStyle: const TextStyle(
                                         fontFamily: 'spartan',
                                         color: Colors.black54),
@@ -761,33 +837,769 @@ class _Profile_ImagesState extends State<Profile_Images> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                        child: Divider(
+                          thickness: 1,
+                          color: Color(0xffCFCFCF),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.06,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: textComoon("Service Description", 14,
+                            const Color(0xff292929), FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          child: TextField(
+                            controller: description,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontSize: 15,
+                                color: Color(
+                                  0xff414141,
+                                )),
+                            onChanged: (value) {
+                              descriptionstatus = false;
+                            },
+                            decoration: InputDecoration(
+                              //contentPadding: EdgeInsets.only(left: 20, top: 5, bottom: 12),
+                              hintText: "Description",
+                              labelText: "Description",
+                              labelStyle: const TextStyle(
+                                  fontFamily: 'spartan', color: Colors.black54),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide:
+                                    const BorderSide(color: Colors.black38),
                               ),
-                              Expanded(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide:
+                                    const BorderSide(color: Colors.black38),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      descriptionstatus
+                          ? Container(
+                              height: 30,
+                              child: Text(
+                                "$status",
+                                style: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    fontSize: 12,
+                                    color: Color(0xff2F80ED)),
+                              ),
+                            )
+                          : Container(
+                              height: 20,
+                            ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+                        child: Divider(
+                          thickness: 1,
+                          color: Color(0xffCFCFCF),
+                        ),
+                      ),
+                      Container(
+                        width: width,
+                        color: const Color(0xffF3F3F3),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 12, bottom: 12, left: 20),
+                          child: textComoon("More Options", 14,
+                              const Color(0xff292929), FontWeight.w600),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.015,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return setting(
+                                    // isBookOnline: getSingleServiceDetailsData!
+                                    //     .data!.isBookOnline ?? false,
+                                    // isHomeService: getSingleServiceDetailsData!
+                                    //     .data!.isHomeService,
+                                    // intervalTime: getSingleServiceDetailsData!
+                                    //     .data!.inBetweenInterval,
+                                    // noOfParallelClient:
+                                    //     getSingleServiceDetailsData!
+                                    //         .data!.noOfParallelClient,
+                                    );
+                              },
+                            )).then((value) {
+                              print(value);
+                              setState(() {
+                                parallelClients = value[0];
+                                homeService = value[1];
+                                Clients = value[2];
+                                print(parallelClients);
+                              });
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 17,
+                            ),
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.black12))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textComoon("Settings", 14,
+                                    const Color(0xff414141), FontWeight.w500),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20, right: 20),
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //       vertical: 17,
+                      //     ),
+                      //     decoration: const BoxDecoration(
+                      //         border: Border(bottom: BorderSide(color: Colors.black12))),
+                      //     child: GestureDetector(
+                      //       onTap: () {},
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           textComoon("For Client", 14,
+                      //               const Color(0xff414141), FontWeight.w500),
+                      //           Container(
+                      //             height: 15,
+                      //             width: 30,
+                      //             child: Image.asset("assets/images/righticon.png"),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: height * 0.04),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                deleteServiceDetails(widget.id);
+                              },
+                              child: Container(
+                                height: height * 0.07,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffFF3232),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Image.asset("assets/images/delete.png",
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context, [
+                                    selectedvalueminnewformat,
+                                    selectedpriceStatus,
+                                    txtPrice.text,
+                                    description.text,
+                                    parallelClients,
+                                    homeService,
+                                    Clients,
+                                    imagepath.split("/").last,
+                                    file == null ? "" : file!.path
+                                  ]);
+                                  txtPrice.clear();
+                                  // updateServiceDetails(widget.id);
+                                },
                                 child: Container(
-                                  child: TextField(
-                                    controller: txtPrice,
+                                    height: height * 0.07,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: const Color(0xff01635D)),
+                                    child: const Text(
+                                      "SAVE",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "spartan",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal),
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.04,
+                      ),
+                    ],
+                  ),
+                )
+              : getSingleServiceDetailsData != null
+                  ? SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Row(
+                              children: [
+                                textComoon("Add image of this service", 12,
+                                    const Color(0xff292929), FontWeight.w700),
+                                textComoon("(optional)", 12,
+                                    const Color(0xff707070), FontWeight.w700)
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.025,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: imagestatus
+                                ? InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            alignment: Alignment.bottomCenter,
+                                            insetPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 30),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            title: Column(
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                CommonButton(
+                                                    context,
+                                                    "TAKE A PHOTO",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    Colors.white, () async {
+                                                  Navigator.pop(context);
+                                                  final XFile? photo =
+                                                      await _picker.pickImage(
+                                                          source: ImageSource
+                                                              .camera);
+                                                  if (photo != null) {
+                                                    file = File(photo.path);
+                                                    imagestatus = true;
+                                                    imagepath = photo.path;
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                CommonButton(
+                                                    context,
+                                                    "CHOOSE FROM GALLERY",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    Colors.white, () async {
+                                                  Navigator.pop(context);
+                                                  final XFile? image =
+                                                      await _picker.pickImage(
+                                                          source: ImageSource
+                                                              .gallery);
+                                                  if (image != null) {
+                                                    file = File(image.path);
+                                                    imagestatus = true;
+                                                    imagepath = image.path;
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                commonButtonborder(
+                                                    context,
+                                                    "CANCEL",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    const Color(0xff01635D),
+                                                    () {
+                                                  Navigator.pop(context);
+                                                }),
+                                                SizedBox(height: height * 0.03),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: StatefulBuilder(
+                                      builder: (BuildContext context,
+                                          StateSetter setState) {
+                                        return Container(
+                                          width: width,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15)),
+                                            // shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: FileImage(File(imagepath)),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            alignment: Alignment.bottomCenter,
+                                            insetPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 30),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10))),
+                                            title: Column(
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                CommonButton(
+                                                    context,
+                                                    "TAKE A PHOTO",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    Colors.white, () async {
+                                                  Navigator.pop(context);
+
+                                                  final XFile? photo =
+                                                      await _picker.pickImage(
+                                                          source: ImageSource
+                                                              .camera);
+                                                  if (photo != null) {
+                                                    setState(() {
+                                                      file = File(photo.path);
+                                                      imagestatus = true;
+                                                      imagepath = photo.path;
+                                                    });
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                CommonButton(
+                                                    context,
+                                                    "CHOOSE FROM GALLERY",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    Colors.white, () async {
+                                                  Navigator.pop(context);
+                                                  final XFile? image =
+                                                      await _picker.pickImage(
+                                                          source: ImageSource
+                                                              .gallery);
+                                                  if (image != null) {
+                                                    setState(() {
+                                                      file = File(image.path);
+                                                      imagestatus = true;
+                                                      imagepath = image.path;
+                                                    });
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: height * 0.02,
+                                                ),
+                                                commonButtonborder(
+                                                    context,
+                                                    "CANCEL",
+                                                    12,
+                                                    FontWeight.w600,
+                                                    const Color(0xff01635D),
+                                                    () {
+                                                  Navigator.pop(context);
+                                                }),
+                                                SizedBox(
+                                                  height: height * 0.03,
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                        width: width,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF3F3F3),
+                                          image: getSingleServiceDetailsData
+                                                      ?.data?.imageUrl !=
+                                                  null
+                                              ? DecorationImage(
+                                                  image: NetworkImage(
+                                                      getSingleServiceDetailsData!
+                                                          .data!.imageUrl!),
+                                                  fit: BoxFit.fill)
+                                              : DecorationImage(
+                                                  image: AssetImage(
+                                                      "assets/images/Rectangle_greyline.png"),
+                                                  fit: BoxFit.fill),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Center(
+                                              child: Image(
+                                                height: 40,
+                                                image: AssetImage(
+                                                    "assets/images/camera_grey.png"),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            textComoon(
+                                                "Take a photo or Upload from gallery",
+                                                12,
+                                                const Color(0xff414141),
+                                                FontWeight.w500),
+                                          ],
+                                        )),
+                                  ),
+                          ),
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, left: 20, right: 20),
+                            child: Divider(
+                              thickness: 1,
+                              color: Color(0xffCFCFCF),
+                            ),
+                          ),
+                          SizedBox(height: height * 0.04),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: TextField(
+                              readOnly: true,
+                              controller: servicetype,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff292929),
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "spartan"),
+                              onChanged: (value) {
+                                setState(() {
+                                  servicetypestatus = false;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(left: 20),
+                                hintText: "Service Type",
+                                hintStyle: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'spartan',
+                                    color: Color(0xff292929),
+                                    fontWeight: FontWeight.w500),
+                                labelText: "Service Type",
+                                labelStyle: const TextStyle(
+                                    fontFamily: 'spartan',
+                                    color: Colors.black54),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff292929)),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xff292929)),
+                                ),
+                              ),
+                            ),
+                          ),
+                          servicetypestatus
+                              ? Container(
+                                  height: 30,
+                                  child: Text(
+                                    "$status",
                                     style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xff292929),
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "spartan"),
-                                    onChanged: (value) {
+                                        fontFamily: 'spartan',
+                                        fontSize: 12,
+                                        color: Colors.red),
+                                  ),
+                                )
+                              : Container(
+                                  height: 25,
+                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Container(
+                              child: TextField(
+                                readOnly: true,
+                                controller: servicecategory,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xff292929),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "spartan"),
+                                onChanged: (value) {
+                                  setState(() {
+                                    servicecategorystatus = false;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  hintText: "Service Category",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'spartan',
+                                      color: Color(0xff292929),
+                                      fontWeight: FontWeight.w500),
+                                  labelText: "Service Category",
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff292929)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xff292929)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          servicecategorystatus
+                              ? Container(
+                                  height: 30,
+                                  child: Text(
+                                    "$status",
+                                    style: const TextStyle(
+                                        fontFamily: 'spartan',
+                                        fontSize: 12,
+                                        color: Colors.red),
+                                  ),
+                                )
+                              : Container(
+                                  height: 10,
+                                ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 20, right: 20),
+                            child: Divider(
+                              thickness: 1,
+                              color: Color(0xffCFCFCF),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: textComoon("Pricing & Duration", 14,
+                                const Color(0xff292929), FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: height * 0.025,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: DropdownButtonFormField(
+                              enableFeedback: true,
+                              isDense: true,
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              elevation: 2,
+                              value: selectedvaluemin,
+                              items: mindropdownlist.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(
+                                    items,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? selectedvalue) {
+                                setState(() {
+                                  convertIntoTimeFormat(selectedvalue);
+                                  print("selectedvalue==${selectedvalue}");
+                                  print(
+                                      "selectedvaluemin==${selectedvaluemin}");
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                              decoration: InputDecoration(
+                                //labelText: "Duration",
+                                label: const Text("Duration",
+                                    style: TextStyle(color: Color(0xff292929))),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black38),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 20, right: 20),
+                          //   child: DropdownButtonFormField(
+                          //     enableFeedback: true,
+                          //     isDense: true,
+                          //     isExpanded: true,
+                          //     alignment: Alignment.center,
+                          //     elevation: 2,
+                          //     value: selectedvaluemin,
+                          //     items: mindropdownlist.map((String items) {
+                          //       return DropdownMenuItem(
+                          //         value: items,
+                          //         child: Text(
+                          //           items,
+                          //           style: const TextStyle(fontSize: 14, color: Color(0xff292929)),
+                          //         ),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: (String? newValue) {
+                          //       setState(() {
+                          //         selectedvaluemin = newValue!;
+                          //       });
+                          //     },
+                          //     icon: const Padding(
+                          //       padding: EdgeInsets.only(right: 10),
+                          //       child: Icon(
+                          //           Icons.keyboard_arrow_down,
+                          //           size: 30, color: Color(0xff969696)
+                          //       ),
+                          //     ),
+                          //     decoration: InputDecoration(
+                          //       contentPadding: const EdgeInsets.only(left: 20),
+                          //       hintText: "Service Category",
+                          //       hintStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontFamily: 'spartan',
+                          //           color: Color(0xff292929),
+                          //           fontWeight: FontWeight.w500),
+                          //       labelText: "Service Category",
+                          //       labelStyle:
+                          //       const TextStyle(fontFamily: 'spartan', color: Colors.black54),
+                          //       focusedBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5),
+                          //         borderSide: const BorderSide(color: Color(0xff292929)),
+                          //       ),
+                          //       border: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5),
+                          //         borderSide: const BorderSide(color: Color(0xff292929)),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: height * 0.03,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    enableFeedback: true,
+                                    isDense: true,
+                                    isExpanded: true,
+                                    alignment: Alignment.center,
+                                    elevation: 2,
+                                    value: selectedpriceStatus,
+                                    items: pricelist.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(
+                                          items,
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xff292929)),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
                                       setState(() {
-                                        servicecategorystatus = false;
+                                        selectedpriceStatus = newValue!;
+                                        print(selectedpriceStatus);
                                       });
                                     },
+                                    icon: const Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: Icon(Icons.keyboard_arrow_down,
+                                          size: 30, color: Color(0xff969696)),
+                                    ),
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.only(left: 20),
-                                      hintText: "Service Price",
+                                      hintText: "Price Status",
                                       hintStyle: const TextStyle(
                                           fontSize: 14,
                                           fontFamily: 'spartan',
                                           color: Color(0xff292929),
                                           fontWeight: FontWeight.w500),
-                                      labelText: "Service Price",
+                                      labelText: "Price Status",
                                       labelStyle: const TextStyle(
                                           fontFamily: 'spartan',
                                           color: Colors.black54),
@@ -804,240 +1616,307 @@ class _Profile_ImagesState extends State<Profile_Images> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(0xffCFCFCF),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.06,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: textComoon("Service Description", 14,
-                              const Color(0xff292929), FontWeight.w700),
-                        ),
-                        SizedBox(
-                          height: height * 0.025,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Container(
-                            child: TextField(
-                              controller: description,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Color(
-                                    0xff414141,
-                                  )),
-                              onChanged: (value) {
-                                descriptionstatus = false;
-                              },
-                              decoration: InputDecoration(
-                                //contentPadding: EdgeInsets.only(left: 20, top: 5, bottom: 12),
-                                hintText: "Description",
-                                labelText: "Description",
-                                labelStyle: const TextStyle(
-                                    fontFamily: 'spartan',
-                                    color: Colors.black54),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
+                                const SizedBox(
+                                  width: 15,
                                 ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black38),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        descriptionstatus
-                            ? Container(
-                                height: 30,
-                                child: Text(
-                                  "$status",
-                                  style: const TextStyle(
-                                      fontFamily: 'spartan',
-                                      fontSize: 12,
-                                      color: Color(0xff2F80ED)),
-                                ),
-                              )
-                            : Container(
-                                height: 20,
-                              ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(0xffCFCFCF),
-                          ),
-                        ),
-                        Container(
-                          width: width,
-                          color: const Color(0xffF3F3F3),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 12, bottom: 12, left: 20),
-                            child: textComoon("More Options", 14,
-                                const Color(0xff292929), FontWeight.w600),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.015,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return setting(
-                                    isBookOnline: getSingleServiceDetailsData!
-                                        .data!.isBookOnline,
-                                    isHomeService: getSingleServiceDetailsData!
-                                        .data!.isHomeService,
-                                    intervalTime: getSingleServiceDetailsData!
-                                        .data!.inBetweenInterval,
-                                    noOfParallelClient:
-                                        getSingleServiceDetailsData!
-                                            .data!.noOfParallelClient,
-                                  );
-                                },
-                              )).then((value) {
-                                print(value);
-                                parallelClients = value[0];
-                                homeService = value[1];
-                                Clients = value[2];
-                                print(parallelClients);
-                                setState(() {});
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 17,
-                              ),
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom:
-                                          BorderSide(color: Colors.black12))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  textComoon("Settings", 14,
-                                      const Color(0xff414141), FontWeight.w500),
-                                  Container(
-                                    height: 15,
-                                    width: 30,
-                                    child: Image.asset(
-                                        "assets/images/righticon.png"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 20, right: 20),
-                        //   child: Container(
-                        //     padding: const EdgeInsets.symmetric(
-                        //       vertical: 17,
-                        //     ),
-                        //     decoration: const BoxDecoration(
-                        //         border: Border(bottom: BorderSide(color: Colors.black12))),
-                        //     child: GestureDetector(
-                        //       onTap: () {},
-                        //       child: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           textComoon("For Client", 14,
-                        //               const Color(0xff414141), FontWeight.w500),
-                        //           Container(
-                        //             height: 15,
-                        //             width: 30,
-                        //             child: Image.asset("assets/images/righticon.png"),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 20, right: 20, top: height * 0.04),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  deleteServiceDetails(widget.id);
-                                },
-                                child: Container(
-                                  height: height * 0.07,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffFF3232),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Image.asset(
-                                        "assets/images/delete.png",
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    updateServiceDetails(widget.id);
-                                  },
+                                Expanded(
                                   child: Container(
-                                      height: height * 0.07,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
+                                    child: TextField(
+                                      controller: txtPrice,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff292929),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "spartan"),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          servicecategorystatus = false;
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.only(left: 20),
+                                        hintText: "Service Price",
+                                        hintStyle: const TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'spartan',
+                                            color: Color(0xff292929),
+                                            fontWeight: FontWeight.w500),
+                                        labelText: "Service Price",
+                                        labelStyle: const TextStyle(
+                                            fontFamily: 'spartan',
+                                            color: Colors.black54),
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          color: const Color(0xff01635D)),
-                                      child: const Text(
-                                        "SAVE",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "spartan",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal),
-                                      )),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xff292929)),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xff292929)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, left: 20, right: 20),
+                            child: Divider(
+                              thickness: 1,
+                              color: Color(0xffCFCFCF),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.06,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: textComoon("Service Description", 14,
+                                const Color(0xff292929), FontWeight.w700),
+                          ),
+                          SizedBox(
+                            height: height * 0.025,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Container(
+                              child: TextField(
+                                controller: description,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Color(
+                                      0xff414141,
+                                    )),
+                                onChanged: (value) {
+                                  descriptionstatus = false;
+                                },
+                                decoration: InputDecoration(
+                                  //contentPadding: EdgeInsets.only(left: 20, top: 5, bottom: 12),
+                                  hintText: "Description",
+                                  labelText: "Description",
+                                  labelStyle: const TextStyle(
+                                      fontFamily: 'spartan',
+                                      color: Colors.black54),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black38),
+                                  ),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: height * 0.04,
-                        ),
-                      ],
+                          descriptionstatus
+                              ? Container(
+                                  height: 30,
+                                  child: Text(
+                                    "$status",
+                                    style: const TextStyle(
+                                        fontFamily: 'spartan',
+                                        fontSize: 12,
+                                        color: Color(0xff2F80ED)),
+                                  ),
+                                )
+                              : Container(
+                                  height: 20,
+                                ),
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, left: 20, right: 20),
+                            child: Divider(
+                              thickness: 1,
+                              color: Color(0xffCFCFCF),
+                            ),
+                          ),
+                          Container(
+                            width: width,
+                            color: const Color(0xffF3F3F3),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 12, bottom: 12, left: 20),
+                              child: textComoon("More Options", 14,
+                                  const Color(0xff292929), FontWeight.w600),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.015,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return setting(
+                                        // isBookOnline: getSingleServiceDetailsData!
+                                        //     .data!.isBookOnline ?? false,
+                                        // isHomeService: getSingleServiceDetailsData!
+                                        //     .data!.isHomeService,
+                                        // intervalTime: getSingleServiceDetailsData!
+                                        //     .data!.inBetweenInterval,
+                                        // noOfParallelClient:
+                                        //     getSingleServiceDetailsData!
+                                        //         .data!.noOfParallelClient,
+                                        );
+                                  },
+                                )).then((value) {
+                                  print(value);
+                                  setState(() {
+                                    parallelClients = value[0];
+                                    homeService = value[1];
+                                    Clients = value[2];
+                                    print(parallelClients);
+                                  });
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 17,
+                                ),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.black12))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    textComoon(
+                                        "Settings",
+                                        14,
+                                        const Color(0xff414141),
+                                        FontWeight.w500),
+                                    Container(
+                                      height: 15,
+                                      width: 30,
+                                      child: Image.asset(
+                                          "assets/images/righticon.png"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 20, right: 20),
+                          //   child: Container(
+                          //     padding: const EdgeInsets.symmetric(
+                          //       vertical: 17,
+                          //     ),
+                          //     decoration: const BoxDecoration(
+                          //         border: Border(bottom: BorderSide(color: Colors.black12))),
+                          //     child: GestureDetector(
+                          //       onTap: () {},
+                          //       child: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           textComoon("For Client", 14,
+                          //               const Color(0xff414141), FontWeight.w500),
+                          //           Container(
+                          //             height: 15,
+                          //             width: 30,
+                          //             child: Image.asset("assets/images/righticon.png"),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 20, right: 20, top: height * 0.04),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    deleteServiceDetails(widget.id);
+                                  },
+                                  child: Container(
+                                    height: height * 0.07,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffFF3232),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Image.asset(
+                                          "assets/images/delete.png",
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (widget.isFromProfile) {
+                                        updateServiceDetails(widget.id);
+                                      } else {
+                                        Navigator.pop(context, [
+                                          selectedvalueminnewformat,
+                                          selectedpriceStatus,
+                                          txtPrice.text,
+                                          description.text,
+                                          parallelClients,
+                                          homeService,
+                                          Clients,
+                                          imagepath.split("/").last,
+                                          file == null ? "" : file!.path
+                                        ]);
+                                        txtPrice.clear();
+                                      }
+                                      //
+                                    },
+                                    child: Container(
+                                        height: height * 0.07,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: const Color(0xff01635D)),
+                                        child: const Text(
+                                          "SAVE",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "spartan",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal),
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.04,
+                          ),
+                        ],
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                        "No Data Found !!!",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  )
-                : Center(
-                    child: Text(
-                    "No Data Found !!!",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  )));
+    );
   }
 
   getSingleServiceDetails(String Id) async {
@@ -1066,12 +1945,15 @@ class _Profile_ImagesState extends State<Profile_Images> {
         var time = await convertIntoTimeFormatForPriceDuration(
             getSingleServiceDetailsData!.data!.duration);
         servicetype.text =
-            getSingleServiceDetailsData!.data!.serviceType!.serviceTypeName ?? "";
+            getSingleServiceDetailsData!.data!.serviceType!.serviceTypeName ??
+                "";
         servicecategory.text = getSingleServiceDetailsData!
-            .data!.serviceCategory!.serviceCategoryName ?? "";
+                .data!.serviceCategory!.serviceCategoryName ??
+            "";
         description.text = getSingleServiceDetailsData!.data!.description ?? "";
         selectedprice = getSingleServiceDetailsData!
-            .data!.serviceCategory!.serviceCategoryName ?? "";
+                .data!.serviceCategory!.serviceCategoryName ??
+            "";
         txtPrice.text =
             "\$ ${getSingleServiceDetailsData!.data!.price!.toString()}";
         selectedpriceStatus = getSingleServiceDetailsData!.data!.priceStatus;

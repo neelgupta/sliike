@@ -87,7 +87,7 @@ class _addAnother_ServiceState extends State<addAnother_Service> {
                         ),
                         Expanded(
                           child: Text(
-                              "Add your services, so clients can see\nwhat you offer.",
+                              "Add your services, so clikents can see\nwhat you offer.",
                               style: TextStyle(
                                   fontSize: 12,
                                   overflow: TextOverflow.ellipsis,

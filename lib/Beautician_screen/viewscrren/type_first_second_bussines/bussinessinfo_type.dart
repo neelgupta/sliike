@@ -271,12 +271,17 @@ class _bussinessInfoCATEGORYState extends State<bussinessInfoCATEGORY> {
       var bodydata = {
         "isProvideService": _radioValue1,
       };
+      var Headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
       print("loginApi url : ${ApiUrlList.addBusinessType}");
       print("passing bodyDat : $bodydata");
       var response = await http.post(
         Uri.parse(ApiUrlList.addBusinessType),
         body: jsonEncode(bodydata),
-        headers: ApiHeader.headers,
+        headers: Headers
+        // headers: ApiHeader.headers,
       );
       var map = jsonDecode(response.body.toString());
       print("statuscode : ${response.statusCode}");
