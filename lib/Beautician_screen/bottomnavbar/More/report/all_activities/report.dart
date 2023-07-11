@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
-import 'package:new_sliikeapps_apps/models/beautician_report_model%20/beauticianReportModel.dart';
+import 'package:new_sliikeapps_apps/models/beautician_report_model/beauticianReportModel.dart';
 import 'package:new_sliikeapps_apps/services/beautician_report_service.dart';
 import 'package:new_sliikeapps_apps/utils/util.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';

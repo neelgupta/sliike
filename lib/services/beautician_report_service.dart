@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
-import 'package:new_sliikeapps_apps/models/beautician_report_model%20/beauticianReportModel.dart';
+import 'package:new_sliikeapps_apps/models/beautician_report_model/beauticianReportModel.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
