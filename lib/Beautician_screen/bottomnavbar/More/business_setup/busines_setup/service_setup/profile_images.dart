@@ -1674,7 +1674,7 @@ class _Profile_ImagesState extends State<Profile_Images> {
                             ),
                           ),
                           SizedBox(
-                            height: height * 0.06,
+                            height: height * 0.02,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 20, right: 20),

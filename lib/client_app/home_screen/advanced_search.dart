@@ -308,44 +308,50 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                               )
                             : datum.isEmpty || selectedServiceIds.isEmpty
                                 ? Container(
-                    height: height * 0.45,
-                    child: Center(
-                      child: Expanded(
-                        child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                                text:
-                                    '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'spartan',
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff414141)),
-                                children: [
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
-                                  TextSpan(
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => feedback(),
-                                            ),),
-                                      text: "feedback ",
-                                      style: TextStyle(
-                                          fontFamily: 'spartan',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.blue)),
-                                  TextSpan(
-                                      text: 'section\"',
-                                      style: TextStyle(
-                                          fontFamily: 'spartan',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: Color(0xff414141))),
-                                ])),
-                      ),
-                    ))
+                                    height: height * 0.45,
+                                    child: Center(
+                                      child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                              text:
+                                                  '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'spartan',
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color(0xff414141)),
+                                              children: [
+                                                // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
+                                                TextSpan(
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () =>
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          feedback(),
+                                                                ),
+                                                              ),
+                                                    text: "feedback ",
+                                                    style: TextStyle(
+                                                        fontFamily: 'spartan',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 14,
+                                                        color: Colors.blue)),
+                                                TextSpan(
+                                                    text: 'section\"',
+                                                    style: TextStyle(
+                                                        fontFamily: 'spartan',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 13,
+                                                        color:
+                                                            Color(0xff414141))),
+                                              ])),
+                                    ))
                                 : ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: datum.length,
@@ -396,7 +402,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                                                 alignment: Alignment.center,
                                                 child: CachedNetworkImage(
                                                   imageUrl:
-                                                      datum[index].businessName,
+                                                      datum[index].logo ?? "",
                                                   imageBuilder: (context,
                                                           imageProvider) =>
                                                       Container(
@@ -494,7 +500,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                                                           ),
                                                           if (datum[index]
                                                                   .isLicensed ==
-                                                              "1")
+                                                              1)
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
@@ -966,7 +972,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
       });
       log("searchServiceType url is :: $geturi");
       var response = await http.get(geturi, headers: {
-         "Authorization":
+        "Authorization":
             "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}"
       });
       datum.clear();
@@ -1105,6 +1111,7 @@ class Datum {
   List<BeauticianServiceDetail> beauticianServiceDetails;
   List<Address> address;
   bool? isSelected;
+  String? logo;
   int isLicensed;
 
   Datum({
@@ -1135,6 +1142,7 @@ class Datum {
     required this.beauticianServiceDetails,
     required this.address,
     this.isSelected = false,
+    this.logo,
     required this.isLicensed,
   });
 
@@ -1171,6 +1179,7 @@ class Datum {
               .map((x) => BeauticianServiceDetail.fromJson(x))),
       address:
           List<Address>.from(json["address"].map((x) => Address.fromJson(x))),
+          logo: json['logo'] ?? "",
       isLicensed: json["isLicensed"] ?? 0);
 
   Map<String, dynamic> toJson() => {
@@ -1202,7 +1211,8 @@ class Datum {
         "beauticianServiceDetails":
             List<dynamic>.from(beauticianServiceDetails.map((x) => x.toJson())),
         "address": List<dynamic>.from(address.map((x) => x.toJson())),
-        "isLicensed": isLicensed
+        "isLicensed": isLicensed,
+        "logo": logo
       };
 }
 

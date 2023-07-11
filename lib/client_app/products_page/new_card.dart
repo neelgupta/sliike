@@ -81,6 +81,7 @@ class _new_cardState extends State<new_card> {
                 ],
                 // inputFormatters: [LengthLimitingTextInputFormatter(16)],
                 controller: txtCardNumber,
+                keyboardType: TextInputType.number,
                 style: const TextStyle(fontFamily: "spartan", fontSize: 12),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),

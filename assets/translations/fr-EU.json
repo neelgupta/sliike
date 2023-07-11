@@ -73,7 +73,7 @@
   "card_name": "Nom du titulaire",
   "card_number": "Numéro de carte",
   "expiration": "Date d'expiration",
-  "cvv": "CVV",
+  "cvv": "CSV",
   "use_this_card": "Utilisez cette carte",
   "add_new_card": "Ajouter une nouvelle carte",
   "important_info": "Informations importantes",

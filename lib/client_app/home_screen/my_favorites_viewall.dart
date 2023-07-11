@@ -266,7 +266,7 @@ class _MyFavoritesViewAllState extends State<MyFavoritesViewAll> {
                                                         null
                                                     ? const SizedBox()
                                                     : Text(
-                                                        "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
+                                                        "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
                                                         style: const TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 12,

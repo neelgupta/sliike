@@ -422,7 +422,7 @@ class _my_favoritesState extends State<my_favorites> {
                                                           ],
                                                         ),
                                                         Text(
-                                                          "${favoritelist[index].address!.apartment}\n${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
+                                                          "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
                                                           style: TextStyle(
                                                             fontSize: 12,
                                                             fontFamily:

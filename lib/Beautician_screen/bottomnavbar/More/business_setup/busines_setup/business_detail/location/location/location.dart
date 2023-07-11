@@ -225,9 +225,10 @@ class _locationState extends State<location> {
               Column(
                 children: [
                   Container(
-                    // height: height*0.17,
+                    height: height * 0.17,
                     width: width,
                     decoration: BoxDecoration(
+                      // color: Colors.red,
                       color: Color(0xffFAFAFA),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Color(0xffE7E7E7), width: 1),
@@ -247,16 +248,30 @@ class _locationState extends State<location> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    textComoon("Address:", 12,
-                                        Color(0xff000000), FontWeight.w600),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    textComoon("$address", 12,
-                                        Color(0xff707070), FontWeight.w600),
-                                  ],
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      textComoon("Address:", 12,
+                                          Color(0xff000000), FontWeight.w600),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                              
+                                        width: width * 0.5,
+                                        child: Text(
+                                          "$address",
+                                          maxLines: null,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xff707070),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 5,

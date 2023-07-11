@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/cancel_appoinment.dart';
@@ -14,7 +15,8 @@ class manage_appoinment extends StatefulWidget {
   String? serviceId;
   String? beauticianId;
   String? serviceDuration;
-  manage_appoinment({Key? key,this.businessName,this.time,this.category,this.bookingId,this.price,this.serviceId,this.beauticianId,this.serviceDuration}) : super(key: key);
+  String? photo;
+  manage_appoinment({Key? key,this.businessName,this.time,this.category,this.bookingId,this.price,this.serviceId,this.beauticianId,this.serviceDuration, this.photo}) : super(key: key);
 
   @override
   State<manage_appoinment> createState() => _manage_appoinmentState();
@@ -58,24 +60,39 @@ class _manage_appoinmentState extends State<manage_appoinment> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  SizedBox(
-                      height: height*0.12,
-                      width: width*0.25,
-                      child:
-                      Center(
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.error),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              const Text("No Image")
-                            ],
-                          )),
-                  ),
+                  CachedNetworkImage(
+                  imageUrl: widget.photo ?? "",
+                  imageBuilder: (context,
+                      imageProvider) =>
+                      Container(
+                        height: height*0.12,
+                        width: width*0.25,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                        ),
+                      ),
+                  progressIndicatorBuilder:
+                      (context, url,
+                      process) =>
+                      Container(
+                        height: height*0.12,
+                        width: width*0.25,
+                        margin: const EdgeInsets
+                            .all(5),
+                        child: const Center(
+                            child:
+                            CircularProgressIndicator()),
+                      ),
+                  errorWidget: (context,
+                      url, error) =>
+                      SizedBox(
+                          height: height*0.12,
+                          width: width*0.25,
+                          child: Center(
+                            child: Text("No image"),
+                          )
+                      ),
+                ),
                   SizedBox(width: width*0.04,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

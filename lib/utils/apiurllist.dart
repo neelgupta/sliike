@@ -16,6 +16,7 @@ class ApiUrlList {
   static String saveStripeCode = "${baseUrl}beautician/saveStripeAccId";
   static String fetchServiceCategories =
       "${baseUrl}option/fetchServiceCategories";
+  static String getRecentSearchAPI = "${baseUrl}client/getRecentSearchList";
   static String fetchServiceTypes = "${baseUrl}option/fetchServiceTypes";
   static String getClientPersonalInfo =
       "${baseUrl}client/getClientPersonalInfo";
@@ -208,19 +209,29 @@ class ApiUrlList {
   static String getInvitedClientList =
       "${baseUrl}beautician/getInvitedClientList";
 
+  /// Get Policy EndPoint ///
+  static String getPolicy = "${baseUrl}client/getBePolicyDetails/";
 
-      /// Get Policy EndPoint ///
-      static String getPolicy = "${baseUrl}client/getBePolicyDetails/";
-      /// Get Portfolio Endpoint ///
-      static String getPortfolio = "${baseUrl}client/getPortfolioImages/";
+  /// Get Portfolio Endpoint ///
+  static String getPortfolio = "${baseUrl}client/getPortfolioImages/";
 
-/// Tax Services EndPoints ///
-static String getProvinceList = "${baseUrl}option/getProvinceList";
-static String updateTax = "${baseUrl}beautician/addProvinceDetails";
-static String getTaxProvinceDetails = "${baseUrl}beautician/getTaxProvinceDetails";
+  /// Tax Services EndPoints ///
+  static String getProvinceList = "${baseUrl}option/getProvinceList";
+  static String updateTax = "${baseUrl}beautician/addProvinceDetails";
+  static String getTaxProvinceDetails =
+      "${baseUrl}beautician/getTaxProvinceDetails";
+
+  /// Send email invoice ///
+  static String sendEmailInvoice = "${baseUrl}beautician/sendEmailInvoice";
+
+  /// Call customer care service ///
+  static String callToCustomerCare = "${baseUrl}help/callToCustomerCare/";
+
+  /// Click event endpoints ///
+  static String addCountForService = "${baseUrl}client/addCountForService/click-view/";
+  static String bookCount = "${baseUrl}client/addCountForService/click-Book/";
 
 
-/// Send email invoice ///
-static String sendEmailInvoice = "${baseUrl}beautician/sendEmailInvoice";
-
+  /// Get beautician reports endpoint ,,
+    static String getBeauticianReports = "${baseUrl}beautician/getBeauticianReports";
 }

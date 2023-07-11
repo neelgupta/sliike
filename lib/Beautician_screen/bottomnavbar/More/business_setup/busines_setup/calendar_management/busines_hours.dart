@@ -268,7 +268,7 @@ class _busines_HoursState extends State<busines_Hours> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Column(
+                                                     getWorkHoursData!.data![0].dayDetails![index].isOpen!?   Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
@@ -301,7 +301,7 @@ class _busines_HoursState extends State<busines_Hours> {
                                                                   fontSize: 10),
                                                             ),
                                                           ],
-                                                        ),
+                                                        ):Text("Closed"),
                                                         SizedBox(
                                                           width: width * 0.08,
                                                         ),

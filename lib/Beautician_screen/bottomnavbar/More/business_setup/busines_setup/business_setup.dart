@@ -86,7 +86,7 @@ class _business_SetUpState extends State<business_SetUp> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+              const EdgeInsets.only(left: 0, right: 10, top: 15, bottom: 15),
           child: Column(
             children: [
               /// Beautician Details ///

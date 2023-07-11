@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -26,6 +27,7 @@ class _searchservicesState extends State<searchservices> {
   List<ServiceCategorieData> serviceName = [];
   ServiceCategories? s;
   bool isLoading = false;
+  bool isRecentLoading = true;
   List<String> selectedService = [];
   List<String> selectedServiceSearch = [];
   List<String> selectedServiceId = [];
@@ -40,11 +42,14 @@ class _searchservicesState extends State<searchservices> {
   String latitude = "";
   String longitude = "";
   String address = "";
+  GetRecentSearch? recentSearch;
+  List<GetRecentSearchList> recentSearchList = [];
 
   @override
   void initState() {
     super.initState();
     fetchServiceCategories();
+    getRecentSearch();
     // searchServiceType();
   }
 
@@ -63,6 +68,7 @@ class _searchservicesState extends State<searchservices> {
         if (searchbyservice) {
           setState(() {
             searchbyservice = false;
+            getRecentSearch();
           });
           return false;
         } else {
@@ -90,6 +96,7 @@ class _searchservicesState extends State<searchservices> {
                               if (searchbyservice) {
                                 setState(() {
                                   searchbyservice = false;
+                                  getRecentSearch();
                                 });
                               } else {
                                 Navigator.pop(context);
@@ -106,43 +113,33 @@ class _searchservicesState extends State<searchservices> {
                           const SizedBox(
                             height: 20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              if (!searchbyservice) {
-                                setState(() {
-                                  searchbyservice = true;
-                                });
-                              }
-                              print(searchbyservice);
-                            },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              height: height * 0.07,
-                              width: width,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: TextField(
-                                controller: searchCotroller,
-                                readOnly: !searchbyservice,
-                                onTap: () {
-                                  if (!searchbyservice) {
-                                    setState(() {
-                                      searchbyservice = true;
-                                    });
-                                  }
-                                },
-                                onEditingComplete: () {
+                          Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15),
+                            height: height * 0.07,
+                            width: width,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: TextField(
+                              controller: searchCotroller,
+                              readOnly: !searchbyservice,
+                              onTap: () {
+                                if (!searchbyservice) {
                                   setState(() {
-                                    searchServiceType();
+                                    searchbyservice = true;
                                   });
-                                },
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Search for services or stylist",
-                                ),
+                                }
+                              },
+                              onEditingComplete: () {
+                                setState(() {
+                                  searchServiceType();
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Search for services or stylist",
                               ),
                             ),
                           ),
@@ -370,47 +367,63 @@ class _searchservicesState extends State<searchservices> {
         const SizedBox(
           height: 20,
         ),
-        SizedBox(
-            height: height * 0.6,
-            child: const Center(
-                child: Text("No data Found!!",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontFamily: "spartan")))
-            // ListView.builder(itemCount: 5,itemBuilder: (context, index) {
-            //   return Container(
-            //     margin: const EdgeInsets.symmetric(vertical: 5),
-            //     child: Row(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Container(
-            //           width: width*0.15,
-            //           height: width*0.15,
-            //           decoration: BoxDecoration(
-            //               image: const DecorationImage(
-            //                 image: AssetImage("assets/images/Group 12006.jpg"),
-            //                 fit: BoxFit.fill
-            //               ),
-            //               borderRadius: BorderRadius.circular(5)
-            //           ),
-            //         ),
-            //         SizedBox(
-            //           width: width*0.02,
-            //         ),
-            //         Column(
-            //           mainAxisAlignment: MainAxisAlignment.start,
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             SizedBox(width: width*0.75,child: const Text("Queens Palace",style: TextStyle(fontSize: 13,fontFamily: "spartan",color: Colors.black45),)),
-            //             SizedBox(width: width*0.75,child: const Text("Route Du 3e-rang,Collingwood, qc, Canada",style: TextStyle(fontSize: 12,fontFamily: "spartan",color: Color(0xFF1571ED))))
-            //           ],
-            //         )
-            //       ],
-            //     ),
-            //   );
-            // },),
-            )
+        isRecentLoading?Center(child: CircularProgressIndicator()):SizedBox(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            itemCount: recentSearchList.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CachedNetworkImage(
+                        imageUrl: recentSearchList[index].logo ?? "",
+                      progressIndicatorBuilder: (context, url, progress) {
+                        return Container(
+                          width: width*0.15,
+                          height: width*0.15,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return Container(
+                          width: width*0.15,
+                          height: width*0.15,
+                          child: Center(child: Text("No Image",textAlign: TextAlign.center,)),
+                        );
+                      },
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          width: width*0.15,
+                          height: width*0.15,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.fill
+                              ),
+                              borderRadius: BorderRadius.circular(5)
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      width: width*0.02,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(width: width*0.75,child: Text(recentSearchList[index].businessName ?? "",style: TextStyle(fontSize: 13,fontFamily: "spartan",color: Colors.black45),)),
+                        SizedBox(width: width*0.75,child: Text("${recentSearchList[index].address!.apartment} ${recentSearchList[index].address!.address} ${recentSearchList[index].address!.street} ${recentSearchList[index].address!.city}",maxLines: 1,style: TextStyle(fontSize: 12,fontFamily: "spartan",color: Color(0xFF1571ED))))
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },),
+        )
       ],
     );
   }
@@ -447,6 +460,7 @@ class _searchservicesState extends State<searchservices> {
                       ? ListView.builder(
                           shrinkWrap: true,
                           itemCount: searchData.length,
+                          physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Container(
                               margin: EdgeInsets.symmetric(
@@ -519,7 +533,7 @@ class _searchservicesState extends State<searchservices> {
                           ss!.data != null &&
                           (ss!.data!.beuticianTypes ?? []).isNotEmpty
                       ? ListView.builder(
-                          shrinkWrap: true,
+                          shrinkWrap: true,physics: BouncingScrollPhysics(),
                           itemCount: ss!.data!.beuticianTypes!.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
@@ -575,42 +589,78 @@ class _searchservicesState extends State<searchservices> {
                 : Container(
                     height: height * 0.75,
                     child: Center(
-                      child: Expanded(
-                        child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                                text:
-                                    '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'spartan',
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff414141)),
-                                children: [
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
-                                  TextSpan(
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => feedback(),
-                                            ),),
-                                      text: "feedback ",
-                                      style: TextStyle(
-                                          fontFamily: 'spartan',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.blue)),
-                                  TextSpan(
-                                      text: 'section\"',
-                                      style: TextStyle(
-                                          fontFamily: 'spartan',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: Color(0xff414141))),
-                                ])),
-                      ),
+                      child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                              text:
+                                  '\"No result on your search. Try your search again with different set of parameters or suggest a beautician in the ',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'spartan',
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff414141)),
+                              children: [
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => feedback(),))
+                                TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => feedback(),
+                                          ),),
+                                    text: "feedback ",
+                                    style: TextStyle(
+                                        fontFamily: 'spartan',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.blue)),
+                                TextSpan(
+                                    text: 'section\"',
+                                    style: TextStyle(
+                                        fontFamily: 'spartan',
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: Color(0xff414141))),
+                              ])),
                     ));
+  }
+
+  getRecentSearch() async {
+    recentSearchList.clear();
+    isRecentLoading = true;
+    var headers = {
+      'Content-Type': "application/json; charset=utf-8",
+      "authorization":
+      "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+
+    var geturi = Uri.parse(ApiUrlList.getRecentSearchAPI);
+
+    log("getRecentSearch url is :: $geturi");
+
+    var response = await http.get(geturi, headers: headers);
+
+    log("getRecentSearch status code ==> ${response.statusCode}");
+    log("getRecentSearch res body is :  ${response.body}");
+
+    if(response.statusCode == 200) {
+      Map map = jsonDecode(response.body);
+
+      if(map['status']==200) {
+        recentSearch = GetRecentSearch.fromJson(map);
+        recentSearchList.addAll(recentSearch!.data ?? []);
+      }
+    }
+    else if (response.statusCode == 401) {
+        logoutdata();
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: (context) {
+            return signInScreen();
+          },
+        ), (route) => false);
+      }
+    isRecentLoading = false;
+    setState(() {});
   }
 
   fetchServiceCategories() async {
@@ -630,7 +680,8 @@ class _searchservicesState extends State<searchservices> {
           s = ServiceCategories.fromjson(map);
           serviceName = s!.data!;
         }
-      } else if (response.statusCode == 401) {
+      }
+      else if (response.statusCode == 401) {
         logoutdata();
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
           builder: (context) {
@@ -784,6 +835,58 @@ class BeuticianTypes {
     return BeuticianTypes(
       id: map['_id'],
       businessName: map['businessName'],
+    );
+  }
+}
+
+class GetRecentSearch {
+  int? status;
+  List<GetRecentSearchList>? data;
+
+  GetRecentSearch({this.status, this.data});
+
+  factory GetRecentSearch.fromJson(Map<dynamic, dynamic> map) {
+    // Map map1 = map['data'];
+    List list = map['data'];
+    List<GetRecentSearchList> data = list.map((e) => GetRecentSearchList.fromJson(e)).toList();
+    return GetRecentSearch(status: map['status'], data: data);
+  }
+}
+
+class GetRecentSearchList {
+  String? id;
+  String? logo;
+  String? businessName;
+  String? province;
+  Address? address;
+
+  GetRecentSearchList({this.id, this.logo, this.businessName, this.province, this.address});
+
+  factory GetRecentSearchList.fromJson(Map<dynamic, dynamic> map) {
+    return GetRecentSearchList(
+      id: map['_id'],
+      logo: map['logo'],
+      businessName: map['businessName'],
+      province: map['province'],
+      address: Address.fromJson(map['address'])
+    );
+  }
+}
+
+class Address {
+  String? address;
+  String? street;
+  String? apartment;
+  String? city;
+
+  Address({this.address, this.street, this.apartment, this.city});
+
+  factory Address.fromJson(Map<dynamic, dynamic> map) {
+    return Address(
+      address: map['address'],
+      street: map['street'],
+      apartment: map['apartment'],
+      city: map['city'],
     );
   }
 }

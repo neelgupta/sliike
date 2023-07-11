@@ -32,6 +32,8 @@ class searchScreen extends StatefulWidget {
   String? longitude;
   String? serviceName;
   bool? isMultipleSearched;
+  String? minDistance;
+  String? maxDistance;
 
   searchScreen(
       {Key? key,
@@ -46,7 +48,10 @@ class searchScreen extends StatefulWidget {
       this.latitude,
       this.longitude,
       this.serviceName,
-      this.isMultipleSearched})
+      this.isMultipleSearched,
+      this.minDistance,
+      this.maxDistance,
+      })
       : super(key: key);
 
   @override
@@ -461,7 +466,7 @@ class _searchScreenState extends State<searchScreen> {
                                             children: [
                                               CachedNetworkImage(
                                                 imageUrl: servicesList[index]
-                                                    .logoPath,
+                                                    .logo,
                                                 imageBuilder:
                                                     (context, imageProvider) =>
                                                         Container(
@@ -839,13 +844,15 @@ class _searchScreenState extends State<searchScreen> {
       log("selectedService ====> ${widget.selectedService}");
       var bodydata = {
         "services": widget.selectedService ?? widget.searchService,
-        "demography": [],
+        "demography": widget.selectedDemography,
         "maxPrice": widget.priceValue,
         "gender": widget.gender ?? "",
         "serveAt": widget.myPlace ?? "",
         "longitude": widget.longitude ?? "",
         "latitude": widget.latitude ?? "",
-        "sortBy": widget.sortBy ?? ""
+        "sortBy": widget.sortBy ?? "",
+        "minDistance": widget.minDistance ?? "",
+        "maxDistance": widget.maxDistance ?? "",
       };
       print("findServices url is ====> $posturi ");
       log("req bodydata ====> $bodydata ");
@@ -1003,7 +1010,7 @@ class ServiceDModel {
   String noOfReviews;
   String rating;
   final Dis dis;
-  String logoPath;
+  String logo;
   Location? location;
   List<BeauticianServiceDetail> beauticianServiceDetails;
   List<Address> address;
@@ -1036,7 +1043,7 @@ class ServiceDModel {
     required this.businessNumber,
     required this.noOfReviews,
     required this.rating,
-    required this.logoPath,
+    required this.logo,
     this.location,
     required this.dis,
     required this.beauticianServiceDetails,
@@ -1074,7 +1081,7 @@ class ServiceDModel {
       businessNumber: json["businessNumber"] ?? 0,
       noOfReviews: (json['noOfReviews'] ?? 0).toString(),
       rating: (json['rating'] ?? 0).toString(),
-      logoPath: json['logoPath'] ?? "",
+      logo: json['logo'] ?? "",
       location:
           json["location"] != null ? Location.fromJson(json["location"]) : null,
       beauticianServiceDetails: List<BeauticianServiceDetail>.from(

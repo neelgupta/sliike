@@ -262,6 +262,21 @@ class _profilePageState extends State<profilePage> {
                                 image: DecorationImage(
                                     image: FileImage(File(imagepath)),
                                     fit: BoxFit.fill)),
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Image.asset(
+                                        "assets/images/editprofile.png",
+                                        height: 40),
+                                  ),
+                                  textComoon("Photo", 10,
+                                      const Color(0xff01635D), FontWeight.w600),
+                                ],
+                              ),
+                            ),
                           )
                         : profileImage != ""
                             ? Container(
@@ -1043,6 +1058,7 @@ class _profilePageState extends State<profilePage> {
             email.text = getmodelProfile?.data?.userId?.email ?? '';
             phonernumber.text =
                 getmodelProfile!.data!.userId!.phoneNumber.toString();
+            profileImage = getmodelProfile?.data?.profileImage ?? "";
             _countryname = getmodelProfile?.data?.countryCode ?? '';
             currentpassword.text =
                 getmodelProfile?.data?.userId?.password ?? '';

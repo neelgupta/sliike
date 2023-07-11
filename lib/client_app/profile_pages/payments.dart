@@ -146,7 +146,7 @@ class _paymentsState extends State<payments> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         margin:
-                                            EdgeInsets.only(left: 10, top: 20),
+                                            EdgeInsets.only(left: 10, top: 0.025),
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                             "${getCardDetailsData!.data![index].cardBrand}",
@@ -160,7 +160,7 @@ class _paymentsState extends State<payments> {
                                       alignment: Alignment.centerRight,
                                       child: Container(
                                         margin:
-                                            EdgeInsets.only(right: 10, top: 75),
+                                            EdgeInsets.only(right: 10, top: 0.085),
                                         child: Text(
                                             "${getCardDetailsData!.data![index].cardLastFour}",
                                             style: TextStyle(

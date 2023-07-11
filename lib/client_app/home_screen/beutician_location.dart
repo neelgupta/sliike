@@ -306,7 +306,7 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CachedNetworkImage(
-                              imageUrl: widget.placesList[index].logoPath,
+                              imageUrl: widget.placesList[index].logo,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 padding: const EdgeInsets.all(10),
@@ -535,7 +535,7 @@ class _BeuticianLocationState extends State<BeuticianLocation> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: widget.placesList[index].logoPath,
+                      imageUrl: widget.placesList[index].logo,
                       imageBuilder: (context, imageProvider) => Container(
                         padding: const EdgeInsets.all(10),
                         height: 125,

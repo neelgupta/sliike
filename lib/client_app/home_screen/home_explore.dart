@@ -610,7 +610,7 @@ class _home_exploreState extends State<home_explore> {
                                                                         width *
                                                                             0.58,
                                                                     child: Text(
-                                                                      "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
+                                                                      "${favoritelist[index].address!.apartment} ${favoritelist[index].address!.province!.province} ${favoritelist[index].address!.city} ${favoritelist[index].address!.zipCode}",
                                                                       maxLines:
                                                                           null,
                                                                       style:

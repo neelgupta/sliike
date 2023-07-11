@@ -83,7 +83,7 @@ class _bank_detailState extends State<bank_detail> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              child: const Text("Bank Details & Tax Profile",
+                              child: const Text("Payments And Tax",
                                   style: TextStyle(
                                       fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
@@ -115,17 +115,17 @@ class _bank_detailState extends State<bank_detail> {
             SizedBox(
               height: height * 0.04,
             ),
-            textComoon("Bank Details & Tax Settings", 14, const Color(0xff292929),
+            textComoon("Update Payment and Tax Settings", 14, const Color(0xff292929),
                 FontWeight.w700),
             SizedBox(
               height: height * 0.02,
             ),
             textComoonfade(
-                "Provide bank details for us to wire your payment and Sales Tax profile to collect sales taxes on all your services/product sales.",
+                "Set up all payment details and start getting paid for your products and services.",
                 12,
                 const Color(0xff414141),
                 FontWeight.w500),
-            textComoon("1/2", 12, const Color(0xff414141), FontWeight.w500),
+            // textComoon("1/2", 12, const Color(0xff414141), FontWeight.w500),
             SizedBox(
               height: height * 0.025,
             ),
@@ -152,7 +152,7 @@ class _bank_detailState extends State<bank_detail> {
                             width: 10,
                           ),
                           const Text(
-                            "Beautician Bank Account Details",
+                            "Payment Setup",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 12,

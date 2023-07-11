@@ -1,21 +1,21 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/Beautician_screen/viewscrren/signin/signin.dart';
 import 'package:new_sliikeapps_apps/client_app/%20beautician%20_page/book_appoinment.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/booking_panding.dart';
-import 'package:new_sliikeapps_apps/utils/util.dart';
-import '../ beautician _page/booking_receipt.dart';
-import 'dart:developer';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
+import 'package:new_sliikeapps_apps/utils/util.dart';
+
+import '../ beautician _page/booking_receipt.dart';
 
 class booking_delivered extends StatefulWidget {
   String? id;
@@ -183,8 +183,7 @@ class _booking_deliveredState extends State<booking_delivered> {
                         children: [
                           CachedNetworkImage(
                             imageUrl:
-                                onlyonemodal!.data!.beauticianId!.logoPath ??
-                                    '',
+                                onlyonemodal!.data!.beauticianId!.logo ?? '',
                             imageBuilder: (context, imageProvider) => Container(
                               padding: const EdgeInsets.all(10),
                               height: height * 0.15,
@@ -753,13 +752,15 @@ class _booking_deliveredState extends State<booking_delivered> {
       //   isLoading = false;
       // });
       showToast(
-            message: "${map['message']}",);
+        message: "${map['message']}",
+      );
     } else {
       setState(() {
         isLoading = false;
       });
       showToast(
-            message: "${map['message']}",);
+        message: "${map['message']}",
+      );
     }
   }
 }

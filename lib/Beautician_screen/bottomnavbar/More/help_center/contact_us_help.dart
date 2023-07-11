@@ -1,6 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../../utils/util.dart';
+import '../../../viewscrren/signin/signin.dart';
 
 class contact_us_beauty extends StatefulWidget {
   const contact_us_beauty({Key? key}) : super(key: key);
@@ -19,6 +29,8 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
     }
     //dialer opened
   }
+
+  bool getCall = false;
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +183,7 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
               ),
               GestureDetector(
                 onTap: () {
-                  contactdialog();
+                  callToCustomerCare(context, "beautician");
                 },
                 child: Container(
                   height: height * 0.08,
@@ -191,7 +203,7 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
                       SizedBox(
                         width: width * 0.02,
                       ),
-                      textComoon("Get a call from Sliike customer care", 12,
+                      textComoon(getCall?"Hold on , sending request...":"Get a call from Sliike customer care", 12,
                           Color(0xFF01635D), FontWeight.w600)
                     ],
                   ),
@@ -202,6 +214,56 @@ class _contact_us_beautyState extends State<contact_us_beauty> {
         ),
       ),
     );
+  }
+
+  /// Get a Call from us service ///
+  callToCustomerCare(BuildContext context, String type) async {
+    setState(() {
+      getCall = true;
+    });
+    var getUri = Uri.parse(ApiUrlList.callToCustomerCare + "$type");
+    log("${getUri}");
+
+    var headers = {
+      // 'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.post(
+      getUri,
+      headers: headers,
+    );
+    log("callToCustomerCare Body ==> ${response.body}");
+    log("callToCustomerCare Code ==> ${response.statusCode}");
+    if (response.statusCode == 200) {
+      setState(() {
+        getCall = false;
+      });
+      showToast(
+        message: jsonDecode(response.body)["message"],
+      );
+      contactdialog();
+      Future.delayed(
+        Duration(seconds: 5),
+        () {
+          Navigator.pop(context);
+        },
+      );
+      // return GetCardDetailsData.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      setState(() {
+        getCall = false;
+      });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return signInScreen();
+        },
+      ), (route) => false);
+    } else {
+      setState(() {
+        getCall = false;
+      });
+      showToast(message: "Something went wrong !! ");
+    }
   }
 
   contactdialog() {

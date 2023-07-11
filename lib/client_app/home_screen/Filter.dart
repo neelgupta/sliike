@@ -847,7 +847,7 @@ class _filterpageState extends State<filterpage> {
                                       price1 = false;
                                       price2 = false;
                                       price3 = false;
-                                      priceValue = 10;
+                                      priceValue = 20;
                                     });
                                   },
                                   child: Container(
@@ -890,7 +890,7 @@ class _filterpageState extends State<filterpage> {
                                       price1 = true;
                                       price2 = false;
                                       price3 = false;
-                                      priceValue = 100;
+                                      priceValue = 99;
                                     });
                                   },
                                   child: Container(
@@ -933,7 +933,7 @@ class _filterpageState extends State<filterpage> {
                                       price1 = true;
                                       price2 = true;
                                       price3 = false;
-                                      priceValue = 1000;
+                                      priceValue = 100;
                                     });
                                   },
                                   child: Container(
@@ -976,7 +976,7 @@ class _filterpageState extends State<filterpage> {
                                       price1 = true;
                                       price2 = true;
                                       price3 = true;
-                                      priceValue = 10000;
+                                      priceValue = 1000;
                                     });
                                   },
                                   child: Container(
@@ -1044,6 +1044,7 @@ class _filterpageState extends State<filterpage> {
                                 _endValue = value.end;
                               },
                               min: 0.0,
+                              divisions: 2000,
                               max: 200.0,
                               inactiveColor: const Color(0xffCFCFCF),
                               activeColor: const Color(0xffDD6A03),
@@ -1088,6 +1089,8 @@ class _filterpageState extends State<filterpage> {
                                   onTap: () {
                                     setState(
                                       () {
+                                        selectedService.clear();
+                                        selectedDemography.clear();
                                         for (var item in serviceName) {
                                           if (item.isSelected) {
                                             selectedService.add(item.id!);
@@ -1111,6 +1114,8 @@ class _filterpageState extends State<filterpage> {
                                               priceValue: priceValue,
                                               latitude: latitude,
                                               longitude: longitude,
+                                              minDistance: _startValue.toString(),
+                                              maxDistance: _endValue.toString(),
                                             );
                                           },
                                         ));

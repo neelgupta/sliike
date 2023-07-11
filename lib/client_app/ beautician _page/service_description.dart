@@ -1,16 +1,29 @@
+import 'dart:developer';
+import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:new_sliikeapps_apps/commonClass.dart';
+import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
+import 'package:new_sliikeapps_apps/utils/preferences.dart';
 
 class ServiceDescription extends StatefulWidget {
   String desc;
   String img;
-  ServiceDescription(this.desc,this.img,{super.key});
+  String id;
+  ServiceDescription(this.desc, this.img, this.id, {super.key});
 
   @override
   State<ServiceDescription> createState() => _ServiceDescriptionState();
 }
 
 class _ServiceDescriptionState extends State<ServiceDescription> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    addCountForService(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height -
@@ -82,7 +95,9 @@ class _ServiceDescriptionState extends State<ServiceDescription> {
                 height: 20,
               ),
               Text(
-              widget.desc!=""?  "${widget.desc}":"Description not available!",
+                widget.desc != ""
+                    ? "${widget.desc}"
+                    : "Description not available!",
                 style: TextStyle(
                     color: Color(0xff707070),
                     fontSize: 15,
@@ -116,12 +131,11 @@ class _ServiceDescriptionState extends State<ServiceDescription> {
                     width: width,
                     height: 150,
                     decoration: BoxDecoration(
-                      // color: Colors.red,
+                        // color: Colors.red,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black12),
                         image: DecorationImage(
-                            image: NetworkImage(
-                                "${widget.img}"),
+                            image: NetworkImage("${widget.img}"),
                             fit: BoxFit.fill)),
                   ),
                   progressIndicatorBuilder: (context, url, process) =>
@@ -132,9 +146,9 @@ class _ServiceDescriptionState extends State<ServiceDescription> {
                           child:
                               const Center(child: CircularProgressIndicator())),
                   errorWidget: (context, url, error) => Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black26)
-                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.black26)),
                       // color: Colors.amber,
                       height: height * 0.16,
                       width: width,
@@ -159,5 +173,24 @@ class _ServiceDescriptionState extends State<ServiceDescription> {
         ),
       ),
     );
+  }
+
+  addCountForService(String id) async {
+    var getUri = Uri.parse(ApiUrlList.addCountForService + "$id");
+    log("${getUri}");
+
+    var headers = {
+      // 'Content-Type': "application/json; charset=utf-8",
+      "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+    };
+    var response = await http.post(
+      getUri,
+      headers: headers,
+    );
+    log("addCountForService Body ==> ${response.body}");
+    log("addCountForService Code ==> ${response.statusCode}");
+    if (response.statusCode == 200) {
+    } else if (response.statusCode == 404) {
+    } else {}
   }
 }

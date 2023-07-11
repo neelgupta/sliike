@@ -107,6 +107,7 @@ class _servicesState extends State<services> {
     getBeauticianDetails();
     getPolicy(widget.beauticianId);
     getPortfolio(widget.beauticianId);
+    print(widget.beauticianId);
     // getBusinessDeatils();
   }
 
@@ -415,7 +416,7 @@ class _servicesState extends State<services> {
                                             width: 20,
                                           ),
                                         SizedBox(width: width * 0.03),
-                                        if (BeauticianDetails[0].hasShop == "1")
+                                        if (BeauticianDetails[0].hasShop == "0")
                                           InkWell(
                                             onTap: () {},
                                             child: Image.asset(
@@ -492,7 +493,7 @@ class _servicesState extends State<services> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 TabBar(
-                                  isScrollable: true,
+                                    isScrollable: true,
                                     unselectedLabelColor: Colors.black,
                                     labelColor: const Color(0xFFDD6A03),
                                     indicatorColor: const Color(0xFFDD6A03),
@@ -969,13 +970,12 @@ class _servicesState extends State<services> {
                                                   ),
                                                 )
                                               : Center(
-                                                child: Text(
-                                                    "No Portfolio Found!",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight
-                                                                .w600)),
-                                              ),
+                                                  child: Text(
+                                                      "No Portfolio Found!",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ),
                                       // SingleChildScrollView(
                                       //   child: Padding(
                                       //     padding: const EdgeInsets.symmetric(
@@ -2514,11 +2514,11 @@ class _servicesState extends State<services> {
                                                   ),
                                                 )
                                               : Center(
-                                              child: Text(
-                                                  "No Policy Found!",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                                  child: Text(
+                                                      "No Policy Found!",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
                                                 )
                                     ],
                                   ),
@@ -2542,6 +2542,7 @@ class _servicesState extends State<services> {
               builder: (context) => ServiceDescription(
                 Beauticiandata[0].beauticianServiceId![index].description ?? "",
                 Beauticiandata[0].beauticianServiceId![index].imgName ?? "",
+                Beauticiandata[0].beauticianServiceId![index].id ?? ""
               ),
             ));
       },
@@ -2549,6 +2550,7 @@ class _servicesState extends State<services> {
         // height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
@@ -2578,7 +2580,8 @@ class _servicesState extends State<services> {
                     ],
                   ),
                 ),
-                const Spacer(),
+                // const Spacer(),
+                SizedBox(width: MediaQuery.of(context).size.width*0.15,),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -2615,6 +2618,9 @@ class _servicesState extends State<services> {
                 const Spacer(),
                 ElevatedButton(
                     onPressed: () {
+                      bookCount(Beauticiandata[0]
+                                .beauticianServiceId![index]
+                                .id!);
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
                           return book_appoinment(
@@ -2662,6 +2668,7 @@ class _servicesState extends State<services> {
               builder: (context) => ServiceDescription(
                 Beauticiandata[0].beauticianServiceId![index].description ?? "",
                 Beauticiandata[0].beauticianServiceId![index].imgName ?? "",
+                Beauticiandata[0].beauticianServiceId![index].id ?? ""
               ),
             ));
       },
@@ -2695,7 +2702,7 @@ class _servicesState extends State<services> {
                     ],
                   ),
                 ),
-                const Spacer(),
+                SizedBox(width: MediaQuery.of(context).size.width*0.15,),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -2727,6 +2734,7 @@ class _servicesState extends State<services> {
                 const Spacer(),
                 ElevatedButton(
                     onPressed: () {
+                      bookCount(temp[index].id!);
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
                           return book_appoinment(
@@ -3340,6 +3348,27 @@ class _servicesState extends State<services> {
       }
     }
   }
+}
+
+/// Count Api for book button ///
+
+bookCount(String id) async {
+  var getUri = Uri.parse(ApiUrlList.bookCount + "$id");
+  log("${getUri}");
+
+  var headers = {
+    // 'Content-Type': "application/json; charset=utf-8",
+    "Authorization": "Bearer ${Helper.prefs!.getString(UserPrefs.keyutoken)}",
+  };
+  var response = await http.post(
+    getUri,
+    headers: headers,
+  );
+  log("bookCount Body ==> ${response.body}");
+  log("bookCount Code ==> ${response.statusCode}");
+  if (response.statusCode == 200) {
+  } else if (response.statusCode == 404) {
+  } else {}
 }
 
 class SingalBeautician {

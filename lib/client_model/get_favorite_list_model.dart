@@ -90,7 +90,7 @@ class FavoritesData {
     List<dynamic> demographicIds = List<dynamic>.from(map2['demographicIds'] ?? [].map((e) => e));
     return FavoritesData(
         id: map2['_id'] ?? "",
-        logoPath: map2['logoPath'] ?? "",
+        logoPath: map2['logo'] ?? "",
         isLicensed: (map2['isLicensed'] ?? 0).toString(),
         noOfReviews: (map2['noOfReviews'] ?? 0).toString(),
         rating: (map2['rating'] ?? 0).toString(),
@@ -152,7 +152,7 @@ class Province{
   factory Province.fromjson(Map<dynamic, dynamic>map){
     return Province(
       id: map['_id'] ?? "",
-      province: map['province'] ?? "",
+      province: map['name'] ?? "",
     );
   }
 }

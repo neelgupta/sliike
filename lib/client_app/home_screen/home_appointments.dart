@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -215,8 +216,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                     id: datalist[index].id);
                                               },
                                             ));
-                                          } else if (datalist[index].status ==
-                                              3) {
+                                          } else if (datalist[index].status == 3 || datalist[index].status == 4) {
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                               builder: (context) {
@@ -247,27 +247,38 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 horizontal: width * 0.02),
                                             child: Row(
                                               children: [
-                                                SizedBox(
-                                                  height: height * 0.09,
-                                                  width: width * 0.20,
-                                                  child: Image.network(
-                                                    "${datalist[index].beauticianId!.profileImage}",
-                                                    fit: BoxFit.fill,
-                                                    loadingBuilder: (context,
-                                                        loading,
-                                                        imageChunkEvent) {
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    },
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return const Center(
-                                                        child: Text("No image"),
-                                                      );
-                                                    },
-                                                  ),
+                                                CachedNetworkImage(
+                                                  imageUrl: datalist[index].beauticianId!.logo ?? "",
+                                                  imageBuilder: (context,
+                                                      imageProvider) =>
+                                                      Container(
+                                                        height: height * 0.09,
+                                                        width: width * 0.20,
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                                        ),
+                                                      ),
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                      process) =>
+                                                      Container(
+                                                        height: height * 0.09,
+                                                        width: width * 0.20,
+                                                        margin: const EdgeInsets
+                                                            .all(5),
+                                                        child: const Center(
+                                                            child:
+                                                            CircularProgressIndicator()),
+                                                      ),
+                                                  errorWidget: (context,
+                                                      url, error) =>
+                                                      SizedBox(
+                                                          height: height * 0.09,
+                                                          width: width * 0.20,
+                                                          child: Center(
+                                                            child: Text("No image"),
+                                                          )
+                                                      ),
                                                 ),
                                                 SizedBox(
                                                   width: width * 0.02,
@@ -319,9 +330,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                           ? Colors.green
                                                                           : datalist[index].status == 2
                                                                               ? Colors.blue
-                                                                              : datalist[index].status == 3
+                                                                              : datalist[index].status == 3 || datalist[index].status == 4
                                                                                   ? Colors.red
-                                                                                  : datalist[index].status == 4
+                                                                                  : datalist[index].status == 5
                                                                                       ? Colors.red
                                                                                       : Colors.green),
                                                               child: Text(
@@ -331,9 +342,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                               ? "Accepted"
                                                                               : datalist[index].status == 2
                                                                                   ? "Delivered"
-                                                                                  : datalist[index].status == 3
+                                                                                  : datalist[index].status == 3 || datalist[index].status == 4
                                                                                       ? "Cancelled"
-                                                                                      : datalist[index].status == 4
+                                                                                      : datalist[index].status == 5
                                                                                           ? "No Show"
                                                                                           : "pending",
                                                                       style: TextStyle(
@@ -345,9 +356,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                                   ? Colors.white
                                                                                   : datalist[index].status == 2
                                                                                       ? Colors.white
-                                                                                      : datalist[index].status == 3
+                                                                                      : datalist[index].status == 3 || datalist[index].status == 4
                                                                                           ? Colors.white
-                                                                                          : datalist[index].status == 4
+                                                                                          : datalist[index].status == 5
                                                                                               ? Colors.white
                                                                                               : Colors.white))
                                                                   .tr()),
@@ -480,7 +491,7 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 );
                                               },
                                             ));
-                                          } else if (data[index].status == 3) {
+                                          } else if (data[index].status == 3 || data[index].status == 4) {
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                               builder: (context) {
@@ -515,28 +526,39 @@ class _home_appointmentsState extends State<home_appointments> {
                                                 horizontal: width * 0.02),
                                             child: Row(
                                               children: [
-                                                SizedBox(
-                                                  height: height * 0.09,
-                                                  width: width * 0.20,
-                                                  child: Image.network(
-                                                    "${data[index].beauticianId!.profileImage}",
-                                                    fit: BoxFit.fill,
-                                                    loadingBuilder: (context,
-                                                        loading,
-                                                        imageChunkEvent) {
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    },
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return const Center(
+                                                CachedNetworkImage(
+                                                imageUrl: data[index].beauticianId!.logo ?? "",
+                                                imageBuilder: (context,
+                                                    imageProvider) =>
+                                                    Container(
+                                                        height: height * 0.09,
+                                                        width: width * 0.20,
+                                                        decoration: BoxDecoration(
+                                                          image: DecorationImage(image: imageProvider,fit: BoxFit.fill)
+                                                        ),
+                                                    ),
+                                                progressIndicatorBuilder:
+                                                    (context, url,
+                                                    process) =>
+                                                    Container(
+                                                      height: height * 0.09,
+                                                      width: width * 0.20,
+                                                      margin: const EdgeInsets
+                                                          .all(5),
+                                                      child: const Center(
+                                                          child:
+                                                          CircularProgressIndicator()),
+                                                    ),
+                                                errorWidget: (context,
+                                                    url, error) =>
+                                                    SizedBox(
+                                                      height: height * 0.09,
+                                                      width: width * 0.20,
+                                                      child: Center(
                                                         child: Text("No image"),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
+                                                      )
+                                                    ),
+                                              ),
                                                 const Spacer(),
                                                 Column(
                                                   crossAxisAlignment:
@@ -579,9 +601,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                         ? Colors.green
                                                                         : data[index].status == 2
                                                                             ? Colors.blue
-                                                                            : data[index].status == 3
+                                                                            : data[index].status == 3 || data[index].status == 4
                                                                                 ? Colors.red
-                                                                                : data[index].status == 4
+                                                                                : data[index].status == 5
                                                                                     ? Colors.red
                                                                                     : Colors.green),
                                                             child: Text(
@@ -595,9 +617,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                       : data[index].status ==
                                                                               2
                                                                           ? "Delivered"
-                                                                          : data[index].status == 3
+                                                                          : data[index].status == 3 || data[index].status == 4
                                                                               ? "Cancelled"
-                                                                              : data[index].status == 4
+                                                                              : data[index].status == 5
                                                                                   ? "No Show"
                                                                                   : "pending",
                                                               style: TextStyle(
@@ -616,9 +638,9 @@ class _home_appointmentsState extends State<home_appointments> {
                                                                         : data[index].status ==
                                                                                 2
                                                                             ? Colors.white
-                                                                            : data[index].status == 3
+                                                                            : data[index].status == 3 || data[index].status == 4
                                                                                 ? Colors.white
-                                                                                : data[index].status == 4
+                                                                                : data[index].status == 5
                                                                                     ? Colors.white
                                                                                     : Colors.white,
                                                               ),
@@ -735,8 +757,8 @@ class _home_appointmentsState extends State<home_appointments> {
         headers: headers,
       );
 
-      print("getClientFavoriteList status code ====> ${response.statusCode}");
-      print(" getClientFavoriteList res body is ====>  ${response.body}");
+      print("getAppointmentList status code ====> ${response.statusCode}");
+      log(" getAppointmentList res body is ====>  ${response.body}");
       if (response.statusCode == 200) {
         Map map = jsonDecode(response.body);
         if (map['status'] == 200) {
@@ -885,7 +907,7 @@ class BeauticianIdClass {
   String? firstName;
   String? lastName;
   String? gender;
-  String? profileImage;
+  String? logo;
   String? businessName;
 
   BeauticianIdClass(
@@ -893,7 +915,7 @@ class BeauticianIdClass {
       this.firstName,
       this.lastName,
       this.gender,
-      this.profileImage,
+      this.logo,
       this.businessName});
 
   factory BeauticianIdClass.fromJson(Map<String, dynamic> json) =>
@@ -902,7 +924,7 @@ class BeauticianIdClass {
         firstName: json["firstName"],
         lastName: json["lastName"],
         gender: json["gender"],
-        profileImage: json["profileImage"],
+        logo: json["profileImage"],
         businessName: json["businessName"],
       );
 
@@ -911,7 +933,7 @@ class BeauticianIdClass {
         "firstName": firstName,
         "lastName": lastName,
         "gender": gender,
-        "profileImage": profileImage,
+        "profileImage": logo,
         "businessName": businessName,
       };
 }
@@ -1084,7 +1106,7 @@ class BeauticianIdPast {
   String? gender;
   Address? address;
   String? businessName;
-  String? profileImage;
+  String? logo;
 
   BeauticianIdPast(
       {this.id,
@@ -1093,7 +1115,7 @@ class BeauticianIdPast {
       this.gender,
       this.address,
       this.businessName,
-      this.profileImage});
+      this.logo});
   factory BeauticianIdPast.fromjson(Map<dynamic, dynamic> map3) {
     return BeauticianIdPast(
       id: map3['_id'],
@@ -1102,7 +1124,7 @@ class BeauticianIdPast {
       gender: map3['gender'],
       address: Address.fromjson(map3['address']),
       businessName: map3['businessName'],
-      profileImage: map3['profileImage'],
+      logo: map3['logo'],
     );
   }
 }

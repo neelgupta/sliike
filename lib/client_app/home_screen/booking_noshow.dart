@@ -177,8 +177,7 @@ class _booking_noshowState extends State<booking_noshow> {
                         children: [
                           CachedNetworkImage(
                             imageUrl:
-                                onlyonemodal!.data!.beauticianId!.logoPath ??
-                                    '',
+                                onlyonemodal!.data!.beauticianId!.logo ?? '',
                             imageBuilder: (context, imageProvider) => Container(
                               padding: const EdgeInsets.all(10),
                               height: height * 0.15,

@@ -21,8 +21,12 @@ class _importClientScreenState extends State<importClientScreen> {
     if (!await FlutterContacts.requestPermission(readonly: true)) {
       setState(() => permissionDenied = true);
     } else {
-      contacts = await FlutterContacts.getContacts();
+      contacts = await FlutterContacts.getContacts(
+          withProperties: true, withAccounts: true);
+
       setState(() => contacts = contacts);
+
+      log("contacts :: ${contacts}");
     }
   }
 
@@ -151,7 +155,7 @@ class _importClientScreenState extends State<importClientScreen> {
                         log("${!await FlutterContacts.requestPermission(readonly: true)}");
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return  BottomNavigation();
+                            return BottomNavigation();
                           },
                         ));
                         // ignore: use_build_context_synchronously
@@ -192,7 +196,7 @@ class _importClientScreenState extends State<importClientScreen> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return  BottomNavigation(dbpopup: "1");
+                          return BottomNavigation(dbpopup: "1");
                         },
                       ));
                     },

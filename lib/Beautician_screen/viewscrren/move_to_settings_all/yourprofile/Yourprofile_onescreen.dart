@@ -2,15 +2,15 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:new_sliikeapps_apps/commonClass.dart';
 import 'package:new_sliikeapps_apps/utils/apiurllist.dart';
 import 'package:new_sliikeapps_apps/utils/preferences.dart';
 import 'package:new_sliikeapps_apps/utils/util.dart';
+
 import '../../../custom_widget/checkbox.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 
 class yourProfile_One extends StatefulWidget {
   int? hasShop;
@@ -383,9 +383,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 17,
-                                                          color: clientsLocation
-                                                              ? Colors.black54
-                                                              : Colors.black,
+                                                          color: Colors.black,
                                                           fontFamily:
                                                               "spartan")),
                                                   Text(
@@ -645,9 +643,7 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 17,
-                                                          color: clientsLocation
-                                                              ? Colors.black54
-                                                              : Colors.black,
+                                                          color: Colors.black,
                                                           fontFamily:
                                                               "spartan")),
                                                   Text(
@@ -680,16 +676,17 @@ class _yourProfile_OneState extends State<yourProfile_One> {
                   InkWell(
                     onTap: () {
                       if (_selected.isEmpty) {
-                        showToast(
-                            message: "Please select any one option");
+                        showToast(message: "Please select any one option");
                       } else if (_selected == 1 && IsServeAtOwnPlace.isEmpty) {
                         showToast(
-                            message: "Please select options from I own a salon");
+                            message:
+                                "Please select options from I own a salon");
                         Salon = true;
                         setState(() {});
                       } else if (_selected == 0 && IsServeAtClient.isEmpty) {
                         showToast(
-                            message: "Please select options from I am independent");
+                            message:
+                                "Please select options from I am independent");
                         Independent = true;
                         setState(() {});
                       } else {
@@ -750,14 +747,16 @@ class _yourProfile_OneState extends State<yourProfile_One> {
             isLoading = false;
           });
           showToast(
-            message: "${map['message']}",);
+            message: "${map['message']}",
+          );
           Navigator.pop(context);
         } else {
           setState(() {
             isLoading = false;
           });
           showToast(
-            message: "${map['message']}",);
+            message: "${map['message']}",
+          );
           Navigator.pop(context);
         }
       }

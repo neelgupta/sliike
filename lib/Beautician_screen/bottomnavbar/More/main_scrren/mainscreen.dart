@@ -12,6 +12,8 @@ import 'package:new_sliikeapps_apps/Beautician_screen/b_model/getbeuticianprofil
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/Profile/profile_page.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/help_center/help_center_main.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/promotions/promotion.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/report/all_activities/all_acitivities.dart';
+import 'package:new_sliikeapps_apps/Beautician_screen/bottomnavbar/More/report/all_activities/report.dart';
 import 'package:new_sliikeapps_apps/Beautician_screen/custom_widget/textcommon/textcommon.dart';
 import 'package:new_sliikeapps_apps/client_app/home_screen/home_screen.dart';
 import 'package:new_sliikeapps_apps/commonClass.dart';
@@ -104,7 +106,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                 },
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
+                                      const EdgeInsets.symmetric(vertical: 05),
                                   child: SizedBox(
                                     height: 65,
                                     width: 65,
@@ -112,13 +114,7 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(200)),
                                       child: getmodelProfile!.data!
-                                                  .profileImage!.isNotEmpty &&
-                                              getmodelProfile!
-                                                      .data!.profileImage !=
-                                                  null &&
-                                              getmodelProfile!
-                                                      .data!.profileImage !=
-                                                  ""
+                                                  .profileImage!.isNotEmpty
                                           ? Image.network(
                                               getmodelProfile!
                                                   .data!.profileImage!,
@@ -282,45 +278,45 @@ class _more_Main_SccreenState extends State<more_Main_Sccreen> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20, right: 20),
-                      //   child: Container(
-                      //     padding: EdgeInsets.symmetric(
-                      //       vertical: 17,
-                      //     ),
-                      //     decoration: BoxDecoration(
-                      //         border: Border(
-                      //             bottom: BorderSide(color: Colors.black12))),
-                      //     child: InkWell(
-                      //       onTap: () {
-                      //         // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      //         //   return all_Activities();
-                      //         // },));
-                      //       },
-                      //       child: Row(
-                      //         children: [
-                      //           Container(
-                      //             height: 30,
-                      //             child:
-                      //                 Image.asset("assets/images/diagram.png"),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 15,
-                      //           ),
-                      //           textComoon("Reports", 14, Color(0xff414141),
-                      //               FontWeight.w500),
-                      //           Spacer(),
-                      //           Container(
-                      //             height: 15,
-                      //             width: 30,
-                      //             child: Image.asset(
-                      //                 "assets/images/righticon.png"),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 17,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(color: Colors.black12))),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return report();
+                              },));
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 30,
+                                  child:
+                                      Image.asset("assets/images/diagram.png"),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                textComoon("Reports", 14, Color(0xff414141),
+                                    FontWeight.w500),
+                                Spacer(),
+                                Container(
+                                  height: 15,
+                                  width: 30,
+                                  child: Image.asset(
+                                      "assets/images/righticon.png"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       // Padding(
                       //   padding: const EdgeInsets.only(left: 20,right: 20),
                       //   child: Container(

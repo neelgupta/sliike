@@ -495,6 +495,8 @@ class _booking_summary_paymentconfirmState
                                               beauticianId: appointment[0]
                                                   .appointmentDetails[index]
                                                   .beauticianId,
+                                              photo: appointment[0]
+                                                  .beauticianDetails.logo ?? "",
                                             );
                                           },
                                         ));
